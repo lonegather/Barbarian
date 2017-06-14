@@ -1,0 +1,26 @@
+////ZJT - Clean up joint rotation channels
+
+//Query selection...
+global proc jointZJT(){
+
+string $selJnt[] = `ls -sl`;
+//Find selection's Aim constraint...
+string $findAim[] = `listRelatives -type aimConstraint $selJnt[0]`;
+//Select and delete Aim constraint...
+select $findAim; doDelete;
+//Find selection's (joint) Rotate values...
+float $get_jRot_x = `getAttr (($selJnt[0]) + ".rx")`;
+float $get_jRot_y = `getAttr (($selJnt[0]) + ".ry")`;
+float $get_jRot_z = `getAttr (($selJnt[0]) + ".rz")`;
+//Set joint's "Joint Orient" values to its Rotate values...
+setAttr (($selJnt[0]) + ".jointOrientX") $get_jRot_x;
+setAttr (($selJnt[0]) + ".jointOrientY") $get_jRot_y;
+setAttr (($selJnt[0]) + ".jointOrientZ") $get_jRot_z;
+//Set joint's Rotate values to zero
+setAttr (($selJnt[0]) + ".rx") 0;
+setAttr (($selJnt[0]) + ".ry") 0;
+setAttr (($selJnt[0]) + ".rz") 0;
+}
+
+
+jointZJT;

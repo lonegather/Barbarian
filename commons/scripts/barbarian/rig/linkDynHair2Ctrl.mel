@@ -1,0 +1,68 @@
+global proc linkDynHair2Ctrl()
+{
+	string $linkAttr = "hairDynBake";
+	
+	string $orgSels[] = `ls -sl -l -fl`;
+	select -hi;
+	string $sels[] = `ls -sl -l -o -type joint`;
+	string $connectedCtrl[];
+	int $breakedJoints = 0;
+	for($curJoint in $sels)
+	{
+		if(attributeExists($linkAttr, $curJoint))
+		{
+			string $target = `connectionInfo -sfd ($curJoint + "." + $linkAttr)`;
+			string $temp[];
+			tokenize $target "." $temp;
+			string $object = $temp[0];
+			string $plugName = $temp[size($temp)-1];
+			int $breakAttrs = 0;
+			//print ($curJoint + " is linked to " + $target + "\n");
+			if($plugName == $linkAttr || nodeType($object) == "transform"  || nodeType($object) == "joint"  )
+			{
+				
+				string $targetAttrs[] = {"rx", "ry", "rz"};
+				for($curAttr in $targetAttrs)
+				{
+					string $otherSource = `connectionInfo -sfd ($object + "." + $curAttr)`;
+					if($otherSource != "")
+					{
+						disconnectAttr $otherSource ($object + "." + $curAttr);
+						$breakAttrs++;
+					}
+				}
+				orientConstraint -w 1 $curJoint $object;
+				$connectedCtrl[size($connectedCtrl)] = $object;
+				if($breakAttrs != 0)
+					$breakedJoints++;
+			}
+		}
+	}
+	string $message = "Connection Finished! " + size($connectedCtrl) + " controlers are linked.";
+	if($breakedJoints != 0)
+		$message += " " + $breakedJoints + " controlers have connections and have been breaked.";
+	print($message + "\n");
+	select -cl;
+	if(size($connectedCtrl) == 0)
+	{
+		select $orgSels;
+	}
+	else
+	{
+		select $connectedCtrl;
+	}
+/////////////////////////
+int $starttime = `playbackOptions -q -min`  -20;
+int $endtime = `playbackOptions -q -max`;
+string $hairSystem[]=`ls -typ "hairSystem"`; 
+if(size($hairSystem) > 0){
+for ($i in $hairSystem){
+  setAttr ($i+".startFrame") $starttime; 
+}
+}
+///////////////////////////
+}
+
+linkDynHair2Ctrl();
+
+

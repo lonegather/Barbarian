@@ -1,0 +1,430 @@
+//coded by Jinghai Tian in 2012
+//本程序用于创建花瓣掉落效果
+
+
+//UI
+global proc tjh_flower_fall()
+{
+
+	tjh_flowers_fall_title;
+	global string $imagePath_flowers_fall_title;
+
+	if (`windowPref -exists tjh_flower_fall_tool_window`)
+		    windowPref -remove  tjh_flower_fall_tool_window;     
+
+			  
+			  if (`window -exists tjh_flower_fall_tool_window`)
+			  deleteUI tjh_flower_fall_tool_window;
+
+
+	window -w 180-h 140 tjh_flower_fall_tool_window;
+	columnLayout;						
+			separator -h 10 -w 180;
+			text   -fn boldLabelFont  -al "left" -l "             tjh_flower_fall V1.0  ";
+			separator -h 10 -w 180;
+			image -w 181 -h 47  -image $imagePath_flowers_fall_title;
+			separator -h 5 -w 180;
+
+
+			text     -al "right" -l "  This procedure can  create the ";
+			text     -al "right" -l "  effect of flowers falling down. ";
+			text     -al "right" -l "  Programmer：Jinghai tian  ";
+			text     -al "right" -l "  2012-12-21  ";
+
+			separator -h 10 -w 180;
+
+			
+			string $onCommand = "textField -e -editable 0  tjh_flower_fall_textField_flower; button  -e -enable 0 tjh_flower_fall_button_flower;";
+			string $offCommand = "textField -e -editable 1  tjh_flower_fall_textField_flower; button  -e -enable 1 tjh_flower_fall_button_flower;";
+
+			rowLayout -numberOfColumns 2
+			    -columnWidth2 10 150
+			    -adjustableColumn 2
+			    -columnAlign  1 "right"
+			    -columnAttach 1 "both"     0
+			    -columnAttach 2 "both"  0;
+			    text  -l "     ";
+			    checkBox -v 0 -label "Auto Create flower model" -onc $onCommand -ofc $offCommand tjh_flower_fall_checkBox_autoCreateFlowerObject;
+
+			    setParent ..; 
+			separator -h 10 -w 180;
+
+			rowLayout -numberOfColumns 3
+			    -columnWidth3 10 80 80
+			    -adjustableColumn 2
+			    -columnAlign  1 "right"
+			    -columnAttach 1 "both"     0
+			    -columnAttach 2 "both"  0
+			    -columnAttach 3 "both"  0;
+			    text  -l "     ";
+			    radioCollection tjh_flower_fall__particleType_method;	   	    
+			    radioButton -select -label "particle";
+			    radioButton  -label "nParticle";
+			    setParent ..; 
+
+			separator -h 10 -w 180;
+
+			
+			rowLayout -numberOfColumns 3
+			    -columnWidth3 70 60 70
+			    -adjustableColumn 2
+			    -columnAlign  1 "left"
+			    -columnAttach 1 "both"     0
+			    -columnAttach 2 "both"  0
+			    //-columnAttach 3 "both"  0
+			    ;
+			    text -al "right" -l "flower obj：";
+			    textField -editable 1 -text "none" tjh_flower_fall_textField_flower;
+
+			    string $getSelectListsCMD =  "string $selects[]=`ls -sl`;";
+				   $getSelectListsCMD += "string $list=\"\";";
+				   $getSelectListsCMD += "for($i=0;$i<size($selects);$i++)";
+				   $getSelectListsCMD += "{$list+=\" \"+$selects[$i];};";
+				   $getSelectListsCMD += "textField -e -text $list tjh_flower_fall_textField_flower;";
+
+			    button  -w 45 -backgroundColor 1.0 0.6 1.0 -label "Set"  -command  $getSelectListsCMD tjh_flower_fall_button_flower;
+			    setParent ..;
+
+			separator -h 10 -w 180;
+
+			string $createCMD = "string $flower=`textField -q -text tjh_flower_fall_textField_flower`;";
+			       $createCMD += "int $checkBoxValue=`checkBox -q -v tjh_flower_fall_checkBox_autoCreateFlowerObject`;";
+			       $createCMD += "if($checkBoxValue==0)tjh_flower_fall_proc $flower;";
+			       $createCMD += "if($checkBoxValue==1){string $flower = `tjh_create_flower_patel`;tjh_flower_fall_proc $flower;}";
+			button  -w 180 -backgroundColor 1.0 0.7 1.0 -label "Create Effect !"  -command  $createCMD;
+			
+			separator -h 10 -w 180;
+			setParent ..;
+
+
+
+	showWindow;
+}
+
+
+//create the flower petal.
+global proc string tjh_create_flower_patel()
+{
+	softSelect -e -softSelectEnabled false;
+	//create the flower nurbs surface
+	string $flower[]=`sphere -ch on -o on -po 0 -ax 0 1 0 -r 0.979008 -nsp 4` ;
+	// Result: ($flower[0]+" makeNurbSphere1 // 
+	rotate -r -os 0 0 -77.499361 ;
+	setAttr ($flower[0]+".rotateZ") -90;
+	scale -r 1 1 0.662121 ;
+	scale -r 1 1 1.197756 ;
+	scale -r 0.14744 1 1 ;
+	select -r ($flower[0]+".cv[4:6][0:7]") ;
+	scale -r -p 0.86464cm 0cm 0.00338919cm 1 1 0.546238 ;
+	move -r 0.393073 0 0 ;
+	select -r ($flower[0]+".cv[4][0:7]") ;
+	move -r -0.36966 0 0 ;
+	select -r ($flower[0]+".cv[0:2][0:7]") ;
+	move -r -0.241279 0 0 ;
+	select -r ($flower[0]+".cv[1:2][2:4]") ($flower[0]+".cv[3][2]") ($flower[0]+".cv[3][4]") ($flower[0]+".cv[4:5][2:4]") ;
+	select -tgl ($flower[0]+".cv[1][0]") ($flower[0]+".cv[1][6:7]") ($flower[0]+".cv[2][0]") ($flower[0]+".cv[2][6:7]") ($flower[0]+".cv[3][0]") ($flower[0]+".cv[3][6]") ($flower[0]+".cv[4][0]") ($flower[0]+".cv[4][6:7]") ($flower[0]+".cv[5][7]") ;
+	select -tgl ($flower[0]+".cv[1][0]") ($flower[0]+".cv[1][6:7]") ($flower[0]+".cv[2][0]") ($flower[0]+".cv[2][6:7]") ($flower[0]+".cv[3][0]") ($flower[0]+".cv[3][6]") ($flower[0]+".cv[4][0]") ($flower[0]+".cv[4][6:7]") ($flower[0]+".cv[5][0]") ($flower[0]+".cv[5][6:7]") ;
+	select -add ($flower[0]+".cv[1][0]") ($flower[0]+".cv[1][6:7]") ($flower[0]+".cv[2][0]") ($flower[0]+".cv[2][6:7]") ($flower[0]+".cv[3][0]") ($flower[0]+".cv[3][6:7]") ($flower[0]+".cv[4][0]") ($flower[0]+".cv[4][6:7]") ($flower[0]+".cv[5][0]") ($flower[0]+".cv[5][6:7]") ;
+	move -r 0 0.33106 0 ;
+	select -r ($flower[0]+".cv[3][0:7]") ;
+	move -r 0 -0.328247 0 ;
+	select -r ($flower[0]+".cv[5][1]") ($flower[0]+".cv[5][5]") ($flower[0]+".cv[6][0:7]") ;
+	move -r 0.246182 0 0 ;
+	select -r ($flower[0]+".cv[0:1][0:7]") ;
+	move -r 0 -0.260359 0 ;
+	select -r $flower[0] ;
+
+	//create the flower shader
+	string $shader=`shadingNode -asShader lambert`;
+	sets -renderable true -noSurfaceShader true -empty -name ($shader+"SG");
+	connectAttr -f ($shader+".outColor") ($shader+"SG.surfaceShader");
+	select -r $flower[0] ;
+	sets -e -forceElement ($shader+"SG");
+	 
+	select -r $shader ;
+
+	string $ramp = `shadingNode -asTexture ramp`;
+	string $place2dTexture =`shadingNode -asUtility place2dTexture`;
+	connectAttr ($place2dTexture+".outUV") ($ramp+".uv");
+	connectAttr ($place2dTexture+".outUvFilterSize") ($ramp+".uvFilterSize");
+	connectAttr -force ($ramp+".outColor") ($shader+".color");
+	setAttr ($ramp+".type") 1;
+	setAttr ($ramp+".colorEntryList[0].color") -type double3 0.607843 0.250288 0.274635 ;
+	setAttr ($ramp+".colorEntryList[1].color") -type double3 0.745098 0.175317 0.363334 ;
+	setAttr ($ramp+".colorEntryList[2].color") -type double3 1 0.764706 0.898025 ;
+	setAttr ($ramp+".colorEntryList[3].color") -type double3 1 0.843137 0.894882 ;
+
+	setAttr ($ramp+".colorEntryList[1].position") 0.095;
+	setAttr ($ramp+".colorEntryList[2].position") 0.005;
+	setAttr ($ramp+".colorEntryList[3].position") 0.505;
+	select -r $shader ;
+	setAttr ($shader+".ambientColor") -type double3 1 0.333333 0.333333 ;
+	setAttr ($shader+".ambientColor") -type double3 1 0.333333 0.671234 ;
+	setAttr ($shader+".ambientColor") -type double3 1 0.333333 0.526866 ;
+	setAttr ($shader+".ambientColor") -type double3 0.490196 0.17301 0.265089 ;
+	setAttr ($shader+".ambientColor") -type double3 0.352941 0.124567 0.190864 ;
+
+
+	setAttr ($flower[0]+".visibility") 0;
+	/*
+	setAttr ($flower[0]+".visibleInRefractions") 0;
+	setAttr ($flower[0]+".visibleInReflections") 0;
+	setAttr ($flower[0]+".smoothShading") 0;
+	setAttr ($flower[0]+".primaryVisibility") 0;
+	setAttr ($flower[0]+".motionBlur") 0;
+	setAttr ($flower[0]+".receiveShadows") 0;
+	setAttr ($flower[0]+".castsShadows") 0;
+	*/
+
+
+	return $flower[0];
+}
+
+//创建粒子动画主程序
+global proc tjh_flower_fall_proc(string $flower_petal)
+{
+	
+	
+if (size($flower_petal)>0)
+	{
+	//得到花瓣物体列表
+	string $instancerObjs[];
+	int $numToInstancers = `tokenize $flower_petal " " $instancerObjs`;
+
+	
+	string $flower[]=`polyPlane -ch on -o on -w 12 -h 8 -sw 1 -sh 1 -cuv 2 `;
+	
+	
+	//添加控制器属性
+	addAttr -ln "_rate_" -nn "_rate_" -at double   -dv 70 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._rate_");
+
+	addAttr -ln "_scaleMin_" -nn "_scale Min_" -at double  -min 0 -max 10 -dv 0.5 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._scaleMin_");
+	addAttr -ln "_scaleMax_" -nn "_scale Max_" -at double  -min 0 -max 10 -dv 1 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._scaleMax_");
+	addAttr -ln "_initialRotateMin_" -nn "_initial Rotate Min_" -at double   -dv 0 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._initialRotateMin_");
+	addAttr -ln "_initialRotateMax_" -nn "_initial Rotate Max_" -at double   -dv 360 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._initialRotateMax_");
+
+	addAttr -ln "_rotateMinSpeed_" -nn "_rotate Speed Min_" -at double   -dv 10 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._rotateMinSpeed_");
+	addAttr -ln "_rotateMaxSpeed_" -nn "_rotate Speed Max_" -at double   -dv 30 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._rotateMaxSpeed_");
+
+	addAttr -ln "_lifespan_" -nn "_lifespan_" -at double   -dv 3 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._lifespan_");
+
+	addAttr -ln "_gravity_" -nn "_gravity_" -at double  -min 0  -dv 2 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._gravity_");
+
+	addAttr -ln "_turbulence_" -nn "_turbulence_" -at double  -min 0 -max 10 -dv 1 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._turbulence_");
+	addAttr -ln "_turbulenceFrequency_" -nn "_turbulence Frequency_" -at double   -dv 1 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._turbulenceFrequency_");
+
+	addAttr -ln "_wind_" -nn "_wind_" -at double   -dv 1 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._wind_");
+
+	addAttr -ln "_windDirectionX_" -nn "_wind DirectionX_" -at double -min -1 -max 1  -dv 1 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._windDirectionX_");
+	addAttr -ln "_windDirectionY_" -nn "_wind DirectionY_" -at double -min -1 -max 1  -dv 0 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._windDirectionY_");
+	addAttr -ln "_windDirectionZ_" -nn "_wind DirectionZ_" -at double -min -1 -max 1  -dv 0 $flower[0];
+	setAttr -e-keyable true ($flower[0]+"._windDirectionZ_");
+
+	//创建粒子发射器
+	select -r $flower[0];
+	string $emitter[]=`emitter -type surface -r 70 -sro 0 -nuv 0 -cye none -cyi 1 -spd 1 -srn 0 -nsp 1 -tsp 0 -mxd 0 -mnd 0 -dx 1 -dy 0 -dz 0 -sp 0 `;
+	// Result: pflower1 emitter1 // 
+
+	connectAttr -f ($flower[0]+"._rate_") ($emitter[1]+".rate");
+
+	//string $particle[]=`nParticle`;
+	//string $particle[]=`particle`;
+	
+	string $getParticleMethodradioButton = `radioCollection -q -select tjh_flower_fall__particleType_method`;
+	string $getMethodLabel = `radioButton -q -label $getParticleMethodradioButton`;
+	string $particle[]=eval($getMethodLabel);
+			
+	// Result: particle1 particleShape1 // 
+
+	setAttr ($particle[1]+".lifespanMode") 1;
+	connectAttr -f ($flower[0]+"._lifespan_") ($particle[1]+".lifespan");
+
+	connectDynamic -em $emitter[1] $particle[0]; 
+	// Result: particleShape1 // 
+
+	//创建重力场
+	select -r $particle[0];
+
+	string $gravity[]=`gravity -pos 0 0 0 -m 9.8 -att 0 -dx 0 -dy -1 -dz 0  -mxd -1  -vsh none -vex 0 -vof 0 0 0 -vsw 360 -tsr 0.5 `;
+	// Result: gravityField1 // 
+
+	connectDynamic -f $gravity[0]  $particle[0];
+
+	connectAttr -f ($flower[0]+"._gravity_") ($gravity[0]+".magnitude");
+
+	//修改粒子属性
+	setAttr ($particle[0]+".lifespanRandom") 0;
+	//setAttr ($particle[0]+".lifespanMode") 1;
+	//setAttr ($particle[0]+".lifespan") 3;
+	//修改发射器属性
+	//setAttr "emitter1.rate" 70;
+	setAttr ($emitter[1]+".speed") 0;
+	setAttr ($emitter[1]+".tangentSpeed") 1.118421;
+	setAttr ($emitter[1]+".tangentSpeed") 0.921053;
+	setAttr ($emitter[1]+".speedRandom") 1.052632;
+	setAttr ($emitter[1]+".tangentSpeed") 1.052632;
+	//创建紊乱场
+	select -r $particle[0] ;
+
+	string $turbulence[]=`turbulence -pos 0 0 0 -m 5 -att 1 -f 1 -phaseX 0 -phaseY 0 -phaseZ 0 -noiseLevel 0 -noiseRatio 0.707  -mxd -1  -vsh none -vex 0 -vof 0 0 0 -vsw 360 -tsr 0.5 `;
+	// Result: turbulenceField1 // 
+
+	connectDynamic -f $turbulence[0]  $particle[0];
+	// Result: particleShape1 // 
+
+	setAttr ($turbulence[0]+".attenuation") 0;
+
+	connectAttr -f ($flower[0]+"._turbulence_") ($turbulence[0]+".magnitude");
+	connectAttr -f ($flower[0]+"._turbulenceFrequency_") ($turbulence[0]+".frequency");
+
+
+	//创建风场
+	select -r $particle[0] ;
+	string $wind[]=`air -pos 0 0 0 -m 4 -att 1 -dx 0 -dy 1 -dz 0 -s 5 -iv 1 -iro 1 -vco 0 -es 0  -mxd 20  -vsh none -vex 0 -vof 0 0 0 -vsw 360 -tsr 0.5`;
+	// Result: airField1 // 
+	connectDynamic -f $wind[0]  $particle[0];
+	// Result: particleShape1 // 
+	
+	setAttr ($wind[0]+".attenuation") 0;
+	//setAttr ($wind[0]+.".directionY") 0;
+	//setAttr ($wind[0]+.".directionZ") 1;
+	
+
+	connectAttr -f ($flower[0]+"._wind_") ($wind[0]+".magnitude");
+	connectAttr -f ($flower[0]+"._windDirectionX_") ($wind[0]+".directionX");
+	connectAttr -f ($flower[0]+"._windDirectionY_") ($wind[0]+".directionY");
+	connectAttr -f ($flower[0]+"._windDirectionZ_") ($wind[0]+".directionZ");
+
+
+	//创建粒子替代
+	string $instancerCMD = "particleInstancer  -addObject "; 
+
+	for($i=0;$i<$numToInstancers;$i++)
+	{$instancerCMD += " -object "+$instancerObjs[$i]; }
+
+	$instancerCMD+=" -cycle None -cycleStep 1 -cycleStepUnits Frames -levelOfDetail Geometry -rotationUnits Degrees -rotationOrder XYZ -position worldPosition -age age "+$particle[1];
+
+	string $instrancer=`eval $instancerCMD `;
+	// Result: instancer1 // 
+
+	//添加每粒子属性
+	addAttr -ln "rotatePP0"  -dt vectorArray  $particle[1];
+	addAttr -ln "rotatePP"  -dt vectorArray  $particle[1];
+	setAttr -e-keyable true ($particle[1]+".rotatePP");
+	addAttr -ln "scalePP0"  -dt vectorArray  $particle[1];
+	addAttr -ln "scalePP"  -dt vectorArray  $particle[1];
+	setAttr -e-keyable true ($particle[1]+".scalePP");
+	addAttr -ln "speedRandPP0"  -dt vectorArray  $particle[1];
+	addAttr -ln "speedRandPP"  -dt vectorArray  $particle[1];
+	setAttr -e-keyable true ($particle[1]+".speedRandPP");
+	addAttr -ln "instancerPP0"  -dt doubleArray  $particle[1];
+	addAttr -ln "instancerPP"  -dt doubleArray  $particle[1];
+	setAttr -e-keyable true ($particle[1]+".instancerPP");
+
+	//创建粒子 创建时表达式
+	dynExpression -s ("float $randScale= rand("+$flower[0]+"._scaleMin_"+","+$flower[0]+"._scaleMax_"+");\n\n"+$particle[1]+".scalePP =<<$randScale,$randScale,$randScale>>;\n\n"+$particle[1]+".rotatePP =<<rand("+$flower[0]+"._initialRotateMin_,"+$flower[0]+"._initialRotateMax_),rand("+$flower[0]+"._initialRotateMin_,"+$flower[0]+"._initialRotateMax_),rand("+$flower[0]+"._initialRotateMin_,"+$flower[0]+"._initialRotateMax_)>>;\n\n"+$particle[1]+".speedRandPP = <<rand("+$flower[0]+"._rotateMinSpeed_,"+$flower[0]+"._rotateMaxSpeed_),rand("+$flower[0]+"._rotateMinSpeed_,"+$flower[0]+"._rotateMaxSpeed_),rand("+$flower[0]+"._rotateMinSpeed_,"+$flower[0]+"._rotateMaxSpeed_)>>;\n\n"+$particle[1]+".instancerPP = rand("+$numToInstancers+");\n\n") -c $particle[1];
+	// Result: "+$particle[1]+" // 
+	
+	//创建粒子运行时表达式
+	dynExpression -s ($particle[1]+".rotatePP += "+$particle[1]+".speedRandPP ;") -rad $particle[1];
+	//修改粒子替代驱动属性
+	particleInstancer -e -name  $instrancer -scale scalePP $particle[1];
+
+	particleInstancer -e -name  $instrancer -rotation rotatePP $particle[1];
+
+	particleInstancer -e -name  $instrancer -objectIndex instancerPP $particle[1];
+
+	//隐藏粒子发射平面渲染属性
+	//setAttr ($flower[0]+".doubleSided" 0;
+
+	setAttr ($flower[0]+".visibleInRefractions") 0;
+	setAttr ($flower[0]+".visibleInReflections") 0;
+	setAttr ($flower[0]+".smoothShading") 0;
+	setAttr ($flower[0]+".primaryVisibility") 0;
+	setAttr ($flower[0]+".motionBlur") 0;
+	setAttr ($flower[0]+".receiveShadows") 0;
+	setAttr ($flower[0]+".castsShadows") 0;
+
+	select -r $flower[0];
+	
+	//自动创建花瓣物体时，调节相应属性
+	setAttr ($flower[0]+"._lifespan_") 7;
+	setAttr ($flower[0]+"._rotateMinSpeed_") 2;
+	setAttr ($flower[0]+"._rotateMaxSpeed_") 5;
+	setAttr ($flower[0]+"._scaleMin_") 0.1;
+	setAttr ($flower[0]+"._scaleMax_") .3;
+	setAttr ($flower[0]+"._rate_") 20;
+
+
+	}else{warning "please select the flower petal !";}
+
+}
+
+
+
+//coded by Jinghai Tian in 2010.
+//this procedure is to make xpm pic with data.
+
+
+//##########################################################################################
+//##############################   create the xpm images    ################################
+//##########################################################################################
+
+global proc string tjh_xpm_data(string $xpm_data[])
+
+{
+string $data="";
+int $lineData=size($xpm_data);
+
+$data+="/\* XPM */"+"\n";
+$data+="static char * image_name[]={"+"\n";
+
+for($i=0;$i<$lineData;$i++)
+	{
+	$data+="\"";
+	$data+=$xpm_data[$i];
+	$data+="\","+"\n";
+	};
+//print $data;
+$data+="};";
+
+return $data;
+}
+
+global proc tjh_xpm_creator(string $imageDstScriptPath,string $imageName,string $xpm_data[])
+{
+		int    $imageDesId=`fopen ($imageDstScriptPath+$imageName) "w"`;
+		fprint $imageDesId (tjh_xpm_data($xpm_data));
+		fclose $imageDesId;
+}
+
+global proc tjh_flowers_fall_title()
+{
+	//create the xpm images 
+	string $flowers_fall_title[]={"181 47 256 2","   c #747400001A1A",".  c #7E280000247A","X  c #79B9832DB1DC","o  c #7E7E8383AFAF","O  c #7C7CA01FEAEA","+  c #8961000029EF","@  c #8CE200003389","#  c #970400002E09","$  c #955C000033ED","%  c #9CA900003542","&  c #9C6C00803A2A","*  c #99EF03AE3A90","=  c #AC5601733B3B","-  c #A3B402243917",";  c #B0B000003939",":  c #898900001D1D",">  c #9F1F04844101",",  c #9CDC1B1B4CCD","<  c #A2EE0BFD4242","1  c #A9600295431E","2  c #AA6515154848","3  c #B8B800C14242","4  c #B88D18EE49CA","5  c #B37318585595","6  c #A8152A9859EC","7  c #B888289856B6","8  c #B43422224ECF","9  c #ADED36B66969","0  c #9C1C33336464","q  c #9F1F494978F8","w  c #A7CC47477752","e  c #B8B845F07BA6","r  c #ABAB41416E6E","t  c #C55E004D4747","y  c #D75600004949","u  c #CD6611DF50EA","i  c #C7062A8A57B7","p  c #D6962A6A5CDD","a  c #C4C433335B5B","s  c #C87B3AD4664C","d  c #D81037FF65BB","f  c #DB482F786BB4","g  c #EB580E575AC8","h  c #EB1D379E75DC","j  c #FFFF2C2C77F8","k  c #F09A32DD70C6","l  c #F29C1C7266BC","z  c #CCCC41416D6D","x  c #CAFD47E176C3","c  c #D69641016BAB","v  c #D96B4747768E","b  c #D75652527DFE","n  c #E78748FE7919","m  c #EB1D52B97D7D","M  c #F6A948157C15","N  c #F27155557DFD","B  c #97C257018BE1","V  c #9E6B65989ACD","C  c #97377454B02F","Z  c #A6FC552A8707","A  c #B41A5AF48D73","S  c #A7BE65659B6C","D  c #B4B4699C9730","F  c #A82774B4AAEA","G  c #B9D97D3DB7D7","H  c #AD887398ABE2","J  c #BBBB7F7FC3C3","K  c #FF1E38788565","L  c #F87734F58807","P  c #DAAF57D886B1","I  c #CC06551A8D79","U  c #C7C7649D990A","Y  c #DA1969C99979","T  c #C9117651AAF3","R  c #CA747C7CB737","E  c #D6A3760FAC12","W  c #D6327A7ABAD1","Q  c #D8D86D6DA6A6","!  c #E9E9589585E7","~  c #FD36478D87F0","^  c #FFFF4D2D93B3","/  c #FFFF4ACB9717","(  c #F8E9581C892E",")  c #FFFF54F59353","_  c #FE935B3096C1","`  c #E5E5555592E8","'  c #F52761C88CF3","]  c #FEB1644A94C7","[  c #FF8A62D79D9D","{  c #FE6F6B1595B2","}  c #FF8F6C4C9C2C","|  c #F2D266669353"," . c #FF7F72729E04",".. c #F49E73C99F9F","X. c #E8C36B909A2C","o. c #E8F97822AB66","O. c #E3637CD2B8B8","+. c #FFFF6444A3A3","@. c #FFFF6C1DA490","#. c #FE3D6A2AAB4B","$. c #FFB073EAA3D4","%. c #FFFF72BFAB11","&. c #FFFF7A0CA62C","*. c #FFB17C23AB89","=. c #F4497C26ABAB","-. c #FFFF7CFCB3B3",";. c #F9D27A60B92C",":. c #ED176812AAAA",">. c #F84D7E28C771",",. c #D5D57CFDC6C6","<. c #87F3840AAD77","1. c #96DF86BDAB18","2. c #9E9E8181B8B8","3. c #A94283EABC89","4. c #B8F886C6BCBC","5. c #9C359797DA59","6. c #8FBA8A34CC0B","7. c #86CF9CE5E577","8. c #9DC59E3BE3E3","9. c #93539F1FE5E5","0. c #8CE2A46BEBEB","q. c #84B7A6D9F2F2","w. c #8510A9EFF5C6","e. c #8D6CA699F1EA","r. c #8B8BAA3FF4D4","t. c #8B0BAF2FF9F9","y. c #96ACA693EEB5","u. c #9595A8C2EE6E","i. c #9C25A23FE582","p. c #9CEDA6D3EDB1","a. c #9CF2A914EDDB","s. c #9405A24CE63B","d. c #935EA700F12E","f. c #94B3AA68F330","g. c #98F8A767F171","h. c #9C74AB4AF29B","j. c #9469AED9F978","k. c #9898B37CFD8F","l. c #8C0CB1B1FDFD","z. c #A76E8AA7C839","x. c #ACE59203CDCD","c. c #A34D9393CFCF","v. c #AA37988FD8CF","b. c #B6FF8C8CC835","n. c #BA6492E8CCE1","m. c #B4B49E04DC5B","M. c #BC899DD0DBC1","N. c #BB5E97C6D64A","B. c #A4BE9ED1E3B0","V. c #ABAB9EEDE2A7","C. c #AAAA9797E3E3","Z. c #BD3D9F9FE2E2","A. c #AC01A3CEDF5E","S. c #BC59A56ADDDD","D. c #B457A4A4DEAF","F. c #A4F6A332E536","G. c #A4DBA675EB3C","H. c #A400A9B4ECAD","J. c #ADE0A757E7AC","K. c #AC06A775E9F4","L. c #AE14A90FE780","P. c #AC56AA28EB27","I. c #A38CACA4F237","U. c #ABBAADCBF25B","Y. c #AB8BB272F736","T. c #B2A8A773E794","R. c #B2D4A71EEA0B","E. c #B535A92EE758","W. c #B3E7AB19EA92","Q. c #BC4CA5E8E45E","!. c #BCAFAA0EE64F","~. c #BB7EAC03EABB","^. c #BB10A5A5EB40","/. c #B660ABABF19B","(. c #BAE5B0B0EBEB","). c #B837B287F348","_. c #AFAFB2B2EEEE","`. c #C9FC86FEBADC","'. c #DA148571B92F","]. c #E84E85D2B7D1","[. c #FFFF8282AFAF","{. c #FFC684CBB42C","}. c #FF1B84DABB65","|. c #FFFF897AB702"," X c #FFE08C08BBF2",".X c #F52D87DDBA0F","XX c #FFFF920ABE63","oX c #FFFF9999BD3D","OX c #CAA88B69C8EA","+X c #C8C8936BCCE0","@X c #C7AB9A6CD7BB","#X c #D85887EEC693","$X c #D7409568CCDB","%X c #D8BB9B1BD5F2","&X c #CFCF8C8CD8D8","*X c #CDCD9DD0E315","=X c #C339A556DC52","-X c #CC32A4A4DD50",";X c #CD15A7F0DE26",":X c #D6EBA57ADD32",">X c #C353A565E3B3",",X c #C435AB61E4A7","<X c #C3D3ACCCEA8A","1X c #CBA0AC35E381","2X c #CB64A70DE6E6","3X c #CC3DB194EA22","4X c #C6DAB1D9E9FD","5X c #D17FAC2BE2BF","6X c #D99CA991E6CE","7X c #D79EB2B2EA3F","8X c #D797B6F6F7B7","9X c #CBF0B08BF2A9","0X c #E8348B3ECA16","qX c #E94B961FCCB8","wX c #E8019AE7D5D5","eX c #FBBF8B7CC598","rX c #FFBC93D0C30B","tX c #FF7F954CCB94","yX c #FFFF9AF3C5D0","uX c #FFB09C4DCD11","iX c #F4A793ADC7FA","pX c #FFA99CC7D43E","aX c #F9559CCBD8A9","sX c #E47DA4A4DD0F","dX c #EA8AA3C3DB3A","fX c #FFFFA4B2CCDA","gX c #FFFFA916CD84","hX c #FFEFA3E3D4E4","jX c #FFBAA51CDB74","kX c #FFFFACBFD3AD","lX c #FFBFAA8ADCBC","zX c #F4F4A3E3DA19","xX c #FFFFB36DD632","cX c #FFFFB577DAEF","vX c #FFFFBC6FDDB2","bX c #E87EAB8DE66D","nX c #E439B332EBC0","mX c #FFA5ACC6E47D","MX c #F4F4AC01E63B","NX c #FFFFB30FE4E4","BX c #FF37B45EEBCE","VX c #FFFFBDEAE31E","CX c #F6B6B555EB2A","ZX c #FCFCBAE5F3C8","AX c #EA50B54EF527","SX c #FFFFC40EE469","DX c #FFFFC585EA49","FX c #FFFFCC86EC6B","GX c #FFFFC973E791","HX c #FFFFCDABF258","JX c #FFFFC484F474","KX c #FFFFD426F43E","LX c #FFFFDBEFFC23","PX c #FFFFD7D7F8F8","IX c #FFFFE322FFFF","UX c #FFFFC1C1DFDF","0.y.e.d.e.d.e.d.e.d.d.d.e.d.d.e.w.t.j.I.6X..i % * * $ @ @ @ $ # - 0 C X l.r.e.d.e.d.e.e.d.d.e.e.d.e.d.e.d.e.d.d.e.d.d.e.d.d.e.e.d.e.d.e.d.e.e.d.q.O q.q.e.I.8XZXPXLXIXIXLXFXkX X*.@._ ) ~ j ,./.^.g.q.q.e.y.e.e.d.r.C.>.jXVXvXwXy.t.r.y.y.e.y.e.e.d.e.e.d.e.d.e.e.d.f.e.d.e.d.d.d.d.d.e.d.e.d.d.e.d.q.>.#.}.uXkXcXVXSXvXxXcXSXDX~.q.d.e.d.e.d.d.e.d.e.d.d.d.e.e.e.d.d.e.X ","7.y.e.y.d.d.d.d.y.e.e.d.e.d.d.g.R.G.V.OXb = $ * - * 2 * - * @ @ .     q j.d.d.y.d.d.d.d.d.d.d.d.d.d.e.d.d.d.e.d.y.y.y.e.e.d.d.d.d.d.d.d.d.e.d.d.g.j.g./.AXZXJXLXIXIXIXVXyX&.! m n N ~ M h j eXaXjXmXQ.e.q.q.r.y.e.w.W +.kXVXUXoXdXI.y.e.e.e.e.d.e.d.d.y.d.d.d.d.e.d.y.e.d.e.q.e.e.e.e.q.r.d.d.d.d.d.e.;.}.rXhXcXSXGXHXHXSXcXUXFXBXe.f.y.d.e.d.e.d.d.d.d.d.e.d.d.f.e.e.d.X ","0.y.y.f.d.d.d.d.y.y.d.d.d.d.d.G.mXuXo.s = % * * 2 5 7 7 7 8 2 - $ @ + Z j.d.d.d.d.d.d.e.d.d.e.d.d.y.d.d.d.d.y.d.d.d.d.d.d.y.d.d.d.d.d.d.d.d.y.e.6XmXmXNXDXKXLXLXIXHXuX:.I Z B V V V S S X.rXvXVXJXvXuXbXG.r.w.d.d.j.U j -.yX X&. .W v.y.y.y.d.d.d.d.d.d.d.d.d.d.d.y.d.e.e.r.t.w.q.q.q.q.r.r.d.y.d.d.q.>.yXfXcXVXFXFXPXKXFXUXxXGXmXe.q.e.e.y.y.y.d.d.d.d.d.y.d.d.e.y.f.y.X ","s.d.d.d.d.d.d.d.y.d.g.d.d.d.d.d.bX X$.] ! b v z s s x v v v d a i u ; H j.e.d.d.d.d.d.d.d.d.d.d.d.d.d.d.d.d.d.d.d.d.g.d.d.g.d.d.d.d.d.d.d.d.y.y.>XpXcXDXFXKXKXHXhX.XR F 6.O 7.7.7.7.7.<XmXKXSXSXHXFXSXcXmXAX/.d.d.r.G j _ $.} n d U c.y.d.g.g.d.d.d.d.d.d.d.d.d.d.d.f.y.f.U.9X<X/.U.2X6X*Xp.f.d.d.d.r.0XgXcXvXSXFXKXPXLXKXVXfXkXcXp.q.q.r.e.y.g.d.d.d.d.d.g.d.d.y.f.y.y.X ","9.g.g.g.g.g.y.y.d.d.d.d.y.y.y.e.2XyX|. X X|...| ! ! ! ! ! ! m n h f y z.j.e.f.d.g.d.d.d.d.d.y.y.y.y.d.d.d.d.d.g.d.d.g.d.d.d.d.g.d.d.g.y.y.y.d.g.g.6XpXuXlXlXlXaXOXz.X q.l.k.k.k.j.k.8XmXVXVXgXvXSXvXxXxXcXyXqXV.y.f.8.Q [ $.Y S C 6.9.d.y.y.g.d.e.d.d.g.d.g.d.d.d.d.d.y.A.qX{.tXjXBXmXpX#.,.y.d.d.g.f.M.uXVXVXHXFXKXKXKXKXSXyX XhX9X9X).g.d.d.d.d.d.d.d.d.g.d.d.y.y.f.d.X ","9.y.y.y.g.g.y.y.y.y.p.d.y.y.y.G.uX|.{.&.[. X|.&.{ | ] ( ( ( ~ M h l 9 s.f.y.i.g.g.g.y.p.d.p.y.y.y.y.p.d.d.g.y.y.p.y.p.d.y.y.p.y.d.g.y.y.y.y.y.y.e.w.B.6XdX%X&Xc.O w.k.j.g.y.d.y.y.G.mX~ ~ @.#.}. X|.&.} _ ! o.m.y.a.l.8.n.#Xb.5.k.l.j.y.y.y.d.d.g.g.f.f.d.d.g.g.y.y.p.d.@XQ P ] }.mXvXfX[ ` 9.d.g.d.d.y.tXVXGXHXKXFXFXKXKXFXuX|.rXhXZXmXzXK.e.p.p.y.p.d.d.d.d.p.y.d.d.y.X ","9.y.y.y.g.y.y.y.y.y.y.p.y.y.y.R.iX;.$. .' m | | ! ! n v c f f h f a C a.^.%X+Xg.y.p.y.d.p.d.y.p.d.d.y.p.y.d.p.y.y.y.y.y.p.d.p.d.p.y.y.y.y.y.g.y.g.g.e.9.C.>XAXMXH.g.y.p.y.p.y.p.d.G.m.B 3 k ) ] } ! z 2 , B 6.f.g.d.d.h.I.R.9X8X8X^.p.y.f.f.d.U.8XbX>Xg.g.g.g.y.d.y.g.d.8.7.6.C A X.}.}.,.F 5.g.g.g.d.w.-XVXKXFXFXGXFXFXFXFXgX{.*.] cXcXtXeXg.g.y.y.y.y.d.p.p.y.y.y.y.y.X ","s.y.p.y.y.y.y.g.p.g.p.g.g.d.p.p.8.8.x.T P n v z 7 2 2 1 - & 1 3 5 C l.&X@.|.XX8.y.y.p.y.p.p.p.g.p.p.y.p.p.p.y.p.y.p.y.d.p.p.p.y.g.p.p.g.g.g.y.y.p.y.d.C.#.VXKXGXmX<Xy.u.p.u.p.d.p.y.y.9.9 p n ! ! d 2 s '.y.f.g.g.g.@XqXuXlXFXLXlX:Xy.y.f.g.>XiX}.;.;.%Xd.N.i.g.p.p.p.i.p.y.f.y.8.6.c.B.s.y.y.g.y.g.y.8.@X XDXFXFXUXUXUXFXFXcX{.*.8 v @.#.;.&Xj.p.g.y.p.p.p.d.p.p.p.p.g.X ","s.p.y.p.p.d.p.p.p.p.y.p.g.p.g.g.f.u.u.8.c.T x i 7 2 - * * % % 1 = H *XQ h @.=.p.p.p.g.p.p.p.p.p.p.y.p.p.p.p.p.p.p.g.p.p.y.p.y.y.p.p.p.g.u.u.y.y.p.y.y.B.>.mXmXhXaX6Xg.y.p.y.f.p.p.p.y.j.,.p d v b x V iXyXG.h.g.a.#X%. XvXGXGX[.Y B.d.E.+XG I z m ( ( n z.I 5.g.p.g.p.p.p.g.h.h.f.s.y.d.f.g.p.y.g.V.$X;.=.&.XXxXSXvXxXxXVXFXGX{.&.v n @.}.#.&Xf.y.p.p.a.y.y.p.p.p.g.p.p.X ","i.p.p.p.p.G.a.p.p.p.y.y.g.H.p.h.k.h.j.k.8.F 6 7 8 = % % % $ # @ % t ~ L W +Xx.p.p.p.p.p.p.p.p.g.p.p.p.p.p.g.p.y.a.p.p.p.G.g.p.p.p.p.g.j.I.Y.I.k.h.g.p.y.>X2X2X2X6XJ.y.y.p.J.G.f.p.p.a.f.iX^ n h v 4.9.mX|.N.y.f.N.) } fXcXrX| 7 C y.g.W.yX{ m n ! ! n 3 I g J j.p.a.p.p.p.p.a.p.h.h.g.g.p.p.p.p.y.T.qX|.oXXX XXXuXxXkXgXxXSXFXXX .@.} [ ^ j V.g.G.p.p.a.p.p.p.p.p.p.p.p.o ","i.a.p.p.p.p.p.p.p.g.G.p.h.h.h.h.A.y.A.OXE U r F A 6 > * $ $ $ $ < = t f y.r.e.p.p.p.g.p.p.p.p.G.G.a.p.p.g.G.G.p.p.p.a.p.g.G.g.G.p.g.h.W.@X+XN.A.H.h.g.p.e.q.e.e.r.y.G.p.8.%X%XB.a.p.p.a.>.[ _ n n D.l.zX{ `.a.r.O.j [ &.$.! = B k.h.u.i.yX&.$.&.*.$.( u L g A B.g.p.p.a.a.G.h.p.p.a.p.p.p.p.p.G.p.G.<XMXlXVXvXkXrXXXyXyXyXcXGXvX{ {.%.) l e f.a.p.G.g.g.G.g.p.a.p.G.G.p.o ","i.p.p.G.p.G.a.p.G.G.p.p.h.h.V.G Z z.OXb N ..OXh.8.2.S w w w B V F S 1 A h.g.h.h.a.p.G.p.p.p.p.p.h.p.G.g.G.p.p.p.G.G.a.p.G.p.p.g.h.h.@XQ v a x U b.C.R.>XG.p.p.p.G.a.p.a.p.%X.XG h.p.p.a.}.$.} ! d n.f.zXm T y.f.;.) ( n s - , 5.I.a.B.+X..' { $.|.}._ j J f t R I.g.G.p.G.g.p.G.G.a.h.G.G.a.p.p.p.p.y.f.M.tXvXFXVX XXX X XrXcXFX&.[.} k g H g.G.p.p.p.G.a.G.a.p.g.G.h.a.o ","i.p.p.p.G.p.p.p.p.G.p.G.B.J e * $ 9 c.F R 6X@Xh.I.H.p.B.5.i.F.G.g.G.F z.h.V.M.).h.g.g.a.g.p.G.p.G.p.p.G.p.p.p.p.g.G.a.G.y.e.e.e.g.b.x - - - % - 6 e ..iXG.a.G.p.G.p.p.p.p.G.V.c.G.p.p.h.'.{ { s < x.h.aXc U u.<XpXuX-.) p < F I.I.p.%X$.} [._ (  .[ ) W y.q + u OXh.G.G.p.p.G.g.G.p.p.p.p.G.p.p.p.G.y.p.p.m.|.vXHXVX|.*.|.|. XDXyXx s n ~ +Xh.p.p.e.E.%Xp.p.G.p.p.G.G.p.o ","8.G.G.G.G.G.G.G.G.p.p.R 9 < $ @ % % F a.B.P.K.G.G.a.h.h.H.h.I.h.H.I.8.p.h.OXx U sXBXsXa.G.G.G.G.G.G.p.G.G.G.G.p.G.p.s.0.K.8XBXbX0X~ t @ * 2 8 7 d M $.%Xa.G.G.G.p.G.G.G.G.g.p.G.G.G.G.h.b.c b 4 0 G.f.qXi e 7XZXHXDXkX}.^ L B.h.G.p.E.wX[.*.@.W n.OXn.B.k.V . = I m.a.G.G.G.G.G.G.G.G.G.p.G.G.G.p.G.G.H.p.y.M.iXXX}.-.O.|.*.{.XXvX`.C R %XZ.g.e.y.9XjXqXy.p.G.G.p.G.p.G.o ","8.G.G.G.G.G.p.G.G.G.h.R 3 . @ & < - 6 F.k.p.g.G.G.G.G.G.H.p.G.G.G.G.I.a.I.&Xy u X.[.;.d.G.H.G.G.G.p.G.G.G.G.G.G.g.e.G.8XJXcX}.} ) k y > - 8 i d m o.%XG.p.G.G.H.G.G.G.a.G.G.G.h.G.G.G.G.A.e i = F h.g.tX' |.BXPXLXFXkXXX#.L C.G.G.G.a.K.@X%X$XT.p.i.p.I.I.c.% # 4 G h.G.G.G.G.G.p.G.G.G.G.G.H.G.G.H.G.H.G.a.y.A.@X$X@XV.@X*.*. .yXhXI.G.G.G.p.7XmXmXVXyXQ.a.G.G.G.G.p.G.<.","i.G.G.G.G.G.G.G.G.G.H.C.5 + @ * < - % F I.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.p.J.P i d ~ ` d.H.G.V.G.G.G.G.G.G.G.G.G.!.nXBXZXVXtXo.Y l g 3 $ ; a x U `.D.p.p.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.j.3.7 6 8.j.2XrXXXGXPXKXPXSXkX|.^ ~ G.G.G.G.G.a.p.i.G.h.H.h.a.G.H.H.S * - x J.I.G.a.G.G.G.G.G.G.G.G.G.G.G.G.G.G.F.G.G.a.i.s.y.h.B.N.qX[.*.tX~.h.g.H.E.jXxXVXVXxXbXg.G.p.G.G.G.G.o ","B.G.F.G.G.G.G.G.G.G.p.Y.U + * > < < - 6 v.P.G.G.G.G.G.G.G.F.G.G.G.G.G.G.G.a.v.4.Y ' | M.G.G.G.G.G.G.G.G.G.G.G.G.:XjXDXmXwXn.5.5.x 1 % < 9 D z.v.H.a.a.G.G.G.G.G.F.G.G.G.G.G.G.F.G.G.G.H.G.V.I D h.E.iX$.|.kXVXFXHXSXgX%.~ W a.G.G.G.G.G.H.a.a.H.H.H.G.G.G.H.J.F 6 i z.h.P.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.H.a.a.a.G.a.a.G.M.$XqX>Xa.K.a.6XyX+.}.uXkXbXy.G.G.G.G.F.G.<.","i.G.G.G.G.K.G.K.G.G.G.AX*.@ $ < 2 < > % 3.I.G.G.G.K.G.G.K.G.K.G.K.G.G.K.K.G.I.G.m.qX|.XXQ.G.G.G.K.G.G.G.K.G.F.H.>XMXbX2X5.i.a.I.x.Z Z F c.i.a.H.I.a.K.G.K.K.G.G.G.K.G.K.K.G.G.K.G.G.G.P.aXo.4.4.9XtX} m m ] [.mXNXhXeX;.,.K.P.G.G.G.K.G.K.G.K.G.G.K.G.G.G.G.I.G.H w x.P.K.G.G.G.K.K.K.F.K.G.G.K.G.K.G.K.K.G.K.G.K.K.K.G.P.H.a.a.G.i.K.G.G.H.>X^ I ~ +.eXJ.G.K.G.G.G.K.G.<.","A.K.K.K.K.K.K.G.K.i.AXuXo.> $ < < - * % 3.U.K.P.K.G.G.K.K.L.p.y.g.h.h.K.K.G.G.I.h.R.6XaXQ.G.P.K.P.F.G.K.K.G.K.G.G.F.G.s.a.P.P.H.G.v.v.P.U.I.U.K.K.G.K.K.G.K.G.K.K.K.G.G.K.G.K.K.K.K.G.<XuXM T $XjX[.! 7 9 p M +X~.Q.>Xm.J.H.G.K.G.K.G.K.G.K.K.G.P.F.P.K.G.F.K.Y.P.c.F.K.G.K.G.K.K.G.G.K.G.K.G.K.K.K.K.G.K.G.K.G.K.G.G.K.K.K.K.G.a.H.a.G.J.G.J.OXz.OX0XQ.y.G.P.K.K.K.G.G.o ","i.K.G.K.K.K.K.K.p./.mX].v.6 + $ # % % 9 V.G.K.K.K.K.K.K.i.y.G.^.<X>XP.I.K.K.J.K.P.a.a.P.K.K.P.K.K.K.K.K.K.K.K.K.J.a.G.P.P.J.K.K.P.I.Y.I.P.K.K.K.K.K.G.K.K.K.P.K.K.K.K.K.K.K.K.G.K.J.G.~.iX( _ ;.}.+XC F G 7 u G g.p.a.a.I.K.K.K.K.K.G.K.G.K.K.K.P.P.K.F.K.K.K.P.P.I.P.K.K.K.K.K.K.K.K.K.K.K.K.K.G.K.K.K.K.K.K.K.K.K.K.K.G.K.K.K.J.K.K.K.J.G.G.p.I.p.i.J.@Xa.H.K.K.K.K.K.<.","v.K.K.K.K.K.K.P.R.ZXyXc.I.S 6 9 w Z S G P.P.K.K.K.K.K.a.P.3XCXaXeX;.,.V.P.K.K.K.K.K.P.H.K.K.K.K.K.K.J.P.L.K.J.K.J.K.K.K.K.K.K.K.K.K.P.K.K.K.K.K.R.K.K.K.K.K.K.J.K.K.K.P.K.J.K.K.K.K.K.K.+X| } |.@.p.Y.9X`.= t `.I.P.K.H.P.K.K.K.K.K.K.K.K.K.K.K.K.K.K.K.P.J.H.a.p.I.P.K.K.J.K.K.K.K.K.K.K.K.K.J.K.K.K.K.P.K.K.K.J.K.K.K.K.K.K.K.K.K.K.K.J.P.K.G.K.P.h.>XuX6XP.K.P.K.K.K.<.","K.K.K.L.K.K.K.K.nXlX%Xp.P.V.x.x.v.v.K.P.P.K.K.K.K.P.H._.AXlXhXrX} ~ k D H.K.K.P.J.K.J.K.K.K.J.K.J.K.P.J.F.L.J.K.K.J.P.J.K.K.K.K.K.K.K.K.K.K.K.K.K.K.J.P.J.K.K.K.K.P.K.J.K.K.K.K.K.J.K.K.i.o.&.*.] @XZX[.8 - e D.P.J.J.J.K.J.K.K.J.K.J.K.K.K.K.K.K.K.J.K.P.K.E.E.^.<XE.K.J.K.K.K.P.P.K.K.K.K.K.T.J.K.K.K.J.J.K.K.K.J.P.J.K.K.K.J.K.K.K.P.J.K.K.K.J.K.G.E.cXhX@XK.K.K.K.K.<.","F.J.J.L.K.R.K.E.bXdXG.P.J.U.Y.U._.U.Y._.K.J.K.R.K.P.~.zXXX|.*.$._ ~ l 3 c.U.^.J.J.K.J.J.J.K.J.J.K.P.K.G.P.P.K.K.J.R.K.J.J.P.^.J.J.J.R.K.R.R.K.K.K.K.J.R.W.K.J.J.K.J.K.J.P.P.J.J.L.K.P.G.I.iX X'.Q |...4 + w v.U.R.R.R.P.J.K.P.R.J.J.J.E.K.R.K.P.K.J.J.K.T.J.0XpXNXwXM.P.R.K.K.J.F.L.E.J.J.K.K.L.K.J.J.K.L.J.K.R.J.K.P.K.J.P.J.J.K.K.K.R.K.K.R.K.K.T.J.F.mXfX'.F.J.J.K.L.<.","F.J.R.J.R.R.J.J.,XG.K.K.K.R.W.K.W.R.R.L.K.J.J.J.U.~.qX$.{ } *.*.%._ ~ y H _.J.J.W.K.J.J.E.K.J.K.G.G.K.K.G.H.P.R.R.J.K.R.R.J.K.J.W.J.R.J.J.J.J.J.P.J.R.J.K.R.K.J.J.J.J.R.J.J.J.R.J.J.J.K.Q.gXxXaXn.'.U B S v.Y.J.R.J.J.J.P.K.K.W.J.J.J.J.J.R.W.P.J.J.K.T.K.R.W pXlX%XM.R.K.R.J.E.L.L.T.J.R.L.T.K.J.T.T.K.R.R.J.R.J.J.J.K.J.R.J.J.K.T.R.R.J.K.R.R.K.T.L.G.-X] Y J.J.K.J.K.<.","A.L.T.K.T.T.T.J.G.K.T.J.T.T.R.R.J.J.J.E.J.J.J.K.m.`.! m | &.|. X X}.#.j U U.J.J.E.J.E.J.J.J.P.^.,X6XnXMXbX2XE.K.L.T.L.T.T.K.J.J.J.J.R.J.R.R.K.R.J.T.T.J.T.T.J.T.E.R.J.J.J.E.J.J.J.R.K.2X=.tXVXKXCXc.5.T.R.).J.L.L.L.J.W.~.Q.J.J.T.L.L.L.T.T.K.J.J.J.J.E.R.K.v.1XS.F.P.L.L.L.J.J.T.T.T.T.J.T.L.L.J.E.J.J.E.T.J.T.T.T.J.T.J.T.J.E.T.T.J.J.T.T.J.T.J.J.K.G.V.P ` K.R.L.L.J.<.","A.E.T.T.T.T.E.L.T.E.T.T.E.L.E.E.^.R.E.J.E.E.E.E.E v ( &.|. XgXcXxXgXXX~ ,./.E.E.J.J.E.J.J.T.,X:XzXuXkXvXuXeXqXJ.R.E.E.T.T.T.E.J.R.R.L.R.R.E.E.T.T.T.J.T.T.T.L.E.E.J.E.E.E.J.E.E.E.E.G.qX)  XvXKXVX5XY./.L.E.J.E.L.W.W.E.#X&XJ.T.T.R.E.R.T.J.T.W %XE.J.R.J.^.P.P.P.W.R.R.T.E.E.J.T.L.J.E.J.E.E.E.L.R.E.L.J.K.F.K.K.L.J.K.R.T.J.E.T.T.E.E.T.E.T.T.R.K.L.~.7X].o.R.J.E.E.E.<.","D.E.E.E.L.E.E.J.E.T.E.E.J.E.E.J.J.E.E.R.E.E.E.$X .{.yXgXfXgXvXSXvXkX@.X.F.R.E.L.E.E.E.^.-X'.=.&.&.[. XfXrX*./ #XW.L.E.E.E.E.E.T.E.L.E.E.E.J.E.E.E.E.E.E.E.E.E.E.E.E.E.^.E.E.L.E.E.E.P.%XXXXXvXVXxXeXU.E.J.E.E.E.T.~.6XT e OXL.E.E.E.E.R.J.W.+XK +.wXG.R.E.E.W.K.E.E.E.L.E.E.E.E.T.R.L.E.E.E.L.E.E.R.L.L.P.E.E.T.K.K.F.K.!.E.J.E.E.E.J.E.E.E.L.^.^.9XZXJXFXkX@.#XJ.E.E.E.<.","A.E.E.E.E.E.^.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.E.:XwXMXhXyX|.|.yXgXrX@.o.m.P.E.E.E.E.E.J.<XoX*.&.*.&.[. XyX}.[ j I L.E.E.W.E.E.E.E.E.R.W.W.E.E.W.E.E.E.E.E.E.E.E.E.E.E.E.J.E.E.E.E.R.E.J.Q.zXtXtX*._ .XP.J.E.E.E.E.S.'.].A 3.S.E.E.E.E.E.E.E.J.;.%.rXtXU.Z.E.E.E.E.E.E.E.E.J.E.E.E.E.E.E.E.^.E.E.E.E.Q.R.L.CXZXmXmXbX7X7XMXqXE.E.E.E.E.E.E.E.E.E.L.1XhXcXKXGXfX_ ~ Q.R.E.E.<.","D.E.!.E.E.Q.E.E.^.E.E.E.E.E.E.E.E.E.E.E.E.E.E.<X(.W.S.=X$X]..X X;.`.x._.~.E.E.R.E.E.E.>XdXtXXXyXrXyXgXkXrX#.~ t x.W.E.E.!.E.E.E.E.(.^.!.W././.~.E.E.E.E.E.^.E.E.E.^.E.E.Q.E.^.E.R.Q.E.L.NXhX%X;.~ +XE.E.^.E.E.W.M.`.`.b.W.W.E.E.E.E.E.E.E.!.-.kXVXpXL.Q.E.E.E.E.E.E.E.E.E.E.E.E.E.Q.E.E.R.E.E.E.^.R.E.jXlXKXKXGXcXlXhX|.$XE.E.!.E.E.E.E.E.E.E.E.2X.X{  .&.( p k @XW.L.E.1.","D.E.E.E.E.!.E.E.E.E.E.!.E.^.!.E.^.E.E.!.!.E.E.E.R.L.K.H.F.A.m.x.c.A._.~.E.E.!.E.^.E.^.E.P.1XhXrXfXxXSXSXkXXX/ y 3.(.!.E.E.E.E.E.E.-X,.#X!.!.n.m.E.Q.!.E.E.E.E.!.E.E.!.E.E.E.E.E.E.E.E.E.<XjXD.D.z.E.!.E.E.E.!.!.M.A.P.).~.!.E.!.E.E.E.!.E.>X*.VXSXlXE.E.E.^.E.E.E.!.E.!.E.E.!.!.E.E.E.E.!.E.E.!.E.W.wXfXVXHXLXKXFXUX{.{.S.E.E.E.E.^.E.E.E.!.E.E.E.z.A z z 8 0 4.Q.^.E.!.1.","D.E.!.E.!.E.!.!.E.!.!.E.E.!.E.!.!.E.!.!.!.E.!.!.!.!.E.!.!.E.W._.(.~.E.E.E.E.E.!.!.E.!.E.E.L.J.qX.XgXSXSXlXtX/ P m.!.E.!.!.E.E.!.!.X.g f W E 5 F ~.E.!.E.!.!.!.E.E.E.!.E.E.E.!.!.!.!.!.E.T.6X1XW.W.^.!.E.E.E.E.!.~.~.!.!.!.W.E.E.!.E.!.!.E.=X[.kXvXuXE.E.E.!.E.!.^.E.!.E.!.E.^.E.E.!.!.E.!.!.!.^.^.-X#.yXcXGXKXFXvX|..X=X(.!.!.E.E.!.E.^.!.E.!.!.!.(.Q.'.I Z x._.!.E.!.!.<.","D.!.E.^.!.!.E.!.!.!.!.!.E.!.^.!.!.!.!.E.E.!.W.E.!.!.!.!.!.E.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.E.E.$X|.gXkXfX+._ OX~.!.!.!.!.!.!.W.$Xn f u t 3 . , Q.E.!.!.E.!.!.!.!.!.!.!.!.!.!.!.!.E.E.!.E.E.!.E.!.^.E.~.!.!.!.!.!.!.E.!.!.E.!.!.!.!.!.E.E.E.O.|.oXeXJ.L.!.E.!.!.!.!.!.!.E.,X!.!.!.!.!.!.E.!.!.!._.:.#.yXkXvXGXGXxXXX=XE.!.E.W.!.1XE.,X!.!.!.!.!.E.!.E.E.S.S.(.!.!.!.!.E.1.","S.!.!.!.!.!.!.!.!.!.!.!.!.!.E.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.^.E.:XqX.X.X#X@X!.!.!.!.!.!.!.!.~.E p v i * # $ # n.~.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.!.(.!.+X .[.XXBXlX:X!.!.!.!.S.(.,X!.!.!.!.=X!.!.!.!.!.E.!.W.:.K *.yXkXSXVXuX-XE.W.).).1XhXdXE.!.!.,X!.,XE.!.!.!.^.~.(.~.!.!.!.!.!.<.","D.!.!.!.,X!.!.!.!.,X!.!.!.,X!.,X!.,X!.,X!.!.!.,X!.,X!.!.!.!.!.,X!.!.!.!.!.!.,X!.!.,X!.!.!.!.!.,XW.E.M.N.S.S.(.!.!.!.!.!.,X!.!.(.`.i p 7 $ + + + n.(.,X!.!.!.!.,X!.!.!.,X,X!.!.,X,X!.!.!.!.!.!.!.!.!.!.!.,X!.,X!.!.,X!.!.!.,X!.,X!.,X!.!.!.!.D.].&.uXKXhX;X!.!.,X,X!.!.!.!.!.!.(.!.!.!.,X!.!.,X!.^.$XK ^ -.oXpXhX;XL.(.9X;X$X].[.7X!.!.!.!.!.!.!.!.!.!.!.!.,X!.!.!.=X!.!.1.","S.,X,X!.!.!.!.!.!.!.,X!.!.,X!.,X!.!.,X!.S.!.!.!.,X!.!.,X!.,X,X!.,X!.,X!.!.<X,X!.!.!.!.!.,X!.!.!.!.!.~.P.L.P.!.!.!.!.!.,X!.!.,X(.S.D 7 4 $ * * r S.,X!.!.,X!.!.!.!.,X!.!.!.!.!.!.Q.!.,X!.,X!.!.!.!.!.,X!.!.!.!.!.!.!.!.!.!.!.,X!.!.!.!.,X!.,XW.%X$.uXmXsX!.,X!.<X!.!.!.!.!.!.!.!.!.!.!.!.!.,X,X!.!.(.O.+.-.eXwX!.E.(.7X'.U b n .X!.,X!.!.!.,X!.,X!.,X!.,X,X!.!.,X,X!.!.!.1.","D.!.!.,X!.,X,X,X,X!.,X!.,X!.,X!.!.,X!.,X,X,X,X!.!.!.,X!.!.,X!.!.!.,X!.,X,X!.!.!.,X,X!.,X!.,X!.,X,X!.!.E.;X,X!.!.!.,X,X!.,X!.,X!.,XS.A - - w 4.n.,X,X,X,X!.,X,X!.!.,X!.,X!.,X!.!.!.,X!.!.,X,X4X!.,X!.!.,X,X!.,X,X,X!.,X,X,X!.,X!.,X!.!.!.!.!.!.,X|.dX1X^.!.!.,X!.,X!.,X,X=X,X,X,X,X,X!.,X!.,X!.!.,X!.!.=X-X!.L.Q.!.1X..7 i p P S.!.!.,X!.,X!.!.!.!.,X!.,X!.,X!.,X,X!.(.S.1.","S.,X,X,X!.,X,X!.,X!.,X,X,X,X,X,XS.,X,X!.,X,X,XS.,X,X!.,X,X,X,X!.,X,X,X!.,X,X,X,X,X,X,X,X,X!.,X,X,X!.,XpXmXmX;XE.,X,X,X,X,X,X,X,X,X(.N.2 D =X,X!.!.,X,X!.!.,X!.!.,X,X,X!.!.,X,X,X,X,X,X!.,X,X!.=X,X,X,X,X,X!.,X,X!.,X,X!.,X!.,X,X!.(.!.E.!.,X,X,X:X!.!.!.,X,X!.,XS.4X!.!.S.,X,XS.,X,X!.,X!.,X,X,X!.,X!.(.!.E.!.,X4X'.4 i n v n.(.,X!.,X!.,X!.>X,X,X!.<X,X,X,X,X!.,X!.4X!.1.","S.,X,X,X,X,X,X,X,X,X,X,X,X!.,X,X,X,X,X,X,X!.4X,X,X,X,X,X=X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X-X>.hXKXFXlXnX(.,X,X,X,X,X,X!.,X,X1XU S.4X,X4X,X,X,X,X,X1X1X,X,X,X,X,X,X,X,X,X,X,X,X,X=X!.4X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X,X!.qX>.qX;XE.!.,X,X!.,X,X,X,X,X,X,X,X,X,X4X,X,X,X,X,X,X,X,X,X,X,X1X,X,X,X,X>X,X,X=X5 ; k m `.=X<X1X,X,X1X,X,X,X,X,X,X,X,X,X,X,X,X=X,X,X1X1.","S.,X,X;X,X,X,X,X,X,X,X,X1X,X,X,X,X1X,X,X,X1X,X,X,X1X,X,X,X1X,X,X,X,X,X1X,X=X,X,X,X,X,X,X,X,X,X,X(.W _ cXFXFXUXyXwX=X,X,X=X,X,X,X4XS.1X@X4X!.,X,X,X1X,X1X,X,X1X,X,X1X,X,X,X1X1X,X,X;X,X,X,X1X,X,X,X,X,X=X1X,X,X,X=X,X=X4X,X4X4X!.0X/ _ #. XsX!.E.!.;X,X=X,X1X,X,X,X1X1X,X,X1X,X,X,X,X,X,X,X,X,X,X,X,X,X1X,X,X,X,X=Xr u n T S.4X,X,X,X,X1X,X1X,X,X,X1X,X,X,X,X;X,X1X4X=X,X1.","S.;X,X,X,X,X1X1X,X,X1X,X,X1X,X,X,X1X,X,X,X1X1X,X,X;X,X,X,X4X1X,X1X,X1X,X,X,X,X;X,X,X1X1X,X,X1X,X,X#XK  XkXoX[...[.=X,X,X1X,X1X1X=X4X,X,X,X1X1X1X!.!.(.!.1X,X,X,X,X,X,X1X1X1X,X,X,X,X;X,X4X=X1X,X,X,X,X,X1X,X1X,X1X1X4X,X=X1X=X;XK / _ +.}.uXlX1X!.!.,X1X,X,X,X,X,X1X,X,X,X1X1X1X1X1X,X1X,X;X1X,X,X1X,X,X;X,X,X1X=X+XQ '.S.4X,X,X,X,X,X,X,X1X,X1X,X,X,X,X,X1X,X1X1X=X,X4X1.","S.,X1X,X1X,X,X1X1X1X1X,X1X1X,X1X1X,X1X,X1X,X,X1X,X1X,X,X,X1X1X,X4X1X4X=X4X1X1X1X1X,X1X,X1X1X,X1X,X=X.. .[. .| Y `.=X1X,X1X,X1X1X1X1X1X4X=X1X1X,X,X3X1X!.,X1X1X1X1X,X,X1X1X1X,X1X1X1X1X=X4X1X,X1X,X,X1X,X1X,X1X1X,X,X,X1X1X4X4X=XK K _ %.yXVXVXNX7X!.=X,X;X,X1X1X1XS.4X1X1XS.1X,X1X1X,X1X1X,X1X,X1X1X,X1X1X4X=X4X1X4X1X=X~.1X1X,X;X1X,X1X1X1X1X,X;X1X,X,X,X1X,X~.,X1X4X1X1.","=X1X,X1X1X1X1X1X1X,X1X,X1X,X,X1X4X1X1X1X,X1X1X,X1X1X1X1X1X,X1X1X1X=X1X1X1X=X4X4X,X1X,X1X1X,X,X1X4X4X;X].yX].+XS.,X1X4X,X1X1X,X1X1X4X1X=X4X1X,X1X6XpXhX:X1X1X1X,X1X1X1X,X,X1X,X;X=X1X1X1X,X1X1X1X;X1X1X1X1X1X,X1X1X1X1X1X1X=X1X;X0X^ _ $.rXSXHXFXzXcX7X,X,X1X1X,X1X1X1X1X1X4X1X,X,X,X1X,X1X1X,X1X1X,X,X1X1X=X1X1X1X4X4X4X1X,X1X1X1X1X1X1X,X1X;X,X,X,X,X,X!.!.(.~.,X1X1X1X1.","=X1X1X1X1X,X1X1X1X1X,X1X1X1X1X1X1X1X1X1X1X1X1X1X,X1X,X1X1X1X1X1X1X=X4X1X1X=X1X1X;X1X,X;X1X,X1X1X1X1X4X1X;X;X,X4X4X1X1X1X,X1X1X4X1X1X1X1X4X1X1X,X;.|.yXrXwX1X1X1X1X,X1X1X1X1X1X;X1X1X1X4X1X1X1X,X1X1X1X,X1X1X1X1X,X;X,X,X1X1X1X4X4XeX) @.XXVXFXFX XxXZXnX!.1X1X1X1X1X1X1X1X1X1X4X1X1X1X1X1X,X1X1X,X1X1X1X1X1X4X1X1X;X4X4X1X1X1X;X1X1X,X1X1X!.!.S.!.,X,X,X5X:XaXwX4X;X1X1X1.","=X1X1X1X1X1X1X5X1X1X1X1X1X1X1X1X1X1X1X1X;X1X1X1X1X1X1X1X1X1X1X1X1X5X1X1X5X1X1X1X;X1X3X1X1X1X1X1X1X1X1X4X!.4X4X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X,X[ yXvXXXzX;X1X1X1X1X1X1X1X1X1X,X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X3X1X1X1X1X1X1X1X<X-X%.$.yXVXGXvX*.xXPXcX5X<X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X4X1X3X1X1X1X,X1X1X1X4X7XJXZXCXMXCXmXlXtX}.+.:X(.4X1X1.","=X5X1X1X1X1X1X1X1X1X1X1X1X5X1X1X1X1X5X1X1X1X5X1X1X1X1X5X1X1X1X1X1X1X1X1X1X5X1X1X1X5X1X1X3X5X1X1X1X1X5X1X5X1X1X1X1X1X1X5X1X5X1X1X1X1X1X5X1X1X1X1X-.gXvXyX1X5X5X1X1X1X1X1X1X1X1X1X5X1X1X1X1X1X1X1X1X1X;X1X5X1X1X1X1X1X1X1X1X1X1X1X1X1X%X*.XXkXgXgX[.yXKXKXlX,X1X1X1X5X1X1X1X1X1X1X1X1X1X1X5X5X1X1X4X4X1X4X1X1X1X5X1X4X6Xo.W 1X3X1X1X1X1X1X:XkXmXFXHXJXHXGXcXoX@.K .X3X5X5X1.","=X5X1X5X1X5X1X5X5X1X5X1X;X5X5X1X1X5X5X5X5X1X1X5X1X1X1X5X5X5X5X5X5X5X1X5X1X1X1X1X5X5X1X1X1X;X5X1X1X1X1X1X1X1X5X5X1X1X5X5X5X5X1X5X5X1X1X5X1X1X1X1XiX|. X-X4X1X5X1X5X5X1X5X5X1X1X5X1X5X5X1X1X5X5X5X5X1X1X1X1X5X1X1X1X5X5X5X1X1X1X5X1X1X1X%XXXyXiX|.} *.xXDXxXtX;X3X5X1X5X1X5X5X5X1X1X1X1X1X1X5X3X3X7X7X7X7X4X1X1X1X1X7X=.u I 2X5X1X5X5X1X5X]...=.XXcXSXSXcX-._ ~ j +. X].`.1.","=X5X1X5X1X5X5X5X5X1X5X5X5X1X5X5X5X5X1X5X5X1X5X1X5X5X1X1X5X5X5X5X1X5X1X5X5X5X5X5X1X5X1X5X5X5X5X1X5X5X5X1X5X5X5X5X1X5X5X1X1X5X5X5X5X5X5X1X5X1X5X5X:X%X-X1X5X5X5X5X5X1X1X5X5X5X1X5X5X5X5X1X5X5X1X5X5X5X3X1X5X5X1X5X5X5X5X1X5X5X5X5X5X5X3X1X;X;X;X%X` k _ [.XX_ ].1X5X5X1X5X5X5X5X5X5X5X5X5X5X3X7XsXrXXXiXwXnX7X1X3X7XXXd a `.5X5X5X5X5X5X:X`.`.`.'..X|.*.} ! v ! P m ] N X.1."};
+	string $imageDstScriptPath = `internalVar -userTmpDir`;
+	tjh_xpm_creator $imageDstScriptPath "flowers_fall_title.xpm" $flowers_fall_title;
+	global string $imagePath_flowers_fall_title; $imagePath_flowers_fall_title=$imageDstScriptPath +"flowers_fall_title.xpm";
+}
+
+//生成的文件存放在系统用户 C:\Documents and Settings\tianjinghai\Local Settings\Temp  下，用于隐藏调用
+
+
+
+tjh_flower_fall;
+
+

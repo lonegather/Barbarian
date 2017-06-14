@@ -1,0 +1,320 @@
+global proc changeToArnold(){{
+string $mat[]=`ls -sl`;
+int $num_mat=`size($mat)`;
+if($num_mat==0){print ("====请选择材质球===="+"\n");}   else{ 
+if(`window -ex prgWin5`)
+{
+deleteUI prgWin5;
+}
+
+window  -title "完成进度 " -width 246 -height 245 -sizeable 0 prgWin5;
+  
+columnLayout -adj 1 -w 128;
+image -image "wengweng.jpg";
+text -label "         ";
+text -label "正在狂撸不止……";
+text -label "         ";
+text -label "         " wenjianming2;
+text -label "         ";
+progressBar -w 224 -backgroundColor 1 0.75 0.15 -maxValue 100 -pr 0 -isInterruptable true "progressBar5";
+
+showWindow prgWin5;
+
+for($hhh=0;$hhh<$num_mat;$hhh++){
+
+
+string $sh=`shadingNode -asShader aiStandard -n ("ai_"+$mat[$hhh])`;
+select ($mat[$hhh]);
+hyperShade -objects ($mat[$hhh]);
+
+string $mvv[0]=`ls -sl`;
+
+if($mvv[0]!=""){
+
+
+hyperShade -assign $sh;}
+string $lb=`nodeType $mat[$hhh]`;
+if($lb=="blinn"){
+string $LZSB1[] = `listConnections ($mat[$hhh]+".color")`;
+if($LZSB1[0]!=""){
+connectAttr -force ($LZSB1[0]+".outColor") ($sh+".color");}
+
+string $LZSB2[] = `listConnections ($mat[$hhh]+".specularColor")`;
+if($LZSB2[0]!=""){
+connectAttr -force ($LZSB2[0]+".outColor") ($sh+".KsColor");}
+
+string $LZSB3[] = `listConnections ($mat[$hhh]+".eccentricity")`;
+if($LZSB3[0]!=""){
+connectAttr -force ($LZSB3[0]+".outColorR") ($sh+".specularRoughness");}
+
+string $LZSB4[] = `listConnections ($mat[$hhh]+".reflectedColor")`;
+if($LZSB4[0]!=""){
+connectAttr -force ($LZSB4[0]+".outColor") ($sh+".KrColor");}
+
+string $LZSB5[] = `listConnections ($mat[$hhh]+".reflectivity")`;
+if($LZSB5[0]!=""){
+connectAttr -force ($LZSB5[0]+".outColorR") ($sh+".Kr");}
+
+string $LZSB6[] = `listConnections ($mat[$hhh]+".specularRollOff")`;
+if($LZSB6[0]!=""){
+connectAttr -force ($LZSB6[0]+".outColorR") ($sh+".Ks");}
+
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".transparency")`;
+if($LZSB7[0]!=""){
+connectAttr -force ($LZSB7[0]+".outColor") ($sh+".opacity");}
+
+string $LZSB8[] = `listConnections ($mat[$hhh]+".normalCamera")`;
+if($LZSB8[0]!=""){
+connectAttr -force ($LZSB8[0]+".outNormal") ($sh+".normalCamera");}
+
+
+}
+
+if($lb=="phong"){
+string $LZSB1[] = `listConnections ($mat[$hhh]+".color")`;
+if($LZSB1[0]!=""){
+connectAttr -force ($LZSB1[0]+".outColor") ($sh+".color");}
+
+string $LZSB2[] = `listConnections ($mat[$hhh]+".specularColor")`;
+if($LZSB2[0]!=""){
+connectAttr -force ($LZSB2[0]+".outColor") ($sh+".KsColor");}
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".transparency")`;
+if($LZSB7[0]!=""){
+connectAttr -force ($LZSB7[0]+".outColor") ($sh+".opacity");}
+
+
+/*
+string $LZSB3[] = `listConnections ($mat[$hhh]+".eccentricity")`;
+if($LZSB3[0]!=""){
+connectAttr -force ($LZSB3[0]+".outColorR") ($sh+".specularRoughness");}
+
+string $LZSB4[] = `listConnections ($mat[$hhh]+".reflectedColor")`;
+if($LZSB4[0]!=""){
+connectAttr -force ($LZSB4[0]+".outColor") ($sh+".KrColor");}
+
+string $LZSB5[] = `listConnections ($mat[$hhh]+".reflectivity")`;
+if($LZSB5[0]!=""){
+connectAttr -force ($LZSB5[0]+".outColorR") ($sh+".Kr");}
+
+string $LZSB6[] = `listConnections ($mat[$hhh]+".specularRollOff")`;
+if($LZSB6[0]!=""){
+connectAttr -force ($LZSB6[0]+".outColorR") ($sh+".Ks");}
+
+
+
+string $LZSB8[] = `listConnections ($mat[$hhh]+".normalCamera")`;
+if($LZSB8[0]!=""){
+connectAttr -force ($LZSB8[0]+".outNormal") ($sh+".normalCamera");}
+
+*/
+
+}
+
+
+
+
+
+if($lb=="lambert"){
+string $LZSB1[] = `listConnections ($mat[$hhh]+".color")`;
+if($LZSB1[0]!=""){
+connectAttr -force ($LZSB1[0]+".outColor") ($sh+".color");}
+
+
+
+
+
+
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".transparency")`;
+if($LZSB7[0]!=""){
+connectAttr -force ($LZSB7[0]+".outColor") ($sh+".opacity");}
+
+string $LZSB8[] = `listConnections ($mat[$hhh]+".normalCamera")`;
+if($LZSB8[0]!=""){
+connectAttr -force ($LZSB8[0]+".outNormal") ($sh+".normalCamera");}
+
+
+}
+
+
+
+
+
+int $prg_5 = (($hhh+1)*100/$num_mat);
+
+
+
+
+progressBar -e -pr $prg_5 "progressBar5";
+text -e -label $sh "wenjianming2";
+if($prg_5==100){
+
+deleteUI prgWin5;print("====操作完成，请耐心等候贴图刷新。===="+"\n");select -cl  ;}
+
+
+
+}
+delete $mat;}}}
+
+
+global proc changeToVray(){{
+string $mat[]=`ls -sl`;
+int $num_mat=`size($mat)`;
+if($num_mat==0){print ("====请选择材质球===="+"\n");}   else{ 
+if(`window -ex prgWin5`)
+{
+deleteUI prgWin5;
+}
+
+window  -title "完成进度 " -width 246 -height 245 -sizeable 0 prgWin5;
+  
+columnLayout -adj 1 -w 128;
+image -image "wengweng.jpg";
+text -label "         ";
+text -label "正在狂撸不止……";
+text -label "         ";
+text -label "         " wenjianming2;
+text -label "         ";
+progressBar -w 224 -backgroundColor 1 0.75 0.15 -maxValue 100 -pr 0 -isInterruptable true "progressBar5";
+
+showWindow prgWin5;
+
+for($hhh=0;$hhh<$num_mat;$hhh++){
+
+
+string $sh=`shadingNode -asShader VRayMtl -n ("vr_"+$mat[$hhh])`;
+select ($mat[$hhh]);
+hyperShade -objects ($mat[$hhh]);
+
+string $mvv[0]=`ls -sl`;
+
+if($mvv[0]!=""){
+
+
+hyperShade -assign $sh;}
+string $lb=`nodeType $mat[$hhh]`;
+
+
+if($lb=="phong"){
+string $LZSB1[] = `listConnections ($mat[$hhh]+".color")`;
+if($LZSB1[0]!=""){
+connectAttr -force ($LZSB1[0]+".outColor") ($sh+".color");}
+
+string $LZSB2[] = `listConnections ($mat[$hhh]+".specularColor")`;
+if($LZSB2[0]!=""){
+connectAttr -force ($LZSB2[0]+".outColor") ($sh+".reflectionColor");}
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".transparency")`;
+if($LZSB7[0]!=""){
+connectAttr -force ($LZSB7[0]+".outColor") ($sh+".opacityMap");}
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".normalCamera")`;
+if($LZSB7[0]!=""){
+string $LZSB7_1[] = `listConnections ($LZSB7[0]+".bumpValue")`;
+if($LZSB7_1[0]!=""){
+connectAttr -force ($LZSB7_1[0]+".outColor") ($sh+".bumpMap");}}
+
+
+
+}
+
+if($lb=="blinn"){
+string $LZSB1[] = `listConnections ($mat[$hhh]+".color")`;
+if($LZSB1[0]!=""){
+connectAttr -force ($LZSB1[0]+".outColor") ($sh+".color");}
+
+string $LZSB2[] = `listConnections ($mat[$hhh]+".specularColor")`;
+if($LZSB2[0]!=""){
+connectAttr -force ($LZSB2[0]+".outColor") ($sh+".reflectionColor");}
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".transparency")`;
+if($LZSB7[0]!=""){
+connectAttr -force ($LZSB7[0]+".outColor") ($sh+".opacityMap");}
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".normalCamera")`;
+if($LZSB7[0]!=""){
+string $LZSB7_1[] = `listConnections ($LZSB7[0]+".bumpValue")`;
+if($LZSB7_1[0]!=""){
+connectAttr -force ($LZSB7_1[0]+".outColor") ($sh+".bumpMap");}}
+
+
+
+}
+
+
+
+if($lb=="lambert"){
+string $LZSB1[] = `listConnections ($mat[$hhh]+".color")`;
+if($LZSB1[0]!=""){
+connectAttr -force ($LZSB1[0]+".outColor") ($sh+".color");}
+
+
+
+
+
+
+string $LZSB7[] = `listConnections ($mat[$hhh]+".transparency")`;
+if($LZSB7[0]!=""){
+connectAttr -force ($LZSB7[0]+".outColor") ($sh+".opacityMap");}
+
+string $LZSB8[] = `listConnections ($mat[$hhh]+".normalCamera")`;
+if($LZSB8[0]!=""){
+string $LZSB8_1[] = `listConnections ($LZSB8[0]+".bumpValue")`;
+if($LZSB8_1[0]!=""){
+connectAttr -force ($LZSB8_1[0]+".outColor") ($sh+".bumpMap");}}
+
+}
+
+
+
+
+
+int $prg_5 = (($hhh+1)*100/$num_mat);
+
+
+
+
+progressBar -e -pr $prg_5 "progressBar5";
+text -e -label $sh "wenjianming2";
+if($prg_5==100){
+
+deleteUI prgWin5;print("====操作完成，请耐心等候贴图刷新。===="+"\n");select -cl  ;}
+
+
+
+}
+delete $mat;}}}
+
+
+if(`window -ex FY_tool_7878`) deleteUI FY_tool_7878; 
+
+
+window -title "材质球批量转换器" -sizeable 0 -tlb 0 FY_tool_7878;
+rowColumnLayout -numberOfColumns 1  ;
+text -l "";
+text -l "";
+text -fn "boldLabelFont" -l "                选择所有需要转换的材质球（lambert、blinn或phong）           ";
+
+text -l ""; 
+text -fn "boldLabelFont" -l "                     （*必须先加载所需渲染器*）             ";
+text -l ""; 
+
+
+
+
+
+
+
+
+
+
+
+
+button -l "批量转化为 VRay Mtl" -c "changeToVray();" ;
+text -l "";
+button -l "批量转化为 aiStandard" -c "changeToArnold();" ;
+text -l "";
+setParent ..;   
+showWindow FY_tool_7878;

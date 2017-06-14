@@ -1,0 +1,65 @@
+//Dynamic Parent Tool (DPT) - First, select target, then source object...
+
+//Find selection...
+global proc dynamicParent(){
+
+string $selCtrl[] = `ls -sl`;
+
+//Make sure only 2 objects are selected...
+
+if (size($selCtrl)!=2){
+    warning "Must first select target, then object to dynamically parent...";
+} else {
+
+    //Create group with pivot centered and rename "grpCns_(source object)"...
+    
+        select $selCtrl[1];
+        
+        string $ctrlGrp = `group`;
+        
+        //This grabs the source object...
+        string $nxtObjDown[] = `pickWalk -d down`;
+        
+        //Create locator.  We use a locator to match the group's pivot with the pivot of the selected joint(s)...
+        string $locPs[] = `spaceLocator`;
+        
+        //Align the locator to the pivot of the selected joint(s)...
+        pointConstraint $nxtObjDown[0] $locPs[0];
+        
+        //Find the world space position of the locator...
+        float $wsSel[] = `xform -q -ws -t $locPs[0]`;
+        
+        //Move the pivot of each group to the locator's position...
+        xform -ws -piv ($wsSel[0]) ($wsSel[1]) ($wsSel[2]) $ctrlGrp;
+        
+        //We can now delete the locator...
+        delete $locPs[0];
+        
+        //This renames the group to "grpCns_(source object)"...
+        string $rnm_cGrp = `rename $ctrlGrp ("grpCns_" + $nxtObjDown[0])`;
+    
+    //Parent constrain group to target object and create "blendParent" attribute...
+    
+        parentConstraint -mo $selCtrl[0] $rnm_cGrp;
+        
+        //These keyframes create the blend parent node/attribute
+        setKeyframe -at translate $rnm_cGrp;
+        setKeyframe -at rotate $rnm_cGrp;
+    
+    //Create the custom attribute, named "follow_(target object)", that will drive the blendParent channel...
+    
+        addAttr -at "float" -ln "driver" -k 1 $nxtObjDown[0];
+        setAttr -keyable false -channelBox true ($nxtObjDown[0] + ".driver");
+        
+        addAttr -at "float" -ln ("follow_" + $selCtrl[0]) -k 1 -dv 1.0 -min 0 -max 1 $nxtObjDown[0];
+    
+    //Finally, connect the group's blendParent attribute to the dynamic parent attribute, and select the source object...
+    
+        connectAttr -f ($nxtObjDown[0] + ".follow_" + $selCtrl[0]) ($rnm_cGrp + ".blendParent1");
+        
+        select $nxtObjDown[0];
+
+}
+}
+
+dynamicParent;

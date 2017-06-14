@@ -1,0 +1,3788 @@
+/////////////////////////////
+/*
+Riggest_Controllers v6.0
+by RIggest(from GuangDong in Chinese)
+
+2014.03.17  v1.0
+2014.03.19  v6.0
+qq1793431648@gmail.com
+http://weibo.com/Riggest2TD
+
+
+Description:
+    This scirpt uses to create controllers.
+
+Instruction:
+    1. put the Riggest_icons folder to ...maya\20**\prefs\icons\
+    2. put the Riggest_controllers.mel to ...maya\20**\scripts\
+    3. type following commands in command line (MEL mode):
+            Riggest_controllers ()
+
+Reference:
+    kk_controllers v1.7 by Karim Kashefy
+    wiz_controllers v1.0 by by Alex Kyshtymov (skif)
+*/
+
+/////////////////////////////
+string $Riggest_Controllers_ChangeName;
+
+global proc Riggest_controllers ()
+
+
+{
+string $get_script_path = `internalVar -userScriptDir`;
+//string $my_tool_path_rig="//192.168.26.239/cg/Resource/Support/MAYA/scripts/NE_T/others/";
+//C:\Users\gzyangfei\Documents\maya\2015-x64\scripts\FY_tools_new\data\icon_data\UI_main\Riggest_icons
+string $new_icon_f=("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/");
+
+if (`window -exists mc_lord`)
+
+deleteUI -window mc_lord;
+
+
+// making GUI ................................................................................................................................................................................................
+
+
+string $window = `window -title "Riggest_Controllers" -rtf 1 -s 1 mc_lord`;
+
+string $mco = `columnLayout -adjustableColumn true `;
+
+menuBarLayout;
+	menu -label "File";
+		menuItem -label "Exit" -command "deleteUI -window mc_lord;";
+	menu -label "Help" -helpMenu true;
+		menuItem -label "ÐÂÀËÎ¢²©" -c "Riggest_help1;";
+		menuItem -label "Î¢µê" -c "Riggest_help2;";
+		menuItem -label "ÅÄÅÄ´û" -c "Riggest_help3;";
+	setParent..;
+
+/*frameLayout -label " Color" -borderStyle "etchedIn";
+
+columnLayout -adjustableColumn true -columnAttach "left" 10 -rowSpacing 10;
+rowLayout -nc 2 -cw2 100 55; 
+
+intSlider -w 200 -min 0 -max 31 -value 0 -step 1 -dc h_off -cc h_on cis01; 
+iconTextButton -w 55 -bgc 0.467 0.467 0.467 clr;
+
+
+setParent $mco;
+*/
+
+frameLayout -label " Lock & Hide"  -cll 1 -cl 1 ;
+
+string $lh_c = `columnLayout -adjustableColumn 1 `;
+
+separator -h 10 -style "none";
+
+button -c "get" -label "Get from selected";
+
+button -c "lockhide" -label "Apply to selected";
+
+separator -h 5 -style "none";
+
+string $mc_lord = `rowLayout -nc 3 -columnWidth3 89 89 89 `;
+
+
+frameLayout  -h 110 -w 80 -label "";
+
+string $mf = `formLayout`;
+
+
+checkBox -label "T" -onc "ont" -ofc "oft" t;
+
+checkBox -label "X" -cc "lockhide" tx;
+
+checkBox -label "Y" -cc "lockhide" ty;
+
+checkBox -label "Z" -cc "lockhide" tz;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") px;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/y.XPM") py;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/z.XPM") pz;
+
+
+formLayout -e
+
+-attachForm t "left" 5
+
+
+-attachForm tx "top" 30
+
+-attachForm tx "left" 30
+
+
+-attachForm ty "top" 45
+
+-attachForm ty "left" 30
+
+
+-attachForm tz "top" 60
+
+-attachForm tz "left" 30
+
+
+-attachForm px "top" 32
+
+-attachForm px "left" 10
+
+
+-attachForm py "top" 47
+
+-attachForm py "left" 10
+
+
+-attachForm pz "top" 62
+
+-attachForm pz "left" 10
+
+
+$mf;
+
+
+
+
+
+setParent $mc_lord;
+
+
+frameLayout  -h 110 -w 80 -label "";
+
+string $mf = `formLayout`;
+
+
+checkBox -onc "onr" -ofc "ofr" -label " R " r;
+
+checkBox -label "X" -cc "lockhide" rx;
+
+checkBox -label "Y" -cc "lockhide" ry;
+
+checkBox -label "Z" -cc "lockhide" rz;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") px;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/y.XPM") py;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/z.XPM") pz;
+
+formLayout -e
+
+-attachForm r "left" 5
+
+
+-attachForm rx "top" 30
+
+-attachForm rx "left" 30
+
+
+-attachForm ry "top" 45
+
+-attachForm ry "left" 30
+
+
+-attachForm rz "top" 60
+
+-attachForm rz "left" 30
+
+
+-attachForm px "top" 32
+
+-attachForm px "left" 10
+
+
+-attachForm py "top" 47
+
+-attachForm py "left" 10
+
+
+-attachForm pz "top" 62
+
+-attachForm pz "left" 10
+
+
+$mf;
+
+
+setParent $mc_lord;
+
+
+frameLayout  -h 110 -w 80 -label "" ;
+
+string $mf = `formLayout`;
+
+
+checkBox -onc "ons" -ofc "ofs" -label " S " s;
+
+checkBox -label "X" -cc "lockhide" sx;
+
+checkBox -label "Y" -cc "lockhide" sy;
+
+checkBox -label "Z" -cc "lockhide" sz;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") px;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") py;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") pz;
+
+formLayout -e
+
+-attachForm s "left" 5
+
+
+-attachForm sx "top" 30
+
+-attachForm sx "left" 30
+
+
+-attachForm sy "top" 45
+
+-attachForm sy "left" 30
+
+
+-attachForm sz "top" 60
+
+-attachForm sz "left" 30
+
+
+-attachForm px "top" 32
+
+-attachForm px "left" 10
+
+
+-attachForm py "top" 47
+
+-attachForm py "left" 10
+
+
+-attachForm pz "top" 62
+
+-attachForm pz "left" 10
+
+
+$mf;
+
+
+setParent $lh_c;
+
+
+separator -style "none";
+
+checkBox -label "Visibility" -cc "lockhide" v;
+
+separator -style "none";
+
+
+
+setParent $mco;
+
+
+string $ST_PSW_DisplayFrame = `frameLayout -l "Mirror"  -cll 1 -cl 1`;
+
+string $mc_lord = `rowLayout -nc 2 -columnWidth2 95 160 `;
+
+frameLayout  -h 80 -w 95 -label "Mirror axis" ;
+
+string $mcc = `rowLayout -nc 3 -columnWidth3 50 50 50 `;
+
+columnLayout;
+
+separator -style "none";
+
+checkBox -label "Copy" cb01;
+
+rowLayout -nc 3 -columnWidth3 28 28 28;
+
+button -label " X " -c mirrorX;
+
+button -label " Y " -c mirrorY;
+
+button -label " Z " -c mirrorZ;
+
+setParent $mc_lord;
+
+
+frameLayout  -h 80 -w 170 -label "Search & Replace Mirror Obj" ;
+
+columnLayout;
+
+separator -style "none";
+
+rowLayout -nc 2 -columnWidth2 90 80 ;
+
+rowLayout -nc 5 -columnWidth5 15 60 15 60 1;
+
+text -label " S" -align "right";
+
+textField -tx "" tsName;
+
+text -label " R" -align "right";
+
+textField -tx "" trName;
+
+text -label "" -align "right";
+
+setParent mc_lord;
+
+
+
+frameLayout -label "Search & Replace Selected Object Name" ;
+
+columnLayout;
+
+separator -style "none";
+
+rowLayout -nc 4 -columnWidth4 1 40 60 39;
+
+separator -h 15 -style "singleDash";
+
+button -label "                          Search and Replace                          " -c schrp01;
+
+
+
+setParent..;
+
+
+////////////////////
+
+
+
+setParent $mco;
+
+frameLayout -label "ÖÆ×÷Á³²¿¿ØÖÆÆ÷" ;
+
+separator -w 10 -style "none";
+
+checkBoxGrp -label "Ñ¡ÖÐÁ³²¿¹Ç÷À"  facejnt;
+
+
+rowLayout -nc 3 -columnWidth3 28 28 28;
+
+setParent $mc_lord;
+
+setParent..;
+
+setParent $mco;
+
+frameLayout -h 215 -label "Riggest¿ØÖÆÆ÷" ;
+
+scrollLayout -cr 40 ;
+
+gridLayout -numberOfColumns 7 -cellWidthHeight 37 37 ;
+
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b01.png") -c Riggest_B01 Riggest_B01;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b02.png") -c Riggest_B02 Riggest_B02;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b03.png") -c Riggest_B03 Riggest_B03;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b04.png") -c Riggest_B04 Riggest_B04;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b05.png") -c Riggest_B05 Riggest_B05;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b06.png") -c Riggest_B06 Riggest_B06;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b07.png") -c Riggest_B07 Riggest_B07;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b08.png") -c Riggest_B08 Riggest_B08;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b09.png") -c Riggest_B09 Riggest_B09;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b10.png") -c Riggest_B10 Riggest_B10;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b11.png") -c Riggest_B11 Riggest_B11;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b12.png") -c Riggest_B12 Riggest_B12;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b13.png") -c Riggest_B13 Riggest_B13;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b14.png") -c Riggest_B14 Riggest_B14;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b15.png") -c Riggest_B15 Riggest_B15;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b16.png") -c Riggest_B16 Riggest_B16;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b17.png") -c Riggest_B17 Riggest_B17;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b18.png") -c Riggest_B18 Riggest_B18;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b19.png") -c Riggest_B19 Riggest_B19;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b20.png") -c Riggest_B20 Riggest_B20;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b21.png") -c Riggest_B21 Riggest_B21;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b22.png") -c Riggest_B22 Riggest_B22;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b23.png") -c Riggest_B23 Riggest_B23;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b24.png") -c Riggest_B24 Riggest_B24;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b25.png") -c Riggest_B25 Riggest_B25;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b26.png") -c Riggest_B26 Riggest_B26;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b27.png") -c Riggest_B27 Riggest_B27;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b28.png") -c Riggest_B28 Riggest_B28;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b29.png") -c Riggest_B29 Riggest_B29;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b30.png") -c Riggest_B30 Riggest_B30;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b31.png") -c Riggest_B31 Riggest_B31;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b32.png") -c Riggest_B32 Riggest_B32;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b33.png") -c Riggest_B33 Riggest_B33;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b34.png") -c Riggest_B34 Riggest_B34;
+
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b35.png") -c Riggest_B35 Riggest_B35;
+
+setParent $mco;
+
+
+
+
+//separator -h 15 -style "singleDash";
+//intSlider -w 220 -min -10 -max 10 -value 0 -step 1 sc01; 
+//
+
+
+
+
+
+setParent..;
+setParent..;
+setParent..;
+setParent..;
+setParent..;
+
+columnLayout -adjustableColumn true ;
+
+button -h 30 -label "Slider Maker" -c make ;
+
+button -h 30 -label " Combine Shapes " -c combine;
+
+button -h 30 -label "Freeze Transformations" -c freeze ft;
+/*
+-------------------------------------------------------------------------
+*/
+gridLayout -numberOfColumns 6 -cellWidthHeight 45 25;
+            button -l "None" -c  "overrideColor(0)";
+            //button -l "" -bgc 0 0 0 -c  "overrideColor(1)";
+            //button -l "" -bgc 0.75 0.75 0.75 -c  "overrideColor(2)";
+            button -l "" -bgc 0.5 0.5 0.5 -c  "overrideColor(3)";
+            button -l "" -bgc .8 0 0.2 -c  "overrideColor(4)";
+            button -l "" -bgc 0 0 .4 -c  "overrideColor(5)";
+            button -l "" -bgc 0 0 1 -c  "overrideColor(6)";
+            button -l "" -bgc 0 .3 0 -c  "overrideColor(7)";
+            button -l "" -bgc 0.2 0 0.3 -c  "overrideColor(8)";
+            //button -l "" -bgc .8 0 .8 -c  "overrideColor(9)";
+            button -l "" -bgc 0.6 0.3 0.2 -c  "overrideColor(10)";
+            button -l "" -bgc 0.25 0.13 0.13 -c  "overrideColor(11)";
+            button -l "" -bgc 0.7 .2 0 -c  "overrideColor(12)";
+            button -l "" -bgc 1 0 0 -c  "overrideColor(13)";
+            button -l "" -bgc 0 1 0 -c  "overrideColor(14)";
+            button -l "" -bgc 0 0.3 0.6 -c  "overrideColor(15)";
+            //button -l "" -bgc 1 1 1 -c  "overrideColor(16)";
+            button -l "" -bgc 1 1 0 -c  "overrideColor(17)";
+            button -l "" -bgc 0 1 1 -c  "overrideColor(18)";
+            //button -l "" -bgc 0 1 .8 -c  "overrideColor(19)";
+            //button -l "" -bgc 1 .7 .7 -c  "overrideColor(20)";
+            button -l "" -bgc 0.9 .7 .5 -c  "overrideColor(21)";
+            button -l "" -bgc 1 1 0.4 -c  "overrideColor(22)";
+            button -l "" -bgc 0 0.7 .4 -c  "overrideColor(23)";
+            button -l "" -bgc .6 .4 .2 -c  "overrideColor(24)";
+            button -l "" -bgc .63 .63 .17 -c  "overrideColor(25)";
+            button -l "" -bgc 0.4 0.6 0.2 -c  "overrideColor(26)";
+            button -l "" -bgc 0.2 0.63 0.35 -c  "overrideColor(27)";
+            button -l "" -bgc 0.18 0.63 0.63 -c  "overrideColor(28)";
+            button -l "" -bgc 0.18 0.4 0.63 -c  "overrideColor(29)";
+            button -l "" -bgc 0.43 0.18 0.63 -c  "overrideColor(30)";
+            button -l "" -bgc 0.63 0.18 0.4 -c  "overrideColor(31)";
+        setParent ..;
+        button -l "Disable Overrides" -w 30 -c "overrideDisabled()";
+/*
+-------------------------------------------------------------------------
+*/
+
+
+textField -visible 0 text01;
+
+
+showWindow mc_lord;
+
+
+
+// end of GUI ..........................................................................................................................................................................................................
+
+
+// Procedure for "making controllers" ....................................................................................................................................................................
+
+
+//buttons ....................................................................................................................................
+
+
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+global proc res01() {
+
+};
+
+//snap
+
+
+global proc snap() {
+
+string $sel_1[] = `ls -sl`;
+
+textField -e -text $sel_1 text01;
+
+
+string $text = `textField -q -text text01`;
+
+
+if ($text == "")
+
+{
+
+sphere;
+
+}
+
+else
+
+{
+
+sphere;
+
+string $sel_2[] = `ls -sl`;
+
+string $cons [] = `parentConstraint $sel_1 $sel_2`;
+
+delete $cons;
+
+}
+
+}
+
+
+// get
+
+
+global proc get ()
+
+{
+
+
+string $sele [] = `ls -sl`;
+
+string $gtx = `getAttr -lock $sele.tx`;
+
+string $gty = `getAttr -lock $sele.ty`;
+
+string $gtz = `getAttr -lock $sele.tz`;
+
+
+string $grx = `getAttr -lock $sele.rx`;
+
+string $gry = `getAttr -lock $sele.ry`;
+
+string $grz = `getAttr -lock $sele.rz`;
+
+
+string $gsx = `getAttr -lock $sele.sx`;
+
+string $gsy = `getAttr -lock $sele.sy`;
+
+string $gsz = `getAttr -lock $sele.sz`;
+
+
+string $gv = `getAttr -lock $sele.visibility`;
+
+
+
+if ($gtx == 1)
+
+{
+
+checkBox -e -value 1 tx;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 tx;
+
+}
+
+
+
+if ($gty == 1)
+
+{
+
+checkBox -e -value 1 ty;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 ty;
+
+}
+
+
+
+if ($gtz == 1)
+
+{
+
+checkBox -e -value 1 tz;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 tz;
+
+}
+
+
+if ($grx == 1)
+
+{
+
+checkBox -e -value 1 rx;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 rx;
+
+}
+
+
+if ($gry == 1)
+
+{
+
+checkBox -e -value 1 ry;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 ry;
+
+}
+
+
+if ($grz == 1)
+
+{
+
+checkBox -e -value 1 rz;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 rz;
+
+}
+
+
+if ($gsx == 1)
+
+{
+
+checkBox -e -value 1 sx;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 sx;
+
+}
+
+
+if ($gsy == 1)
+
+{
+
+checkBox -e -value 1 sy;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 sy;
+
+}
+
+
+if ($gsz == 1)
+
+{
+
+checkBox -e -value 1 sz;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 sz;
+
+}
+
+
+if ($gv == 1)
+
+{
+
+checkBox -e -value 1 v;
+
+}
+
+else
+
+{
+
+checkBox -e -value 0 v;
+
+}
+
+edit_t;
+
+edit_r;
+
+edit_s;
+
+}
+
+
+
+
+
+//t
+
+global proc ont ()
+
+{
+
+checkBox -e -value 1 tx;
+
+checkBox -e -value 1 ty;
+
+checkBox -e -value 1 tz;
+
+lockhide;
+
+}
+
+global proc oft ()
+
+{
+
+checkBox -e -value 0 tx;
+
+checkBox -e -value 0 ty;
+
+checkBox -e -value 0 tz;
+
+lockhide;
+
+}
+
+///////////////////////////////////////////
+
+//r
+
+global proc onr ()
+
+{
+
+checkBox -e -value 1 rx;
+
+checkBox -e -value 1 ry;
+
+checkBox -e -value 1 rz;
+
+lockhide;
+
+}
+
+global proc ofr ()
+
+{
+
+checkBox -e -value 0 rx;
+
+checkBox -e -value 0 ry;
+
+checkBox -e -value 0 rz;
+
+lockhide;
+
+}
+
+///////////////////////////////////////////
+
+//s
+
+
+global proc ons ()
+
+{
+
+checkBox -e -value 1 sx;
+
+checkBox -e -value 1 sy;
+
+checkBox -e -value 1 sz;
+
+lockhide;
+
+}
+
+global proc ofs ()
+
+{
+
+checkBox -e -value 0 sx;
+
+checkBox -e -value 0 sy;
+
+checkBox -e -value 0 sz;
+
+lockhide;
+
+}
+
+
+
+/////////////////////////////////////////////
+
+
+// edit lockhide
+
+
+
+global proc edit_t()
+
+{
+
+int $tx = `checkBox -q -value tx`;
+
+int $ty = `checkBox -q -value ty`;
+
+int $tz = `checkBox -q -value tz`;
+
+
+if ($tx + $ty + $tz == 3)
+
+{
+
+checkBox -e -value 1 t;
+
+}
+
+else
+
+{
+
+if ($tx + $ty + $tz == 0)
+
+{
+
+checkBox -e -value 0 t;
+
+}
+
+}
+
+}
+
+
+
+global proc edit_r()
+
+{
+
+int $rx = `checkBox -q -value rx`;
+
+int $ry = `checkBox -q -value ry`;
+
+int $rz = `checkBox -q -value rz`;
+
+
+if ($rx + $ry + $rz == 3)
+
+{
+
+checkBox -e -value 1 r;
+
+}
+
+else
+
+{
+
+if ($rx + $ry + $rz == 0)
+
+{
+
+checkBox -e -value 0 r;
+
+}
+
+}
+
+}
+
+
+
+global proc edit_s()
+
+{
+
+int $sx = `checkBox -q -value sx`;
+
+int $sy = `checkBox -q -value sy`;
+
+int $sz = `checkBox -q -value sz`;
+
+
+if ($sx + $sy + $sz == 3)
+
+{
+
+checkBox -e -value 1 s;
+
+}
+
+else
+
+{
+
+if ($sx + $sy + $sz == 0)
+
+{
+
+checkBox -e -value 0 s;
+
+}
+
+}
+
+}
+
+
+//controls
+//01
+    global proc shp01 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -1 1 1 -p -1 1 -1 -p 1 1 -1 -p 1 1 1 -p -1 1 1 -p -1 -1 1 -p -1 -1 -1 -p -1 1 -1 -p -1 1 1 -p -1 -1 1 -p 1 -1 1 -p 1 1 1 -p 1 1 -1 -p 1 -1 -1 -p 1 -1 1 -p 1 -1 -1 -p -1 -1 -1 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16;
+            rename ($name+"_Con");
+            scale -r 5 5 5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b01 (){
+    string $sel_1[] = `ls -sl`;
+        shp01;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B01 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b01;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b01;
+    }
+}   
+//02
+    global proc shp02 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -4.962619 0 0 -p -2.229371 0 -1.366624 -p -2.8545 0 -0.140467 -p 3.237123 0 -0.144552 -p 3.992161 0 -1.009235 -p 4.925689 0 -1.009235 -p 4.019556 0 0 -p 4.925689 0 1.009235 -p 3.992161 0 1.009235 -p 3.237123 0 0.130692 -p -2.8545 0 0.130692 -p -2.229371 0 1.366624 -p -4.962619 0 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b02 (){
+    string $sel_1[] = `ls -sl`;
+        shp02;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B02 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b02;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b02;
+    }
+}  
+//03
+    global proc shp03 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -2.12132 0 2.12132 -p -2.427589 0 1.760219 -p -2.671383 0 1.358164 -p -2.852888 0 0.917653 -p -2.959949 0 0.479631-p -2.999992 0 0.00653153 -p -2.964176 0 -0.453565 -p -2.839141 0 -0.959046-p -2.671717 0 -1.357504 -p -2.4336 0 -1.751819 -p -2.130993 0 -2.111601-p -1.792857 0 -2.403811 -p -1.387964 0 -2.656114 -p -0.942438 0 -2.844735 -p -0.465425 0 -2.962282 -p 0.00840032 0 -2.999988 -p 0.454939 0 -2.963959 -p 0.941699 0 -2.844981 -p 1.349441 0 -2.675776 -p 1.757329 0 -2.429662 -p 2.128882 0 -2.11373 -p 2.411311 0 -1.782662 -p 2.661389 0 -1.377759 -p 2.847929 0 -0.932812 -p 2.960853 0 -0.474177 -p 2.999999 0 0.00169319 -p 2.964737 0 0.449986 -p 2.852196 0 0.919787 -p 2.675184 0 1.35062 -p 2.431628 0 1.754581 -p 2.124565 0 2.11807 -p 1.773918 0 2.417691 -p 1.372686 0 2.663993 -p 0.923801 0 2.850887 -p 0.409006 0 2.970854 -p 0 0 3 -p 0.620223 0.592945 3 -p -1 0 3 -p 0.620223 -0.592945 3 -p 0 0 3 -p 0.620223 0 2.407055 -p -1 0 3 -p 0.620223 0 3.592945 -p 0 0 3 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 ;
+            rename ($name+"_Con");
+            scale -r 1.65 1.65 1.65;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b03 (){
+    string $sel_1[] = `ls -sl`;
+        shp03;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B03(){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b03;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b03;
+    }
+}  
+//04
+    global proc shp04 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -3.686735 0 1.930981 -p -3.925376 0.23864 0.305307 -p -3.448095 0.23864 0.305307 -p -3.686735 0 1.930981 -p -3.448095 0.23864 0.305307 -p -3.448095 -0.23864 0.305307 -p -3.686735 0 1.930981 -p -3.448095 -0.23864 0.305307 -p -3.925376 -0.23864 0.305307 -p -3.686735 0 1.930981 -p -3.925376 0.23864 0.305307 -p -3.925376 -0.23864 0.305307 -p -3.686735 0 1.930981 -p -3.686735 0 0 -p -3.594301 0 -0.820376 -p -3.321634 0 -1.599615 -p -2.882406 0 -2.298642 -p -2.298642 0 -2.882406 -p -1.599615 0 -3.321634 -p -0.820376 0 -3.594301 -p 0 0 -3.686735 -p 1.930981 0 -3.686735 -p 0.305307 0.23864 -3.448095 -p 0.305307 0.23864 -3.925376 -p 1.930981 0 -3.686735 -p 0.305307 0.23864 -3.925376 -p 0.305307 -0.23864 -3.925376 -p 1.930981 0 -3.686735 -p 0.305307 -0.23864 -3.448095 -p 0.305307 -0.23864 -3.925376 -p 0.305307 -0.23864 -3.448095 -p 0.305307 0.23864 -3.448095 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 ;
+                rename ($name+"_Con");
+            scale -r 1.35 1.35 1.35;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b04 (){
+    string $sel_1[] = `ls -sl`;
+        shp04;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B04 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b04;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b04;
+    }
+}  
+//05
+    global proc shp05 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+        curve -d 1 -p -5.38171 -0.5 -0.5 -p -5.38171 -0.5 0.5 -p -5.38171 0.5 0.5 -p -5.38171 0.5 -0.5 -p -5.38171 -0.5 -0.5 -p -7.007384 0 0 -p -5.38171 -0.5 0.5 -p -5.38171 0.5 0.5 -p -7.007384 0 0 -p -5.38171 0.5 -0.5 -p -7.007384 0 0 -p 0 0 0 -p 7.007384 0 0 -p 5.38171 0.5 0.5 -p 5.38171 0.5 -0.5 -p 7.007384 0 0 -p 5.38171 0.5 -0.5 -p 5.38171 -0.5 -0.5 -p 7.007384 0 0 -p 5.38171 -0.5 -0.5 -p 5.38171 -0.5 0.5 -p 7.007384 0 0 -p 5.38171 -0.5 0.5 -p 5.38171 0.5 0.5 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 ;
+        rename ($name+"_Con");
+        scale -r 0.71 1 1;
+        makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+        xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b05 (){
+    string $sel_1[] = `ls -sl`;
+        shp05;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B05 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b05;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b05;
+    }
+}  
+//06
+    global proc shp06 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 0 2 -p 0 0 1.001092 -p 0 0.383101 0.924889 -p 0 0.707879 0.707879 -p 0 0.924889 0.383101 -p 0 1.001092 0 -p 0 2 0 -p 0 1.001092 0 -p 0 0.924889 -0.383101 -p 0 0.707879 -0.707879 -p 0 0.383101 -0.924889 -p 0 0 -1.001092 -p 0 0 -2 -p 0 0 -1.001092 -p 0 -0.383101 -0.924889 -p 0 -0.707879 -0.707879 -p 0 -0.924889 -0.383101 -p 0 -1.001092 0 -p 0 -2 0 -p 0 -1.001092 0 -p 0 -0.924889 0.383101 -p 0 -0.707879 0.707879 -p 0 -0.383101 0.924889 -p 0 0 1.001092 -p -0.383101 0 0.924889 -p -0.707879 0 0.707879 -p -0.924889 0 0.383101 -p -1.001092 0 0 -p -2 0 0 -p -1.001092 0 0 -p -0.924889 0 -0.383101 -p -0.707879 0 -0.707879 -p -0.383101 0 -0.924889 -p 0 0 -1.001092 -p 0.383101 0 -0.924889 -p 0.707879 0 -0.707879 -p 0.924889 0 -0.383101 -p 1.001092 0 0 -p 2 0 0 -p 1.001092 0 0 -p 0.924889 0.383101 0 -p 0.707879 0.707879 0 -p 0.383101 0.924889 0 -p 0 1.001092 0 -p -0.383101 0.924889 0 -p -0.707879 0.707879 0 -p -0.924889 0.383101 0 -p -1.001092 0 0 -p -0.924889 -0.383101 0 -p -0.707879 -0.707879 0 -p -0.383101 -0.924889 0 -p 0 -1.001092 0 -p 0.383101 -0.924889 0 -p 0.707879 -0.707879 0 -p 0.924889 -0.383101 0 -p 1.001092 0 0 -p 0.924889 0 0.383101 -p 0.707879 0 0.707879 -p 0.383101 0 0.924889 -p 0 0 1.001092 -p 0 0 0 -p 0 0 -1.001092 -p 0 0 0 -p 1.001092 0 0 -p 0 0 0 -p -1.001092 0 0 -p 0 0 0 -p 0 -1.001092 0 -p 0 0 0 -p 0 1.001092 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 -k 56 -k 57 -k 58 -k 59 -k 60 -k 61 -k 62 -k 63 -k 64 -k 65 -k 66 -k 67 -k 68 -k 69 ;            rename ($name+"_control");
+            rename ($name+"_Con");
+            scale -r 5 5 5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b06 (){
+    string $sel_1[] = `ls -sl`;
+        shp06;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B06 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b06;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b06;
+    }
+}  //07
+    global proc shp07 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -4.982654 0 0 -p 4.946539 0 -3.309731 -p 4.946539 0 3.309731 -p -4.982654 0 0 -p 4.946539 3.309731 0 -p 4.946539 -3.309731 0 -p -4.982654 0 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b07 (){
+    string $sel_1[] = `ls -sl`;
+        shp07;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B07 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b07;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b07;
+    }
+}  
+//08
+    global proc shp08 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0.934487 1.275837 2.01658e-008 -p 0.932697 1.247176 -0.35686 -p 0.920752 1.172835 -0.686003 -p 0.891476 1.068829 -0.978435 -p 0.840076 0.946678 -1.231929 -p 0.763591 0.814991 -1.445766 -p 0.661715 0.681111 -1.621424 -p 0.537155 0.551427 -1.765671 -p 0.387617 0.433133 -1.880322 -p 0.209586 0.33878 -1.961541 -p 0 0.297363 -1.993747 -p -0.209586 0.33878 -1.961541 -p -0.387617 0.433133 -1.880322 -p -0.537155 0.551427 -1.765671 -p -0.661715 0.681111 -1.621424 -p -0.763591 0.814991 -1.445766 -p -0.840076 0.946678 -1.231929 -p -0.891476 1.068829 -0.978435 -p -0.920752 1.172835 -0.686003 -p -0.932697 1.247176 -0.35686 -p -0.934487 1.275837 2.01658e-008 -p -0.917572 1.470617 0 -p -0.856971 1.657129 0 -p -0.758916 1.826965 0 -p -0.627692 1.972704 0 -p -0.469036 2.087974 0 -p -0.28988 2.167739 0 -p -0.0980551 2.208513 0 -p 0.0980551 2.208513 0 -p 0.28988 2.167739 0 -p 0.469036 2.087974 0 -p 0.627692 1.972704 0 -p 0.758916 1.826965 0 -p 0.856971 1.657129 0 -p 0.917572 1.470617 0 -p 0.934487 1.275837 2.01658e-008 -p 0.932697 1.247176 0.35686 -p 0.920752 1.172834 0.686003 -p 0.891476 1.06883 0.978435 -p 0.840076 0.946678 1.23193 -p 0.763591 0.814992 1.445765 -p 0.661715 0.68111 1.621426 -p 0.537155 0.55143 1.765669 -p 0.387617 0.433127 1.880326 -p 0.209586 0.338788 1.961536 -p 0 0.297318 1.993775 -p -0.209586 0.338788 1.961536 -p -0.387617 0.433127 1.880326 -p -0.537155 0.55143 1.765669 -p -0.661715 0.68111 1.621426 -p -0.763591 0.814992 1.445765 -p -0.840076 0.946678 1.23193 -p -0.891476 1.06883 0.978435 -p -0.920752 1.172834 0.686003 -p -0.932697 1.247176 0.35686 -p -0.934487 1.275837 2.01658e-008 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 ;
+            rename ($name+"_Con");
+            scale -r 2.5 2.5 2.5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b08 (){
+    string $sel_1[] = `ls -sl`;
+        shp08;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B08 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b08;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b08;
+    }
+}  
+//09
+    global proc shp09 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -5 0 0 -p -3 0 -2 -p -3 0 -1 -p 3 0 -1 -p 3 0 -2 -p 5 0 0 -p 3 0 2 -p 3 0 1 -p -3 0 1 -p -3 0 2 -p -5 0 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b09 (){
+    string $sel_1[] = `ls -sl`;
+        shp09;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B09 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b09;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b09;
+    }
+}  
+//10
+    global proc shp10 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -4.455756 0 -0.864549 -p -4.08878 0 -0.959691 -p -3.721804 0 -0.959691 -p -3.409195 0 -0.891732 -p -2.892711 0 -0.565531 -p -2.498551 0 -0.117005 -p -1.9277 0 0.576171 -p -1.68305 0 0.671313 -p -1.397624 0 0.535396 -p -1.220932 0 0.263562 -p -1.628683 0 -1.35385 -p -2.022842 0 -2.672245 -p -2.131576 0 -3.161546 -p -2.117984 0 -3.67803 -p -1.982067 0 -4.140148 -p -1.723825 0 -4.466349 -p -1.397624 0 -4.588674 -p -1.003465 0 -4.466349 -p -0.758814 0 -4.303248 -p -0.500572 0 -3.895498 -p -0.310288 0 -3.338238 -p -0.147188 0 -0.986874 -p -0.0248624 0 -0.674265 -p 0.138238 0 -0.483981 -p 0.369297 0 -0.606307 -p 0.505214 0 -0.810182 -p 0.586764 0 -1.408217 -p 0.491622 0 -3.800356 -p 0.641131 0 -4.411982 -p 0.845006 0 -4.738183 -p 1.171207 0 -4.969242 -p 1.538183 0 -5.050792 -p 1.810017 0 -4.928467 -p 2.054667 0 -4.629449 -p 2.244951 0 -4.208107 -p 2.258543 0 -3.555705 -p 2.027484 0 -2.441186 -p 1.646917 0 -0.782999 -p 1.633325 0 -0.456798 -p 1.742058 0 -0.171372 -p 2.013892 0 -0.280106 -p 2.258543 0 -0.511165 -p 2.707069 0 -1.530542 -p 2.829394 0 -2.169352 -p 3.087637 0 -2.699428 -p 3.27792 0 -2.984854 -p 3.658488 0 -3.147954 -p 4.052647 0 -3.107179 -p 4.270114 0 -2.889712 -p 4.338073 0 -2.617878 -p 4.297298 0 -2.019843 -p 3.495388 0 -0.456798 -p 3.223554 0 0.72568 -p 3.019678 0 2.424642 -p 2.666294 0 3.60712 -p 2.380868 0 4.042054 -p 1.945934 0 4.476989 -p 1.443041 0 4.789598 -p 0.817823 0 4.96629 -p 0.287747 0 5.020657 -p -0.337471 0 4.96629 -p -0.853956 0 4.735231 -p -1.302482 0 4.40903 -p -2.104392 0 3.52557 -p -2.620877 0 2.519784 -p -2.851936 0 1.867383 -p -3.137361 0 1.405265 -p -3.572296 0 1.065472 -p -4.102372 0 0.793638 -p -4.523715 0 0.372296 -p -4.700407 0 -0.0082718 -p -4.754773 0 -0.348064 -p -4.632448 0 -0.647082 -p -4.455756 0 -0.864549 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 -k 56 -k 57 -k 58 -k 59 -k 60 -k 61 -k 62 -k 63 -k 64 -k 65 -k 66 -k 67 -k 68 -k 69 -k 70 -k 71 -k 72 -k 73 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+    global proc Riggest_b10 (){
+    string $sel_1[] = `ls -sl`;
+        shp10;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B10 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b10;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b10;
+    }
+}  
+//11
+    global proc shp11 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0.365446 0 -1.737246 -p 0 0 -1.979341 -p -0.365446 0 -1.737246 -p 0 0 -3.272918 -p 0.365446 0 -1.737246 -p 0 0 -1.979341 -p 0 0.365446 -1.737246 -p 0 0 -3.272918 -p 0 -0.365446 -1.737246 -p 0 0 -1.979341 -p 0 0 0 -p 0 0 1.979341 -p -0.365446 0 1.737246 -p 0 0 3.272918 -p 0.365446 0 1.737246 -p 0 0 1.979341 -p 0 -0.365446 1.737246 -p 0 0 3.272918 -p 0 0.365446 1.737246 -p 0 0 1.979341 -p 0 0 0 -p 1.979341 0 0 -p 1.737246 0 0.365446 -p 3.272918 0 0 -p 1.737246 0 -0.365446 -p 1.979341 0 0 -p 1.737246 0.365446 0 -p 3.272918 0 0 -p 1.737246 -0.365446 0 -p 1.979341 0 0 -p 0 0 0 -p -1.979341 0 0 -p -1.737246 0 0.365446 -p -3.272918 0 0 -p -1.737246 0 -0.365446 -p -1.979341 0 0 -p -1.737246 0.365446 0 -p -3.272918 0 0 -p -1.737246 -0.365446 0 -p -1.979341 0 0 -p 0 0 0 -p 0 1.979341 0 -p -0.365446 1.737246 0 -p 0 3.272918 0 -p 0.365446 1.737246 0 -p 0 1.979341 0 -p 0 1.737246 0.365446 -p 0 3.272918 0 -p 0 1.737246 -0.365446 -p 0 1.979341 0 -p 0 0 0 -p 0 -1.979341 0 -p -0.365446 -1.737246 0 -p 0 -3.272918 0 -p 0.365446 -1.737246 0 -p 0 -1.979341 0 -p 0 -1.737246 -0.365446 -p 0 -3.272918 0 -p 0 -1.737246 0.365446 -p 0 -1.979341 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 -k 56 -k 57 -k 58 -k 59 ;
+            rename ($name+"_Con");
+            scale -r 1.5 1.5 1.5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b11 (){
+    string $sel_1[] = `ls -sl`;
+        shp11;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B11 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b11;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b11;
+    }
+} 
+//12
+    global proc shp12 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 1 0 -p 0 0.92388 0.382683 -p 0 0.707107 0.707107 -p 0 0.382683 0.92388 -p 0 0 1 -p 0 -0.382683 0.92388 -p 0 -0.707107 0.707107 -p 0 -0.92388 0.382683 -p 0 -1 0 -p 0 -0.92388 -0.382683 -p 0 -0.707107 -0.707107 -p 0 -0.382683 -0.92388 -p 0 0 -1 -p 0 0.382683 -0.92388 -p 0 0.707107 -0.707107 -p 0 0.92388 -0.382683 -p 0 1 0 -p 0.382683 0.92388 0 -p 0.707107 0.707107 0 -p 0.92388 0.382683 0 -p 1 0 0 -p 0.92388 -0.382683 0 -p 0.707107 -0.707107 0 -p 0.382683 -0.92388 0 -p 0 -1 0 -p -0.382683 -0.92388 0 -p -0.707107 -0.707107 0 -p -0.92388 -0.382683 0 -p -1 0 0 -p -0.92388 0.382683 0 -p -0.707107 0.707107 0 -p -0.382683 0.92388 0 -p 0 1 0 -p 0 0.92388 -0.382683 -p 0 0.707107 -0.707107 -p 0 0.382683 -0.92388 -p 0 0 -1 -p -0.382683 0 -0.92388 -p -0.707107 0 -0.707107 -p -0.92388 0 -0.382683 -p -1 0 0 -p -0.92388 0 0.382683 -p -0.707107 0 0.707107 -p -0.382683 0 0.92388 -p 0 0 1 -p 0.382683 0 0.92388 -p 0.707107 0 0.707107 -p 0.92388 0 0.382683 -p 1 0 0 -p 0.92388 0 -0.382683 -p 0.707107 0 -0.707107 -p 0.382683 0 -0.92388 -p 0 0 -1 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 ;
+            rename ($name+"_Con");
+            scale -r 5 5 5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b12 (){
+    string $sel_1[] = `ls -sl`;
+        shp12;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B12 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b12;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b12;
+    }
+} 
+
+//13
+    global proc shp13 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -5 0 0 -p -3 0 -2 -p -3 0 -1 -p -1 0 -1 -p -1 0 -3 -p -2 0 -3 -p 0 0 -5 -p 2 0 -3 -p 1 0 -3 -p 1 0 -1 -p 3 0 -1 -p 3 0 -2 -p 5 0 0 -p 3 0 2 -p 3 0 1 -p 1 0 1 -p 1 0 3 -p 2 0 3 -p 0 0 5 -p -2 0 3 -p -1 0 3 -p -1 0 1 -p -3 0 1 -p -3 0 2 -p -5 0 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b13 (){
+    string $sel_1[] = `ls -sl`;
+        shp13;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B13 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b13;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b13;
+    }
+} 
+//14
+    global proc shp14 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -6.283766 0 9.1204e-010 -p -6.203579 0 -0.982165 -p -5.969952 0 -1.939507 -p -5.592832 0 -2.849955 -p -5.081088 0 -3.692098 -p -4.443293 0 -4.443293 -p -3.692098 0 -5.081088 -p -2.849955 0 -5.592832 -p -1.939507 0 -5.969952 -p -0.982165 0 -6.20358 -p 0 0 -6.283764 -p 0 0.982162 -6.20358 -p 0 1.939508 -5.969952 -p 0 2.849954 -5.592832 -p 0 3.692098 -5.081088 -p 0 4.443293 -4.443293 -p 0 5.081089 -3.692098 -p 0 5.592832 -2.849955 -p 0 5.969952 -1.939507 -p 0 6.203579 -0.982165 -p 0 6.283766 0 -p 0 6.203579 0.982165 -p 0 5.969952 1.939507 -p 0 5.592832 2.849955 -p 0 5.081089 3.692098 -p 0 4.443293 4.443293 -p 0 3.692098 5.081088 -p 0 2.849954 5.592832 -p 0 1.939508 5.969952 -p 0 0.982162 6.20358 -p 0 0 6.283766 -p -0.982165 0 6.203579 -p -1.939507 0 5.969952 -p -2.849955 0 5.592832 -p -3.692098 0 5.081088 -p -4.443293 0 4.443293 -p -5.081088 0 3.692098 -p -5.592832 0 2.849955 -p -5.969952 0 1.939507 -p -6.203579 0 0.982165 -p -6.283766 0 9.1204e-010 -p -6.20358 0.982162 0 -p -5.969952 1.939508 0 -p -5.592832 2.849954 0 -p -5.081088 3.692098 0 -p -4.443293 4.443293 0 -p -3.692098 5.081089 0 -p -2.849955 5.592832 0 -p -1.939507 5.969952 0 -p -0.982165 6.203579 0 -p 0 6.283766 0 -p 0.982165 6.203579 0 -p 1.939507 5.969952 0 -p 2.849955 5.592832 0 -p 3.692098 5.081089 0 -p 4.443293 4.443293 0 -p 5.081088 3.692098 0 -p 5.592832 2.849954 0 -p 5.969952 1.939508 0 -p 6.20358 0.982162 0 -p 6.283766 0 9.12045e-010 -p 6.203579 0 0.982165 -p 5.969952 0 1.939507 -p 5.592832 0 2.849955 -p 5.081088 0 3.692098 -p 4.443293 0 4.443293 -p 3.692098 0 5.081088 -p 2.849955 0 5.592832 -p 1.939507 0 5.969952 -p 0.982165 0 6.203579 -p 0 0 6.283766 -p 0.982165 0 6.203579 -p 1.939507 0 5.969952 -p 2.849955 0 5.592832 -p 3.692098 0 5.081088 -p 4.443293 0 4.443293 -p 5.081088 0 3.692098 -p 5.592832 0 2.849955 -p 5.969952 0 1.939507 -p 6.203579 0 0.982165 -p 6.283766 0 9.12045e-010 -p 6.203579 0 -0.982165 -p 5.969952 0 -1.939507 -p 5.592832 0 -2.849955 -p 5.081088 0 -3.692098 -p 4.443293 0 -4.443293 -p 3.692098 0 -5.081088 -p 2.849955 0 -5.592832 -p 1.939507 0 -5.969952 -p 0.982165 0 -6.20358 -p 0 0 -6.283764 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 -k 56 -k 57 -k 58 -k 59 -k 60 -k 61 -k 62 -k 63 -k 64 -k 65 -k 66 -k 67 -k 68 -k 69 -k 70 -k 71 -k 72 -k 73 -k 74 -k 75 -k 76 -k 77 -k 78 -k 79 -k 80 -k 81 -k 82 -k 83 -k 84 -k 85 -k 86 -k 87 -k 88 -k 89 -k 90 ;
+            rename ($name+"_Con");
+            scale -r 0.8 0.8 0.8;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b14 (){
+    string $sel_1[] = `ls -sl`;
+        shp14;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B14 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b14;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b14;
+    }
+} 
+//15 
+       global proc shp15 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 0 -2.120128 -p 0 0 -2.120128 -p 0.127027 0 -2.098891 -p 0.266394 0 -2.035954 -p 0.392426 0 -1.923814 -p 0.51076 0 -1.7556 -p 0.570988 0 -1.45298 -p 0.547002 0 -1.124658 -p 0.546137 0 -0.739398 -p 0.596986 0 -0.424671 -p 0.749207 0 0.167214 -p 0.821629 0 0.540794 -p 0.845588 0 0.814546 -p 0.819474 0 1.166447 -p 0.740338 0 1.442584 -p 0.639319 0 1.672901 -p 0.518089 0 1.859678 -p 0.395504 0 1.9981 -p 0.267004 0 2.095142 -p 0.134293 0 2.163449 -p 0.00467529 0 2.182247 -p -0.129434 0 2.164107 -p -0.263571 0 2.097171 -p -0.394311 0 1.99895 -p -0.519026 0 1.858581 -p -0.639218 0 1.673153 -p -0.741687 0 1.437876 -p -0.814669 0 1.183211 -p -0.845483 0 0.813956 -p -0.823555 0 0.546201 -p -0.787024 0 0.199789 -p -0.740926 0 -0.141818 -p -0.709665 0 -0.449727 -p -0.673223 0 -0.84127 -p -0.647076 0 -1.105326 -p -0.607085 0 -1.441585 -p -0.515494 0 -1.742999 -p -0.403107 0 -1.909041 -p -0.26381 0 -2.03716 -p -0.134123 0 -2.097657 -p 0.00016811 0 -2.1201 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 ;
+            rename ($name+"_Con");
+            scale -r 2.3 2.3 2.3;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+     global proc Riggest_b15 (){
+    string $sel_1[] = `ls -sl`;
+        shp15;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B15 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b15;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b15;
+    }
+} 
+//16   
+       global proc shp16 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -2.513058 -0.000789387 0 -p -2.465186 0.0739742 0 -p -2.152997 0.192227 0 -p -1.82693 0.391554 0 -p -1.507944 0.627928 0 -p -1.184955 0.849308 0 -p -0.832559 1.021739 0 -p -0.449719 1.138051 0 -p 0 1.191496 0 -p 0.247442 1.154017 0 -p 0.47812 1.058465 0 -p 0.676741 0.90715 0 -p 0.828056 0.70853 0 -p 0.923606 0.477852 0 -p 0.957056 0.230409 0 -p 0.923606 -0.0170326 0 -p 0.828056 -0.247711 0 -p 0.676741 -0.446331 0 -p 0.47812 -0.597647 0 -p 0.247442 -0.693197 0 -p 0 -0.726646 0 -p -0.247442 -0.693197 0 -p -0.47812 -0.597647 0 -p -0.676741 -0.446331 0 -p -0.828056 -0.247711 0 -p -0.923606 -0.0170326 0 -p -0.957056 0.230409 0 -p -0.923606 0.477852 0 -p -0.828056 0.70853 0 -p -0.676741 0.90715 0 -p -0.47812 1.058465 0 -p -0.247442 1.154017 0 -p 0 1.191496 0 -p 0.452245 1.134262 0 -p 0.845189 1.004057 0 -p 1.195059 0.840467 0 -p 1.491525 0.656977 0 -p 1.77641 0.45723 0 -p 2.093635 0.264219 0 -p 2.452556 0.0891304 0 -p 2.511637 0.000631505 0 -p 2.458871 -0.0840784 0 -p 2.123947 -0.242747 0 -p 1.802933 -0.447126 0 -p 1.496577 -0.655714 0 -p 1.195059 -0.840467 0 -p 0.845189 -1.004057 0 -p 0.452245 -1.134263 0 -p 0 -1.191489 0 -p -0.452245 -1.134263 0 -p -0.845189 -1.004057 0 -p -1.200111 -0.834152 0 -p -1.520575 -0.622876 0 -p -1.821878 -0.40671 0 -p -2.122684 -0.220013 0 -p -2.457608 -0.0802893 0 -p -2.513058 -0.000789387 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 -k 56 ;
+            rename ($name+"_Con");
+            scale -r 2 2 2;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b16 (){
+    string $sel_1[] = `ls -sl`;
+        shp16;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B16 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b16;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b16;
+    }
+} 
+//17   
+       global proc shp17 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0.927709 0.933166 4.785622 -p 0.933166 1.864716 4.505818 -p 0.933166 2.662429 4.099688 -p 0.933166 3.410389 3.51732 -p 0.933166 4.011776 2.84131 -p 2.7995 4.011776 2.84131 -p 1.888188 4.479274 2.060603 -p 0.933166 4.811788 1.167227 -p 0 4.964421 0.248014 -p -0.91163 4.81531 1.146013 -p -1.875934 4.48556 2.050105 -p -2.7995 4.011776 2.84131 -p -0.933166 4.011776 2.84131 -p -0.933166 3.398044 3.531197 -p -0.933166 2.654188 4.106034 -p -0.933166 1.822898 4.526994 -p -0.933166 0.927709 4.785622 -p -1.914378 0.933166 4.480669 -p -2.64947 0.933166 4.108423 -p -3.39244 0.933166 3.537496 -p -4.011776 0.933166 2.84131 -p -4.011776 2.7995 2.84131 -p -4.497041 1.847291 2.024032 -p -4.811788 0.933166 1.167227 -p -4.964421 0 0.248014 -p -4.811788 -0.933166 1.167227 -p -4.465589 -1.914864 2.083456 -p -4.011776 -2.7995 2.84131 -p -4.011776 -0.933166 2.84131 -p -3.39244 -0.933166 3.537496 -p -2.64924 -0.933166 4.10854 -p -1.818761 -0.933166 4.528189 -p -0.927709 -0.933166 4.785622 -p -0.933166 -1.857022 4.509714 -p -0.933166 -2.671067 4.093035 -p -0.933166 -3.408494 3.51945 -p -0.933166 -4.011776 2.84131 -p -2.7995 -4.011776 2.84131 -p -1.810282 -4.509784 1.989343 -p -0.962033 -4.801849 1.194284 -p 0 -4.964421 0.248014 -p 0.938138 -4.810076 1.171887 -p 1.865788 -4.490673 2.041369 -p 2.7995 -4.011776 2.84131 -p 0.933166 -4.011776 2.84131 -p 0.933166 -3.354737 3.566532 -p 0.933166 -2.646898 4.109726 -p 0.933166 -1.830077 4.523359 -p 0.927709 -0.933166 4.785622 -p 1.822898 -0.933166 4.526994 -p 2.662097 -0.933166 4.099943 -p 3.313799 -0.933166 3.598058 -p 4.011776 -0.933166 2.84131 -p 4.011776 -2.7995 2.84131 -p 4.520404 -1.779439 1.960435 -p 4.833797 -0.798609 1.034682 -p 4.964421 0 0.248014 -p 4.808417 0.942957 1.176404 -p 4.495671 1.851272 2.027764 -p 4.011776 2.7995 2.84131 -p 4.011776 0.933166 2.84131 -p 3.381213 0.933166 3.546142 -p 2.655888 0.933166 4.104725 -p 1.816633 0.933166 4.528804 -p 0.927709 0.933166 4.785622 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -k 53 -k 54 -k 55 -k 56 -k 57 -k 58 -k 59 -k 60 -k 61 -k 62 -k 63 -k 64 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b17 (){
+    string $sel_1[] = `ls -sl`;
+        shp17;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B17 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b17;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b17;
+    }
+} 
+//18   
+       global proc shp18 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 0 0 -p -9.99923 0 -2.2236e-005 -p -9.22886 0 3.822731 -p -7.070523 0 7.070516 -p -3.822719 0 9.228864 -p 0 0 9.999226 -p 0 0 0 -p 0 0 9.999226 -p 3.822719 0 9.228864 -p 7.070523 0 7.070516 -p 9.22886 0 3.822731 -p 9.99923 0 -2.2236e-005 -p 0 0 0 -p 9.99923 0 -2.2236e-005 -p 9.22886 0 -3.822678 -p 7.070523 0 -7.070596 -p 3.822719 0 -9.228749 -p 0 0 -10 -p 0 0 0 -p 0 0 -10 -p -3.822719 0 -9.228749 -p -7.070523 0 -7.070596 -p -9.22886 0 -3.822678 -p -9.99923 0 -2.2236e-005 -p 0 0 0 -p 0 20 0 -p 0 20 4 -p 0 28 0 -p 0 20 -4 -p 0 20 0 -p 4 20 0 -p 0 28 0 -p -4 20 0 -p 0 20 4 -p 4 20 0 -p 0 20 -4 -p -4 20 0 -p 0 20 0 -k 0 -k 9.99923 -k 13.898834 -k 17.798388 -k 21.697965 -k 25.597534 -k 35.59676 -k 45.595986 -k 49.495555 -k 53.395131 -k 57.294686 -k 61.19429 -k 71.19352 -k 81.192749 -k 85.092258 -k 88.991923 -k 92.891392 -k 96.791136 -k 106.791136 -k 116.791136 -k 120.690881 -k 124.59035 -k 128.490015 -k 132.389524 -k 142.388753 -k 162.388753 -k 166.388753 -k 175.333025 -k 184.277297 -k 188.277297 -k 192.277297 -k 201.221569 -k 210.165841 -k 215.822695 -k 221.479549 -k 227.136403 -k 232.793258 -k 236.793258 ;
+            rename ($name+"_Con");
+            scale -r 0.5 0.4 0.5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b18 (){
+    string $sel_1[] = `ls -sl`;
+        shp18;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B18 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b18;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b18;
+    }
+} 
+   
+//19
+          global proc shp19 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -0.501812 -8.720681 0 -p 0.545838 -8.720681 0 -p 0.545838 -7.387514 0 -p 2.260467 -7.387514 0 -p 2.260467 -5.716921 0 -p 0.545838 -5.716921 0 -p 0.545838 -5.565796 0 -p 2.260467 -5.565796 0 -p 2.260467 -3.895204 0 -p 0.545838 -3.895204 0 -p 0.537417 4.927337 0 -p 1.592993 5.037761 0 -p 2.352876 5.285438 0 -p 2.963694 5.794448 0 -p 3.277409 6.527621 0 -p 3.358018 7.32238 0 -p 3.277409 8.117117 0 -p 2.963694 8.850319 0 -p 2.352876 9.359281 0 -p 1.592993 9.607047 0 -p 0.800517 9.71732 0 -p 0 9.745124 0 -p 0 8.812327 0 -p 0.570106 8.795228 0 -p 1.134486 8.727412 0 -p 1.675653 8.57504 0 -p 2.110661 8.262036 0 -p 2.33408 7.811128 0 -p 2.391488 7.322378 0 -p 2.33408 6.833614 0 -p 2.110661 6.382724 0 -p 1.675653 6.069691 0 -p 1.134486 5.917373 0 -p 0.570106 5.849464 0 -p 0 5.832846 0 -p -0.570106 5.849464 0 -p -1.134486 5.917373 0 -p -1.675653 6.069691 0 -p -2.110661 6.382724 0 -p -2.33408 6.833614 0 -p -2.391488 7.322378 0 -p -2.33408 7.811128 0 -p -2.110661 8.262036 0 -p -1.675653 8.57504 0 -p -1.134486 8.727412 0 -p -0.570106 8.795228 0 -p 0 8.812327 0 -p 0 9.745124 0 -p -0.800517 9.71732 0 -p -1.592993 9.607047 0 -p -2.352876 9.359281 0 -p -2.963694 8.850319 0 -p -3.277409 8.117117 0 -p -3.358018 7.32238 0 -p -3.277409 6.527621 0 -p -2.963694 5.794448 0 -p -2.352876 5.285438 0 -p -1.592993 5.037761 0 -p -0.49919 4.927337 0 -p -0.501812 -8.720681 0 -k 0 -k 1.04765 -k 2.380817 -k 4.095446 -k 5.766038 -k 7.480667 -k 7.631793 -k 9.346421 -k 11.017014 -k 12.731643 -k 21.554187 -k 22.615522 -k 23.41475 -k 24.209854 -k 25.007325 -k 25.806161 -k 26.604975 -k 27.402473 -k 28.197547 -k 28.996802 -k 29.796914 -k 30.597913 -k 31.53071 -k 32.101072 -k 32.669511 -k 33.231721 -k 33.767635 -k 34.270858 -k 34.762969 -k 35.255093 -k 35.7583 -k 36.294231 -k 36.856426 -k 37.424877 -k 37.995225 -k 38.565573 -k 39.134023 -k 39.696218 -k 40.232149 -k 40.735357 -k 41.22748 -k 41.719591 -k 42.222815 -k 42.758728 -k 43.320938 -k 43.889377 -k 44.45974 -k 45.392536 -k 46.193535 -k 46.993647 -k 47.792903 -k 48.587976 -k 49.385474 -k 50.184288 -k 50.983124 -k 51.780595 -k 52.575699 -k 53.374927 -k 54.474289 -k 68.122307 ;
+            rename ($name+"_Con");
+            scale -r 0.53 0.53 0.53;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b19 (){
+    string $sel_1[] = `ls -sl`;
+        shp19;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B19 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b19;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b19;
+    }
+} 
+//20
+          global proc shp20 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 10 0 -p -4 10 0 -p 0 16 0 -p 4 10 0 -p 0 10 0 -p 0 4 0 -p 1.034188 3.860232 0 -p 1.998312 3.460872 0 -p 2.828448 2.82845 0 -p 3.460875 1.998311 0 -p 3.860228 1.034189 0 -p 4.00003 -2.3063e-007 0 -p 3.860228 -1.034188 0 -p 3.460875 -1.998312 0 -p 2.828448 -2.828448 0 -p 1.998312 -3.460875 0 -p 1.034188 -3.860228 0 -p 0 -4.00003 0 -p -1.034188 -3.860228 0 -p -1.998312 -3.460875 0 -p -2.828448 -2.828448 0 -p -3.460875 -1.998312 0 -p -3.860228 -1.034188 0 -p -4.00003 -2.3063e-007 0 -p -3.860228 1.034189 0 -p -3.460875 1.998311 0 -p -2.828448 2.82845 0 -p -1.998312 3.460872 0 -p -1.034188 3.860232 0 -p 0 4 0 -k 0 -k 4 -k 12.944272 -k 21.888544 -k 25.888544 -k 45.888544 -k 46.932134 -k 47.975696 -k 49.019289 -k 50.062886 -k 51.106444 -k 52.150039 -k 53.193634 -k 54.237194 -k 55.280789 -k 56.324384 -k 57.367943 -k 58.411538 -k 59.455133 -k 60.498693 -k 61.542288 -k 62.585882 -k 63.629442 -k 64.673037 -k 65.716632 -k 66.760191 -k 67.803787 -k 68.84738 -k 69.890942 -k 70.934532 ;
+            rename ($name+"_Con");
+            scale -r 1.25 1.25 1.25;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b20 (){
+    string $sel_1[] = `ls -sl`;
+        shp20;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B20 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b20;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b20;
+    }
+} 
+   
+//21
+          global proc shp21 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 10.112068 0 -p -0.373493 10.162557 0 -p -0.721682 10.306782 0 -p -1.021482 10.53518 0 -p -1.24988 10.83498 0 -p -1.394105 11.183169 0 -p -1.444594 11.556662 0 -p -1.394105 11.930155 0 -p -1.24988 12.278343 0 -p -1.021482 12.578144 0 -p -0.721682 12.806541 0 -p -0.373493 12.950768 0 -p 0 13.001244 0 -p 0.373493 12.950768 0 -p 0.721682 12.806541 0 -p 1.021482 12.578144 0 -p 1.24988 12.278343 0 -p 1.394105 11.930155 0 -p 1.444594 11.556662 0 -p 1.394105 11.183169 0 -p 1.24988 10.83498 0 -p 1.021482 10.53518 0 -p 0.721682 10.306782 0 -p 0.373493 10.162557 0 -p 0 10.112068 0 -p 0 0 0 -k 0 -k 0.37689 -k 0.753767 -k 1.130657 -k 1.507546 -k 1.884423 -k 2.261313 -k 2.638203 -k 3.01508 -k 3.39197 -k 3.768859 -k 4.145737 -k 4.522625 -k 4.899513 -k 5.276391 -k 5.65328 -k 6.030171 -k 6.407047 -k 6.783937 -k 7.160827 -k 7.537704 -k 7.914594 -k 8.291484 -k 8.668361 -k 9.045251 -k 19.157319 ;            rename ($name+"_control");
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b21 (){
+    string $sel_1[] = `ls -sl`;
+        shp21;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B21 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b21;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b21;
+    }
+} 
+//22
+          global proc shp22 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 11.09967 0 -p -0.374605 10.136967 0 -p -0.217575 11.158284 0 -p -1.024621 10.510461 0 -p -0.376794 11.317503 0 -p -1.398115 11.160478 0 -p -0.435408 11.535078 0 -p -1.398115 11.909687 0 -p -0.376794 11.752654 0 -p -1.024621 12.559704 0 -p -0.217575 11.911872 0 -p -0.374605 12.9332 0 -p 0 11.970484 0 -p 0.374605 12.9332 0 -p 0.217575 11.911872 0 -p 1.024621 12.559704 0 -p 0.376794 11.752654 0 -p 1.398115 11.909687 0 -p 0.435408 11.535078 0 -p 1.398115 11.160478 0 -p 0.376794 11.317503 0 -p 1.024621 10.510461 0 -p 0.217575 11.158284 0 -p 0.374605 10.136967 0 -p 0 11.09967 0 -p 0 0 0 -k 0 -k 1.033018 -k 2.066337 -k 3.101227 -k 4.136117 -k 5.169438 -k 6.202459 -k 7.235482 -k 8.268805 -k 9.303701 -k 10.338596 -k 11.371925 -k 12.404955 -k 13.437986 -k 14.471315 -k 15.50621 -k 16.541106 -k 17.574429 -k 18.607452 -k 19.640472 -k 20.673794 -k 21.708684 -k 22.743574 -k 23.776892 -k 24.809911 -k 35.909581 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b22 (){
+    string $sel_1[] = `ls -sl`;
+        shp22;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B22 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b22;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b22;
+    }
+} 
+//23
+          global proc shp23 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -1.6 -6.4 0 -p -1.6 -1.6 0 -p -6.4 -1.6 0 -p -6.4 1.6 0 -p -1.6 1.6 0 -p -1.6 6.4 0 -p 1.6 6.4 0 -p 1.6 1.6 0 -p 6.4 1.6 0 -p 6.4 -1.6 0 -p 1.6 -1.6 0 -p 1.6 -6.4 0 -p -1.6 -6.4 0 -k 0 -k 4.8 -k 9.6 -k 12.8 -k 17.6 -k 22.4 -k 25.6 -k 30.4 -k 35.2 -k 38.4 -k 43.2 -k 48 -k 51.2 ;
+            rename ($name+"_Con");
+            scale -r 0.78 0.78 0.78;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b23 (){
+    string $sel_1[] = `ls -sl`;
+        shp23;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B23 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b23;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b23;
+    }
+} 
+//24
+          global proc shp24 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 2 0 2 -p -2 0 2 -p -2 0 -2 -p 2 0 -2 -p 2 0 2 -p 0 8 0 -p -2 0 2 -p -2 0 -2 -p 0 8 0 -p 2 0 -2 -p 2 0 2 -p 0 8 0 -p -2 0 2 -k 0 -k 4 -k 8 -k 12 -k 16 -k 24.485281 -k 32.970563 -k 36.970563 -k 45.455844 -k 53.941125 -k 57.941125 -k 66.426407 -k 74.911688 ;
+            rename ($name+"_Con");
+            scale -r 2.5 1.25 2.5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b24 (){
+    string $sel_1[] = `ls -sl`;
+        shp24;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B24 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b24;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b24;
+    }
+} 
+   
+//25
+          global proc shp25 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0.705532 22.577041 1.222018 -p -0.705533 22.577041 1.222018 -p 0 27.750632 0 -p 0.705532 22.577041 1.222018 -p 1.411065 22.577041 0 -p 0 27.750632 0 -p 1.411065 22.577041 0 -p 0.705533 22.577041 -1.222018 -p 0 27.750632 0 -p 0.705533 22.577041 -1.222018 -p -0.705532 22.577041 -1.222019 -p 0 27.750632 0 -p -0.705532 22.577041 -1.222019 -p -1.411065 22.577041 -2.24148e-007 -p 0 27.750632 0 -p -1.411065 22.577041 -2.24148e-007 -p -0.705533 22.577041 1.222018 -p 0 27.750632 0 -p 0 0 0 -p 0 0 27.750632 -p -1.222018 0.705533 22.577041 -p 0 1.411065 22.577041 -p 0 0 27.750632 -p 1.222018 0.705532 22.577041 -p 0 1.411065 22.577041 -p 1.222018 0.705532 22.577041 -p 1.222018 -0.705533 22.577041 -p 0 0 27.750632 -p 1.222018 -0.705533 22.577041 -p -2.24148e-007 -1.411065 22.577041 -p 0 0 27.750632 -p -2.24148e-007 -1.411065 22.577041 -p -1.222019 -0.705532 22.577041 -p 0 0 27.750632 -p -1.222019 -0.705532 22.577041 -p -1.222018 0.705533 22.577041 -p 0 0 27.750632 -p 0 0 5.64426 -p 0 5.64426 5.64426 -p 0 5.64426 0 -p 5.64426 5.64426 0 -p 5.64426 0 0 -p 0 0 0 -p 0 0 5.64426 -p 5.64426 0 5.64426 -p 5.64426 0 0 -p 27.750632 0 0 -p 22.577041 1.411065 0 -p 22.577041 0.705532 -1.222018 -p 27.750632 0 0 -p 22.577041 0.705532 -1.222018 -p 22.577041 -0.705533 -1.222018 -p 27.750632 0 0 -p 22.577041 -1.411065 2.24148e-007 -p 22.577041 -0.705533 -1.222018 -p 22.577041 -1.411065 2.24148e-007 -p 22.577041 -0.705532 1.222019 -p 27.750632 0 0 -p 22.577041 -0.705532 1.222019 -p 22.577041 0.705533 1.222018 -p 22.577041 1.411065 0 -p 27.750632 0 0 -p 22.577041 0.705533 1.222018 -k 0 -k 1.411065 -k 6.773634 -k 12.136203 -k 13.547268 -k 18.909838 -k 24.272407 -k 25.683471 -k 31.046041 -k 36.40861 -k 37.819675 -k 43.182244 -k 48.544813 -k 49.955878 -k 55.318448 -k 60.681017 -k 62.092082 -k 67.454651 -k 95.205283 -k 122.955915 -k 128.318484 -k 129.729549 -k 135.092118 -k 140.454687 -k 141.865752 -k 143.276817 -k 144.687883 -k 150.050452 -k 155.413021 -k 156.824086 -k 162.186655 -k 167.549224 -k 168.96029 -k 174.322859 -k 179.685428 -k 181.096493 -k 186.459062 -k 208.565434 -k 214.209694 -k 219.853955 -k 225.498215 -k 231.142475 -k 236.786735 -k 242.430996 -k 248.075256 -k 253.719516 -k 275.825888 -k 281.188457 -k 282.599522 -k 287.962091 -k 293.32466 -k 294.735726 -k 300.098295 -k 305.460864 -k 306.871929 -k 308.282994 -k 309.69406 -k 315.056629 -k 320.419198 -k 321.830263 -k 323.241328 -k 328.603897 -k 333.966466 ;
+            rename ($name+"_Con");
+            scale -r 0.36 0.36 0.36;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b25 (){
+    string $sel_1[] = `ls -sl`;
+        shp25;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B25(){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b25;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b25;
+    }
+} 
+   
+//26
+          global proc shp26 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 4.525483 4.525483 -p -0.8 4.525483 4.525483 -p 0 6.22254 6.22254 -p 0.8 4.525483 4.525483 -p 0 4.525483 4.525483 -p 0 0 0 -p 3.2 3.2 4.525483 -p 2.634315 3.765685 4.525483 -p 4.4 4.4 6.22254 -p 3.765685 2.634315 4.525483 -p 3.2 3.2 4.525483 -p 0 0 0 -p 4.525483 0 4.525483 -p 4.525483 0.8 4.525483 -p 6.22254 0 6.22254 -p 4.525483 -0.8 4.525483 -p 4.525483 0 4.525483 -p 0 0 0 -p 3.2 -3.2 4.525483 -p 3.765685 -2.634315 4.525483 -p 4.4 -4.4 6.22254 -p 2.634315 -3.765685 4.525483 -p 3.2 -3.2 4.525483 -p 0 0 0 -p 0 -4.525483 4.525483 -p 0.8 -4.525483 4.525483 -p 0 -6.22254 6.22254 -p -0.8 -4.525483 4.525483 -p 0 -4.525483 4.525483 -p 0 0 0 -p -3.2 -3.2 4.525483 -p -2.634315 -3.765685 4.525483 -p -4.4 -4.4 6.22254 -p -3.765685 -2.634315 4.525483 -p -3.2 -3.2 4.525483 -p 0 0 0 -p -4.525483 0 4.525483 -p -4.525483 -0.8 4.525483 -p -6.22254 0 6.22254 -p -4.525483 0.8 4.525483 -p -4.525483 0 4.525483 -p 0 0 0 -p -3.2 3.2 4.525483 -p -3.765685 2.634315 4.525483 -p -4.4 4.4 6.22254 -p -2.634315 3.765685 4.525483 -p -3.2 3.2 4.525483 -p 0 0 0 -p 0 0 12.090965 -p 0 1.511371 12.090965 -p 0 0 16.625077 -p 0 -1.511371 12.090965 -p 0 0 12.090965 -p -1.511371 0 12.090965 -p 0 1.511371 12.090965 -p 1.511371 0 12.090965 -p 0 -1.511371 12.090965 -p -1.511371 0 12.090965 -p 0 0 16.625077 -p 1.511371 0 12.090965 -p 0 0 12.090965 -k 0 -k 0.8 -k 3.329822 -k 5.859644 -k 6.659644 -k 13.059644 -k 19.459644 -k 20.259644 -k 22.789466 -k 25.319289 -k 26.119289 -k 32.519289 -k 38.919289 -k 39.719289 -k 42.249111 -k 44.778933 -k 45.578933 -k 51.978933 -k 58.378933 -k 59.178933 -k 61.708755 -k 64.238577 -k 65.038577 -k 71.438577 -k 77.838577 -k 78.638577 -k 81.168399 -k 83.698221 -k 84.498221 -k 90.898221 -k 97.298221 -k 98.098221 -k 100.628043 -k 103.157866 -k 103.957866 -k 110.357866 -k 116.757866 -k 117.557866 -k 120.087688 -k 122.61751 -k 123.41751 -k 129.81751 -k 136.21751 -k 137.01751 -k 139.547332 -k 142.077154 -k 142.877154 -k 149.277154 -k 161.368119 -k 162.87949 -k 167.658864 -k 172.438237 -k 173.949608 -k 175.460979 -k 177.59838 -k 179.73578 -k 181.873181 -k 184.010582 -k 188.789956 -k 193.56933 -k 195.0807 ;
+            rename ($name+"_Con");
+            scale -r 0.8 0.8 0.6;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b26 (){
+    string $sel_1[] = `ls -sl`;
+        shp26;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B26 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b26;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b26;
+    }
+} 
+//27
+          global proc shp27 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 0 -6 -p 0 0 -8 -p 2.06834 0 -7.720474 -p 3.996656 0 -6.921725 -p 5.656898 0 -5.656901 -p 6.921731 0 -3.996654 -p 7.720465 0 -2.068341 -p 8.000062 0 5.15532e-007 -p 7.720465 0 2.06834 -p 6.921731 0 3.996656 -p 5.656898 0 5.656898 -p 3.996656 0 6.921731 -p 2.06834 0 7.720465 -p 0 0 8.000062 -p -2.06834 0 7.720465 -p -3.996656 0 6.921731 -p -5.656898 0 5.656898 -p -6.921731 0 3.996656 -p -7.720465 0 2.06834 -p -8.000062 0 5.15532e-007 -p -10.117476 0 0 -p -6.959211 0 -6.31653 -p -3.800946 0 0 -p -6.000046 0 3.86931e-007 -p -5.790349 0 1.551256 -p -5.191298 0 2.997491 -p -4.242674 0 4.242673 -p -2.997491 0 5.191298 -p -1.551256 0 5.790349 -p 0 0 6.000046 -p 1.551256 0 5.790349 -p 2.997491 0 5.191298 -p 4.242674 0 4.242673 -p 5.191298 0 2.997491 -p 5.790349 0 1.551256 -p 6.000046 0 3.86931e-007 -p 5.790349 0 -1.551257 -p 5.191298 0 -2.99749 -p 4.242674 0 -4.242676 -p 2.997491 0 -5.191294 -p 1.551256 0 -5.790355 -p 0 0 -6 -k 0 -k 2 -k 4.087143 -k 6.174343 -k 8.261489 -k 10.348646 -k 12.435838 -k 14.522991 -k 16.610143 -k 18.697338 -k 20.78449 -k 22.871642 -k 24.958836 -k 27.045989 -k 29.133141 -k 31.220335 -k 33.307488 -k 35.394639 -k 37.481834 -k 39.568986 -k 41.6864 -k 48.748496 -k 55.810591 -k 58.009692 -k 59.575056 -k 61.140451 -k 62.705816 -k 64.271181 -k 65.836575 -k 67.40194 -k 68.967305 -k 70.532699 -k 72.098064 -k 73.663429 -k 75.228823 -k 76.794188 -k 78.359554 -k 79.924946 -k 81.490314 -k 83.055675 -k 84.621073 -k 86.186431 ;
+            rename ($name+"_Con");
+            scale -r 0.6 0.6 0.6;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b27 (){
+    string $sel_1[] = `ls -sl`;
+        shp27;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B27 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b27;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b27;
+    }
+} 
+//28
+          global proc shp28 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 6.000046 0 3.86931e-007 -p 5.790349 0 -1.551257 -p 5.191298 0 -2.99749 -p 4.242674 0 -4.242676 -p 2.997491 0 -5.191294 -p 1.551256 0 -5.790355 -p 0 0 -6 -p 0 6 -6 -p 1.551256 6 -5.790355 -p 2.997491 6 -5.191294 -p 4.242674 6 -4.242676 -p 5.191298 6 -2.99749 -p 5.790349 6 -1.551257 -p 6.000046 6 3.86931e-007 -p 6.000046 0 3.86931e-007 -p 5.790349 0 1.551256 -p 5.191298 0 2.997491 -p 4.242674 0 4.242673 -p 2.997491 0 5.191298 -p 1.551256 0 5.790349 -p 0 0 6.000046 -p -1.551256 0 5.790349 -p -2.997491 0 5.191298 -p -4.242674 0 4.242673 -p -5.191298 0 2.997491 -p -5.790349 0 1.551256 -p -6.000046 0 3.86931e-007 -p -6.000046 6 3.86931e-007 -p -5.790349 6 -1.551257 -p -5.191298 6 -2.99749 -p -4.242674 6 -4.242676 -p -2.997491 6 -5.191294 -p -1.551256 6 -5.790355 -p 0 6 -6 -p 0 0 -6 -p -1.551256 0 -5.790355 -p -2.997491 0 -5.191294 -p -4.242674 0 -4.242676 -p -5.191298 0 -2.99749 -p -5.790349 0 -1.551257 -p -6.000046 0 3.86931e-007 -p -6.000046 6 3.86931e-007 -p -5.790349 6 1.551256 -p -5.191298 6 2.997491 -p -4.242674 6 4.242673 -p -2.997491 6 5.191298 -p -1.551256 6 5.790349 -p 0 6 6.000046 -p 0 0 6.000046 -p 0 6 6.000046 -p 1.551256 6 5.790349 -p 2.997491 6 5.191298 -p 4.242674 6 4.242673 -p 5.191298 6 2.997491 -p 5.790349 6 1.551256 -p 6.000046 6 3.86931e-007 -k 0 -k 1.565366 -k 3.130758 -k 4.696126 -k 6.261487 -k 7.826885 -k 9.392244 -k 15.392244 -k 16.957602 -k 18.523 -k 20.088361 -k 21.653729 -k 23.219121 -k 24.784487 -k 30.784487 -k 32.349852 -k 33.915246 -k 35.480611 -k 37.045976 -k 38.61137 -k 40.176735 -k 41.7421 -k 43.307494 -k 44.872859 -k 46.438224 -k 48.003618 -k 49.568983 -k 55.568983 -k 57.134349 -k 58.699741 -k 60.265109 -k 61.83047 -k 63.395868 -k 64.961226 -k 70.961226 -k 72.526584 -k 74.091982 -k 75.657343 -k 77.222712 -k 78.788104 -k 80.35347 -k 86.35347 -k 87.918834 -k 89.484229 -k 91.049594 -k 92.614959 -k 94.180353 -k 95.745718 -k 101.745718 -k 107.745718 -k 109.311083 -k 110.876477 -k 112.441842 -k 114.007207 -k 115.572601 -k 117.137966 ; rename ($name+"_control");
+            rename ($name+"_Con");
+            scale -r 0.8 1.7 0.8;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b28 (){
+    string $sel_1[] = `ls -sl`;
+        shp28;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B28 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b28;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b28;
+    }
+} 
+//29
+          global proc shp29 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 5 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b29 (){
+    string $sel_1[] = `ls -sl`;
+        shp29;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B29 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b29;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b29;
+    }
+} 
+   
+//30
+          global proc shp30 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -3 0 -2 -p 3 0 -2 -p 3 0 2 -p -3 0 2 -p -3 0 -2 -k 0 -k 1 -k 2 -k 3 -k 4 ;
+            rename ($name+"_Con");
+            scale -r 1.6 1.6 1.6;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b30 (){
+    string $sel_1[] = `ls -sl`;
+        shp30;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B30 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b30;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b30;
+    }
+} 
+   
+//31
+          global proc shp31 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -5.006643 0 -2.016935 -p 1.044161 0 -2.016935 -p 1.044161 0 -4.033869 -p 5.07803 0 0 -p 1.044161 0 4.033869 -p 1.044161 0 2.016935 -p -5.006643 0 2.016935 -p -5.006643 0 -2.016935 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b31 (){
+    string $sel_1[] = `ls -sl`;
+        shp31;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B31 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b31;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b31;
+    }
+} 
+  
+
+//32
+          global proc shp32 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -6.959211 0 -3.533861 -p -6.968428 0 -3.588307 -p -9 0 0 -p -8.000062 0 0 -p -7.721652 0 1.819551 -p -6.899029 0 3.557233 -p -5.683812 0 4.966462 -p -4.039623 0 6.08619 -p -2.06834 0 6.820763 -p -0.00727992 0 7.066908 -p 2.029892 0 6.825354 -p 3.953868 0 6.130767 -p 5.656898 0 4.997673 -p 6.883904 0 3.574772 -p 7.720465 0 1.827307 -p 8.008921 0 0 -p 9 0 0 -p 7 0 -3.533861 -p 5 0 0 -p 6.000046 0 0 -p 5.790349 0 1.370481 -p 5.191298 0 2.648179 -p 4.242674 0 3.748254 -p 3.021385 0 4.57025 -p 1.551256 0 5.115572 -p 0 0 5.300832 -p -1.551256 0 5.115572 -p -2.972262 0 4.595564 -p -4.224503 0 3.760485 -p -5.165372 0 2.678244 -p -5.790349 0 1.370481 -p -6.000046 0 0 -p -5 0 0 -p -6.959211 0 -3.533861 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 ;
+            rename ($name+"_Con");
+            scale -r 0.622 0.622 0.7;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b32 (){
+    string $sel_1[] = `ls -sl`;
+        shp32;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B32 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b32;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b32;
+    }
+} 
+  
+//33
+          global proc shp33 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p 0 0 0 -p 0 0 -14 -p 5 0 -4 -p 0 0 -4 -k 0 -k 1 -k 2 -k 3 ;
+            rename ($name+"_Con");
+            scale -r 0.7 0.7 0.7;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b33 (){
+    string $sel_1[] = `ls -sl`;
+        shp33;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B33 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b33;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b33;
+    }
+} 
+  
+   
+//34
+          global proc shp34 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            curve -d 1 -p -2.498585 0 4.342002 -p 0.0170719 0 5.597974 -p 0.0150493 0 4.934744 -p 1.24572 0 4.779999 -p 2.467628 0 4.285306 -p 3.518591 0 3.498371 -p 4.278786 0 2.506258 -p 4.802129 0 1.279115 -p 4.981549 0 0 -p 5.598 0 0 -p 4.354 0 -2.473703 -p 3.11 0 0 -p 3.732029 0 0 -p 3.591465 0 0.983657 -p 3.215312 0 1.871573 -p 2.638943 0 2.623778 -p 1.859711 0 3.207353 -p 0.99539 0 3.568165 -p 0 0 3.710582 -p 0.00948438 0 3.109986 -p -2.498585 0 4.342002 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 ;
+            rename ($name+"_Con");
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b34 (){
+    string $sel_1[] = `ls -sl`;
+        shp34;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B34 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b34;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b34;
+    }
+} 
+  
+   
+//35
+          global proc shp35 ()
+    {
+         string $Riggest_Controllers_a[]=`ls -sl`;
+         string $name;
+         if (size($Riggest_Controllers_a)>0)
+         {
+         string $Riggest_Controllers_a_1=stringArrayToString($Riggest_Controllers_a,"_/");
+         string $Riggest_Controllers_a_3[]=stringToStringArray($Riggest_Controllers_a[0],"_/");
+	     int $Riggest_Controllers_b_4=size($Riggest_Controllers_a_3)-1;
+         string $Riggest_Controllers_b_3=$Riggest_Controllers_a_3[($Riggest_Controllers_b_4)];
+         string $Riggest_Controllers_b_b[]=stringToStringArray($Riggest_Controllers_a_1,"_");
+         string $Riggest_Controllers_b_2[]=stringArrayRemove({$Riggest_Controllers_b_3},$Riggest_Controllers_b_b);
+         $name=stringArrayToString($Riggest_Controllers_b_2,"_");
+         }
+         else $name="Riggest";
+            circle -n "GeneralCtrl01" -ch on -o on -nr 0 1 0 -r 10 ;
+            curve -d 1 -p -1 0 11 -p 1 0 11 -p 1 0 13 -p 2 0 13 -p 0 0 15 -p -2 0 13 -p -1 0 13 -p -1 0 11 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 ;
+            rename "GeneralCtrl02";
+            duplicate -n "GeneralCtrl03";
+            rotate 0 90 0;
+            makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+            duplicate -rr -n "GeneralCtrl04";
+            rotate 0 90 0;
+            makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+            duplicate -rr -n "GeneralCtrl05";
+            rotate 0 90 0;
+            makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+            parent -r -s "GeneralCtrl0Shape2" "GeneralCtrl0Shape3" "GeneralCtrl0Shape4" "GeneralCtrl0Shape5" "GeneralCtrl01";
+            delete "GeneralCtrl02" "GeneralCtrl03" "GeneralCtrl04" "GeneralCtrl05";
+            select "GeneralCtrl01";
+            makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+            delete -ch;
+            rename ($name+"_Con");
+            scale -r 0.5 0.5 0.5;
+            makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+            xform -os -piv 0 0 0;
+        group -n ($name+"_Con_Extra");
+        xform -os -piv 0 0 0;
+    }
+
+    global proc Riggest_b35 (){
+    string $sel_1[] = `ls -sl`;
+        shp35;
+        string $sel_2[] = `ls -sl`;
+        string $cons [] = `parentConstraint $sel_1 $sel_2`;
+        delete $cons;
+        lockhide;
+        int $Riggest_face_jnt = `checkBoxGrp -q -v1 facejnt`;
+        if ($Riggest_face_jnt == 1)
+        {
+        $sel_1=`listRelatives -p $sel_1`;
+        parent $sel_2 $sel_1;
+        setAttr ($sel_2[0]+".rotateZ") 0;
+        setAttr ($sel_2[0]+".scaleZ") 1;
+        }
+   }
+   global proc Riggest_B35 (){
+   string $Riggest_Sel[]=`ls -sl`;
+   if (size($Riggest_Sel)>0)
+   {
+   int $Riggest_Sel1;
+   for ($Riggest_Sel1=0;$Riggest_Sel1<size($Riggest_Sel);$Riggest_Sel1++)
+        {
+	        select $Riggest_Sel[$Riggest_Sel1];
+	        Riggest_b35;  
+        }
+    }
+    else if (size($Riggest_Sel)==0){
+        Riggest_b35;
+    }
+} 
+  
+   
+ 
+
+
+// get and set color ....................................................................................................................................................................................................
+
+global proc h_off () 
+{ 
+string $panel = `getPanel -withFocus`; 
+modelEditor -e -sel 0 -manipulators 0 $panel; 
+set; 
+} 
+
+global proc h_on () 
+{ 
+string $panel = `getPanel -withFocus`; 
+modelEditor -e -sel 1 -manipulators 1 $panel; 
+} 
+
+
+global proc set () 
+{ 
+$color1 = `intSlider -q -value cis01`; 
+string $sl [] = `ls -sl`; 
+string $obj01 ; 
+if ($color1 == 0) iconTextButton -e -bgc 0.467 0.467 0.467 clr; 
+if ($color1 == 1) iconTextButton -e -bgc 0 0 0 clr; 
+if ($color1 == 2) iconTextButton -e -bgc 0.247 0.247 0.247 clr; 
+if ($color1 == 3) iconTextButton -e -bgc 0.498 0.498 0.498 clr; 
+if ($color1 == 4) iconTextButton -e -bgc 0.608 0 0.157 clr; 
+if ($color1 == 5) iconTextButton -e -bgc 0 0.016 0.373 clr; 
+if ($color1 == 6) iconTextButton -e -bgc 0 0 1 clr; 
+if ($color1 == 7) iconTextButton -e -bgc 0 0.275 0.094 clr; 
+if ($color1 == 8) iconTextButton -e -bgc 0.145 0 0.263 clr; 
+if ($color1 == 9) iconTextButton -e -bgc 0.78 0 0.78 clr; 
+if ($color1 == 10) iconTextButton -e -bgc 0.537 0.278 0.2 clr; 
+if ($color1 == 11) iconTextButton -e -bgc 0.243 0.133 0.122 clr; 
+if ($color1 == 12) iconTextButton -e -bgc 0.6 0.145 0 clr; 
+if ($color1 == 13) iconTextButton -e -bgc 1 0 0 clr; 
+if ($color1 == 14) iconTextButton -e -bgc 0 1 0 clr; 
+if ($color1 == 15) iconTextButton -e -bgc 0 0.255 0.6 clr; 
+if ($color1 == 16) iconTextButton -e -bgc 1 1 1 clr; 
+if ($color1 == 17) iconTextButton -e -bgc 1 1 0 clr; 
+if ($color1 == 18) iconTextButton -e -bgc 0.388 0.863 1 clr; 
+if ($color1 == 19) iconTextButton -e -bgc 0.263 1 0.635 clr; 
+if ($color1 == 20) iconTextButton -e -bgc 1 0.686 0.686 clr; 
+if ($color1 == 21) iconTextButton -e -bgc 0.89 0.675 0.475 clr; 
+if ($color1 == 22) iconTextButton -e -bgc 1 1 0.384 clr; 
+if ($color1 == 23) iconTextButton -e -bgc 0 0.6 0.325 clr; 
+if ($color1 == 24) iconTextButton -e -bgc 0.627 0.412 0.188 clr; 
+if ($color1 == 25) iconTextButton -e -bgc 0.62 0.627 0.188 clr; 
+if ($color1 == 26) iconTextButton -e -bgc 0.408 0.627 0.188 clr; 
+if ($color1 == 27) iconTextButton -e -bgc 0.188 0.627 0.365 clr; 
+if ($color1 == 28) iconTextButton -e -bgc 0.188 0.627 0.627 clr; 
+if ($color1 == 29) iconTextButton -e -bgc 0.188 0.404 0.627 clr; 
+if ($color1 == 30) iconTextButton -e -bgc 0.435 0.188 0.627 clr; 
+if ($color1 == 31) iconTextButton -e -bgc 0.631 0.188 0.412 clr; 
+
+for ($obj01 in $sl) 
+{ 
+setAttr ($obj01 + ".overrideEnabled") 1; 
+setAttr ($obj01 + ".overrideColor") $color1; 
+} 
+
+} 
+
+// Mirror ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+global proc mirrorX()
+
+{
+
+string $copy = `checkBox -q -value cb01`;
+
+get;
+
+mirrorunlock;
+
+if ($copy == 1)
+
+{
+
+
+string $name01 = `textField -q -text tsName`;
+
+string $name02 = `textField -q -text trName`;
+
+
+duplicate ;
+
+searchReplaceNames $name01 $name02 "hierarchy";
+
+}
+
+group -n "controllers_mirror_grp";
+
+xform -os -piv 0 0 0;
+
+
+scale -1 1 1 ;
+
+ungroup controllers_mirror_grp;
+
+string $name01 = `textField -q -text tsName`;
+
+string $name02 = `textField -q -text trName`;
+
+searchReplaceNames $name01 $name02 "hierarchy";
+
+//makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+
+lockhide;
+
+}
+
+global proc mirrorY()
+
+{
+
+string $copy = `checkBox -q -value cb01`;
+
+get;
+
+mirrorunlock;
+
+if ($copy == 1)
+
+{
+
+string $name01 = `textField -q -text tsName`;
+
+string $name02 = `textField -q -text trName`;
+
+duplicate ;
+
+searchReplaceNames $name01 $name02 "hierarchy";
+
+}
+
+group -n "controllers_mirror_grp";
+
+xform -os -piv 0 0 0;
+
+
+scale 1 -1 1 ;
+
+
+ungroup controllers_mirror_grp;
+
+string $name01 = `textField -q -text tsName`;
+
+string $name02 = `textField -q -text trName`;
+
+searchReplaceNames $name01 $name02 "hierarchy";
+
+
+lockhide;
+
+}
+
+
+global proc mirrorZ()
+
+{
+
+string $copy = `checkBox -q -value cb01`;
+
+get;
+
+mirrorunlock;
+
+if ($copy == 1)
+
+{
+
+string $name01 = `textField -q -text tsName`;
+
+string $name02 = `textField -q -text trName`;
+
+duplicate ;
+
+searchReplaceNames $name01 $name02 "hierarchy";
+
+}
+
+group -n "controllers_mirror_grp";
+
+xform -os -piv 0 0 0;
+
+scale 1 1 -1 ;
+
+ungroup controllers_mirror_grp;
+
+string $name01 = `textField -q -text tsName`;
+
+string $name02 = `textField -q -text trName`;
+
+searchReplaceNames $name01 $name02 "hierarchy";
+
+//makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+
+lockhide;
+
+}
+
+global proc mirrorunlock ()
+
+{
+
+string $sel[] = `ls -sl`;
+
+for ($obj in $sel)
+
+setAttr -keyable true -lock false ($obj +".tx");
+
+setAttr -keyable true -lock false ($obj +".ty");
+
+setAttr -keyable true -lock false ($obj +".tz");
+
+
+setAttr -keyable true -lock false ($obj +".rx");
+
+setAttr -keyable true -lock false ($obj +".ry");
+
+setAttr -keyable true -lock false ($obj +".rz");
+
+
+setAttr -keyable true -lock false ($obj +".sx");
+
+setAttr -keyable true -lock false ($obj +".sy");
+
+setAttr -keyable true -lock false ($obj +".sz");
+
+}
+
+// lock and hide ..........................................................................................................................................................................................................
+
+global proc lockhide ()
+
+{
+
+string $tx = `checkBox -q -value tx`;
+
+string $ty = `checkBox -q -value ty`;
+
+string $tz = `checkBox -q -value tz`;
+
+
+string $rx = `checkBox -q -value rx`;
+
+string $ry = `checkBox -q -value ry`;
+
+string $rz = `checkBox -q -value rz`;
+
+
+string $sx = `checkBox -q -value sx`;
+
+string $sy = `checkBox -q -value sy`;
+
+string $sz = `checkBox -q -value sz`;
+
+
+string $v = `checkBox -q -value v`;
+
+
+string $sel [] = `ls -sl`;
+
+string $obj;
+
+
+if ($tx == 1)
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".tx");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".tx");
+
+}
+
+}
+
+
+if ($ty == 1)
+
+{
+
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".ty");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".ty");
+
+}
+
+}
+
+if ($tz == 1)
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".tz");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".tz");
+
+}
+
+}
+
+if ($rx == 1)
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".rx");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".rx");
+
+}
+
+}
+
+if ($ry == 1)
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".ry");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".ry");
+
+}
+
+}
+
+
+
+if ($rz == 1)
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".rz");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".rz");
+
+}
+
+}
+
+if ($sx == 1)
+
+{
+
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".sx");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".sx");
+
+}
+
+}
+
+if ($sy == 1)
+
+{
+
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".sy");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".sy");
+
+}
+
+}
+
+if ($sz == 1)
+
+{
+
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".sz");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".sz");
+
+}
+
+}
+
+if ($v == 1)
+
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable false -lock true ($obj +".v");
+
+}
+
+}
+
+else
+
+{
+
+for ($obj in $sel)
+
+{
+
+setAttr -keyable true -lock false ($obj +".v");
+
+}
+
+edit_t;
+
+edit_r;
+
+edit_s;
+
+}
+
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------
+
+// freeze transformations
+
+global proc freeze ()
+
+{
+
+
+makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+
+lockhide;
+
+}
+
+
+global proc fin01 ()
+{
+    makeIdentity -apply true -t 0 -r 0 -s 1 -n 0;
+    };
+
+
+// slidr maker
+
+
+
+global proc make()
+
+{
+
+if (`window -exists sm`)
+
+deleteUI -window sm;
+
+
+window -title "slider maker" -rtf 1 sm;
+
+columnLayout -adjustableColumn true sm;
+
+frameLayout -w 180 -label " Border"  Border;
+
+
+columnLayout -adjustableColumn true;
+
+separator -h 10 -style "none";
+
+intSliderGrp -field true -label "Height" -value 5 -maxValue 10 -fieldMaxValue 100 -columnWidth3 50 30 50 -adjustableColumn 3 height;
+
+intSliderGrp -field true -label "Width " -value 5 -maxValue 10 -fieldMaxValue 100 -columnWidth3 50 30 50 -adjustableColumn 3 width;
+
+
+setParent..;
+
+setParent..;
+
+separator -h 5 -style "none";
+
+frameLayout -w 180 -label " Handle"  Handle;
+
+columnLayout -adjustableColumn true;
+
+separator -h 10 -style "none";
+
+floatSliderGrp -field true -label "Size" -value 1 -maxValue 10 -fieldMaxValue 100 -columnWidth3 50 30 50 -adjustableColumn 3 size;
+
+setParent..;
+
+setParent..;
+
+separator -h 5 -style "none";
+
+button -label "Make Slider " -h 30 -c s ;
+
+
+showWindow sm;
+
+}
+
+
+global proc s ()
+
+{
+
+string $h = `intSliderGrp -q -value height`;
+
+string $w = `intSliderGrp -q -value width`;
+
+int $fh = $h;
+
+int $fw = $w;
+
+string $bor = `curve -d 1 -p -1 1 0 -p 1 1 0 -p 1 -1 0 -p -1 -1 0 -p -1 1 0 -k 0 -k 8 -k 16 -k 24 -k 32` ;
+
+
+
+
+scale $fw $fh 0;
+
+makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+
+setAttr ($bor+".overrideEnabled") 1;
+
+setAttr ($bor+".overrideColor") 6;
+
+string $size = `floatSliderGrp -q -value size`;
+
+circle -c 0 0 0 -nr 0 0 1 -sw 360 -r $size -d 3 -ut 0 -tol 0.01 -s 8 -ch 1 ;
+
+
+
+makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+
+setAttr ".overrideEnabled" 1;
+
+setAttr ".overrideColor" 17;
+
+
+delete -ch;
+
+
+string $selbor [] = `ls -sl`;
+
+for ($objbor in $selbor)
+
+{
+
+if ($fw == 0 )
+
+{
+
+setAttr -lock true -keyable false ($objbor+".tx");
+
+}
+
+if ($fh == 0 )
+
+{
+
+setAttr -lock true -keyable false ($objbor+".ty");
+
+}
+
+setAttr -lock true -keyable false ($objbor+".tz");
+
+setAttr -lock true -keyable false ($objbor+".rx");
+
+setAttr -lock true -keyable false ($objbor+".ry");
+
+setAttr -lock true -keyable false ($objbor+".rz");
+
+setAttr -lock true -keyable false ($objbor+".sx");
+
+setAttr -lock true -keyable false ($objbor+".sy");
+
+setAttr -lock true -keyable false ($objbor+".sz");
+
+setAttr -lock true -keyable false ($objbor+".v");
+
+parent $selbor $bor;
+
+transformLimits -tx (-($fw)) $fw -etx 1 1 $objbor;
+
+transformLimits -ty (-($fh)) $fh -ety 1 1 $objbor;
+
+select -cl ;
+
+}
+
+}
+
+
+// combine
+
+
+global proc combine ()
+
+{
+
+string $sl[] = `ls -sl`;
+
+makeIdentity -apply true -t 1 -r 1 -s 1 -n 0;
+
+delete -ch;
+
+string $sh []= `listRelatives -s $sl[0]`;
+
+parent -add -shape $sh $sl[1];
+
+delete $sl[0];
+
+}
+
+
+global proc schrp01 ()
+
+{
+
+performSearchReplaceNames 1;
+
+};
+
+global proc Riggest_help1()
+{
+	system("load http://weibo.com/Riggest2TD");
+	
+}
+;
+global proc Riggest_help2()
+{
+	system("load http://www.4084643.okwei.com/zsjm.html");
+	
+};
+global proc Riggest_help3()
+{
+	system("load http://www.ppdai.com/huodong/tuijian/?u=LxdNSOc2Tsk=");
+	
+};
+/*
+---------------------------ÑÕÉ«ÐÞ¸Ä
+*/
+global proc overrideDisabled() {
+    
+    string $selected[]=`ls -sl`;
+    int $amount=`size($selected)`;
+    for ($n=0; $n<$amount; $n++) {
+        setAttr ($selected[$n] + ".overrideEnabled") 0;
+    }
+};
+
+global proc overrideColor(int $Index) {
+    string $selected[]=`ls -sl`;
+    int $amount=`size($selected)`;
+    for ($n=0; $n<$amount; $n++) {
+        setAttr ($selected[$n] + ".overrideEnabled") 1;
+    };
+
+    for ($n=0; $n<$amount; $n++) {
+        setAttr ($selected[$n] + ".overrideColor") $Index;
+    }
+};
+/*
+---------------------------
+*/
+
+
+Riggest_controllers;

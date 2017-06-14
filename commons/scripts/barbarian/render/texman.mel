@@ -1,0 +1,332 @@
+global string $filePath[];
+global string $fileNode[];
+global string $oldFilePath[];
+
+global proc listFileTexPath()
+{
+	global string $filePath[];
+	global string $fileNode[];
+	global string $oldFilePath[];
+
+	$fileNode = `ls -typ file`;
+
+	for ($i=0; $i<size($fileNode) ;$i++ ){
+		$filePath[$i]=`getAttr ($fileNode[$i]+".ftn")`;
+		$filePath[$i]=`tolower $filePath[$i]`;
+	}
+	$oldFilePath=$filePath;
+}
+
+global proc string relocateName(string $originPath, string $replaceFolder)
+{
+	//string $newPath=`substitute $marker $originString $replace`;
+	string $tmp[];
+	tokenize $originPath "/" $tmp;
+	if(`substring $replaceFolder (size($replaceFolder)) (size($replaceFolder))`=="/")
+		$replaceFolder=`substring $replaceFolder 1 (size($replaceFolder)-1)`;
+	return ($replaceFolder+"/"+$tmp[size($tmp)-1]);
+}
+
+global proc string replaceName(string $originString,string $marker, string $replace)
+{
+	string $newPath=`substitute $marker $originString $replace`;
+	return ($newPath);
+}
+
+
+	string $winName = "BatchRename";
+	if(`window -exists $winName`)
+		deleteUI $winName;
+
+	window	-widthHeight 320 400
+			-title "TextureMan v0.1 beta"
+			-mxb 0
+			$winName;
+		string $tabSelectCmd=	"int $activeTab=`tabLayout -q -selectTabIndex \"tabL\"`;\n"+
+							"$activeTab--; \n if($activeTab==2)button -e -en false \"bt1\";\n"+
+							"else if ($activeTab==1)button -e -en true -c \"replaceList()\" \"bt1\";\n"+
+							"else button -e -en true -c \"relocateList()\" \"bt1\";\n";
+		formLayout -numberOfDivisions 100 "master";
+			tabLayout	-innerMarginWidth 3 
+						-innerMarginHeight 3 
+						-height 100 
+						-p "master"
+						-selectCommand $tabSelectCmd
+						"tabL";
+
+				columnLayout -adj 1 "relocateTex";
+					text -al "left" -label "Relocate Following Folder:";
+					textScrollList	-numberOfRows 4 
+					            -height 30
+								-allowMultiSelection true 
+								-doubleClickCommand	"string $de[]=`textScrollList -q -si \"sourceFolder\"`;textField -e -text $de[size($de)-1] \"destFolder\";"
+								"sourceFolder";
+					text -al "left" -label "To New Folder";
+					textField "destFolder";
+				setParent ..;
+				columnLayout -adj 1 "findReplace";
+					text -al "left" -label "Find Text in texture path:";
+					textField "find";
+					text -al "left" -label "To new text:";
+					textField "replace";
+				setParent ..;
+				columnLayout -adj 1 "about";
+					scrollField		-wordWrap true -editable false -numberOfLines 5 -h 100 -fn "smallPlainLabelFont"
+    								-text "TextureMan Version 0.1 Beta\nBy Dogdays 1-27-2003\n\nUse it to batch rename texture path and copy texture to desired location. Beware to use \"/\" instead of \"\\\". eg: Use c:/dir/ instead of c:\\dir\\\n\Enjoy!\nIf you have any questions,pls mail: shirt@netease.com" ;
+				setParent ..;
+			tabLayout -e -tabLabel "relocateTex" "Relocate Texture" 
+					-tabLabel "findReplace" "Find Replace Path"
+					-tabLabel "about" "About TextureMan"
+					"tabL";
+			setParent ..;
+			checkBox -label "Automatic copy unexist Texture" 
+							-al "left" 
+							-v 0
+							"copyTex";
+			checkBox -label "Force Overwrite Destination Texture" 
+							-al "left" 
+							-v 0
+							"overWrite";
+			button -label "Replace Now!" -c "relocateList()" "bt1";
+
+			string $spName=`text -label "Texture Path List" -al "left" `;
+
+			textScrollList	//-numberOfRows 15
+						-allowMultiSelection true
+						-selectCommand "updateSourcePath()"
+						-doubleClickCommand "setPath()"
+						"filePathList";
+			string $btName2=`button -label "Refresh it!" -c "refreshList()" `;
+			button -label "Commit and Write to Scene" 
+				-c "int $ov=`checkBox -q -v \"overWrite\"`;int $cp=`checkBox -q -v \"copyTex\"`;commitList($cp,$ov)" 
+				"btCommit";
+			
+		formLayout -e 
+			-attachForm	"tabL"	"top"	3
+			-attachForm	"tabL"	"left"	3
+			-attachForm	"tabL"	"right"	3  
+			-attachNone	"tabL"	"bottom"	
+
+			-attachControl	"copyTex"		"top"	3	"tabL"
+			-attachForm	"copyTex"		"left"	3
+			-attachForm	"copyTex"		"right"	3	
+			-attachNone	"copyTex"		"bottom"
+
+			-attachControl	"overWrite"	"top"	3	"copyTex"	
+			-attachForm	"overWrite"	"left"	3
+			-attachForm	"overWrite"	"right"	3	
+			-attachNone	"overWrite"	"bottom"
+
+			-attachControl	"bt1"	"top"	3	"overWrite"
+			-attachForm	"bt1"	"left"	3
+			-attachForm	"bt1"	"right"	3
+			-attachNone	"bt1"	"bottom"
+
+			-attachControl	$spName		"top"	6	"bt1"
+			-attachForm	$spName		"left"	3
+			-attachForm	$spName		"right"	3
+			-attachNone	$spName		"bottom"	
+
+			-attachControl	"filePathList"	"top"	2	$spName
+			-attachForm	"filePathList"	"left"	3
+			-attachForm	"filePathList"	"right"	3
+			-attachControl	"filePathList"	"bottom"	2	$btName2
+
+			-attachNone	$btName2	"top"	
+			-attachForm	$btName2	"left"	3
+			-attachForm	$btName2	"right"	3
+			-attachControl	$btName2	"bottom"	3	"btCommit"
+
+			-attachNone	"btCommit"	"top"	
+			-attachForm	"btCommit"	"left"	3
+			-attachForm	"btCommit"	"right"	3
+			-attachForm	"btCommit"	"bottom"	3	
+
+			"master";
+
+			refreshList();
+
+	showWindow $winName;
+
+
+
+global proc refreshList()
+{
+	listFileTexPath();
+	global string $filePath[];
+	textScrollList -e -removeAll "filePathList";
+	for ($l in $filePath ){
+		textScrollList -e -append $l "filePathList";
+	}
+}
+
+global proc relocateList()
+{
+	global string $filePath[];
+	//global string $fileNode[];
+
+	//string $findText=`textField -q -text "find"`;
+	string $originPath[]=`textScrollList -q -si "sourceFolder"`;
+	string $replaceText=`textField -q -text "destFolder"`;
+	$replaceText=`tolower $replaceText`;
+
+	if (size($replaceText)==0){
+		errormsg("Destination Folder");
+		return;
+	}
+
+	int $selPath[]=`textScrollList -q -sii "filePathList"`;
+	string $tmp;
+
+	if (size($selPath)==0){
+		for ($i=0; $i<size($filePath) ;$i++ )
+			$selPath[$i]=$i;
+	}else{
+		for ($i=0;$i<size($selPath) ;$i++ )
+			$selPath[$i]-=1;
+	}
+
+	for ($l in $selPath)	{
+		if(texInclude($originPath,dirname($filePath[$l])))
+			$filePath[$l]=relocateName($filePath[$l],$replaceText);
+	}
+
+	textScrollList -e -removeAll "filePathList";
+	for ($f in $filePath )
+		textScrollList -e -append $f "filePathList";
+	return;
+}
+
+global proc replaceList()
+{
+	global string $filePath[];
+	//global string $fileNode[];
+
+	string $findText=`textField -q -text "find"`;
+	string $replaceText=`textField -q -text "replace"`;
+	$findText=`tolower $findText`;
+	$replaceText=`tolower $replaceText`;
+
+	if (size($findText)==0){
+		errormsg("Find Path Field");
+		return;
+	}
+
+	int $selPath[]=`textScrollList -q -sii "filePathList"`;
+	string $tmp;
+
+	if (size($selPath)==0){
+		for ($i=0; $i<size($filePath) ;$i++ )
+			$selPath[$i]=$i;
+	}else{
+		for ($i=0;$i<size($selPath) ;$i++ )
+			$selPath[$i]-=1;
+	}
+
+	for ($l in $selPath)	{
+		$filePath[$l]=replaceName($filePath[$l],$findText,$replaceText);
+	}
+
+	textScrollList -e -removeAll "filePathList";
+	for ($f in $filePath )
+		textScrollList -e -append $f "filePathList";
+	return;
+}
+
+global proc commitList(int $cp,int $ov)
+{
+	global string $filePath[];
+	global string $fileNode[];
+	global string $oldFilePath[];
+
+	//int $activeTab=`tabLayout -q -selectTabIndex \"tabL\"`;
+	//$activeTab--;
+	//if ($activeTab)
+	//else string $dirName=`textField -q -text "destFolder"`;
+	//if($cp)sysFile -makeDir $dirName;
+	
+	for ($i=0; $i<size($filePath);$i++){
+		if($cp){
+			string $dirName=dirname($filePath[$i]);
+			sysFile -makeDir $dirName;
+			if ($ov){
+				if($filePath[$i]!=$oldFilePath[$i])sysFile -copy $filePath[$i] $oldFilePath[$i];
+			}else if(!`file -q -exists $filePath[$i]`){
+				if($filePath[$i]!=$oldFilePath[$i])sysFile -copy $filePath[$i] $oldFilePath[$i];
+			}
+		}
+		setAttr -type "string" ($fileNode[$i]+".fileTextureName") $filePath[$i];
+	}
+	confirmDialog -title "Confirm" -message "Update Successful";
+}
+
+global proc errormsg(string $f)
+{
+	confirmDialog -title "Error" -message ("Must enter a value in "+$f);
+}
+
+global proc string translatePath(string $path)
+{
+	string $tmp[];
+	string $finalString;
+	tokenize $path "/" $tmp;
+	for($t in $tmp){
+		$finalString+="\\";
+		$finalString+=$t;
+	}		
+	return $finalString;
+}
+
+global proc updateSourcePath()
+{
+	string $selPath[]=`textScrollList -q -si "filePathList"`;
+	string $pathList[];
+	for ($sel in $selPath ){
+		$sel=dirname($sel);
+		$pathList=appendPath($pathList,$sel);
+	}
+	textScrollList -e -removeAll "sourceFolder";
+	for ($p in $pathList)
+		textScrollList -e -append $p "sourceFolder";
+}
+
+global proc string[] appendPath(string $pathList[],string $sel)
+{	
+	for ($p in $pathList ){
+		if ($p == $sel)
+			return $pathList;
+	}
+	$pathList[size($pathList)]=$sel;
+	return $pathList;
+}
+
+global proc int texInclude(string $origin[],string $dest)
+{
+	if (!size($origin))return 1;
+	for($o in $origin)
+		if ($o==$dest)return 1;
+	return 0;
+}
+
+global proc setPath()
+{
+	global string $filePath[];
+	int $id[]=`textScrollList -q -sii "filePathList"`;
+	string $result = `promptDialog
+    					-title "Set Texture Path"
+    					-message "Modify texture path:"
+					-text $filePath[$id[size($id)-1]-1]
+					-button "OK" -button "Cancel"
+    					-defaultButton "OK" -cancelButton "Cancel"
+    					-dismissString "Cancel"`;
+
+	if ($result == "OK") {
+    		$filePath[$id[size($id)-1]-1] = `promptDialog -query -text`;
+		//print $filePath[$id[size($id)-1]];
+		textScrollList -e -removeAll "filePathList";
+		for ($f in $filePath )
+			textScrollList -e -append $f "filePathList";
+	}
+}
+
+texman;

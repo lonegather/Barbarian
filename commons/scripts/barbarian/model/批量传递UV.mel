@@ -1,0 +1,46 @@
+
+global proc callUvOneToN() {
+	
+	string $objSel[] = `ls -sl`;
+	
+	int $numSel = size($objSel);
+	
+	if ($numSel <= 1) {
+		confirmDialog -title "Message" -message "至少选择两个物体吧?" -button "OK" -defaultButton "OK";
+		return;
+	}
+	
+	string $source = $objSel[$numSel-1];
+	
+	string $str = "";
+	
+	int $i;
+		
+	for ($i=0; $i<$numSel-1; $i++) {
+		
+		//if (`nodeType $objSel[$i]` == "mesh") {
+		polyTransfer -vc 0 -uv 1 -v 0-ao $source $objSel[$i];
+		//}
+	}
+}
+
+
+if(`window -ex FY_tool_3UV`) deleteUI FY_tool_3UV; 
+
+
+window -title "批量传递UV" -w 250 -h 100 -sizeable 0 -tlb 0 FY_tool_3UV;
+rowColumnLayout -numberOfColumns 1  ;
+text -l "";
+text -l "";
+text -fn "boldLabelFont" -l "       选择所有物体，UV将会以最后选择的物体为准       ";
+
+text -l "";
+
+text -l "";
+button -l "执行" -c "callUvOneToN()";
+text -l "";
+text -l "";
+setParent ..;
+
+window -e -w 250 -h 10 FY_tool_3UV;
+showWindow FY_tool_3UV;

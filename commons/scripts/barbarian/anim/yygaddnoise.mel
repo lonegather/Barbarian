@@ -1,0 +1,155 @@
+//==============解决重名问题=====================================
+
+global proc yydelete()
+{
+string $nameRe[];
+//-------------------------
+string $name1[]=`keyframe -q -name -sl`;
+int  $ssize;
+string $old1;
+
+for($i=0;$i<`size $name1`;$i++)
+{
+$ssize=`size $name1[$i]`;
+$old1=`substring $name1[$i] $ssize $ssize`;
+
+if ($old1=="A")
+{
+string $linknameB[]=`listConnections -p 1 ($name1[$i]+".output")`;
+
+//tokenize ($linknameB[0]) ":" $nameRe;
+// print $nameRe;
+
+delete ($name1[$i]);
+
+int $size=`size $name1[$i]`-1;
+$name1[$i]=`substring $name1[$i] 1 $size`;
+// print $name1[0];
+
+connectAttr -f ($name1[$i] + ".output") $linknameB[0];
+
+}
+}
+for($i=0;$i<`size $name1`;$i++)
+{
+select -add $name1[$i];
+selectKey -add -k ($name1[$i]) ;}
+}
+
+//==============================================================================
+global proc yyapply()
+{
+int $spa;
+int $first;
+int $last;
+int $curren;
+int $j;
+float $qiangdu;
+float $min,$max,$value;
+
+if (`floatSliderGrp -exists qiangdu`)
+{
+ $qiangdu = `floatSliderGrp -q -v qiangdu`;
+}
+else
+{
+error("请输入Noise强度");
+}
+if (`intSliderGrp -exists pinlv`)
+{
+$spa= `intSliderGrp -q -v pinlv`;
+}
+else
+{
+error("请输入Noise频率");
+}
+$min=-$qiangdu;
+$max=$qiangdu;
+
+//--------------------------------
+yydelete;
+//--------------------------------
+string $nameRa[];
+string $nameRRa[];
+string $nameRb[];
+string $nameRc[];
+string $tempp[];
+string $nameAAA[];
+string $name[]=`keyframe -q -name -sl`;
+
+for ($i=0;$i<`size $name`;$i++ )
+{
+//------------------------------------------------------
+string $linknameA[]=`listConnections -p 1 ($name[$i]+".output")`;
+//---------------------------------------------------
+select -r $name[$i];
+$nameAAA[$i] = $name[$i] + "A";
+duplicate -rr -n $nameAAA[$i];
+//-------------------------------------------------------
+$first=`findKeyframe -which  first`;  
+$last=`findKeyframe -which  last` ;
+
+connectAttr -f ($nameAAA[$i] +".output") $linknameA[0];
+
+bakeResults -simulation true -t ($first+":"+$last) -sampleBy $spa -disableImplicitControl true -preserveOutsideKeys true -sparseAnimCurveBake false $linknameA[0];
+ $j=1;
+$curren=$first+$spa*$j;
+while ($curren<=$last)
+{
+currentTime $curren;
+$value=`getAttr $linknameA[0]`+rand($min,$max);
+setAttr $linknameA[0] $value;
+setKeyframe $linknameA[0];
+$j++;
+$curren=$first+$spa*$j;
+
+}
+select -cl;
+}
+//============================================
+for($i=0;$i<`size $name`;$i++ ){
+selectKey -add -k ($name[$i]+"A"); 
+select -add ($name[$i]+"A");
+}
+}
+//===========================================
+
+global proc yygaddnoise()
+{
+
+	if(`window -q -ex yyaddnoiseUI`)
+		deleteUI yyaddnoiseUI;
+	string $window = `window -title "Add Noise"
+    		-iconName "Add Noise"
+    		-widthHeight 50 60
+		yyaddnoiseUI`;
+   	string $parent = `columnLayout -adjustableColumn true`;
+ 		text -label "请在GraphEditor里选择你需要添加noise的曲线";
+      		
+		floatSliderGrp
+ 		-label "Noise 强度:"
+		-field 1
+		-pre  4
+		-v 1
+		-min 0
+		-max 20
+		qiangdu
+		;
+		intSliderGrp
+ 		-label "Noise 频率:"
+ 		//-text 4 pinlv;
+		-field 1
+		-v 3
+		-min 1
+		-max 20
+		pinlv
+		;
+  	 	button -label "添加 noise" -command ("yyapply");
+		separator;
+		button -label "删除 noise" -command ("yydelete");
+		separator;
+		setParent ..;
+	showWindow $window;
+	window -e -wh 400 140 $window;
+}
+yygaddnoise;

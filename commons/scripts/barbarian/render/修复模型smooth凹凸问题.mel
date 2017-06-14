@@ -1,0 +1,77 @@
+
+global proc smooth_fix(){
+string $old_mesh[]=`ls -sl`;
+
+int $num_old_mesh=`size($old_mesh)`;
+
+for ($i=0;$i<$num_old_mesh;$i++){
+select -r $old_mesh[$i];
+string $smooth_node[]=`listConnections  ($old_mesh[$i]+".inMesh")`;
+if(`size($smooth_node)`>0){
+for ($test_sm in $smooth_node){
+
+ if(`nodeType $test_sm`== "polySmoothFace" )
+ {setAttr ($test_sm+".divisions") 0;}  
+}
+}
+
+
+string $dup_meshs[]=`duplicate -n ($old_mesh[$i]+"_fix")`;
+
+setAttr -lock 0 ($dup_meshs[0]+".tx");
+setAttr -lock 0 ($dup_meshs[0]+".ty");
+setAttr -lock 0 ($dup_meshs[0]+".tz");
+setAttr -lock 0 ($dup_meshs[0]+".rx");
+setAttr -lock 0 ($dup_meshs[0]+".ry");
+setAttr -lock 0 ($dup_meshs[0]+".rz");
+setAttr -lock 0 ($dup_meshs[0]+".sx");
+setAttr -lock 0 ($dup_meshs[0]+".sy");
+setAttr -lock 0 ($dup_meshs[0]+".sz");
+
+
+setAttr ($old_mesh[$i]+".visibility") 0;
+
+
+
+
+
+float $old_mesh_piv[]=`xform -q -ws -t ($old_mesh[$i]+".vtx[0]")`;
+
+ConvertSelectionToVertices;
+
+
+move -r (-$old_mesh_piv[0]) (-$old_mesh_piv[1]) (-$old_mesh_piv[2]);
+
+
+
+
+move -r $old_mesh_piv[0] $old_mesh_piv[1] $old_mesh_piv[2] $dup_meshs[0];
+
+select -r $dup_meshs[0];
+
+select -add $old_mesh[$i];
+
+
+CreateWrap ;
+
+
+
+print "已修复模型，可smooh渲染。\n";}
+}
+
+if(`window -ex FY_tool_715`) deleteUI FY_tool_715; 
+
+
+window -title "修复模型smooth凹凸问题"  -wh 200 100 -sizeable 0 -tlb 0 FY_tool_715 ;
+columnLayout -adjustableColumn true;
+text -l "";
+text -l "";
+text -fn "boldLabelFont" -l "    修复模型smooth后不正常凹凸现象 \n \n- 选择所有出现问题的模型   ";
+text -l "";
+text -l "";
+button -l "执行" -c "smooth_fix()";
+text -l "";
+text -l "";
+setParent ..; 
+window -e -wh 280 130 FY_tool_715;  
+showWindow FY_tool_715;

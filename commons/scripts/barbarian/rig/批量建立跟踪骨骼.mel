@@ -1,0 +1,48 @@
+
+global proc creatFjoint(){
+string $hehe[]=`ls -sl -fl`;
+int $num_he=`size($hehe)`;
+select -cl;
+   
+
+
+for($hei=0;$hei<$num_he;$hei++)
+{
+    
+string $temp_name=("_bone_"+$hehe[$hei]);
+string $newJNT_tmp= `substring $temp_name 1 (size($temp_name)-1)`;
+string $newJNT=`joint -p 0 0 0 -n $newJNT_tmp` ;
+
+select -cl;
+select $newJNT;
+//parent -w $newJNT;
+group; xform -os -piv 0 0 0;
+
+
+string $newGRP =`rename ($newJNT+"_grp")`;
+
+
+select -cl;
+
+select -r $hehe[$hei];
+select -add $newGRP;
+doCreatePointOnPolyConstraintArgList 1 { "0","0","0","1","","0" };
+
+select -cl;
+
+
+}}
+
+if(`window -ex FY_tool_3cre`) {deleteUI FY_tool_3cre;} 
+
+
+window -title "批量建立跟踪骨骼" -sizeable 1 -tlb 0 FY_tool_3cre;
+rowColumnLayout -numberOfColumns 1 ;
+  text -l "";
+
+  text -label "===框选模型的点(模型的UV不能重叠)===";
+    text -l "";
+button -label "执行" -recomputeSize 1 -w 180 -command "creatFjoint()";
+
+setParent ..;   
+showWindow FY_tool_3cre;

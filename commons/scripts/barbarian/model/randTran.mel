@@ -1,0 +1,104 @@
+if(`window -ex YRkeyframe`){deleteUI YRkeyframe;}
+window -t "嘢人随机动画脚本" YRkeyframe;
+
+rowColumnLayout -numberOfColumns 3 ;
+text -label "位置X轴";
+floatField flo1;
+floatField flo2;
+text -label "位置Y轴";
+floatField flo3;
+floatField flo4;
+
+text -label "位置Z轴";
+floatField flo5;
+floatField flo6;
+
+text -label "旋转X轴";
+floatField flo7;
+floatField flo8;
+
+text -label "旋转Y轴";
+floatField flo9;
+floatField flo10;
+
+text -label "旋转Z轴";
+floatField flo11;
+floatField flo12;
+
+
+text -label "缩放轴";
+floatField flo13;
+floatField flo14;
+
+
+
+setParent ..;
+
+
+columnLayout -adjustableColumn true ;
+button -height 30 -width 150 -command "randomKeyFrame" -label "设置";
+
+
+showWindow YRkeyframe;
+window -e -widthHeight 300 250 YRkeyframe;
+
+
+
+
+global proc randomKeyFrame(){
+string $sel[] = `ls -sl`;
+
+float $kftx = `floatField -q -v flo1`;
+float $kfTX = `floatField -q -v flo2`;
+
+float $kfty = `floatField -q -v flo3`;
+float $kfTY = `floatField -q -v flo4`;
+
+float $kftz = `floatField -q -v flo5`;
+float $kfTZ = `floatField -q -v flo6`;
+
+float $kfrx = `floatField -q -v flo7`;
+float $kfRX = `floatField -q -v flo8`;
+
+float $kfry = `floatField -q -v flo9`;
+float $kfRY = `floatField -q -v flo10`;
+
+float $kfrz = `floatField -q -v flo11`;
+float $kfRZ = `floatField -q -v flo12`;
+
+float $kfsx = `floatField -q -v flo13`;
+float $kfSX = `floatField -q -v flo14`;
+
+
+
+
+for ($i=0;$i<size($sel);$i++){
+
+float $translateX = rand($kftx,$kfTX);
+float $translateY = rand($kfty,$kfTY);
+float $translateZ = rand($kftz,$kfTZ);
+float $rotateX = rand($kfrx,$kfRX);
+float $rotateY = rand($kfry,$kfRY);
+float $rotateZ = rand($kfrz,$kfRZ);
+float $scaleX = rand($kfsx,$kfSX);
+
+
+
+
+setAttr ($sel[$i]+".tx") $translateX;
+setAttr ($sel[$i]+".ty") $translateY;
+setAttr ($sel[$i]+".tz") $translateZ;
+setAttr ($sel[$i]+".rx") $rotateX;
+setAttr ($sel[$i]+".ry") $rotateY;
+setAttr ($sel[$i]+".rz") $rotateZ;
+setAttr ($sel[$i]+".sx") $scaleX;
+setAttr ($sel[$i]+".sy") $scaleX;
+setAttr ($sel[$i]+".sz") $scaleX;
+
+
+
+
+
+
+
+}}

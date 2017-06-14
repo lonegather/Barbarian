@@ -1,0 +1,28 @@
+////Create a joint at the center of selected vertices
+
+//Convert selection to vertices
+
+global proc worldJoint(){
+
+
+ConvertSelectionToVertices;hilite;	selectType -ocm -alc false;selectType -ocm -polymeshVertex true;
+
+//Find selection of componenets
+string $selVert[] = `ls -sl -fl`;
+    
+    //Create a cluster
+    string $cl[] = `newCluster " -relative -envelope 1"`;
+    //Create a world joint
+    select -cl;
+    string $jnt = `joint`;
+    //Point Constraint the joint to the cluster
+    string $ptCnsJnt[] = `pointConstraint $cl $jnt`;
+    //Find the Point Constraint
+    string $findPtCns[] = `listRelatives -type pointConstraint $jnt`;
+    //Select and delete the Point Constrain and cluster
+    select $findPtCns[0] $cl[0]; doDelete;
+    //Select the joint
+    select -cl; select $jnt;
+}
+
+worldJoint;    

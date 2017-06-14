@@ -1,0 +1,116 @@
+global proc gg_colorUI(){
+$gg_color = "Ctrl_color";
+if(`window -ex $gg_color `)
+	deleteUI $gg_color ;
+window $gg_color ;
+int $rows = 2, $columns = 16; //ÊýÁ¿ 16*2 
+int $cellWidth = 18, $cellHeight = 40; 
+		columnLayout -adj 1;
+frameLayout  -label "Ctrl Color";
+		columnLayout ;
+		separator -style "none";
+      	                // create and initialize palette
+                        palettePort -dimensions $columns $rows
+                              -width ($cellWidth * $columns)
+		              -height $cellHeight -dragCallback "beCCC_dragColor"
+                              -ced 0 -td 1 -at 32 -setCurCell 0 gg_colorPaletteControl; //23
+                        initPalette  gg_colorPaletteControl;
+                        palettePort -edit -t 23 gg_colorPaletteControl ;
+		separator -style "none";
+		setParent..;
+		setParent..;
+              button -l "Change Colors" -c "gg_ChangeColor normal mainPalette" ;
+setParent ..;
+
+
+showWindow $gg_color ;
+window -e -w 300 -h 80 $gg_color;
+}
+
+proc colorOverride (string $list[], int $color){
+        string $shape[], $layer[], $colorNode;
+        
+        for ($node in $list){
+        //determine shape node
+        $shape = `listRelatives -f -s $node`;
+        if (size($shape) == 0){
+                //transform only
+                $colorNode = $node;
+        }else{
+                //shape node
+                $colorNode = $shape[0];
+        }
+        //determine layer
+        $layer = `listConnections -t displayLayer $colorNode`;
+        //disconnect layer if exists
+        if (size($layer) != 0)
+                disconnectAttr  ($layer[0] + ".drawInfo") ($colorNode + ".drawOverride");
+
+        setAttr ($colorNode + ".overrideEnabled") 1;
+        setAttr ($colorNode + ".overrideColor") $color;
+        }
+        print "Color override complete.\n";
+}
+
+global proc gg_ChangeColor (string $type, string $palette){
+        string $list[];
+        int $color;
+        if ($type == "normal")
+                $list = `ls -sl`;
+        if ($type == "advance")
+                $list =  `textScrollList -q -si gg_nodeList`;
+        if ($color == 24){ //Index 24 change to transperant
+                warning "Color chosen is not available";
+                return;
+        }
+        if ($palette == "mainPalette"){
+                $color = `palettePort -q -scc gg_colorPaletteControl`+ 1;
+                if ($color > 24)$color = $color - 1; // Take in consideration of transparent nodes by -1
+        }
+        if ($palette == "leftPalette")
+                $color = `intField -q -v gg_lfColorValue`;
+        if ($palette == "centerPalette")
+                $color = `intField -q -v gg_cnColorValue`;
+        if ($palette == "rightPalette")
+                $color = `intField -q -v gg_rtColorValue`;
+        colorOverride ($list, $color);
+}
+
+proc colorOverride (string $list[], int $color){
+        string $shape[], $layer[], $colorNode;
+        
+        for ($node in $list){
+        //determine shape node
+        $shape = `listRelatives -f -s $node`;
+        if (size($shape) == 0){
+                //transform only
+                $colorNode = $node;
+        }else{
+                //shape node
+                $colorNode = $shape[0];
+        }
+        //determine layer
+        $layer = `listConnections -t displayLayer $colorNode`;
+        //disconnect layer if exists
+        if (size($layer) != 0)
+                disconnectAttr  ($layer[0] + ".drawInfo") ($colorNode + ".drawOverride");
+
+        setAttr ($colorNode + ".overrideEnabled") 1;
+        setAttr ($colorNode + ".overrideColor") $color;
+        }
+        print "Color override complete.\n";
+}
+global proc initPalette( string $palette )
+{
+    if (`palettePort -exists $palette`) {
+		for ($i=1; $i<=31; $i++ ) {
+			float $tmp[] = `colorIndex -q $i`;
+			if ($i<=23)
+                        palettePort -e -r -rgb ($i-1) $tmp[0] $tmp[1] $tmp[2] $palette;
+                        else
+                        palettePort -e -r -rgb ($i) $tmp[0] $tmp[1] $tmp[2] $palette;
+		}
+	}
+}
+
+gg_colorUI;

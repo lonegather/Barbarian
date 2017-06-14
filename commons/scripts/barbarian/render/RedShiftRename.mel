@@ -1,0 +1,284 @@
+global proc redShiftText(){
+    
+
+    string $tt = `getAttr "defaultRenderGlobals.imageFilePrefix"`;
+   
+//    string $redshiftAov[] = {"rsAov_WorldPosition", "rsAov_VolumeLighting,rsAov_VolumeFogTint","rsAov_VolumeFogEmission",
+//                            "rsAov_TranslucencyLightingRaw","rsAov_TranslucencyGIRaw1","rsAov_TranslucencyFilter",
+//                            "rsAov_TotalTranslucencyLightingRaw","rsAov_TotalDiffuseLightingRaw","rsAov_SubSurfaceScatter",
+//                            "rsAov_SpecularLighting","rsAov_Shadows","rsAov_RefractionsRaw"};
+                            
+    string $rsw = `attributeExists "filePrefix" rsAov_WorldPosition`;
+    string $rsvl = `attributeExists "filePrefix" rsAov_VolumeLighting`;
+    string $rsvft = `attributeExists "filePrefix" rsAov_VolumeFogTint`;
+    string $vfe = `attributeExists "filePrefix" rsAov_VolumeFogEmission`;
+    string $tlr = `attributeExists "filePrefix" rsAov_TranslucencyLightingRaw`;
+    string $tg = `attributeExists "filePrefix" rsAov_TranslucencyGIRaw`;
+    string $tf = `attributeExists "filePrefix" rsAov_TranslucencyFilter`;
+    string $ttl = `attributeExists "filePrefix" rsAov_TotalTranslucencyLightingRaw`;
+    string $tdl = `attributeExists "filePrefix" rsAov_TotalDiffuseLightingRaw`;
+    string $sss = `attributeExists "filePrefix" rsAov_SubSurfaceScatter`;
+    string $sl = `attributeExists "filePrefix" rsAov_SpecularLighting`;
+    string $s = `attributeExists "filePrefix" rsAov_Shadows`;
+    string $rr = `attributeExists "filePrefix" rsAov_RefractionsRaw`;
+    string $rf = `attributeExists "filePrefix" rsAov_RefractionsFilter`;
+    string $r = `attributeExists "filePrefix" rsAov_Refractions`;
+    string $rc = `attributeExists "filePrefix" rsAov_Reflections`;
+    string $pm = `attributeExists "filePrefix" rsAov_PuzzleMatte`;
+    string $sp = `attributeExists "filePrefix" rsAov_Object_SpacePositions`;
+    string $sbn = `attributeExists "filePrefix" rsAov_Object_SpaceBumpNormals`;
+    string $oid = `attributeExists "filePrefix" rsAov_ObjectID`;
+    string $n = `attributeExists "filePrefix" rsAov_Normals`;
+    string $mv = `attributeExists "filePrefix" rsAov_MotionVectors`;
+    string $m = `attributeExists "filePrefix" rsAov_Matte`;
+    string $gir = `attributeExists "filePrefix" rsAov_GlobalIlluminationRaw`;
+    string $gi = `attributeExists "filePrefix" rsAov_GlobalIllumination`;
+    string $e = `attributeExists "filePrefix" rsAov_Emission`;
+    string $dlr = `attributeExists "filePrefix" rsAov_DiffuseLightingRaw`;
+    string $dl = `attributeExists "filePrefix" rsAov_DiffuseLighting`;
+    string $df = `attributeExists "filePrefix" rsAov_DiffuseFilter`;
+    string $d = `attributeExists "filePrefix" rsAov_Depth`;
+    string $cr = `attributeExists "filePrefix" rsAov_CausticsRaw`;
+    string $c = `attributeExists "filePrefix" rsAov_Caustics`;
+    string $bn = `attributeExists "filePrefix" rsAov_BumpNormals`;
+    string $ao = `attributeExists "filePrefix" rsAov_AmbientOcclusion`;
+    string $rlf = `attributeExists "filePrefix" rsAov_ReflectionsFilter`;
+    string $rlr = `attributeExists "filePrefix" rsAov_ReflectionsRaw`;
+    
+
+    if ($rsw == 1) {
+       
+    setAttr -type "string" rsAov_WorldPosition.filePrefix $tt;
+
+    }
+     
+    if ($rsvl == 1) {
+       
+    setAttr -type "string" rsAov_VolumeLighting.filePrefix $tt;
+
+    }
+
+    if ($rsvft == 1) {
+       
+    setAttr -type "string" rsAov_VolumeFogTint.filePrefix $tt;
+
+    }
+     
+    if ($vfe == 1) {
+       
+    setAttr -type "string" rsAov_VolumeFogEmission.filePrefix $tt;
+
+    }
+
+    if ($tlr == 1) {
+       
+    setAttr -type "string" rsAov_TranslucencyLightingRaw.filePrefix $tt;
+
+    }
+     
+    if ($tg == 1) {
+       
+    setAttr -type "string" rsAov_TranslucencyGIRaw.filePrefix $tt;
+
+    }
+
+    if ($tf == 1) {
+       
+    setAttr -type "string" rsAov_TranslucencyFilter.filePrefix $tt;
+
+    }
+     
+    if ($ttl == 1) {
+       
+    setAttr -type "string" rsAov_TotalTranslucencyLightingRaw.filePrefix $tt;
+
+    }
+    
+    if ($tdl == 1) {
+       
+    setAttr -type "string" rsAov_TotalDiffuseLightingRaw.filePrefix $tt;
+
+    }
+     
+    if ($sss == 1) {
+       
+    setAttr -type "string" rsAov_SubSurfaceScatter.filePrefix $tt;
+
+    }
+    
+    if ($sl == 1) {
+       
+    setAttr -type "string" rsAov_SpecularLighting.filePrefix $tt;
+
+    }
+     
+    if ($s == 1) {
+       
+    setAttr -type "string" rsAov_Shadows.filePrefix $tt;
+
+    }
+    
+    if ($rr == 1) {
+       
+    setAttr -type "string" rsAov_RefractionsRaw.filePrefix $tt;
+
+    }
+     
+    if ($rf == 1) {
+       
+    setAttr -type "string" rsAov_RefractionsFilter.filePrefix $tt;
+
+    }
+
+    if ($r == 1) {
+       
+    setAttr -type "string" rsAov_Refractions.filePrefix $tt;
+
+    }
+     
+    if ($rc == 1) {
+       
+    setAttr -type "string" rsAov_Reflections.filePrefix $tt;
+
+    }
+    
+    if ($pm == 1) {
+       
+    setAttr -type "string" rsAov_PuzzleMatte.filePrefix $tt;
+
+    }
+     
+    if ($sp == 1) {
+       
+    setAttr -type "string" rsAov_Object_SpacePositions.filePrefix $tt;
+
+    }
+    
+    if ($sbn == 1) {
+       
+    setAttr -type "string" rsAov_Object_SpaceBumpNormals.filePrefix $tt;
+
+    }
+     
+    if ($oid == 1) {
+       
+    setAttr -type "string" rsAov_ObjectID.filePrefix $tt;
+
+    }
+    
+    if ($n == 1) {
+       
+    setAttr -type "string" rsAov_Normals.filePrefix $tt;
+
+    }
+    
+    if ($mv == 1) {
+       
+    setAttr -type "string" rsAov_MotionVectors.filePrefix $tt;
+
+    }
+     
+    if ($m == 1) {
+       
+    setAttr -type "string" rsAov_Matte.filePrefix $tt;
+
+    }
+    
+    if ($gir == 1) {
+       
+    setAttr -type "string" rsAov_GlobalIlluminationRaw.filePrefix $tt;
+
+    }
+     
+    if ($gi == 1) {
+       
+    setAttr -type "string" rsAov_GlobalIllumination.filePrefix $tt;
+
+    }
+    
+    if ($e == 1) {
+       
+    setAttr -type "string" rsAov_Emission.filePrefix $tt;
+
+    }
+    
+    if ($dlr == 1) {
+       
+    setAttr -type "string" rsAov_DiffuseLightingRaw.filePrefix $tt;
+
+    }
+     
+    if ($dl == 1) {
+       
+    setAttr -type "string" rsAov_DiffuseLighting.filePrefix $tt;
+
+    }
+    
+    if ($df == 1) {
+       
+    setAttr -type "string" rsAov_DiffuseFilter.filePrefix $tt;
+
+    }
+     
+    if ($d == 1) {
+       
+    setAttr -type "string" rsAov_Depth.filePrefix $tt;
+
+    }
+    
+    if ($cr == 1) {
+       
+    setAttr -type "string" rsAov_CausticsRaw.filePrefix $tt;
+
+    }
+     
+    if ($c == 1) {
+       
+    setAttr -type "string" rsAov_Caustics.filePrefix $tt;
+
+    }
+    
+    if ($bn == 1) {
+       
+    setAttr -type "string" rsAov_BumpNormals.filePrefix $tt;
+
+    }
+     
+    if ($ao == 1) {
+       
+    setAttr -type "string" rsAov_AmbientOcclusion.filePrefix $tt;
+    
+    }
+    
+    if ($rlf == 1) {
+       
+    setAttr -type "string" rsAov_ReflectionsFilter.filePrefix $tt;
+
+    }
+     
+    if ($rlr == 1) {
+       
+    setAttr -type "string" rsAov_ReflectionsRaw.filePrefix $tt;
+    
+    }
+}
+
+
+if(`window -ex redShift01`){
+    
+    deleteUI redShift01;
+    
+}
+window -t "RS_AOV命名格式工具" -widthHeight 300 100 redShift01;
+
+columnLayout -adjustableColumn true -rowSpacing 1;
+text -backgroundColor 0.2 0.2 0.2 "此工具会自动读取file name prefix下格式";
+
+separator;
+separator;
+
+button -backgroundColor 0.965 0.5 0.188 -l "执行" -c "redShiftText";
+
+
+window -edit -widthHeight 220 50 redShift01;
+showWindow redShift01;

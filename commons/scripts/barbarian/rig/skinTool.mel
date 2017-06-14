@@ -1,0 +1,192 @@
+proc skinTool(){
+
+if(`window -ex myWin1`){
+    deleteUI myWin1;
+    }
+window -backgroundColor 0.1 0.1 0.1 -widthHeight 275  200 -title "嘢人权重工具" myWin1;
+rowColumnLayout -numberOfColumns 4  ;
+   
+	
+	button -command "reflood" -bgc 0.5 0.5 0.85 -label "减---Flood"  -h 50 ;
+	button -command "addflood" -bgc 0.85 0.5 0.5 -label "加---Flood"  -h 50 ;
+	button -command "refloodAll" -bgc 0.0 0.0 0.0 -label "清除---Flood"  -h 50 ; 
+	button -command "allflood" -bgc 1 1 1 -label "全白---Flood"  -h 50 ;     
+
+	separator;
+	separator;
+	separator;
+	separator;
+	
+
+	button -command "reaplaceOff" -bgc 0.2 0.2 0.2 -label "清除" -h 40;
+	button -command "reduceD" -bgc 0.1 0.8 0.9 -label "减---0.01"  -align "left" -h 40;
+	button -command "reduceA" -bgc 0.1 0.5 0.9 -label "减---0.05"  -align "left" -h 40;
+	button -command "reduceB" -bgc 0.1 0.3 0.9 -label "减---0.1"  -align "right" -h 40;
+	
+	separator;
+	separator;
+	separator;
+	separator;
+	
+	button -command "AddC" -bgc 1 1 1 -label "加--1" -align "center" -h 40;
+	button -command "AddA" -bgc 0.9 0.7 0 -label "加---0.01"   -align "right" -h 40;
+	button -command "AddD" -bgc 0.9 0.5 0 -label "加---0.05"   -align "right" -h 40;
+	button -command "AddB" -bgc 0.9 0.2 0 -label "加---0.1"   -align "left" -h 40;
+	
+
+    separator;
+	separator;
+	separator;
+	separator;
+
+     button -command "ArtPaintSkinWeightsToolOptions" -bgc 0.4 0.4 0.4 -label "权重笔刷工具" -h 50;
+   button -command "copyWeightTool" -bgc 0 0.3 0.5 -label "拷贝权重"  -h 50 ;
+	button -command "currentSkinMirror" -bgc 0.5 0.2 0.3 -label "镜像权重"  -h 50 ;
+   button -command "smoothSkin" -bgc 0.5 0.9 0.5 -label "平滑---Flood"  -h 50 ;	
+   
+	
+window -e -widthHeight 275  190  myWin1;
+
+showWindow myWin1; 
+}
+
+
+global proc reaplaceOff(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 1 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc AddA(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Add;
+    artAttrSkinPaintCtx -e -opacity 0.01 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc AddB(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Add;
+    artAttrSkinPaintCtx -e -opacity 0.1 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc AddC(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Add;
+    artAttrSkinPaintCtx -e -opacity 1 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc AddD(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Add;
+    artAttrSkinPaintCtx -e -opacity 0.05 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc reduceA(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.05 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc reduceB(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.1 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+global proc reduceD(){
+    
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.01 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+
+}
+
+
+
+
+global proc smoothSkin(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Smooth;
+artAttrSkinPaintCtx -e -opacity 1 `currentCtx`;
+toolPropertyShow;
+artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+
+global proc reflood(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.1 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+global proc refloodAll(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 1 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+
+global proc addflood(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.1 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+global proc allflood(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 1 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    }
+
+global proc copyWeightTool(){
+string $currentT = `currentTime -query`;
+currentTime 0 ;
+copySkinWeights  -noMirror -surfaceAssociation closestPoint 
+                 -influenceAssociation closestJoint -influenceAssociation closestBone
+                 -influenceAssociation oneToOne;
+currentTime $currentT;
+}
+
+
+global proc currentSkinMirror(){
+string $currentT = `currentTime -query`;
+string $skinA[] = `ls -type "skinCluster"`;
+currentTime 0 ;
+doMirrorSkinWeightsArgList( 2, { " -mirrorMode YZ -surfaceAssociation closestPoint -influenceAssociation closestJoint -influenceAssociation oneToOne" } );
+copySkinWeights -ss $skinA -ds $skinA -mirrorMode YZ -surfaceAssociation closestPoint -influenceAssociation closestJoint -influenceAssociation oneToOne;
+///print $currentT;
+currentTime $currentT;
+
+}
+
+
+skinTool;

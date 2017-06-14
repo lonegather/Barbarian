@@ -1,0 +1,355 @@
+
+/////////////////////////////
+/////////////////////////////
+//// Camera Shaker Maker ////
+/////////////////////////////
+//                         //
+// Copy cameraShaker.mel   //
+// to scripts directory.   //
+//                         //
+// After maya resart, in   //
+// a script editor, shelf  //
+// button or MEL command   //
+// line run "cameraShaker" //
+//                         //
+// Email skiena@yahoo.com  //
+// with any questions,     //
+// comments, problems      //
+// suggestions or cash.    //
+//                         //
+// Feel free to use this   //
+// on any prodcutions, but //
+// please email me and let //
+// which ones.             //
+// Thank you.              //
+//                         //
+/////////////////////////////
+
+// Copyright 2010 Rob Skiena
+// All rights reserved
+//
+
+
+//  Description
+//
+// Camera Shaker Maker creates a prodecural camera shake you can control with 9 channels
+// that are on the control object "CamShaker_CON"
+//
+//
+// Creating the Shaker Rig for a Camera
+//
+// 1 - Select the camera you wish to add the Shaker to from the Camera Option Menu Box.
+// 2 - Choose how the camera should be connected to "CamShaker_CON."  If the camera is
+//     being referenced into the scene, it is safer to Constrain, as opposed to Parent
+// 3 - Choose whether to transfer the current camera animation to "CamShaker_CON" or
+//     to just delete the translation/rotation animation on the Camera.
+// 4 - Press the \"Create Camera Shaker\" button.  The Camera Shaker rig is created.
+//
+//
+// Using the Shaker Rig
+// 
+// The "CamShaker_CON" node has nine channels that control Camera shake
+// 
+// MAGNITUDE - Sets the strength of the overall shake effects.
+// SEED ROT - Randon Seed for Rotational shake.  There are 50,000 random possiblities
+// FREQUENCY ROT - The frequency of the Rotational Shake. Higher number mean more shakes
+// AMPLITUDE ROT - Sets the amount Rotational shake. Higher number means greater shakes
+// SEED TRANS - Randon Seed for Translation X/Y shake.  There are 50,000 random possiblities
+// FREQUENCY X TRANS - The frequency of X Translation Shake. Higher number mean more shakes
+// FREQUENCY Y TRANS - The frequency of Y Translation Shake. Higher number mean more shakes
+// AMPLITUDE X TRANS - Sets the amount X Translational. Higher number means greater shakes
+// AMPLITUDE Y TRANS - Sets the amount Y Translational. Higher number means greater shakes 
+//
+// To disable the Camera shake, set the Magnitude to zero and none of the other paramters
+// will have any effect.
+//
+// Enjoy
+
+
+global proc cameraShaker()
+{
+ if(`window -q -ex cameraShakerMakerUI`)
+ {
+	deleteUI -window cameraShakerMakerUI;
+ }
+ string $window = `window -s false -wh 357 236 -mb true -t "Camera Shaker Maker" cameraShakerMakerUI`;
+ 
+ menu -label "Help" rsCameraUIHelpMenuSet;
+ menuItem -label "Instructions" -c("cameraShakerHelp()");
+ menuItem -label "Copyright 2010 Rob Skiena";
+    columnLayout -adj true -cat both 5;
+    separator -style "none" -h 20;
+    	columnLayout -adj true -cat both 20;
+    	    optionMenu -label "Camera" tempCamOpt;
+		 string $tempAllCams[]= `ls -cameras`;
+		 string $tempCam;
+		 for($tempCam in $tempAllCams)
+		 {
+			if((`getAttr ($tempCam + ".orthographic")`) == 0)
+			{
+				string $tempTrans[] = `listTransforms  $tempCam`;
+				menuItem -label $tempTrans[0];
+			}
+		 }
+    	setParent ..;
+   	separator -style "none" -h 18;
+   	radioButtonGrp -numberOfRadioButtons 2 -label "       Connection Type:          " -labelArray2 "Parent" "Constrain" -cw 1 146 -sl 1 radButtConn;
+    	separator -style "none" -h 18;
+    	radioButtonGrp -numberOfRadioButtons 2 -label "       Camera Animation:         " -labelArray2 "Transfer" "Delete" -cw 1 146 -sl 1 radButtAnim;
+    	separator -style "none" -h 35;
+    	columnLayout -adj true -cat both 20;
+		button -l "Create Camera Shaker" -c ("string $x2 = `optionMenu -q -value tempCamOpt`;string $x3=`radioButtonGrp -q -sl radButtAnim`;string $x4=`radioButtonGrp -q -sl radButtConn`;camShakerMaker($x2,$x3,$x4)");
+ 	setParent ..;
+    setParent ..;
+ showWindow $window;
+}
+
+
+global proc camShakerMaker(string $curCam, string $transfer, string $parMode)
+{
+ string $tempEx="NO";
+
+ if(`objExists ($curCam + "_CamShakerTop")`)
+	$tempEx="CamShakerTop";
+ else if(`objExists ($curCam + "_CamShakerMid")`)
+	$tempEx="CamShakerMid";
+ else if(`objExists ($curCam + "_CamShakerLow")`)
+	$tempEx="CamShakerLow";
+ else if(`objExists ($curCam + "_CamShaker")`)
+	$tempEx="CamShaker";
+
+ if($tempEx != "NO")
+ {
+ 	confirmDialog -message ("\nThere is an object already called \"" + $tempEx + ".\"\n\nDelete it and try again.\n\n");
+     	return;
+ }
+
+
+// Create the Camera Control
+ $tempLoc = `spaceLocator -p 0 0 0 -n ($curCam + "_CamShaker")`;
+ $curCamCon = $tempLoc[0];
+
+
+ spaceLocator -p 0 0 0 -n ($curCam + "_CamShakerTop");
+ spaceLocator -p 0 0 0 -n ($curCam + "_CamShakerMid");
+ spaceLocator -p 0 0 0 -n ($curCam + "_CamShakerLow");
+
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerTop.sx");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerTop.sy");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerTop.sz");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerMid.sy");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerMid.sx");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerMid.sz");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerMid.tz");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerLow.sx");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerLow.sy");
+ setAttr -lock true -keyable false -channelBox false ($curCam + "_CamShakerLow.sz");
+
+
+ parent ($curCam + "_CamShakerMid") ($curCam + "_CamShakerTop");
+ parent ($curCam + "_CamShakerLow") ($curCam + "_CamShakerMid");
+
+
+// Transfer Camera Animation
+ if ($transfer == "No")
+ {
+  currentTime (`playbackOptions -q -minTime`);
+  cutKey -cl -t ":" -f ":" -at "tx" -at "ty" -at "tz" -at "rx" -at "ry" -at "rz" $curCam;
+ }
+
+// Getting parent of Camera, if any
+ string $parents[] = `listRelatives -parent $curCam`;
+ if($parents[0]!="")
+ {
+ parent $curCamCon $parents[0];
+ }
+
+ if ($transfer == "1")
+ {
+  currentTime (`playbackOptions -q -minTime`);
+
+  cutKey -cl -t ":" -f ":" -at "tx" -at "ty" -at "tz" -at "rx" -at "ry" -at "rz" $curCamCon;
+  $temp = `parentConstraint -w 1 -tl $curCam $curCamCon`;
+  delete $temp;
+
+  string $tempConncts[] = `listConnections -d off -s on ($curCam + ".tx")`;
+  string $tempConnct = "";
+  for($tempConnct in $tempConncts)
+  {
+  	if(`nodeType $tempConnct`== "animCurveTL")
+  	{
+  		cutKey -t ":" -f ":" -at "tx" $curCam;
+  		pasteKey -connect true -at "tx" $curCamCon;
+  	}
+  }
+
+   $tempConncts = `listConnections -d off -s on ($curCam + ".ty")`;
+   $tempConnct = "";
+  for($tempConnct in $tempConncts)
+  {
+  	if(`nodeType $tempConnct`== "animCurveTL")
+  	{
+  		cutKey -t ":" -f ":" -at "ty" $curCam;
+  		pasteKey -connect true -at "ty" $curCamCon;
+  	}
+  }
+
+   $tempConncts = `listConnections -d off -s on ($curCam + ".tz")`;
+   $tempConnct = "";
+  for($tempConnct in $tempConncts)
+  {
+  	if(`nodeType $tempConnct`== "animCurveTL")
+  	{
+  		cutKey -t ":" -f ":" -at "tz" $curCam;
+  		pasteKey -connect true -at "tz" $curCamCon;
+  	}
+  }
+
+   $tempConncts = `listConnections -d off -s on ($curCam + ".rx")`;
+   $tempConnct = "";
+  for($tempConnct in $tempConncts)
+  {
+  	if(`nodeType $tempConnct`== "animCurveTA")
+  	{
+  		cutKey -t ":" -f ":" -at "rx" $curCam;
+  		pasteKey -connect true -at "rx" $curCamCon;
+  	}
+  }
+
+   $tempConncts = `listConnections -d off -s on ($curCam + ".ry")`;
+   $tempConnct = "";
+  for($tempConnct in $tempConncts)
+  {
+  	if(`nodeType $tempConnct`== "animCurveTA")
+  	{
+  		cutKey -t ":" -f ":" -at "ry" $curCam;
+  		pasteKey -connect true -at "ry" $curCamCon;
+  	}
+  }
+
+   $tempConncts = `listConnections -d off -s on ($curCam + ".rz")`;
+   $tempConnct = "";
+  for($tempConnct in $tempConncts)
+  {
+  	if(`nodeType $tempConnct`== "animCurveTA")
+  	{
+  		cutKey -t ":" -f ":" -at "rz" $curCam;
+  		pasteKey -connect true -at "rz" $curCamCon;
+  	}
+  }
+  }
+ if ($transfer == "2")
+ {
+  currentTime (`playbackOptions -q -minTime`);
+  cutKey -cl -t ":" -f ":" -at "tx" -at "ty" -at "tz" -at "rx" -at "ry" -at "rz" $curCamCon;
+  cutKey -cl -t ":" -f ":" -at "tx" -at "ty" -at "tz" -at "rx" -at "ry" -at "rz" $curCam;
+  $temp = `parentConstraint -w 1 -tl $curCam $curCamCon`;
+  delete $temp;
+}
+
+// Parent the Camera
+ currentTime (`playbackOptions -q -minTime`);
+
+ $temp = `parentConstraint -w 1 -tl $curCamCon ($curCam + "_CamShakerTop")`; 
+
+ delete $temp;
+ parent ($curCam + "_CamShakerTop") $curCamCon ;
+
+ if($parMode=="1")
+ {
+ 	parent $curCam ($curCam + "_CamShakerLow") ;
+ }
+ if($parMode=="2")
+ {
+ 	parentConstraint -mo -weight 1 -tl ($curCam + "_CamShakerLow") $curCam;
+ }
+
+// Build control rig
+
+ addAttr -ln "CameraShake"  -at "enum" -en "========:"  $curCamCon;
+ setAttr -e-keyable true -lock true ($curCamCon + ".CameraShake");
+
+ addAttr -ln "magnitude" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".magnitude");
+
+ addAttr -ln "seedRot" -at double -min -99999 -max 99999 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".seedRot");
+
+ addAttr -ln "frequencyRot" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".frequencyRot");
+
+ addAttr -ln "amplitudeRot" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".amplitudeRot");
+
+ addAttr -ln "seedTrans" -at double -min -99999 -max 99999 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".seedTrans");
+
+ addAttr -ln "frequencyTransX" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".frequencyTransX");
+
+ addAttr -ln "frequencyTransY" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".frequencyTransY");
+
+ addAttr -ln "amplitudeTransX" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".amplitudeTransX");
+
+ addAttr -ln "amplitudeTransY" -at double -min -500 -max 500 -dv 0 $curCamCon;
+ setAttr -e-keyable true ($curCamCon + ".amplitudeTransY");
+
+ expression -s ("float $mult = " + $curCamCon + ".magnitude;\r\nfloat $ampR = " + $curCamCon + ".amplitudeRot;\r\nfloat $ampX = " + $curCamCon + ".amplitudeTransX;\r\nfloat $ampY = " + $curCamCon + ".amplitudeTransY;\r\nfloat $freqRot = " + $curCamCon + ".frequencyRot;\r\nfloat $seedR = " + $curCamCon + ".seedRot;\r\nfloat $seedT = " + $curCamCon + ".seedTrans;\r\nfloat $freqX = " + $curCamCon + ".frequencyTransX;\r\nfloat $freqY = " + $curCamCon + ".frequencyTransY;\r\nvector $noiseRot = <<(frame * ($freqRot * .1) + $seedR), (frame * ($freqRot * .1) + $seedR), (frame * ($freqRot * .1) + $seedR)>>;\r\nvector $noiseTransX = <<(frame * ($freqX * .1) + $seedT), (frame * ($freqY * .1) + $seedT), (frame * ($freqRot * .1) + $seedT)>>;\r\nvector $noiseTransY = <<(frame * ($freqX * .1) + $seedT), (frame * ($freqY * .1) + $seedT), (frame * ($freqRot * .1) + $seedT)>>;\r\nvector $cameraShakeRot = (dnoise($noiseRot) * $ampR * .05) * $mult;\r\nvector $cameraShakeTransX = (dnoise($noiseTransX) * $ampX * .05) * $mult;\r\nvector $cameraShakeTransY = (dnoise($noiseTransY) * $ampY * .05) * $mult;\r\n" + $curCam + "_CamShakerMid.translateX = $cameraShakeTransX.x;\r\n" + $curCam + "_CamShakerMid.translateY = $cameraShakeTransY.y;\r\n" + $curCam + "_CamShakerMid.rotateX = $cameraShakeRot.x;\r\n" + $curCam + "_CamShakerMid.rotateY = $cameraShakeRot.y;\r\n" + $curCam + "_CamShakerMid.rotateZ = $cameraShakeRot.z;\r\n") -o stereoCam_CON-ae 1 -uc all;
+
+ select -r $curCamCon ;
+
+}
+
+global proc cameraShakerHelp()
+{
+
+ if(`window -q -ex cameraShakerHelpUI`)
+ {
+	deleteUI -window cameraShakerHelpUI;
+ }
+ string $window = `window -s false -mb true -t "Camera Shaker Maker Help" -wh 520 500 cameraShakerHelpUI`;
+ 
+ columnLayout -adj true -cat "both" 20 -cal "left";
+ separator -style "none" -w 25;
+ columnLayout -adj true -cat "both" 10 -cal "center";
+ text -l "\nCAMERA SHAKER MAKER\n";
+ setParent ..;
+ separator -style "none" -w 25;
+ text -l "Camera Shaker Maker creates a prodecural camera shake you can control with 9 channels";
+ text -l "that are on the control object \"CamShaker_CON\"";
+ 
+ separator -style "none" -w 10;
+ columnLayout -adj true -cat "both" 10 -cal "center";
+ text -l "\n\nCreating the Shaker Rig for a Camera\n";
+ setParent ..;
+ separator -style "none" -w 10;
+ text -l "1 - Select the camera you wish to add the Shaker to from the Camera Option Menu Box.";
+ text -l "2 - Choose how the camera should be connected to \"CamShaker_CON.\"  If the camera is";
+ text -l "      being referenced into the scene, it is safer to Constrain, as opposed to Parent";
+ text -l "3 - Choose whether to transfer the current camera animation to \"CamShaker_CON\" or";
+ text -l "      to just delete the translation/rotation animation on the Camera.";
+ text -l "4 - Press the \"Create Camera Shaker\" button.  The Camera Shaker rig is created.";
+ separator -style "none" -w 10;
+ columnLayout -adj true -cat "both" 10 -cal "center";
+ text -l "\n\nUsing the Shaker Rig\n";
+ setParent ..;
+ separator -style "none" -w 10;
+ text -l "The \"CamShaker_CON\" node has nine channels that control Camera shake\n";
+ text -l "MAGNITUDE - Sets the strength of the overall shake effects.";
+ text -l "SEED ROT - Randon Seed for Rotational shake.  There are 50,000 random possiblities";
+ text -l "FREQUENCY ROT - The frequency of the Rotational Shake. Higher number mean more shakes";
+ text -l "AMPLITUDE ROT - Sets the amount Rotational shake. Higher number means greater shakes";
+ text -l "SEED TRANS - Randon Seed for Translation X/Y shake.  There are 50,000 random possiblities";
+ text -l "FREQUENCY X TRANS - The frequency of X Translation Shake. Higher number mean more shakes";
+ text -l "FREQUENCY Y TRANS - The frequency of Y Translation Shake. Higher number mean more shakes";
+ text -l "AMPLITUDE X TRANS - Sets the amount X Translational. Higher number means greater shakes";
+ text -l "AMPLITUDE Y TRANS - Sets the amount Y Translational. Higher number means greater shakes"; 
+ showWindow($window); 
+
+
+
+}
+
+cameraShaker;

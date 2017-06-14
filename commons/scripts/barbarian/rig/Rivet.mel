@@ -1,0 +1,120 @@
+global proc string callRivet ()
+{
+	string $nameObject;
+	string $namePOSI;
+
+	string $parts[];
+	string $list[] = `filterExpand -sm 32`;
+	int $size = size($list);
+	if ($size > 0)
+	{
+		if ($size != 2)
+			error("No two selected edges");
+
+		tokenize($list[0],".",$parts);
+		$nameObject = $parts[0];
+		tokenize($list[0],"[]",$parts);
+		float $e1 = $parts[1];
+		tokenize($list[1],"[]",$parts);
+		float $e2 = $parts[1];
+
+		string $nameCFME1 = `createNode curveFromMeshEdge -n "rivetCurveFromMeshEdge1"`;
+			setAttr ".ihi" 1;
+			setAttr ".ei[0]"  $e1;
+		string $nameCFME2 = `createNode curveFromMeshEdge -n "rivetCurveFromMeshEdge2"`;
+			setAttr ".ihi" 1;
+			setAttr ".ei[0]"  $e2;
+		string $nameLoft = `createNode loft -n "rivetLoft1"`;
+			setAttr -s 2 ".ic";
+			setAttr ".u" yes;
+			setAttr ".rsn" yes;
+
+		$namePOSI = `createNode pointOnSurfaceInfo -n "rivetPointOnSurfaceInfo1"`;
+			setAttr ".turnOnPercentage" 1;
+			setAttr ".parameterU" 0.5;
+			setAttr ".parameterV" 0.5;
+
+		connectAttr -f ($nameLoft + ".os") ($namePOSI + ".is");
+		connectAttr ($nameCFME1 + ".oc") ($nameLoft + ".ic[0]");
+		connectAttr ($nameCFME2 + ".oc") ($nameLoft + ".ic[1]");
+		connectAttr ($nameObject + ".w") ($nameCFME1 + ".im");
+		connectAttr ($nameObject + ".w") ($nameCFME2 + ".im");
+	}
+	else
+	{	$list = `filterExpand -sm 41`;
+		$size = size($list);
+
+		if ($size > 0)
+		{
+			if ($size != 1)
+				error("No one point selected");
+			
+			tokenize($list[0],".",$parts);
+			$nameObject = $parts[0];
+			tokenize($list[0],"[]",$parts);
+			float $u = $parts[1];
+			float $v = $parts[2];
+			$namePOSI = `createNode pointOnSurfaceInfo -n "rivetPointOnSurfaceInfo1"`;
+					setAttr ".turnOnPercentage" 0;
+					setAttr ".parameterU" $u;
+					setAttr ".parameterV" $v;
+			connectAttr -f ($nameObject + ".ws") ($namePOSI + ".is");
+		}
+		else
+			error("No edges or point selected");
+	}
+
+	string $nameLocator = `createNode transform -n "rivet1"`;
+	createNode locator -n ($nameLocator + "Shape") -p $nameLocator;
+
+	string $nameAC = `createNode aimConstraint -p $nameLocator -n ($nameLocator + "_rivetAimConstraint1")`;
+		setAttr ".tg[0].tw" 1;
+		setAttr ".a" -type "double3" 0 1 0;
+		setAttr ".u" -type "double3" 0 0 1;
+		setAttr -k off ".v";
+		setAttr -k off ".tx";
+		setAttr -k off ".ty";
+		setAttr -k off ".tz";
+		setAttr -k off ".rx";
+		setAttr -k off ".ry";
+		setAttr -k off ".rz";
+		setAttr -k off ".sx";
+		setAttr -k off ".sy";
+		setAttr -k off ".sz";
+
+	connectAttr ($namePOSI + ".position") ($nameLocator + ".translate");
+	connectAttr ($namePOSI + ".n") ($nameAC + ".tg[0].tt");
+	connectAttr ($namePOSI + ".tv") ($nameAC + ".wu");
+	connectAttr ($nameAC + ".crx") ($nameLocator + ".rx");
+	connectAttr ($nameAC + ".cry") ($nameLocator + ".ry");
+	connectAttr ($nameAC + ".crz") ($nameLocator + ".rz");
+
+	select -r $nameLocator;
+	return ($nameLocator);
+}
+
+global proc rivet_UI() {
+	
+	if (`window -ex rivet_Win`) {
+		deleteUI rivet_Win;
+		windowPref -remove rivet_Win;
+	}
+	
+	window
+		-tlc 250 200 -wh 250 130
+		-menuBar true 
+		-title "Rivet 20070620"
+		rivet_Win;
+		
+	frameLayout -cll true -label " Rivet" -fn "boldLabelFont";
+		columnLayout -adj true -rs 4 -cat "both" 10;
+			text -l "For polygon, select 2 edges.";
+			text -l "For nurbs, select surface point.";
+			button -h 20 -l "Apply" -align "center" -c "callRivet" applyBtn;
+		 setParent..;
+	setParent..;
+		
+	showWindow rivet_Win;
+}
+
+rivet_UI();

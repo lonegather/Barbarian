@@ -1,0 +1,709 @@
+//------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
+// Script: jrControlMaker.mel
+// VERSION: 1.0
+// AUTHOR:	James Roy
+//			JamesRoy@126.com
+// UPDATE：     3/14/2006 14:04PM
+// Usage: A simple but handy little script that will allow you
+//        to snap a control to a joint(or any object) and preserve
+//		  zeored values. All the translate and rotation data will be
+//        inherited by the group node that is created.
+//
+//
+//
+//	Select one or as many objects.
+//	Select a control type (all nurbs curves)
+//	Select a type of snap you want (orient, point, point/orient, shape ...)
+//	Use the color slider to change the controls color
+//	Use the rotate control to flip the control in either X, Y or Z
+//	Group all your controls under a group that exists or will create it for you
+//  Create an extra group. Helpfull for SDK's on groups
+//	Auto lock and hide of channels
+//==================================================================
+
+global proc jrControlMaker()
+{
+
+
+	if(`window -ex jrControlMakerWin`) deleteUI jrControlMakerWin ;
+
+	int $winH = 400;
+	int $winW = 260;
+
+	window -t "jrControl Maker" -w $winH -h $winW jrControlMakerWin;
+
+	columnLayout;
+	frameLayout -l " 前缀 "
+				-w 245
+				-collapsable true
+				-collapse true
+				-cc ("window -e -h " + $winH + " jrControlMakerWin")
+				-ec ("window -e -h " + ($winH + 20) + " jrControlMakerWin") fmPrefix;
+
+	rowColumnLayout -nc 2 -cw 1 40 -cw 2 200;
+	text -l "Prefix:";
+
+	textField -tx "" txtPrefix;
+
+	setParent..;setParent..;
+	columnLayout;
+
+	//---------------------------------------------------
+		rowColumnLayout -nc 2 -cw 1 245 -cw 2 75;
+		text -l "为控制器打组命名:" ;
+		text -l"";
+		textField -tx "" txtGrpName;
+		text -l "" ;
+		checkBox -l "Create Extra Group for Control" ckXtraGroup;
+		text -l"";
+		button -l "Toggle Selection Handles" -command "toggle -selectHandle";
+		setParent..;setParent..;
+
+	//---------------------------------------------------
+
+	//---------------------------------------------------
+		rowColumnLayout -nc 3 -cw 1 95 -cw 2 95 -cw 3 95;
+		text -l "Lock and Hide:" ; text -l""; text -l"";
+		checkBox -l "Translate" -v 1 ckTrans;
+		checkBox -l "Rotate" -v 0 ckRot;
+		checkBox -l "Scale" -v 1 ckScale;
+
+		setParent..;setParent..;
+	//---------------------------------------------------
+
+	rowColumnLayout -nc 2 -cw 1 155 -cw 2 80;
+		optionMenu -l "Shapes:" optShapes;
+			menuItem -l "Nurbs Cube";
+			menuItem -l "Circle";
+			menuItem -l "Arrow on Ball";
+			menuItem -l "Single Arrow";
+			menuItem -l "4 Lrg Arrow";
+			menuItem -l "180 Arrow";
+			menuItem -l "Nail";
+			menuItem -l "Sphere";
+			button -l "Rotate Ctrl" -command snRotWin;
+
+		radioCollection;
+		//make default button
+		radioButton -label "Orient Constraint"
+					-onCommand "checkBox -e -v true ckTrans; checkBox -e -v true ckScale;checkBox -e -en true cbStretch;"
+					-offCommand "checkBox -e -v false ckTrans; checkBox -e -v false ckRot;"
+					-select rbOri;
+
+
+		text -l"";
+
+		radioButton -label "Point Constraint"
+					-onCommand "checkBox -e -v true ckRot; checkBox -e -v false cbStretch;checkBox -e -en false cbStretch;"
+					-offCommand "checkBox -e -v false ckTrans; checkBox -e -v false ckRot;" rbPoint;
+
+		text -l"";
+
+		radioButton -label "Point/Orient Constraint"
+					-onCommand "checkBox -e -v true ckScale;checkBox -e -v false cbStretch;checkBox -e -en false cbStretch;"
+					-offCommand "checkBox -e -v false ckTrans; checkBox -e -v false ckRot;" rbPointOri;
+
+		text -l"";
+
+		radioButton -label "Shape Parent"
+					-onCommand "checkBox -e -v false ckScale;checkBox -e -v false cbStretch;checkBox -e -en false cbStretch;"
+					-offCommand "checkBox -e -v false ckTrans; checkBox -e -v false ckRot;checkBox -e -v false ckScale;" rbShape;
+
+		text -l"";
+
+		radioButton -label "Just Snap"
+					-onCommand "checkBox -e -v false ckTrans; checkBox -e -v false ckRot;checkBox -e -en true cbStretch;"
+					-offCommand "checkBox -e -v false ckTrans; checkBox -e -v false ckRot;checkBox -e -v false ckScale" rbSnap;
+
+	text -l"";
+	text -l " Controller Scale:";
+	text -l"";
+	floatField -v 1.0 -precision 1 conSize;
+	checkBox -l "Add Stretch" cbStretch;
+
+	setParent..;setParent..;
+	frameLayout -l "Color"
+				-w 245
+				-h 43
+				-collapsable false fmColor;
+	colorIndexSliderGrp  -min 0 -max 32 -value 1 conColor;
+	setParent..;
+
+	//---------------------------------------------------
+
+	rowColumnLayout -nc 2 -cw 1 122 -cw 2 122;
+
+		button -l "Snap" -command snSnapControl;
+		button -l "Close" -c "deleteUI jrControlMakerWin" ;
+	setParent..;setParent..;
+
+	rowColumnLayout -nc 2 -cw 1 250 -cw 2 50;
+	text -align "left" -fn "boldLabelFont" -l " JamesRoy@126.com ";
+
+	window -e -w $winW -h $winH jrControlMakerWin;
+	showWindow jrControlMakerWin;
+
+}
+
+
+global proc snSnapControl()
+{
+	string $inherit;
+	int $makeStretch = `checkBox -q -v cbStretch`;
+	float $conScale = `floatField -q -v conSize`;
+	$objects = `ls -sl`;
+	string $master;
+	int $lockAndHideTrans = `checkBox -q -v ckTrans`;
+	int $lockAndHideRot = `checkBox -q -v ckRot`;
+	int $lockAndHideScale = `checkBox -q -v ckScale`;
+	string $mainGrpName = `textField -q -text txtGrpName`;
+	int $extraGrp = `checkBox -q -v ckXtraGroup`;
+	string $ctrl;
+	string $shape[];
+	string $grpNode;
+	int $i = 0;
+
+	for ($obj in $objects)
+	{
+
+		string $prefix = `textField -q -tx txtPrefix`;
+		if($prefix == "")
+		{
+			$inherit = "CON" + $obj + "INH";
+		}
+		else
+		{
+			$inherit = $prefix + $obj + "INH";
+		}
+
+		// create empty groups
+		group -em -n $inherit;
+
+
+		//select parent joint and constrain inherit//
+		string $parent[] = `listRelatives -p $obj `;
+
+		string $objType = `objectType $obj`;
+		if($objType == "")
+		{
+			error "Must select a joint";
+
+		}
+
+		int $shapeSelected = `optionMenu -q -sl optShapes`;
+
+		//add more contorls here if needed
+		if($shapeSelected == 1)
+		{
+			$ctrl = "curve -n ctrl -d 1 -p 0.5 0.5 -0.5 -p 0.5 0.5 0.5 -p 0.5 -0.5 0.5 -p 0.5 -0.5 -0.5 -p 0.5 0.5 -0.5 -p -0.5 0.5 -0.5 -p -0.5 -0.5 -0.5 -p -0.5 -0.5 0.5 -p -0.5 0.5 0.5 -p 0.5 0.5 0.5 -p 0.5 -0.5 0.5 -p -0.5 -0.5 0.5 -p -0.5 -0.5 -0.5 -p 0.5 -0.5 -0.5 -p 0.5 0.5 -0.5 -p -0.5 0.5 -0.5 -p -0.5 0.5 0.5 -p 0.5 0.5 0.5 -p 0.5 0.5 -0.5 -k 0 -k 0.1 -k 0.2 -k 0.3 -k 0.4 -k 0.5 -k 0.6 -k 0.7 -k 0.8 -k 0.9 -k 1 -k 1.1 -k 1.2 -k 1.3 -k 1.4 -k 1.5 -k 1.6 -k 1.7 -k 1.8 ; FreezeTransformations;";
+		}
+		if($shapeSelected == 2)
+		{
+			$ctrl = "circle -c 0 0 0 -nr 1 0 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 0 -n \"ctrl\"; " ;
+
+		}
+		if($shapeSelected == 3)
+		{
+			$ctrl = "curve -d 1 -p 0 0.35 -1.001567 -p -0.336638 0.677886 -0.751175 -p -0.0959835 0.677886 -0.751175 -p -0.0959835 0.850458 -0.500783 -p -0.0959835 0.954001 -0.0987656 -p -0.500783 0.850458 -0.0987656 -p -0.751175 0.677886 -0.0987656 -p -0.751175 0.677886 -0.336638 -p -1.001567 0.35 0 -p -0.751175 0.677886 0.336638 -p -0.751175 0.677886 0.0987656 -p -0.500783 0.850458 0.0987656 -p -0.0959835 0.954001 0.0987656 -p -0.0959835 0.850458 0.500783 -p -0.0959835 0.677886 0.751175 -p -0.336638 0.677886 0.751175 -p 0 0.35 1.001567 -p 0.336638 0.677886 0.751175 -p 0.0959835 0.677886 0.751175 -p 0.0959835 0.850458 0.500783 -p 0.0959835 0.954001 0.0987656 -p 0.500783 0.850458 0.0987656 -p 0.751175 0.677886 0.0987656 -p 0.751175 0.677886 0.336638 -p 1.001567 0.35 0 -p 0.751175 0.677886 -0.336638 -p 0.751175 0.677886 -0.0987656 -p 0.500783 0.850458 -0.0987656 -p 0.0959835 0.954001 -0.0987656 -p 0.0959835 0.850458 -0.500783 -p 0.0959835 0.677886 -0.751175 -p 0.336638 0.677886 -0.751175 -p 0 0.35 -1.001567 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -n \"ctrl\"; " ;
+
+		}
+		if($shapeSelected == 4)
+		{
+			$ctrl = "curve -d 1 -p -0.66 0 -0.33 -p 0 0 -0.33 -p 0 0 -0.66 -p 0.99 0 0 -p 0 0 0.66 -p 0 0 0.33 -p -0.66 0 0.33 -p -0.66 0 -0.33 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -n \"ctrl\"; " ;
+
+		}
+		if($shapeSelected == 5)
+		{
+			$ctrl = "curve -d 1 -p 0 0 -1.1025 -p -0.33 0 -0.6075 -p -0.165 0 -0.6075 -p -0.165 0 -0.165 -p -0.6075 0 -0.165 -p -0.6075 0 -0.33 -p -1.1025 0 0 -p -0.6075 0 0.33 -p -0.6075 0 0.165 -p -0.165 0 0.165 -p -0.165 0 0.6075 -p -0.33 0 0.6075 -p 0 0 1.1025 -p 0.33 0 0.6075 -p 0.165 0 0.6075 -p 0.165 0 0.165 -p 0.6075 0 0.165 -p 0.6075 0 0.33 -p 1.1025 0 0 -p 0.6075 0 -0.33 -p 0.6075 0 -0.165 -p 0.165 0 -0.165 -p 0.165 0 -0.6075 -p 0.33 0 -0.6075 -p 0 0 -1.1025 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -n \"ctrl\"; " ;
+
+		}
+		if($shapeSelected == 6)
+		{
+			$ctrl = "curve -d 1 -p -1.084005 0 -0.092136 -p -0.791121 0 -0.955956 -p -0.707107 0 -0.707107 -p -0.570265 0 -0.843948 -p -0.205819 0 -1.040044 -p 0.405223 0 -0.978634 -p 0.881027 0 -0.588697 -p 1.059487 0 0 -p 0.881027 0 0.588697 -p 0.405223 0 0.978634 -p -0.205819 0 1.040044 -p -0.570265 0 0.843948 -p -0.707107 0 0.707107 -p -0.791121 0 0.955956 -p -1.084005 0 0.092136 -p -0.315189 0 0.413069 -p -0.540989 0 0.540989 -p -0.436294 0 0.645682 -p -0.157467 0 0.79571 -p 0.310025 0 0.748727 -p 0.67405 0 0.450396 -p 0.810585 0 0 -p 0.67405 0 -0.450396 -p 0.310025 0 -0.748727 -p -0.157467 0 -0.79571 -p -0.436294 0 -0.645682 -p -0.540989 0 -0.540989 -p -0.315189 0 -0.413069 -p -1.084005 0 -0.092136 -p -0.791121 0 -0.955956 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -n \"ctrl\"; " ;
+		}
+		if($shapeSelected == 7)
+		{
+			$ctrl  = "curve -d 1 -p 0 0 0 -p 0 3 0 -p -0.587785 3.190983 0 -p -0.951057 3.690983 0 -p -0.951057 4.309017 0 -p -0.587785 4.809017 0 -p 0 5 0 -p 0.587785 4.809017 0 -p 0.951057 4.309017 0 -p 0.951057 3.690983 0 -p 0.587785 3.190983 0 -p 0 3 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -n \"ctrl\"; " ;
+		}
+		if($shapeSelected == 8)
+		{
+			$ctrl  = "curve -d 1 -p 0 1 0 -p -0.382683 0.92388 0 -p -0.707107 0.707107 0 -p -0.92388 0.382683 0 -p -1 0 0 -p -0.92388 -0.382683 0 -p -0.707107 -0.707107 0 -p -0.382683 -0.92388 0 -p 0 -1 0 -p 0.382683 -0.92388 0 -p 0.707107 -0.707107 0 -p 0.92388 -0.382683 0 -p 1 0 0 -p 0.92388 0.382683 0 -p 0.707107 0.707107 0 -p 0.382683 0.92388 0 -p 0 1 0 -p 0 0.92388 0.382683 -p 0 0.707107 0.707107 -p 0 0.382683 0.92388 -p 0 0 1 -p 0 -0.382683 0.92388 -p 0 -0.707107 0.707107 -p 0 -0.92388 0.382683 -p 0 -1 0 -p 0 -0.92388 -0.382683 -p 0 -0.707107 -0.707107 -p 0 -0.382683 -0.92388 -p 0 0 -1 -p 0 0.382683 -0.92388 -p 0 0.707107 -0.707107 -p 0 0.92388 -0.382683 -p 0 1 0 -p -0.382683 0.92388 0 -p -0.707107 0.707107 0 -p -0.92388 0.382683 0 -p -1 0 0 -p -0.92388 0 0.382683 -p -0.707107 0 0.707107 -p -0.382683 0 0.92388 -p 0 0 1 -p 0.382683 0 0.92388 -p 0.707107 0 0.707107 -p 0.92388 0 0.382683 -p 1 0 0 -p 0.92388 0 -0.382683 -p 0.707107 0 -0.707107 -p 0.382683 0 -0.92388 -p 0 0 -1 -p -0.382683 0 -0.92388 -p -0.707107 0 -0.707107 -p -0.92388 0 -0.382683 -p -1 0 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -n \"ctrl\"; " ;
+		}
+		eval($ctrl);
+
+
+		DeleteHistory;
+
+		$ctrl = "ctrl";
+		int $spans = `getAttr ($ctrl + ".spans")`;
+		select -r ($ctrl + ".cv[0:" + $spans + "]");
+		scale -r $conScale $conScale $conScale;
+		select -r $obj;
+
+
+
+
+		select -cl;
+		string $ctrlShape[] = `listRelatives $ctrl`;
+		int $oriState = `radioButton -q -select rbOri`;
+		int $pointState = `radioButton -q -select rbPoint`;
+		int $pointOriState = `radioButton -q -select rbPointOri`;
+		int $shapeState = `radioButton -q -select rbShape`;
+		int $snapState = `radioButton -q -select rbSnap`;
+
+//-------------------------------------------------------------------------------
+// Orient Selected
+//-------------------------------------------------------------------------------
+		if($oriState == 1)
+		{
+			string $suffix = "_GRP";
+			if($prefix == "")
+			{
+				$ctrl = `rename $ctrl ($obj + "CON")`;
+			}
+			else
+			{
+				$ctrl = `rename $ctrl ($prefix + $obj)`;
+			}
+			string $grpName = $ctrl + $suffix;
+			$grpNode = `group -n $grpName $ctrl`;
+
+			if($parent[0] != "")
+			{
+				pointConstraint -weight 1 $parent[0] $inherit;
+				orientConstraint -weight 1 $parent[0] $inherit;
+			}
+
+
+				parent -r $grpNode $obj;
+				parent -w $grpNode;
+
+
+			//parent control and group node under inherit transfomations
+			parent $ctrl $grpNode $inherit;
+			parent $ctrl $grpNode;
+			if($extraGrp == true)
+			{
+				string $master = `group -em -n ($grpNode + "Master")`;
+				parent -r $master $grpNode;
+				parent -w $master;
+				parent $grpNode $master;
+				parent $master $inherit;
+				snLockAndHide($master);
+
+				float $conPivot[] = `xform -q -ws -rp $ctrl`;
+				xform -ws -rp $conPivot[0] $conPivot[1] $conPivot[2] $grpNode;
+			}
+
+			pointConstraint -mo -weight 1 $obj $grpNode;
+
+
+
+
+			//we're just making it orient constrained
+			orientConstraint -mo $ctrl $obj;
+			if($parent[0] != "")
+			{
+				inherit_OrientRot($ctrl, $inherit, $obj);
+			}
+			snLockAndHide($inherit);
+			if($makeStretch == 1)
+			{
+				makeStretch($ctrl, $obj);
+			}
+			select -r $ctrl;
+
+
+		}
+//-------------------------------------------------------------------------------
+// Point Selected
+//-------------------------------------------------------------------------------
+		if($pointState == 1)
+		{
+			string $suffix = "_GRP";
+			if($prefix == "")
+			{
+				$ctrl = `rename $ctrl ($obj + "CON")`;
+			}
+			else
+			{
+				$ctrl = `rename $ctrl ($prefix + $obj)`;
+			}
+			string $grpName = $ctrl + $suffix;
+			$grpNode = `group -n $grpName $ctrl`;
+
+			if($parent[0] != "")
+			{
+				pointConstraint -weight 1 $parent[0] $inherit;
+				orientConstraint -weight 1 $parent[0] $inherit;
+			}
+			parent -r $grpNode $obj;
+			parent -w $grpNode;
+
+			//parent control and group node under inherit transfomations
+			parent $ctrl $grpNode $inherit;
+			parent $ctrl $grpNode;
+
+			if($extraGrp == true)
+			{
+				string $master = `group -em -n ($grpNode + "Master")`;
+				parent -r $master $grpNode;
+				parent -w $master;
+				parent $grpNode $master;
+				parent $master $inherit;
+				snLockAndHide($master);
+
+				float $conPivot[] = `xform -q -ws -rp $ctrl`;
+				xform -ws -rp $conPivot[0] $conPivot[1] $conPivot[2] $grpNode;
+			}
+
+
+
+			//we're just making it a pointConstraint
+			pointConstraint -mo $ctrl $obj;
+			snLockAndHide($inherit);
+			if($makeStretch == 1)
+			{
+				makeStretch($ctrl, $obj);
+			}
+			select -r $ctrl;
+		}
+
+//-------------------------------------------------------------------------------
+// Point/Orient Selected
+//-------------------------------------------------------------------------------
+		if($pointOriState == 1)
+		{
+			string $suffix = "_GRP";
+			if($prefix == "")
+			{
+				$ctrl = `rename $ctrl ($obj + "CON")`;
+			}
+			else
+			{
+				$ctrl = `rename $ctrl ($prefix + $obj)`;
+			}
+			string $grpName = $ctrl + $suffix;
+			$grpNode = `group -n $grpName $ctrl`;
+
+			if($parent[0] != "")
+			{
+				pointConstraint -weight 1 $parent[0] $inherit;
+				orientConstraint -weight 1 $parent[0] $inherit;
+			}
+
+			parent -r $grpNode $obj;
+			parent -w $grpNode;
+
+			//parent control and group node under inherit transfomations//
+			parent $ctrl $grpNode $inherit;
+			parent $ctrl $grpNode;
+
+			if($extraGrp == true)
+			{
+				string $master = `group -em -n ($grpNode + "Master")`;
+				parent -r $master $grpNode;
+				parent -w $master;
+				parent $grpNode $master;
+				parent $master $inherit;
+				snLockAndHide($master);
+
+				float $conPivot[] = `xform -q -ws -rp $ctrl`;
+				xform -ws -rp $conPivot[0] $conPivot[1] $conPivot[2] $grpNode;
+			}
+
+
+
+
+			//we're just making it a pointConstraint and pointConstraint
+			//can't have inherit attributes since the child object is
+			//point contrained
+			orientConstraint -mo $ctrl $obj;
+			pointConstraint -mo $ctrl $obj;
+			snLockAndHide($inherit);
+			select -r $ctrl;
+		}
+//-------------------------------------------------------------------------------
+// Shape Selected
+//-------------------------------------------------------------------------------
+		if($shapeState == 1)
+		{
+
+			string $newShape = `rename $ctrlShape[0] ($obj + "Shape")`;
+			parent -r -shape $newShape $obj;
+			delete $ctrl;
+			delete $inherit;
+
+			select -r $obj;
+
+			if($lockAndHideTrans == 1)
+			{
+				setAttr -lock true -keyable false ($obj + ".tx");
+				setAttr -lock true -keyable false ($obj + ".ty");
+				setAttr -lock true -keyable false ($obj + ".tz");
+			}
+			if($lockAndHideRot == 1)
+			{
+				setAttr -lock true -keyable false ($obj + ".rx");
+				setAttr -lock true -keyable false ($obj + ".ry");
+				setAttr -lock true -keyable false ($obj + ".rz");
+			}
+			if($lockAndHideScale == 1)
+			{
+				setAttr -lock true -keyable false ($obj + ".sx");
+				setAttr -lock true -keyable false ($obj + ".sy");
+				setAttr -lock true -keyable false ($obj + ".sz");
+			}
+		}
+
+//-------------------------------------------------------------------------------
+// Just Snap Selected
+//-------------------------------------------------------------------------------
+		if($snapState == 1)
+		{
+
+			string $suffix = "_GRP";
+			string $sdk = "_SDK";
+		    string $cst = "_CST";
+			if($prefix == "")
+			{
+				$ctrl = `rename $ctrl ($obj + "_CON")`;
+			}
+			else
+			{
+				$ctrl = `rename $ctrl ($prefix + $obj)`;
+			}
+			string $grpName = $ctrl + $suffix;
+			string $cstName = $ctrl + $cst;
+			string $sdkName = $ctrl + $sdk;
+			$grpNode = `group -n $grpName $ctrl`;
+			$sdkNode = `group -n $sdkName $ctrl`;
+			$CSTNode = `group -n $cstName $ctrl`;
+
+
+
+
+			parent -r $grpNode $obj;
+			parent -w $grpNode;
+			if($extraGrp == true)
+			{
+				$master = `group -em -n ($grpNode + "Master")`;
+				parent -r $master $grpNode;
+				parent -w $master;
+				parent $grpNode $master;
+				snLockAndHide($master);
+
+				float $conPivot[] = `xform -q -ws -rp $ctrl`;
+				xform -ws -rp $conPivot[0] $conPivot[1] $conPivot[2] $grpNode;
+
+			}
+			if(`objExists $inherit`)
+			{
+				delete $inherit;
+			}
+
+			if($makeStretch == 1)
+			{
+				makeStretch($ctrl, $obj);
+			}
+			select -r $ctrl;
+		}
+		if($snapState == 1 || $pointOriState == 1 || $pointState == 1 ||$oriState == 1 )
+		{
+			if($lockAndHideTrans == 1)
+			{
+				setAttr -lock true -keyable false ($ctrl + ".tx");
+				setAttr -lock true -keyable false ($ctrl + ".ty");
+				setAttr -lock true -keyable false ($ctrl + ".tz");
+			}
+			if($lockAndHideRot == 1)
+			{
+				setAttr -lock true -keyable false ($ctrl + ".rx");
+				setAttr -lock true -keyable false ($ctrl + ".ry");
+				setAttr -lock true -keyable false ($ctrl + ".rz");
+			}
+			if($lockAndHideScale == 1)
+			{
+				setAttr -lock true -keyable false ($ctrl + ".sx");
+				setAttr -lock true -keyable false ($ctrl + ".sy");
+				setAttr -lock true -keyable false ($ctrl + ".sz");
+			}
+		}
+
+		if($pointOriState == 1 || $pointState == 1 ||$oriState == 1 )
+			{
+				if($mainGrpName != "")
+				{
+					if(`objExists $mainGrpName`)
+					{
+						parent $inherit $mainGrpName;
+						select -r $ctrl;
+					}
+					else
+					{
+						group -em -n $mainGrpName;
+						parent $inherit $mainGrpName;
+						select -r $ctrl;
+					}
+				}
+			}
+
+		if($snapState == 1 )
+			{
+				if($mainGrpName != "")
+				{
+					if(`objExists $mainGrpName`)
+					{
+						parent $grpNode $mainGrpName;
+						select -r $ctrl;
+					}
+					else
+					{
+						group -em -n $mainGrpName;
+						parent $grpNode $mainGrpName;
+						select -r $ctrl;
+					}
+				}
+			}
+		if($snapState == 1 || $pointOriState == 1 || $pointState == 1 ||$oriState == 1 )
+		{
+			//change the control color
+			$shape = `listRelatives $ctrl`;
+			setAttr ($shape[0] + ".overrideEnabled") 1;
+			int $color = `colorIndexSliderGrp -q -v conColor`;
+			if($color > 0)
+				setAttr ($shape[0] + ".overrideColor") ($color - 1);
+		}
+		else
+		{
+			$shape = `listRelatives -s $objects[$i]`;
+			setAttr ($shape[0] + ".overrideEnabled") 1;
+			int $color = `colorIndexSliderGrp -q -v conColor`;
+			if($color > 0)
+				setAttr ($shape[0] + ".overrideColor") ($color - 1);
+		}
+		$i++;
+	};//end for
+
+
+}
+
+// creates an attribute for the control that will allow the blending
+// of inherit rotation from the parent object
+global proc inherit_OrientRot(string $control, string $inherit, string $object)
+{
+
+	select -cl;
+	select -r $control ;
+	addAttr -ln inheritRot -at double  -min 0 -max 1 -dv 1 -k 1;
+	select -r $inherit ;
+	SetKey;
+	SetKey;
+
+	eval("setDrivenKeyframe -at blendPoint1 -v 1 -cd "+$control+".inheritRot");
+	eval("setDrivenKeyframe -at blendOrient1 -v 1 -cd "+$control+".inheritRot");
+
+	eval("setAttr "+$control+".inheritRot 0");
+	eval("setDrivenKeyframe -at blendOrient1 -v 0 -cd "+$control+".inheritRot");
+	eval("setAttr "+$control+".inheritRot 1");
+
+	select -cl;
+}
+
+//display window that will let you rotate a contorl without affecting
+//the children
+global proc snRotWin()
+{
+	if(`window -ex snRotWindow`) deleteUI snRotWindow;
+	int $winH = 100;
+	int $winW = 280;
+
+	window -t "Rotate Control" -w $winH -h $winW snRotWindow;
+	columnLayout -w 280;
+	rowColumnLayout -nc 1 -cw 1 270;
+	text -al "left" -fn "smallBoldLabelFont" "Select a contorl and click which axis to rotate";
+	setParent..;
+	columnLayout;
+	rowColumnLayout -nc 3 -cw 1 ($winW/3 - 2) -cw 2 ($winW/3 - 2) -cw 3 ($winW/3 - 2);
+	button -l "X 90 deg" -command "snRotCtrlAxis(\"X\")";
+	button -l "Y 90 deg" -command "snRotCtrlAxis(\"Y\")";
+	button -l "Z 90 deg" -command "snRotCtrlAxis(\"Z\")";
+	text -l"";text -l"";
+	button -l "Close" -command "deleteUI snRotWindow";
+	window -e -w $winW -h $winH snRotWindow;
+	showWindow snRotWindow;
+}
+
+//Rotates the objects shape without affecting the childern or rotate axis
+global proc snRotCtrlAxis(string $axis)
+{
+	string $sel[] = `ls -sl`;
+	int $numSel = `size($sel)`;
+	if($numSel == 0 || $numSel > 1) error "Select one cotrol";
+	string $shape[] = `listRelatives -s $sel[0]`;
+	string $objType = `objectType $shape[0]`;
+
+	if($objType == "nurbsCurve")
+	{
+		int $numOfCVs = `getAttr ($shape[0] + ".spans")`;
+		selectMode -component;
+		selectType -controlVertex 1;
+		select -r ($sel[0] + ".cv[0:" + $numOfCVs + "]");
+	}
+	if($objType == "nurbsCurve")
+	{
+		switch($axis) {
+			case "X":
+				rotate -os 90 0 0;
+				selectMode -object;
+				break;
+			case "Y":
+				rotate -os 0 90 0;
+				selectMode -object;
+				break;
+			case "Z":
+				rotate -os 0 0 90;
+				selectMode -object;
+				break;
+		}
+	}
+
+}
+
+//lock and hide channels
+global proc snLockAndHide (string $obj)
+{
+
+	setAttr -lock true -keyable false ($obj + ".tx");
+	setAttr -lock true -keyable false ($obj + ".ty");
+	setAttr -lock true -keyable false ($obj + ".tz");
+	setAttr -lock true -keyable false ($obj + ".rx");
+	setAttr -lock true -keyable false ($obj + ".ry");
+	setAttr -lock true -keyable false ($obj + ".rz");
+	setAttr -lock true -keyable false ($obj + ".sx");
+	setAttr -lock true -keyable false ($obj + ".sy");
+	setAttr -lock true -keyable false ($obj + ".sz");
+	setAttr -lock true -keyable false ($obj + ".v");
+}
+
+//make FK controls stretch through translation
+global proc makeStretch(string $con,string $joint)
+{
+	if(`objectType -isType "joint" $joint`)
+	{
+		addAttr -ln stretch -at double -dv 1 $con;
+		setAttr -e -keyable true ($con + ".stretch");
+		float $jointXPos = `getAttr ($joint + ".translateX")`;
+		createNode "multiplyDivide" -n ("MD_" + $con + "stretch");
+		setAttr ("MD_" + $con + "stretch.input2X") $jointXPos;
+		connectAttr -f ($con + ".stretch") ("MD_" + $con + "stretch" + ".input1X");
+		connectAttr -f ("MD_" + $con + "stretch" + ".outputX") ($joint + ".translateX");
+	}
+	else
+	{
+		error " 没有一个关节。仅能伸展一个关节 ";
+	}
+}
+
+jrControlMaker;

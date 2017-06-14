@@ -1,0 +1,482 @@
+/*
+oyCreateJointOnCurve by Ozgur Yilmaz (c) 2006
+
+v1.0.1
+
+Description :
+-------------
+
+creates joints on selected curve
+
+Usage :
+-------
+
+Select one curve run the script, fill the fields, hit create joints...
+
+
+Version History :
+-----------------
+v1.0.1
+- beziers support added
+
+v1.0.0
+- changed the name of the script from createJointOnCurve to
+oyCreateJointOnCurve
+
+v0.2.0
+- added joint nameing support (prefix and subfix)
+- added curve direction reversing
+- create joint button position changed
+- the frameLayout has been removed
+
+v0.1.1
+- added checking for selected objects
+
+v0.1.0
+- added "align to world" check box to align the joint to world not to
+  eachother
+
+v0.0.1
+- initial version
+*/
+
+
+
+
+global proc oyCreateJointOnCurve()
+{
+	int $windowWidth = 243;
+	int $windowHeight = 209;
+	
+	string $version = "v1.0.0";
+	
+	if (`window -q -ex oyCreateJointOnCurve_Window`)
+	{
+		deleteUI -wnd oyCreateJointOnCurve_Window;
+	}
+	
+	window
+		-wh $windowWidth $windowHeight
+		-t ("oyCreateJointOnCurve "+$version)
+		oyCreateJointOnCurve_Window;
+		
+		columnLayout
+			-adj true
+			oyCJOC_jointTool;
+			
+			columnLayout oyCJOC_jointOptions;
+				
+				intFieldGrp
+					-l "Number of joints"
+					-v1 2
+					-cw2 159 45
+					-cl2 "right" "left"
+					oyCJOC_intFieldGrp;
+				
+				optionMenuGrp
+					-l "Orientation"
+					-cl2 "right" "left"
+					-cw 1 160
+					-annotation "The first letter indicates the axis to point down the bone. The second letter aligns with the second world axis orientation."
+					oyCJOC_autoJointOrient;
+					
+					menuItem -l "xyz" oyCJOC_ajoXYZ;
+					menuItem -l "yzx" oyCJOC_ajoYZX;
+					menuItem -l "zxy" oyCJOC_ajoZXY;
+					menuItem -l "xzy" oyCJOC_ajoXZY;
+					menuItem -l "yxz" oyCJOC_ajoYXZ;
+					menuItem -l "zyx" oyCJOC_ajoZYX;
+
+				optionMenuGrp
+					-cw2 160 70
+					-l "Second Axis World Orientation"
+					-cw 1 160
+					-cl2 "right" "left"
+					-annotation "Specify the world axis alignment for the second axis."
+					oyCJOC_secondAxisOrient;
+					
+					menuItem -l " +x" oyCJOC_saoX;
+					menuItem -l " -x" oyCJOC_saoNegX;
+					menuItem -l " +y" oyCJOC_saoY;
+					menuItem -l " -y" oyCJOC_saoNegY;
+					menuItem -l " +z" oyCJOC_saoZ;
+					menuItem -l " -z" oyCJOC_saoNegZ;
+					menuItem -l "none" oyCJOC_saoNone;
+				
+				checkBoxGrp
+					-l "Align to world"
+					-cw2 158 57
+					-cl2 "right" "left"
+					-v1 0
+					oyCJOC_checkBoxGrp1; 
+				
+				checkBoxGrp
+					-l "Reverse curve"
+					-cw2 158 57
+					-cl2 "right" "left"
+					-v1 0
+					oyCJOC_checkBoxGrp2; 
+				
+				rowLayout
+					-nc 2
+					-cw2 130 100
+					-ct2 "left" "left"
+					oyCJOC_jointNamesRowLayout;
+					
+					checkBoxGrp
+						-l "Joint Names"
+						-cw2 105 16
+						-cl2 "right" "left"
+						-v1 0
+						-onc "textField -e -en 1 oyCJOC_jointNamesTextField;"
+						-ofc "textField -e -en 0 oyCJOC_jointNamesTextField;"
+						oyCJOC_jointNamesCheckBoxGrp;
+											
+					textField
+						-en 0
+						-tx "joint"
+						-w 100
+						oyCJOC_jointNamesTextField;
+					
+				setParent..;
+
+				rowLayout
+					-nc 2
+					-cw2 130 100
+					-ct2 "left" "left"
+					oyCJOC_subfixRowLayout;
+					
+					checkBoxGrp
+						-l "Subfix Joint Names"
+						-cw2 105 16
+						-cl2 "right" "left"
+						-v1 0
+						-onc "textField -e -en 1 oyCJOC_subfixTextField;"
+						-ofc "textField -e -en 0 oyCJOC_subfixTextField;"
+						oyCJOC_subfixCheckBoxGrp;
+											
+					textField
+						-en 0
+						-tx "_subfix"
+						-w 100
+						oyCJOC_subfixTextField;
+					
+				setParent..;
+				
+				rowLayout
+					-nc 1
+					-cw1 ($windowWidth-15)
+					-ct1 "right"
+					oyCJOC_createJointsRowLayout;
+					
+					button
+						-l "Create Joints"
+						-c "oyCJOC_getValues();"
+						oyCJOC_button1;
+				setParent..;
+				
+		setParent ..; // jointFrame
+	
+	optionMenuGrp
+		-e
+		-sl 1
+		oyCJOC_autoJointOrient;
+		
+	
+	showWindow oyCreateJointOnCurve_Window;
+	
+	window -e -wh $windowWidth $windowHeight oyCreateJointOnCurve_Window;
+	
+}
+
+
+
+global proc oyCJOC_getValues()
+{
+	
+	int $numberOfJoints;
+	int $orientation;
+	int $secondAxis;
+	int $alignToWorld;
+	int $reverseDir;
+	
+	int $jointName;
+	string $jointNameString = "";
+
+	int $subFix;
+	string $subFixString = "";
+	
+	//-------------------------------------------------
+	
+	
+	$numberOfJoints = `intFieldGrp -q -v1 oyCJOC_intFieldGrp`;
+	$orientation = `optionMenuGrp -q -sl oyCJOC_autoJointOrient`;
+	$secondAxis = `optionMenuGrp -q -sl oyCJOC_secondAxisOrient`;
+	$alignToWorld = `checkBoxGrp -q -v1 oyCJOC_checkBoxGrp1`;
+	$reverseDir = `checkBoxGrp -q -v1 oyCJOC_checkBoxGrp2`;
+	
+	$jointName = `checkBoxGrp -q -v1 oyCJOC_jointNamesCheckBoxGrp`;
+	if ($jointName) $jointNameString = `textField -q -tx oyCJOC_jointNamesTextField`;
+
+	$subFix = `checkBoxGrp -q -v1 oyCJOC_subfixCheckBoxGrp`;
+	if ($subFix) $subFixString = `textField -q -tx oyCJOC_subfixTextField`;
+	
+	oyCJOC_doCreateJoints ( $numberOfJoints , $orientation , $secondAxis , $alignToWorld , $reverseDir , $jointNameString , $subFixString );
+	
+}
+
+
+
+global proc oyCJOC_doCreateJoints
+(
+	int $jointCnt,
+	int $orientation,
+	int $secondAxis,
+	int $alignToWorld,
+	int $reverseDir,
+	string $jointName,
+	string $subFix
+)
+{
+	
+	//------------------------------------------------------------------
+	// Declerations
+	//------------------------------------------------------------------
+	string $selList[];
+	string $curve;
+	string $curveShape;
+		
+	string $joint[];
+	
+	string $aimConstraint[];
+	
+	string $motionPath1;
+	
+	string $temp1[];
+	
+	int $i;
+	
+	float $worldPos1[];
+		
+	float $uValue;
+	
+	float $aimVector[];
+	float $upVector[];
+	float $worldUpVector[];
+	
+	//------------------------------------------------------------------
+	
+	$selList = `ls -sl`;
+	if ( size($selList) < 1)
+	{
+		error "Please select one curve";
+	}
+	
+	$curve = $selList[0];
+	
+	$temp1 = `listRelatives -s $curve`;
+	$curveShape = $temp1[0];
+	
+	string $mayaVersion = `about -version`;
+	
+	if (!`objectType -i "nurbsCurve" $curveShape` && !`objectType -i "bezierCurve" $curveShape`)
+		error "Please select one curve";
+	
+	if ($curveShape == "")
+		error "Please select one curve";
+	
+	if (`objectType -i "joint" $curve`)
+		error "Please select one curve";	
+	
+	
+	if ($jointName == "" )
+		$jointName = "joint";
+	
+	$motionPath1 = `createNode motionPath -n "oyCJOC_motionPath#"`;
+	
+	connectAttr ($curveShape+".worldSpace[0]") ($motionPath1+".geometryPath");
+	
+	setAttr ($motionPath1+".fractionMode") 1;
+	
+	//--------------------------------------------------
+	switch($orientation)
+	{
+		case 1: // xyz
+			$aimVector[0] = 1;
+			$aimVector[1] = 0;
+			$aimVector[2] = 0;
+			
+			$worldUpVector[0] = 0;
+			$worldUpVector[1] = 1;
+			$worldUpVector[2] = 0;
+			break;
+			print "orientation : xyz\n";		
+		case 4: // xzy
+			$aimVector[0] = 1;
+			$aimVector[1] = 0;
+			$aimVector[2] = 0;
+			
+			$worldUpVector[0] = 0;
+			$worldUpVector[1] = 0;
+			$worldUpVector[2] = 1;
+			break;
+			print "orientation : xzy\n";
+		case 2: // yzx
+			$aimVector[0] = 0;
+			$aimVector[1] = 1;
+			$aimVector[2] = 0;
+			
+			$worldUpVector[0] = 0;
+			$worldUpVector[1] = 0;
+			$worldUpVector[2] = 1;
+			print "orientation : yzx\n";
+			break;
+
+		case 5: // yxz
+			$aimVector[0] = 0;
+			$aimVector[1] = 1;
+			$aimVector[2] = 0;
+			
+			$worldUpVector[0] = 1;
+			$worldUpVector[1] = 0;
+			$worldUpVector[2] = 0;
+			print "orientation : yxz\n";
+			break;			
+		case 3: // zxy
+			$aimVector[0] = 0;
+			$aimVector[1] = 0;
+			$aimVector[2] = 1;
+
+			$worldUpVector[0] = 1;
+			$worldUpVector[1] = 0;
+			$worldUpVector[2] = 0;
+			print "orientation : zxy\n";
+			break;			
+		case 6: // zyx
+			$aimVector[0] = 0;
+			$aimVector[1] = 0;
+			$aimVector[2] = 1;
+
+			$worldUpVector[0] = 0;
+			$worldUpVector[1] = 1;
+			$worldUpVector[2] = 0;
+			print "orientation : zyx\n";
+			break;
+	}
+
+	//--------------------------------------------------
+	switch($secondAxis)
+	{
+		case 1: // +x
+			$upVector[0] = 1;
+			$upVector[1] = 0;
+			$upVector[2] = 0;
+			print "second Axis : +x\n";
+			break;
+			
+		case 2: // -x
+			$upVector[0] = -1;
+			$upVector[1] = 0;
+			$upVector[2] = 0;
+			print "second Axis : -x\n";
+			break;
+			
+		case 3: // +y
+			$upVector[0] = 0;
+			$upVector[1] = 1;
+			$upVector[2] = 0;
+			print "second Axis : +y\n";
+			break;
+			
+		case 4: // -y
+			$upVector[0] = 0;
+			$upVector[1] = -1;
+			$upVector[2] = 0;
+			print "second Axis : -y\n";
+			break;
+			
+		case 5: // +z
+			$upVector[0] = 0;
+			$upVector[1] = 0;
+			$upVector[2] = 1;
+			print "second Axis : +z\n";
+			break;
+			
+		case 5: // -z
+			$upVector[0] = 0;
+			$upVector[1] = 0;
+			$upVector[2] = -1;
+			print "second Axis : -z\n";
+			break;
+			
+		default:
+			$upVector[0] = -1;
+			$upVector[1] = 0;
+			$upVector[2] = 0;
+			break;
+	}
+	
+	
+	
+	for ( $i = 0 ; $i < $jointCnt ; $i++ )
+	{
+		
+		$uValue = ( 1.0 * (float)$i / ( (float)$jointCnt - 1.0 ) );
+
+		if ($reverseDir)
+		{
+			$uValue = 1.0 - $uValue;
+		}
+		
+		setAttr ($motionPath1+".uValue") $uValue;
+
+		$worldPos1[0] = `getAttr ($motionPath1+".xCoordinate")`;
+		$worldPos1[1] = `getAttr ($motionPath1+".yCoordinate")`;
+		$worldPos1[2] = `getAttr ($motionPath1+".zCoordinate")`;
+						
+		$joint[$i] = `createNode "joint" -n ($jointName+"#")`;
+		setAttr ($joint[$i]+".t") $worldPos1[0] $worldPos1[1] $worldPos1[2];
+		setAttr ($joint[$i]+".rotateOrder") ($orientation-1);
+	}
+	
+	
+	if ($subFix != "")
+	{
+		for ($i = 0 ; $i < $jointCnt ; $i++)
+		{
+			$joint[$i] = `rename $joint[$i] ($joint[$i]+$subFix)`;
+		}
+	}
+
+	
+	
+	
+	for ($i = 0 ; $i < $jointCnt-1 ; $i++)
+	{
+		if (!$alignToWorld)
+		{
+			
+			$aimConstraint = `aimConstraint
+												-wut "vector"
+												-aim $aimVector[0] $aimVector[1] $aimVector[2]
+												-wu $upVector[0] $upVector[1] $upVector[2]
+												-u $worldUpVector[0] $worldUpVector[1] $worldUpVector[2]
+												$joint[$i+1] $joint[$i]`;
+												
+			delete $aimConstraint;
+			
+		}
+		
+		parent -a $joint[$i+1] $joint[$i];
+		
+	}
+	
+	makeIdentity -apply true -t 0 -r 0 -s 0 -n 0 -jointOrient $joint[$jointCnt-1];
+	
+	delete $motionPath1;
+	
+	select $joint[0];
+	makeIdentity -apply true -t 0 -r 1 -s 0 -n 0;
+	
+}
+oyCreateJointOnCurve();

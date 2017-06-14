@@ -1,0 +1,20 @@
+//secondary
+global proc secondaryCtrl(){
+    string $Ctrl[] = `ls -sl`; 
+    for ($fakeSel in $Ctrl){
+    //link to Fake_secondaryCtrl_GRP 
+    connectAttr -f ($fakeSel+".translate") ("Fake_"+$fakeSel+".translate");
+    connectAttr -f ($fakeSel+".rotate") ("Fake_"+$fakeSel+".rotate");
+    //link multiplyDivide
+    string $multLink = `createRenderNodeCB -asUtility "" multiplyDivide ""`;
+    string $mulName = `rename $multLink "mul_secoundry"` ; 
+    connectAttr -f ($fakeSel+".translate") ($mulName+".input1");
+    setAttr ($mulName+".input2X") -1;
+    setAttr ($mulName+".input2Y") -1;
+    setAttr ($mulName+".input2Z") -1;
+    string $CtrlCsta[] = `listRelatives -p -ni $fakeSel`;
+    connectAttr -f ($mulName+".output") ($CtrlCsta[0]+".translate"); 
+}
+}
+
+secondaryCtrl;

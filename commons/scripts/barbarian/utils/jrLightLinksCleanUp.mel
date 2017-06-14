@@ -1,0 +1,110 @@
+global proc int jrLightLinksCleanUp()
+{
+  //申明一个浮点变量$startTime，申明一个浮点变量$elaspedTime，申明整数变量$min，申明整数变量$sec。
+     int $min;
+    int $sec;
+ //申明字符串变量$lightLinker的同时，将场景中类型为lightLinker的节点名称存入字符串变量$lightLinker中。
+ string $lightLinker[] = `ls -typ lightLinker`;
+ //申明一个整数变量$numOfLinker，并将lightLinker节点的的数量存入整数变量$numOfLinker中。
+ int $numOfLinker = size($lightLinker);
+ //申明一个整数变量$numOfbadLinks，在执行程序时将坏的lightLinker存入其中。
+ int $numOfbadLinks = 0;
+ //申明一个整数变量$numOfAllLinks，在执行程序时将最终所有的lightLinker存入其中。
+ int $numOfAllLinks = 0;
+ //申明字符串变量$linkedPair。
+ string $linkedPair[] = {};
+ //换行打印"jrLightLinksCleanUp:"，然后再换行打印"-------------------------------"。
+ print "\njrLightLinksCleanUp:\n";
+ print "-------------------------------\n";
+ //对于字符串变量$lightLinker中的每一个成员，都执行
+       for ($i=0; $i<size($lightLinker); $i++) 
+          {
+         //申明字符串变量$connections，将与每个lightLinker的连接列出存入字符串变量$connections中。
+   string $connections[] = `listConnections -connections  1 -plugs  1 -destination  0 -source  1 $lightLinker[$i]`;
+         string $tmpPair = "";
+         //申明整数变量$numOfcons，将获得的所有与lightLinker有关联的节点数量存入变量$numOfcons。
+   int $numOfcons = size($connections);
+         //如果有相关的连接存在，例如：lightLinker1.link[0].light  defaultLightSet.message   
+         //                            lightLinker1.link[0].object initialShadingGroup.message 
+         //                            lightLinker1.link[1].light defaultLightSet.message 
+         //                            lightLinker1.link[1].object initialParticleSE.message 
+         //                            lightLinker1.link[2].light defaultLightSet.message 
+         //                            lightLinker1.link[2].object lambert2SG.message 
+    if (!$numOfcons) 
+     {
+              //如果没有找到相应的灯光连接，那么中断窗口过程，跳出当前的这个循环操作，继续执行循环后的代码
+      print ("- Cleaning Up '" + $lightLinker[$i] + "': 没有多余的灯光连接被找到!\n");
+      
+      continue;
+          }
+       else 
+                 {
+               //有相关的连接存在，例如：lightLinker1.link[0].light  defaultLightSet.message   
+            //                            lightLinker1.link[0].object initialShadingGroup.message 
+               //                            lightLinker1.link[1].light defaultLightSet.message 
+           //                            lightLinker1.link[1].object initialParticleSE.message 
+            //                            lightLinker1.link[2].light defaultLightSet.message 
+               //                            lightLinker1.link[2].object lambert2SG.message 
+                  //那么执行打印，告诉用户总共有多少个连接在清理
+         print ("- Cleaning Up '" + $lightLinker[$i] + "', All "  + ($numOfcons/2) + " Connections\n");
+           }
+   //申明整数变量$j。
+   int $j = 0;
+         //当整数变量$j小于整数变量$numOfcons时，检查到对话框被按了放弃，那么打断所有的程序进程。
+       while ($j<$numOfcons) 
+         {
+               //整数变量$numOfAllLinks的数值自增加         
+      $numOfAllLinks ++;
+
+               //申明字符串变量$LinkIgnoreLit，看是否匹配变量$connections中物体名称，例如link[0]，存入字符串变量$LinkIgnoreLit
+               //申明字符串变量$LinkIgnoreObj，看是否匹配变量$connections中物体名称，例如link[0]，存入字符串变量$LinkIgnoreLit
+         string $LinkIgnoreLit = match("(link){0,1}(ignore){0,1}\\[[0-9]+\\]", $connections[$j]);
+      string $LinkIgnoreObj = match("(link){0,1}(ignore){0,1}\\[[0-9]+\\]", $connections[$j+2]);
+               //如果变量$LinkIgnoreLit和变量$LinkIgnoreObj的名称完全相同，那么执行下面的代码
+      if ($LinkIgnoreLit == $LinkIgnoreObj) 
+                  {
+                     //申明字符串变量$tmpPair，将与lightLinker所连接的节点名称存入变量$tmpPair中
+      $tmpPair = $connections[$j+1] + ":" + $connections[$j+3];
+                     //如果变量$tmpPair中的名字和变量$linkedPair中的名字有相同的那么执行
+      if (stringArrayCount($tmpPair, $linkedPair)) 
+                      {
+                          //断开lightLinker[$j+1]与lightLinker[$j]之间的属性连接
+        //断开lightLinker[$j+3]与lightLinker[$j+2]之间的属性连接
+       disconnectAttr $connections[$j+1] $connections[$j];
+       disconnectAttr $connections[$j+3] $connections[$j+2];
+                         //整数变量$numOfbadLinks自增加（用来记数的）
+       $numOfbadLinks ++;
+           }
+      else 
+                      {
+                          //没有匹配的名字那么将名字载入字符串变量$linkedPair中
+        $linkedPair[size($linkedPair)] = $connections[$j+1] + ":" + $connections[$j+3];
+           }
+                      //整数变量$j加4
+          $j += 4;
+                    //  print $j;
+         }                 
+       else 
+                  {
+                   //如果变量$LinkIgnoreLit和变量$LinkIgnoreObj的名称不相同，那么执行下面的代码
+                      //断开lightLinker[$j+1]与lightLinker[$j]之间的属性连接
+                      //整数变量$numOfbadLinks自增加（用来记数的）
+                      //整数变量$j加2
+       disconnectAttr $connections[$j+1] $connections[$j];
+       $numOfbadLinks ++;
+       $j += 2;
+          }
+   }
+      //程序窗口结束
+  }
+ print "\njrLightLinksCleanUp摘要:\n";
+ print "-------------------------------\n";
+ print ("- 共有 "+$numOfLinker+" 个灯光连接节点，" + $numOfAllLinks + " 个灯光连接. 删除了总共 " + $numOfbadLinks + " 个多余无用的连接，(共耗时: " + $min + " 分钟, " + $sec + " 秒)\n");
+
+
+return $numOfbadLinks;
+ }
+//jrLightLinksCleanUp;
+// end of script
+
+

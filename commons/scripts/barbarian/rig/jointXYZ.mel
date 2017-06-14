@@ -1,0 +1,68 @@
+////Re-orient joints: XYZ
+
+global proc jointOri_xyz() {
+
+    //Query selection
+    
+    string $selJoint[] = `ls -sl`;
+    
+    //Check size of selection
+    
+    if (size($selJoint) != 2){warning "Must select 2 joints";} 
+    
+    else if (size($selJoint) == 2){
+    
+        // Zero out Rotation and Joint Orient attributes of target joint to orient it to the world
+        
+        setAttr ($selJoint[1] + ".rx") 0;
+        
+        setAttr ($selJoint[1] + ".ry") 0;
+        
+        setAttr ($selJoint[1] + ".rz") 0;
+        
+        setAttr ($selJoint[1] + ".jointOrientX") 0;
+        
+        setAttr ($selJoint[1] + ".jointOrientX") 0;
+        
+        setAttr ($selJoint[1] + ".jointOrientX") 0;
+        
+        //Create Aim Constraint
+        
+        string $aimJoint[] = `aimConstraint -offset 0 0 0 -weight 1 -aimVector 1 0 0 -upVector 0 1 0 -worldUpType "vector" -worldUpVector 0 1 0 $selJoint[0] $selJoint[1]`;
+        
+        //Find and delete constraint
+        
+        string $findAimCns[] = `listRelatives -type aimConstraint $selJoint[1]`;
+        
+        select $findAimCns[0]; doDelete;
+        
+        ////Swap Rotate values of joint with Joint Orient values
+        
+        //Find the Rotate values of the target joint
+        
+        float $selJnt_rx = `getAttr ($selJoint[1] + ".rx")`;
+        
+        float $selJnt_ry = `getAttr ($selJoint[1] + ".ry")`;
+        
+        float $selJnt_rz = `getAttr ($selJoint[1] + ".rz")`;
+        
+        //Copy the Rotate values of the target joint to its Joint Orient attributes
+        
+        setAttr ($selJoint[1] + ".jointOrientX") ($selJnt_rx);
+        
+        setAttr ($selJoint[1] + ".jointOrientY") ($selJnt_ry);
+        
+        setAttr ($selJoint[1] + ".jointOrientZ") ($selJnt_rz);
+        
+        //To finish, zero out the Rotate values of the target joint
+        
+        setAttr ($selJoint[1] + ".rx") 0;
+        
+        setAttr ($selJoint[1] + ".ry") 0;
+        
+        setAttr ($selJoint[1] + ".rz") 0;
+    
+    }
+}
+
+jointOri_xyz;

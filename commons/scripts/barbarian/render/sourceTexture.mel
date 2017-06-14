@@ -1,0 +1,407 @@
+global proc CopyTheFilesUI()
+{
+string $Release ="V_2013/04/10";
+if(`window -ex CopyTheFilesui`)deleteUI CopyTheFilesui;
+window -t ("贴图查看与拷贝"+$Release) -mxb 0 -s 0 CopyTheFilesui;
+    frameLayout -l "对于贴图查找与拷贝操作" ;
+        columnLayout -adj 1 ;
+            textFieldGrp -l "贴图名称" -tx "E:/wpc_temp" Mark;
+            textFieldGrp -l "指定目录" -tx "E:/wpc_temp" DMark;
+    radioCollection;
+    radioButton -label "直接拷贝\/\/server1\/is里的文件到指定目录相对应的目录下" -cc "textFieldGrp  -e -en 1 Mark;textFieldGrp  -e -en 0 DMark;" onee;
+    radioButton -label "◆拷贝场景所有贴图到指定路径" -cc "textFieldGrp  -e -en 1 Mark;textFieldGrp  -e -en 0 DMark;" twoo;
+    radioButton -label "把目录为\“\/\/server1\/..\”的改成Z:/.." -cc "textFieldGrp  -e -en 0 Mark;textFieldGrp  -e -en 0 DMark;" threee;
+    radioButton -label "选择目录的贴图文件" -cc "textFieldGrp  -e -en 1 Mark;textFieldGrp  -e -en 0 DMark;" Fourr;
+    radioButton -label "Z盘映射到MU而丢失贴图，需找并拷贝到。。相应。。目录下" -cc "textFieldGrp  -e -en 0 Mark;textFieldGrp  -e -en 0 DMark;" fivee;
+    radioButton -label "◆Z盘映射到MU而丢失贴图，需找并拷贝到。。指定。。目录下" -cc "textFieldGrp  -e -en 1 Mark;textFieldGrp  -e -en 0 DMark;" sixx;
+    radioButton -label "单个文件拷贝，把需要拷贝的文件拷贝到。。指定。。目录下" -cc "textFieldGrp  -e -en 1 Mark;textFieldGrp  -e -en 1 DMark;" sevenn;
+    radioButton -label "◆指定路径" -cc "textFieldGrp  -e -en 1 Mark;textFieldGrp  -e -en 0 DMark;" eight;
+    columnLayout -adj 1 CopyFilesColumn;
+    rowColumnLayout -numberOfRows 1;
+    button -l "显示场景所有贴图路径" -c "ShowFileName";
+    button -l "找不到的贴图" -c "ExFileS";
+    button -l "文件操作" -c "FilesTheCope";
+showWindow CopyTheFilesui;
+}
+
+global proc int FileCopy( string $OldFile , string $copyFiles , string $Newlist)
+{
+int $FileCopyInt=0;
+    if(`file -q -ex $copyFiles`==0)
+    {
+    $FileCopyInt=1;
+        if(`sysFile -copy  $copyFiles $OldFile`==0)
+        {
+        sysFile -makeDir $Newlist;
+        sysFile -copy $copyFiles $OldFile;
+        }
+        else
+        {
+        sysFile -copy $copyFiles $OldFile;
+        }
+     return $FileCopyInt;
+     }
+     else
+     {
+     $FileCopyInt=2;
+     return $FileCopyInt;
+     }
+//wpc_2012/09/04;
+}
+
+global proc string [] FilesName( string $InportFile )
+{
+string $OldFileTokenize[];
+string $SetFileTokenize[];
+string $OldFileTokenize1[];
+string $OldFile=$InportFile;
+string $setFiles;
+string $setFilesMark;
+int $setFilesInt=0;
+tokenize $OldFile "/" $OldFileTokenize;
+    if($OldFileTokenize[0]!="Z:" && $OldFileTokenize[0]!="z:")
+    {
+        if(`gmatch $OldFileTokenize[0] "*erver*"`)
+        {
+            if($OldFileTokenize[0]=="Server1" || $OldFileTokenize[0]=="server1")
+            {
+            $setFilesInt=1;
+            $OldFileTokenize[0]="Z:";
+            $OldFileTokenize[1]="";
+            string $setFile = stringArrayToString($OldFileTokenize,"/");
+            tokenize $setFile "/" $SetFileTokenize;
+            $OldFile = stringArrayToString($SetFileTokenize,"/");
+            tokenize $OldFile "/" $OldFileTokenize1;
+            $OldFileTokenize1[0]="";
+            $setFiles = stringArrayToString($OldFileTokenize1,"/");
+            $OldFileTokenize1[(size($OldFileTokenize1))-1]="";
+            $setFilesMark = stringArrayToString($OldFileTokenize1,"/");
+            return {$OldFile,$setFiles,$setFilesMark,$setFilesInt,$InportFile};
+            }
+            else
+            {
+            $setFilesInt=2;
+            $OldFileTokenize[0]="Z:";
+            $OldFileTokenize[1]="";
+            string $setFile = stringArrayToString($OldFileTokenize,"/");
+            tokenize $setFile "/" $SetFileTokenize;
+            $OldFile = stringArrayToString($SetFileTokenize,"/");
+            tokenize $OldFile "/" $OldFileTokenize1;
+            $OldFileTokenize1[0]="";
+            $setFiles = stringArrayToString($OldFileTokenize1,"/");
+            $OldFileTokenize1[(size($OldFileTokenize1))-1]="";
+            $setFilesMark = stringArrayToString($OldFileTokenize1,"/");
+            string $setFilesMarks=("Z:"+$setFilesMark);
+            return {$OldFile,$setFiles,$setFilesMark,$setFilesInt,$InportFile,$setFilesMarks};
+            }
+        }
+        else
+        {
+        $setFilesInt=3;
+        return {$OldFile,$setFiles,$setFilesMark,$setFilesInt,$InportFile};
+        }
+    }
+    else
+    {
+    $setFilesInt=4;
+    $OldFileTokenize[0]="";
+    $setFiles = stringArrayToString($OldFileTokenize,"/");
+    $OldFileTokenize[(size($OldFileTokenize))-1]="";
+    $setFilesMark = stringArrayToString($OldFileTokenize,"/");
+    return {$OldFile,$setFiles,$setFilesMark,$setFilesInt,$InportFile};
+    }
+//wpc_2012/09/04;
+}
+
+global proc ShowFileName()
+{
+string $File[]=`ls -typ file`;
+string $fileName=`file -q -ns`;
+    for($i in $File)
+    {
+    string $Files=`getAttr ($i+".fileTextureName")`;
+    print ($Files+"\n");
+    }
+if(`window -ex LFile`)deleteUI LFile;
+window -t "Lfile" LFile;
+    paneLayout -configuration "horizontal4";
+        scrollField -wordWrap true
+            -text ("场景名称："+$fileName+"\n"+"场景里面的所有贴图路径:"+"\n") -editable false apaneLayout;
+showWindow LFile;
+string $File[]=`ls -typ file`;
+for ($i in $File)
+{
+string $OldFile=`getAttr ($i+".fileTextureName")`;
+string $ADscrollField=`scrollField -q -text apaneLayout`;
+scrollField -e -text ($ADscrollField+$OldFile+"\n") apaneLayout;
+}
+}
+
+global proc ExFileS()
+{
+string $fileName=`file -q -ns`;
+string $File[]=`ls -typ file`;
+if(`window -ex LFile`)deleteUI LFile;
+window -t "Lfile" LFile;
+    paneLayout -configuration "horizontal4";
+        scrollField -wordWrap true -text ("场景名称："+$fileName+"\n"+"场景里面的所有贴图路径:"+"\n") -editable false apaneLayout;
+showWindow LFile;
+for ($i in $File)
+{
+string $OldFile=`getAttr ($i+".fileTextureName")`;
+string $ADscrollField=`scrollField -q -text apaneLayout`;
+if(`file -q -ex $OldFile`==0)
+{
+scrollField -e -text ($ADscrollField+$OldFile+"\n") apaneLayout;
+}
+}
+}
+
+global proc renameFile()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+text -p printCopyFiles -l "没有指定成Z盘的文件";
+int $number=0;
+int $numbers=0;
+    for($i in $File)
+    {
+    $numbers++;
+    string $OldFile=`getAttr ($i+".fileTextureName")`;
+    string $filesName[]=FilesName($OldFile);
+        if($filesName[3]==1)
+        {
+            if (`file -q -ex $filesName[0]`==1)
+            {
+            setAttr -type "string" ($i+".fileTextureName") ($filesName[0]);
+            $number++;
+            }
+            else
+            {
+            text -p printCopyFiles -l ($filesName[0]+" 亲。你确定映射的是Z盘？你确定Z盘下找到这个文件了？");
+            }
+            print ($filesName[4]+"\n"+$filesName[0]+"\n");
+        }
+    }
+    text -p printCopyFiles -l ("一共"+" "+$numbers+" "+"文件"+"^~^");
+    text -p printCopyFiles -l ("已改名"+" "+$number+" "+"文件"+"^~^");
+}
+
+global proc copyFile()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+string $markText=`textFieldGrp -q -tx Mark`;
+text -p printCopyFiles -l "未拷贝的文件名";
+int $number=0;
+int $numbers=0;
+    for($i in $File)
+    {
+    $numbers++;
+    string $OldFile=`getAttr ($i+".fileTextureName")`;
+    string $filesName[]=FilesName($OldFile);
+        if($filesName[3]==4)
+        {
+        int $nu=FileCopy($filesName[0],($markText+$filesName[1]),($markText+$filesName[2]));
+        setAttr -type "string" ($i+".fileTextureName") ($markText+$filesName[1]);
+        if($nu==1)$number++;
+        }
+        else
+        {
+        text -p printCopyFiles -l $OldFile;
+        }
+        print (($markText+$filesName[1])+"\n"+$filesName[0]+"\n"+($markText+$filesName[2])+"\n");
+    }
+    text -p printCopyFiles -l ("一共"+" "+$numbers+" "+"文件"+"^~^");
+    text -p printCopyFiles -l ("已复制了"+" "+$number+" "+"文件"+"^~^");
+}
+
+global proc CopyFilesToFiles()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+string $markText = `textFieldGrp -q -tx Mark`;
+int $numbers = 0;
+int $number = 0;
+text -p printCopyFiles -l "未复制的文件";
+    for ($i in $File)
+    {
+    string $OldFile = `getAttr ($i+".fileTextureName")`;
+    string $OldFileName = basename($OldFile, "" );
+    string $NewFileListAndName = ($markText+"\/"+$OldFileName);
+    $numbers++;
+        if(`file -q -ex $OldFile`==1)
+        {
+            if(`file -q -ex $NewFileListAndName`==0)
+            {
+            FileCopy($OldFile , $NewFileListAndName, ($markText+"\/"));
+            $number++;
+            setAttr -type "string" ($i+".fileTextureName") $NewFileListAndName;
+            print ($OldFile+"\n"+$NewFileListAndName+"\n");
+            }
+            else
+            {
+            if(`file -q -ex $NewFileListAndName`==1)
+            {
+            setAttr -type "string" ($i+".fileTextureName") $NewFileListAndName;
+            }
+            }
+        }
+        else
+        {
+        text -p printCopyFiles -l $OldFile;
+        }
+    }
+    text -p printCopyFiles -l ("一共"+" "+$numbers+" "+"文件"+"^~^");
+    text -p printCopyFiles -l ("已复制了"+" "+$number+" "+"文件"+"^~^");
+}
+
+global proc selectFile()
+{
+string $File[]=`ls -typ file`;
+    for($i in $File)
+    {
+    string $FileNamen=`textFieldGrp -q -tx Mark`;
+    string $Files=`getAttr ($i+".fileTextureName")`;
+        if ($Files==$FileNamen)select -r $i;
+    }
+}
+
+global proc ExFileSs()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+int $numbers = 0;
+int $number = 0;
+for ($i in $File)
+{
+    string $OldFile=`getAttr ($i+".fileTextureName")`;
+    if(`file -q -ex $OldFile`==0)
+    {
+    $numbers ++;
+    string $filesNamee[]=FilesName($OldFile);
+        if($filesNamee[3] == 4)
+        {
+        string $OldFileName=basename($filesNamee[0], "" );
+        FileCopy(("\/\/Server1\/is"+$filesNamee[1]),$OldFile,("Z:"+$filesNamee[2]));
+        $number++;
+        }
+    }
+}
+    text -p printCopyFiles -l ("一共"+" "+$numbers+" "+"文件"+"^~^");
+    text -p printCopyFiles -l ("已复制了"+" "+$number+" "+"文件"+"^~^");
+}
+
+global proc ExFileSsd()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+string $markText = `textFieldGrp -q -tx Mark`;
+int $numbers = 0;
+int $number = 0;
+for ($i in $File)
+{
+    string $OldFile=`getAttr ($i+".fileTextureName")`;
+    if(`file -q -ex $OldFile`==0)
+    {
+    $numbers ++;
+    string $filesNamee[]=FilesName($OldFile);
+        if($filesNamee[3] == 4)
+        {
+        string $OldFileName=basename($filesNamee[0], "" );
+        FileCopy(("\/\/Server1\/is"+$filesNamee[1]),($markText+"\/"+$OldFileName),($markText+"\/"));
+        setAttr -type "string" ($i+".fileTextureName") ($markText+"\/"+$OldFileName);
+        $number++;
+        }
+    }
+}
+    text -p printCopyFiles -l ("一共"+" "+$numbers+" "+"文件"+"^~^");
+    text -p printCopyFiles -l ("已复制了"+" "+$number+" "+"文件"+"^~^");
+}
+
+global proc LCopyFile()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+string $OldFileNameList=`textFieldGrp -q -tx Mark`;
+string $OldFileName=basename($OldFileNameList, "" );
+string $NewFileList=`textFieldGrp -q -tx DMark`;
+string $NewFileNameList=($NewFileList+"\/"+$OldFileName);
+int $FileCopyInt=FileCopy($OldFileNameList,$NewFileNameList,$NewFileList);
+    if($FileCopyInt == 1)
+    {
+    text -p printCopyFiles -l "文件已拷贝，并且指定";
+    }
+    else
+    {
+        if(`file -q -ex $OldFileNameList` == 0)
+        {
+        text -p printCopyFiles -l "请检查需拷贝文件是否存在^~^";
+        }
+        else
+        {
+        text -p printCopyFiles -l "文件夹已存在该文件，并且已指定^~^";
+        }
+    }
+    if(`file -q -ex $NewFileNameList` == 1)
+    {
+        for($i in $File)
+        {
+        string $OldFile=getAttr ($i+".fileTextureName");     
+            if($OldFile==$OldFileNameList)
+            {
+            setAttr -type "string" ($i+".fileTextureName") $NewFileNameList;
+            }
+        }    
+    }
+}
+
+global proc FilesToFilesName()
+{
+string $File[]=`ls -typ file`;
+if(`columnLayout -ex printCopyFiles`)deleteUI printCopyFiles;
+columnLayout -p CopyFilesColumn printCopyFiles;
+string $markText = `textFieldGrp -q -tx Mark`;
+int $numbers = 0;
+int $number = 0;
+int $RameNumber = 0;
+text -p printCopyFiles -l "未命名的文件";
+    for ($i in $File)
+    {
+    string $OldFile = `getAttr ($i+".fileTextureName")`;
+    string $OldFileName = basename($OldFile, "" );
+    string $NewFileListAndName = ($markText+"\/"+$OldFileName);
+    $numbers++;
+        if(`file -q -ex $NewFileListAndName`==1)
+        {
+        setAttr -type "string" ($i+".fileTextureName") $NewFileListAndName;
+        $number++;
+        }
+        else
+        {
+        text -p printCopyFiles -l ($OldFile+ " 亲，你该检查一下这个路径下有木有这个文件");
+        }
+    }
+    text -p printCopyFiles -l ("一共"+" "+$numbers+" "+"文件"+"^~^");
+    text -p printCopyFiles -l ("已改名"+" "+$number+" "+"文件"+"^~^");
+}
+
+global proc FilesTheCope()
+{
+if(`radioButton  -q -sl onee`==1)copyFile;
+if(`radioButton  -q -sl twoo`==1)CopyFilesToFiles;
+if(`radioButton  -q -sl threee`==1)renameFile;
+if(`radioButton  -q -sl Fourr`==1)selectFile;
+if(`radioButton  -q -sl fivee`==1)ExFileSs;
+if(`radioButton  -q -sl sixx`==1)ExFileSsd;
+if(`radioButton  -q -sl sevenn`==1)LCopyFile;
+if(`radioButton  -q -sl eight`==1)FilesToFilesName;
+}
+CopyTheFilesUI;
+

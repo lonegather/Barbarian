@@ -1,0 +1,9 @@
+//删除场景中所有的海龟
+if(`objExists TurtleRenderOptions`)
+{
+    lockNode -lock 0 TurtleRenderOptions TurtleUIOptions TurtleBakeLayerManager TurtleDefaultBakeLayer;
+    delete TurtleRenderOptions TurtleUIOptions TurtleBakeLayerManager TurtleDefaultBakeLayer;
+	confirmDialog -m "海龟渲染器的垃圾已经被清除" -b "关闭";
+}
+else
+confirmDialog -m "场景中没有海龟渲染器的残留文件" -b "关闭";

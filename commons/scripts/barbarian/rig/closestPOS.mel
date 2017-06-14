@@ -1,0 +1,57 @@
+global proc closestPOS(){
+    
+    
+    string $sel[] = `ls -sl`;
+    string $lisel[] = `listRelatives -s $sel`;
+    string $objType  = `objectType $lisel[0]`;
+    
+    if($objType == "nurbsSurface"){
+     
+         for($selJnt in $sel){
+            string $loc[] = `spaceLocator`;
+            select -cl;
+            string $JNT = `joint -p 0 0 0`;
+            string $cnpoci = `createNode "closestPointOnSurface"`;
+            string $cnpociName = `rename "nurbsClosest_C_CPOS"`;
+            connectAttr -f ($selJnt+".worldSpace[0]") ($cnpociName+".inputSurface");
+            connectAttr -f ($loc[0]+".translate") ($cnpociName+".inPosition");
+            connectAttr -f ($cnpociName+".position") ($JNT+".translate");
+        
+            }
+        
+    }
+    
+    if($objType == "mesh"){
+        
+        for($selJnt in $sel){
+            string $loc[] = `spaceLocator`;
+            select -cl;
+            string $JNT = `joint -p 0 0 0`;
+            string $cnpoci = `createNode "closestPointOnMesh"`;
+            string $cnpociName = `rename "nurbsClosest_C_CPOS"`;
+            connectAttr -f ($selJnt+".worldMesh[0]") ($cnpociName+".inMesh");
+            connectAttr -f ($selJnt+".worldMatrix[0]") ($cnpociName+".inputMatrix");
+            connectAttr -f ($loc[0]+".translate") ($cnpociName+".inPosition");
+            connectAttr -f ($cnpociName+".position") ($JNT+".translate");
+          }
+        
+    }
+    
+        
+}
+
+
+if(`window -ex objectWin`){
+    deleteUI objectWin;  
+}    
+    
+window -t "添加几何体曲面骨骼脚本" objectWin;
+
+columnLayout -adj true -rowSpacing 6;
+
+    text -h 30 -l "选择一个几何体或者曲面\n按添加键执行";
+
+    button -l "添加" -c "closestPOS";
+
+window -e -wh 220 80 objectWin;
+showWindow objectWin;

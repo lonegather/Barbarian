@@ -1,0 +1,43 @@
+global proc Atm(){
+    
+    string $sels[] = `ls -sl`;
+    
+    for ($selv in $sels){
+        
+        setAttr ($selv + ".aiOpaque") 0;   
+        
+    }
+    
+}
+
+global proc Antm(){
+    
+    string $sels[] = `ls -sl`;
+    
+    for ($selv in $sels){
+        
+        setAttr ($selv + ".aiOpaque") 1;   
+        
+    }
+    
+}
+   
+//窗口界面
+if (`window -ex tmWin`){
+    
+    deleteUI tmWin;}
+
+window -t "Arnold材质透明开关" -wh 300 70 tmWin ;
+columnLayout -adj true;
+
+text -l "选择需要透明的模型\n点击按钮执行\n";
+
+button -l "透明"  -w 10 -h 28 -c "Atm";
+
+text -l "" -h 5;
+
+button -l "不透明" -w 10 -h 28 -c "Antm";
+
+window -e -wh 250 100 tmWin;
+showWindow tmWin;
+

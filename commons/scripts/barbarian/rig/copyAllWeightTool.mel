@@ -1,0 +1,43 @@
+global proc copyAllWeightTool(){
+    string $sels[] = `ls -sl`;
+
+    for($i=0;$i<size($sels);$i++){
+    
+    string $currentT = `currentTime -query`;
+    currentTime 0 ;
+    select -r $sels[0];
+    select -tgl $sels[$i+1];
+
+    
+    copySkinWeights
+      -noMirror
+      -surfaceAssociation closestPoint 
+      -influenceAssociation oneToOne 
+      -influenceAssociation closestJoint 
+      -influenceAssociation closestJoint;
+    currentTime $currentT;
+}
+    select -cl;
+}
+
+if(`window -ex Win1`){
+    
+    deleteUI Win1;
+}
+
+window -t "批量复制权重" -wh 100 30 Win1;
+
+    columnLayout -adjustableColumn true;
+
+    text -l "先选择正确的权重物体\n";
+    text -l "再选择需要被复制的物体点击执行";
+    
+    separator;
+    separator;
+
+    button -l "执行" -c "copyAllWeightTool";
+
+
+window -e -wh 250 80 Win1;
+showWindow Win1;
+

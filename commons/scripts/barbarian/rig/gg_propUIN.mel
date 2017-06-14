@@ -1,0 +1,333 @@
+global proc gg_propMeshN()
+{
+	string $ggprop[]=`ls -sl`;
+    int $count = 0;
+    int $wrongName = 0;
+    string $newProp[];
+    string $wrongObjs[];
+    
+	if(`size $ggprop`> 0 )
+	{
+        for($each in $ggprop)
+        {    
+            if(`gmatch $each "[M,L,R,F,B,U,D]_*_[0-9][0-9]_*"`)
+            {
+                $newProp[$count] = $each;
+                $count++;        
+            }
+            else
+            {
+                $wrongObjs[$wrongName] = $each;
+                $wrongName ++;
+            }
+        }	
+        gg_propN $newProp;        
+	}
+	for($each in $wrongObjs)
+	{
+	    warning ("Objs' Name Are Out Of Rule ! " + "??" + $each + "??");
+	}
+}
+
+global proc gg_propN(string $ggprop[])
+{
+	for($i=0;$i<`size $ggprop`;$i++)
+	{
+        string $buffer[];
+        $numTokens = `tokenize $ggprop[$i] "_" $buffer`;
+        
+		$listform = `listTransforms $ggprop[$i]`;
+		
+        $ctrlGrpName = $buffer[1] + "Ctrl" ;
+        for($ii=1;$ii<(`size $buffer`-1);$ii++)
+        {
+            $ctrlGrpName = $buffer[0]  + "_" + $buffer[1] + "Ctrl" + "_" + $buffer[$ii] ;
+        }
+		$ctrlGrpName += "_GRP";
+		
+		$ctrlSdkName = $buffer[1] + "Ctrl" ;
+        for($ii=1;$ii<(`size $buffer`-1);$ii++)
+        {
+            $ctrlSdkName = $buffer[0]  + "_" + $buffer[1] + "Ctrl" + "_" + $buffer[$ii] ;
+        }	
+		$ctrlSdkName += "_SDK";
+		
+		$ctrlCstName = $buffer[1] + "Ctrl" ;
+        for($ii=1;$ii<(`size $buffer`-1);$ii++)
+        {
+            $ctrlCstName = $buffer[0]  + "_" + $buffer[1] + "Ctrl" + "_" + $buffer[$ii] ;
+        }	
+		$ctrlCstName += "_CST";	
+				
+		$form = `createNode transform -n $ctrlGrpName`; 
+		
+		string $ctrlName = "";
+        for($iii=0;$iii<(`size $buffer`-1);$iii++)
+        {
+            $ctrlName = $ctrlName + $buffer[$iii] + "_"  ;
+        }	
+        $ctrlName += "Ctrl"	;
+        
+		gg_ctrlN ($ctrlName);
+		string $ctrlNameNew[] = `parent ($ctrlName) $form`;
+
+		$temp2= `parentConstraint -weight 1 $ggprop[$i] $form `;
+		delete $temp2;
+
+        
+		$xform_ggprop_s = `getAttr ($ggprop[$i]+".s")`;
+		
+		string $constrainName = "" ;
+		for($iiii=0;$iiii<(`size $buffer`-1);$iiii++)
+        {
+            $constrainName = $constrainName + $buffer[$iiii] + "_"  ;
+        }	
+        
+        setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".v");
+        
+		if((`checkBox -q -v t_checkBox` == 1 ) && (`checkBox -q -v r_checkBox` == 0 ))
+		pointConstraint -n ($constrainName+"PTCST") -mo -weight 1  $ctrlNameNew[0] $ggprop[$i] ;
+		
+		if((`checkBox -q -v r_checkBox` == 1 ) && (`checkBox -q -v t_checkBox` == 0 ))
+		orientConstraint -n ($constrainName+"OCST") -mo -weight 1  $ctrlNameNew[0] $ggprop[$i] ;
+		
+		if((`checkBox -q -v t_checkBox` == 1 ) && (`checkBox -q -v r_checkBox` == 1 ))
+		parentConstraint -n ($constrainName+"PCST") -mo -weight 1  $ctrlNameNew[0] $ggprop[$i] ;
+		
+		if(`checkBox -q -v s_checkBox` == 1 )
+		scaleConstraint -n ($constrainName+"SCST") -mo -weight 1 $ctrlNameNew[0] $ggprop[$i] ;
+		
+		if(`checkBox -q -v tx_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".tx");
+		if(`checkBox -q -v ty_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".ty");
+		if(`checkBox -q -v tz_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".tz");
+		
+		if(`checkBox -q -v rx_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".rx");
+		if(`checkBox -q -v ry_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".ry");
+		if(`checkBox -q -v rz_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".rz");
+		
+		if(`checkBox -q -v sx_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".sx");
+		if(`checkBox -q -v sy_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".sy");
+		if(`checkBox -q -v sz_checkBox` == 0)
+		setAttr -lock true -keyable false -channelBox false ($ctrlNameNew[0] + ".sz");
+		
+		if(`checkBox -q -v sdk_checkBox` == 1)
+		group -n $ctrlSdkName $ctrlNameNew[0];
+		
+		if(`checkBox -q -v cst_checkBox` == 1) {
+		group -n $ctrlCstName $ctrlNameNew[0];
+		setAttr -lock true -keyable false -channelBox false ($ctrlCstName + ".v");
+		}
+		select -cl;
+	
+	}
+}
+
+
+global proc gg_ctrlN(string $gg_ctrlName){
+	string $ctrl;
+	int $shapeSelected = `optionMenu -q -sl gg_optShapes`;
+	float $conScale = `floatSliderGrp -q -v gg_conSize`;
+		//add more contorls here if needed
+		if($shapeSelected == 1)
+		{
+			$ctrl = `curve -n $gg_ctrlName -d 1 -p 0.5 0.5 -0.5 -p 0.5 0.5 0.5 -p 0.5 -0.5 0.5 -p 0.5 -0.5 -0.5 -p 0.5 0.5 -0.5 -p -0.5 0.5 -0.5 -p -0.5 -0.5 -0.5 -p -0.5 -0.5 0.5 -p -0.5 0.5 0.5 -p 0.5 0.5 0.5 -p 0.5 -0.5 0.5 -p -0.5 -0.5 0.5 -p -0.5 -0.5 -0.5 -p 0.5 -0.5 -0.5 -p 0.5 0.5 -0.5 -p -0.5 0.5 -0.5 -p -0.5 0.5 0.5 -p 0.5 0.5 0.5 -p 0.5 0.5 -0.5 -k 0 -k 0.1 -k 0.2 -k 0.3 -k 0.4 -k 0.5 -k 0.6 -k 0.7 -k 0.8 -k 0.9 -k 1 -k 1.1 -k 1.2 -k 1.3 -k 1.4 -k 1.5 -k 1.6 -k 1.7 -k 1.8 `;
+		}
+		if($shapeSelected == 2)
+		{
+			$ctrl = `curve -d 1 -p 0.929835 0 -0.38515 -p 0.836829 0 -0.559152 -p 0.711665 0 -0.711665 -p 0.559152 0 -0.836829 -p 0.38515 0 -0.929835 -p 0.196348 0 -0.987108 -p 0 0 -1.006446 -p -0.196348 0 -0.987108 -p -0.38515 0 -0.929835 -p -0.559152 0 -0.836829 -p -0.711665 0 -0.711665 -p -0.836829 0 -0.559152 -p -0.929835 0 -0.38515 -p -0.987108 0 -0.196348 -p -1.006446 0 0 -p -0.987108 0 0.196348 -p -0.929835 0 0.38515 -p -0.836829 0 0.559152 -p -0.711665 0 0.711665 -p -0.559152 0 0.836829 -p -0.38515 0 0.929835 -p -0.196348 0 0.987108 -p 0 0 1.006446 -p 0.196348 0 0.987108 -p 0.38515 0 0.929835 -p 0.559152 0 0.836829 -p 0.711665 0 0.711665 -p 0.836829 0 0.559152 -p 0.929835 0 0.38515 -p 0.987108 0 0.196348 -p 1.006446 0 0 -p 0.987108 0 -0.196348 -p 0.929835 0 -0.38515 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -n $gg_ctrlName ` ;
+
+		}
+		if($shapeSelected == 3)
+		{
+			$ctrl = `curve -d 1 -p 0 0.35 -1.001567 -p -0.336638 0.677886 -0.751175 -p -0.0959835 0.677886 -0.751175 -p -0.0959835 0.850458 -0.500783 -p -0.0959835 0.954001 -0.0987656 -p -0.500783 0.850458 -0.0987656 -p -0.751175 0.677886 -0.0987656 -p -0.751175 0.677886 -0.336638 -p -1.001567 0.35 0 -p -0.751175 0.677886 0.336638 -p -0.751175 0.677886 0.0987656 -p -0.500783 0.850458 0.0987656 -p -0.0959835 0.954001 0.0987656 -p -0.0959835 0.850458 0.500783 -p -0.0959835 0.677886 0.751175 -p -0.336638 0.677886 0.751175 -p 0 0.35 1.001567 -p 0.336638 0.677886 0.751175 -p 0.0959835 0.677886 0.751175 -p 0.0959835 0.850458 0.500783 -p 0.0959835 0.954001 0.0987656 -p 0.500783 0.850458 0.0987656 -p 0.751175 0.677886 0.0987656 -p 0.751175 0.677886 0.336638 -p 1.001567 0.35 0 -p 0.751175 0.677886 -0.336638 -p 0.751175 0.677886 -0.0987656 -p 0.500783 0.850458 -0.0987656 -p 0.0959835 0.954001 -0.0987656 -p 0.0959835 0.850458 -0.500783 -p 0.0959835 0.677886 -0.751175 -p 0.336638 0.677886 -0.751175 -p 0 0.35 -1.001567 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -n $gg_ctrlName ` ;
+
+		}
+		if($shapeSelected == 4)
+		{
+			$ctrl = `curve -d 1 -p -0.66 0 -0.33 -p 0 0 -0.33 -p 0 0 -0.66 -p 0.99 0 0 -p 0 0 0.66 -p 0 0 0.33 -p -0.66 0 0.33 -p -0.66 0 -0.33 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -n $gg_ctrlName ` ;
+
+		}
+		if($shapeSelected == 5)
+		{
+			$ctrl = `curve -d 1 -p 0 0 -1.1025 -p -0.33 0 -0.6075 -p -0.165 0 -0.6075 -p -0.165 0 -0.165 -p -0.6075 0 -0.165 -p -0.6075 0 -0.33 -p -1.1025 0 0 -p -0.6075 0 0.33 -p -0.6075 0 0.165 -p -0.165 0 0.165 -p -0.165 0 0.6075 -p -0.33 0 0.6075 -p 0 0 1.1025 -p 0.33 0 0.6075 -p 0.165 0 0.6075 -p 0.165 0 0.165 -p 0.6075 0 0.165 -p 0.6075 0 0.33 -p 1.1025 0 0 -p 0.6075 0 -0.33 -p 0.6075 0 -0.165 -p 0.165 0 -0.165 -p 0.165 0 -0.6075 -p 0.33 0 -0.6075 -p 0 0 -1.1025 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -n $gg_ctrlName ` ;
+
+		}
+		if($shapeSelected == 6)
+		{
+			$ctrl = `curve -d 1 -p -1.084005 0 -0.092136 -p -0.791121 0 -0.955956 -p -0.707107 0 -0.707107 -p -0.570265 0 -0.843948 -p -0.205819 0 -1.040044 -p 0.405223 0 -0.978634 -p 0.881027 0 -0.588697 -p 1.059487 0 0 -p 0.881027 0 0.588697 -p 0.405223 0 0.978634 -p -0.205819 0 1.040044 -p -0.570265 0 0.843948 -p -0.707107 0 0.707107 -p -0.791121 0 0.955956 -p -1.084005 0 0.092136 -p -0.315189 0 0.413069 -p -0.540989 0 0.540989 -p -0.436294 0 0.645682 -p -0.157467 0 0.79571 -p 0.310025 0 0.748727 -p 0.67405 0 0.450396 -p 0.810585 0 0 -p 0.67405 0 -0.450396 -p 0.310025 0 -0.748727 -p -0.157467 0 -0.79571 -p -0.436294 0 -0.645682 -p -0.540989 0 -0.540989 -p -0.315189 0 -0.413069 -p -1.084005 0 -0.092136 -p -0.791121 0 -0.955956 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -n $gg_ctrlName ` ;
+		}
+		if($shapeSelected == 7)
+		{
+			$ctrl  = `curve -d 1 -p 0 0 0 -p 0 3 0 -p -0.587785 3.190983 0 -p -0.951057 3.690983 0 -p -0.951057 4.309017 0 -p -0.587785 4.809017 0 -p 0 5 0 -p 0.587785 4.809017 0 -p 0.951057 4.309017 0 -p 0.951057 3.690983 0 -p 0.587785 3.190983 0 -p 0 3 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -n $gg_ctrlName ` ;
+		}
+		if($shapeSelected == 8)
+		{
+			$ctrl  = `curve -d 1 -p 0 1 0 -p -0.382683 0.92388 0 -p -0.707107 0.707107 0 -p -0.92388 0.382683 0 -p -1 0 0 -p -0.92388 -0.382683 0 -p -0.707107 -0.707107 0 -p -0.382683 -0.92388 0 -p 0 -1 0 -p 0.382683 -0.92388 0 -p 0.707107 -0.707107 0 -p 0.92388 -0.382683 0 -p 1 0 0 -p 0.92388 0.382683 0 -p 0.707107 0.707107 0 -p 0.382683 0.92388 0 -p 0 1 0 -p 0 0.92388 0.382683 -p 0 0.707107 0.707107 -p 0 0.382683 0.92388 -p 0 0 1 -p 0 -0.382683 0.92388 -p 0 -0.707107 0.707107 -p 0 -0.92388 0.382683 -p 0 -1 0 -p 0 -0.92388 -0.382683 -p 0 -0.707107 -0.707107 -p 0 -0.382683 -0.92388 -p 0 0 -1 -p 0 0.382683 -0.92388 -p 0 0.707107 -0.707107 -p 0 0.92388 -0.382683 -p 0 1 0 -p -0.382683 0.92388 0 -p -0.707107 0.707107 0 -p -0.92388 0.382683 0 -p -1 0 0 -p -0.92388 0 0.382683 -p -0.707107 0 0.707107 -p -0.382683 0 0.92388 -p 0 0 1 -p 0.382683 0 0.92388 -p 0.707107 0 0.707107 -p 0.92388 0 0.382683 -p 1 0 0 -p 0.92388 0 -0.382683 -p 0.707107 0 -0.707107 -p 0.382683 0 -0.92388 -p 0 0 -1 -p -0.382683 0 -0.92388 -p -0.707107 0 -0.707107 -p -0.92388 0 -0.382683 -p -1 0 0 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 -k 25 -k 26 -k 27 -k 28 -k 29 -k 30 -k 31 -k 32 -k 33 -k 34 -k 35 -k 36 -k 37 -k 38 -k 39 -k 40 -k 41 -k 42 -k 43 -k 44 -k 45 -k 46 -k 47 -k 48 -k 49 -k 50 -k 51 -k 52 -n $gg_ctrlName ` ;
+		}
+
+		$ctrlShape =`listHistory $ctrl`; 
+		setAttr ($ctrlShape[0]+".overrideEnabled") 1;
+		$color = `palettePort -q -scc gg_colorPaletteControl`+ 1;
+        if ($color > 24) {
+            $color = $color - 1;
+        }
+        if ($color == 24) {
+            $color = 13;
+        }
+		setAttr ($ctrlShape[0]+".overrideColor") $color;	
+		rename $ctrlShape[0] ($ctrl+"Shape");
+		int $spans = `getAttr ($ctrl + ".spans")`;
+		select -r ($ctrl + ".cv[0:" + $spans + "]");
+		scale -r $conScale $conScale $conScale;
+		select -cl;
+}
+
+global proc initPalette( string $palette )
+{
+    if (`palettePort -exists $palette`) {
+		for ($i=1; $i<=31; $i++ ) {
+			float $tmp[] = `colorIndex -q $i`;
+			if ($i<=23)
+                        palettePort -e -r -rgb ($i-1) $tmp[0] $tmp[1] $tmp[2] $palette;
+                        else
+                        palettePort -e -r -rgb ($i) $tmp[0] $tmp[1] $tmp[2] $palette;
+		}
+	}
+}
+
+global proc gg_propUIN(){
+int $iconsize = 26;
+
+if(`window -ex propUIN`)
+	deleteUI propUIN;
+    window -s 0 -w 342 -t "Controller Creator for WTBI Rule" propUIN;
+    columnLayout -adj 1;
+	rowColumnLayout -nc 2 -cw 1 220 -cw 2 80;
+		optionMenu -l "      Controller Shape" gg_optShapes;
+			menuItem -l "Cube";
+			menuItem -l "Circle";
+			menuItem -l "Arrow on Ball";
+			menuItem -l "Single Arrow";
+			menuItem -l "4 Lrg Arrow";
+			menuItem -l "180 Arrow";
+			menuItem -l "Nail";
+			menuItem -l "Sphere";
+			
+setParent ..;
+
+    rowColumnLayout -numberOfColumns 3
+        -columnWidth 1 115
+        -columnWidth 2 115
+        -columnWidth 3 115;
+
+	string $TXoff = "checkBox -e -v 0 tx_checkBox;";
+	string $TYoff = "checkBox -e -v 0 ty_checkBox;";
+	string $TZoff = "checkBox -e -v 0 tz_checkBox;";
+	string $RXoff = "checkBox -e -v 0 rx_checkBox;";
+	string $RYoff = "checkBox -e -v 0 ry_checkBox;";
+	string $RZoff = "checkBox -e -v 0 rz_checkBox;";
+	string $SXoff = "checkBox -e -v 0 sx_checkBox;";
+	string $SYoff = "checkBox -e -v 0 sy_checkBox;";
+	string $SZoff = "checkBox -e -v 0 sz_checkBox;";
+	
+	string $TXon = "checkBox -e -v 1 tx_checkBox;";
+	string $TYon = "checkBox -e -v 1 ty_checkBox;";
+	string $TZon = "checkBox -e -v 1 tz_checkBox;";
+	string $RXon = "checkBox -e -v 1 rx_checkBox;";
+	string $RYon = "checkBox -e -v 1 ry_checkBox;";
+	string $RZon = "checkBox -e -v 1 rz_checkBox;";
+	string $SXon = "checkBox -e -v 1 sx_checkBox;";
+	string $SYon = "checkBox -e -v 1 sy_checkBox;";
+	string $SZon = "checkBox -e -v 1 sz_checkBox;";
+
+ checkBox -v 1 -label "Translate" -onc ($TXon + $TYon + $TZon) -ofc ($TXoff + $TYoff + $TZoff) t_checkBox;
+ checkBox -v 1 -label "Rotate" -onc ($RXon + $RYon + $RZon) -ofc ($RXoff + $RYoff + $RZoff) r_checkBox;
+ checkBox -v 1 -label "Scale" -onc ($SXon + $SYon + $SZon) -ofc ($SXoff + $SYoff + $SZoff) s_checkBox;
+
+setParent ..;
+	separator -h 10 -style "none" separator2;
+    rowColumnLayout -numberOfColumns 2
+        -columnWidth 1 40
+        -columnWidth 2 288;
+
+
+	text -align "right" -l "Scale "; 
+	floatSliderGrp -field true  -min 0.1 -max 10 -value 1 gg_conSize;
+
+	text -align "right" -l "Color ";
+	int $rows = 2, $columns = 16; //数量 16*2 
+    int $cellWidth = 18, $cellHeight = 40; 
+    columnLayout -adj 1;
+	separator -style "none";
+    // create and initialize palette
+        palettePort -dimensions $columns $rows -width ($cellWidth * $columns) -height $cellHeight -dragCallback "beCCC_dragColor"
+                    -ced 0 -td 1 -at 32 -setCurCell 12 gg_colorPaletteControl; //23
+        initPalette  gg_colorPaletteControl;
+        palettePort -edit -t 23 gg_colorPaletteControl ;
+		separator -style "none";
+		setParent..;
+	setParent..;
+separator -h 10 -style "none" ;
+
+setParent ..;
+
+	rowColumnLayout -numberOfColumns 3
+        -columnWidth 1 115
+        -columnWidth 2 115
+        -columnWidth 3 115;
+    
+    separator -h 5 -style "none";text -l "Enable ChannelBox";separator -h 5 -style "none";
+	
+	checkBox -en 1 -v 1 -label "Translate X" tx_checkBox;
+	checkBox -en 1 -v 1 -label "Rotate X" rx_checkBox;
+	checkBox -en 1 -v 1 -label "Scale X" sx_checkBox;
+	
+	checkBox -en 1 -v 1 -label "Translate Y" ty_checkBox;
+	checkBox -en 1 -v 1 -label "Rotate Y" ry_checkBox;
+	checkBox -en 1 -v 1 -label "Scale Y" sy_checkBox;
+	
+	checkBox -en 1 -v 1 -label "Translate Z" tz_checkBox;
+	checkBox -en 1 -v 1 -label "Rotate Z" rz_checkBox;
+	checkBox -en 1 -v 1 -label "Scale Z" sz_checkBox;
+	separator -h 10 -style "none";
+	
+setParent ..;
+	
+	rowColumnLayout -numberOfColumns 2
+        -columnWidth 1 160
+        -columnWidth 2 160;
+	
+	checkBox -v 1 -label "Set Driven Key Group" sdk_checkBox;
+	checkBox -v 1 -label "Constraint Group" cst_checkBox;
+	
+	separator -h 10 -style "none";
+
+setParent ..;
+	rowColumnLayout -numberOfColumns 5
+		-columnWidth 1 110
+		-columnWidth 2 6
+		-columnWidth 3 110
+		-columnWidth 4 6
+		-columnWidth 5 110;
+
+	button -l "Add" -c "gg_propMeshN(); deleteUI propUIN;";
+	text -l "";
+	button -l "Apply" -c "gg_propMeshN()";
+	text -l "";
+	button -l "Close" -c "deleteUI propUIN" ;
+
+setParent ..;
+
+
+showWindow propUIN;
+}
+
+gg_propUIN();

@@ -1,0 +1,117 @@
+global proc Select_Type(){ 
+   
+    string $mesh[] = `ls -type  "mesh"`;
+    string $nbs[] = `ls -type  "nurbsSurface"`;
+    string $locator[] = `ls -type "locator"`;
+    string $joint[] = `ls -type  "joint"`;
+    string $mul[] = `ls -type  "multiplyDivide"`;
+    string $DistanceDim[] = `ls -type  "distanceDimShape"`;
+    string $ParentCon[] = `ls -type  "parentConstraint"`;
+    string $OrientCon[] = `ls -type  "orientConstraint"`;
+    string $PointCon[] = `ls -type  "pointConstraint"`;
+    string $AmiCon[] = `ls -type  "aimConstraint"`;
+    string $ScaleCon[] = `ls -type  "scaleConstraint"`;
+    string $NurbsCRV[] = `ls -type  "nurbsCurve"`;
+    string $IkHand[] = `ls -type  "ikHandle"`;
+    string $IkEff[] = `ls -type  "ikEffector"`;
+    string $lattice[] = `ls -type  "lattice"`;
+    string $BaseLatt[] = `ls -type  "baseLattice"`;
+    string $clu[] = `ls -type  "clusterHandle"`;
+    
+    string $options = `optionMenuGrp -q -v objType_menu`;
+
+    if( $options == "mesh"){
+        select $mesh;
+        pickWalk -d up;}
+
+    if( $options == "nurbsSurface"){
+        select $nbs;
+        pickWalk -d up;}
+
+    if ($options == "joint"){
+        select $joint;}
+        
+    if ($options == "locator"){
+        select $locator;
+        pickWalk -d up;}
+        
+    if ($options == "ikHandle"){
+        select $IkHand;}
+        
+    if ($options == "ikEffector"){
+        select $IkEff;}
+        
+    if ($options == "nurbsCurve"){
+        select $NurbsCRV;}
+        
+
+    if ($options == "parentConstraint"){
+        select $ParentCon;}
+
+    if ($options == "orientConstraint"){
+        select $OrientCon;}
+
+    if ($options == "pointConstraint"){
+        select $PointCon;}
+
+    if ($options == "scaleConstraint"){
+        select $ScaleCon;}
+
+    if ($options == "aimConstraint"){
+        select $AmiCon;}
+
+    if ($options == "distanceDimension"){
+        select $DistanceDim;
+        pickWalk -d up;}
+        
+        
+    if ($options == "lattice"){
+        select $lattice;
+        pickWalk -d up;}
+        
+
+    if ($options == "baseLattice"){
+        select $BaseLatt;
+        pickWalk -d up;}
+        
+        
+    if ($options == "cluster"){
+        select $clu;
+        pickWalk -d up;}
+        
+
+
+}
+
+
+if(`window -ex objectWin`){
+    deleteUI objectWin;  
+}    
+    
+window -t "选择场景物体类型脚本" objectWin;
+
+columnLayout -adj true -rowSpacing 6;
+
+    optionMenuGrp -l "物体类型" -cw 1 50 objType_menu;
+    menuItem -l "mesh" Center;
+    menuItem -l "nurbsSurface" Lift;
+    menuItem -l "joint" Right;
+    menuItem -l "locator" Up;
+    menuItem -l "ikHandle" Down;
+    menuItem -l "nurbsCurve" Front;
+    menuItem -l "parentConstraint" Back;
+    menuItem -l "orientConstraint" ori;
+    menuItem -l "pointConstraint" poi;
+    menuItem -l "scaleConstraint" scal;
+    menuItem -l "aimConstraint" ami;
+    menuItem -l "ikEffector" ikE;
+    menuItem -l "lattice" Latt;
+    menuItem -l "baseLattice" Base ;
+    menuItem -l "distanceDimension" Dist;
+    menuItem -l "cluster" Clu;
+
+
+button -l "选择" -c "Select_Type";
+
+window -e -wh 230 100 objectWin;
+showWindow objectWin;

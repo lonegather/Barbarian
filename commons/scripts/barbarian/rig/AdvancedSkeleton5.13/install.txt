@@ -1,0 +1,19 @@
+First place the AdvancedSkeleton5 folder where you want it to be.
+for example: "C:/Users/YOU/Documents/maya/scripts/AdvancedSkeleton5".
+
+This folder is a good place to keep it, but it can be anywhere.
+If you want to share AdvancedSkeleton with other users over the network, you place it on a network drive.
+
+Once you have the AdvancedSkeleton5 folder where you want it to be,
+then just drag`n`drop the "install.mel" file into Maya (drop in any viewport).
+
+This will add the AdvancedSkeleton5 tool to the current shelf.
+
+AdvancedSkeleton works with all versions of Maya, on Windows, Mac & Linux.
+
+For support, go to: www.facebook.com/AdvancedSkeleton
+Or email: support@animationstudios.com.au
+
+Example of rigs created with AdvancedSkeleton, can be found in the "exampleFiles" folder.
+
+For license information, read the eula.txt file.

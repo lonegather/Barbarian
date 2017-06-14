@@ -1,0 +1,102 @@
+global proc ProjectGroup(){
+    
+string $tbg = `textFieldButtonGrp -q -tx TBG`;
+string $omg = `optionMenuGrp -q -v OMG`;
+
+if($omg == "角色"){
+    
+    string $s = `group -em -n "C_"`;
+    string $s2 = `rename ($s + $tbg)`;
+    
+    string $g = `group -em -n "_Geo"`;
+    string $g2 = `rename ($tbg + $g)`;
+    
+    group -em -n "Body_GRP";
+    group -em -n "Head_GRP";
+    group -em -n "Cloth_GRP";
+    group -em -n "Shose_GRP";
+    group -em -n "Ornaments_GRP";
+    group -em -n "Other_GRP";
+
+
+
+
+    string $c = `group -em -n "_Ctrl"`;
+    string $c2 = `rename ($tbg + $c)`;
+    
+    select -r Body_GRP Head_GRP Cloth_GRP Shose_GRP Ornaments_GRP Other_GRP;
+    select -add $g2;
+    parent;
+
+    select -r $g2 $c2 ;
+    select -add $s2 ;
+    parent;
+
+}
+
+if($omg == "道具"){
+
+    string $s = `group -em -n "P_"`;
+    string $s2 = `rename ($s + $tbg)`;
+    
+    string $g = `group -em -n "_Geo"`;
+    string $g2 = `rename ($tbg + $g)`;
+
+    
+    string $c = `group -em -n "_Ctrl"`;
+    string $c2 = `rename ($tbg + $c)`;
+ 
+    
+    select -r $g2 $c2 ;
+    select -add $s2 ;
+    parent;
+
+}
+
+if($omg == "场景"){
+
+    string $s = `group -em -n "S_"`;
+    string $s2 = `rename ($s + $tbg)`;
+    
+    string $g = `group -em -n "_Geo"`;
+    string $g2 = `rename ($tbg + $g)`;
+
+    
+    string $c = `group -em -n "_Ctrl"`;
+    string $c2 = `rename ($tbg + $c)`;
+ 
+    
+    select -r $g2 $c2 ;
+    select -add $s2 ;
+    parent;
+
+}
+
+}
+
+if(`window -ex Re01`){
+    
+    deleteUI Re01;
+    
+}
+window -t "创建角色文件组" Re01;
+
+    columnLayout -adjustableColumn true;
+    
+    text -l "输入角色或道具的名字，例如Houye";
+
+    
+    textFieldButtonGrp -adjustableColumn 2 -columnWidth 1 55 
+    	-label "项目名称" 
+    	-text "" 
+    	-buttonLabel "创建"
+    	 -buttonCommand "ProjectGroup()" TBG;
+
+    optionMenuGrp -label "模型类型"  -columnWidth 2 80 OMG;
+        menuItem -label "角色";
+        menuItem -label "道具";
+        menuItem -label "场景";
+        
+window -edit -wh  280 80 Re01; 
+showWindow Re01;
+

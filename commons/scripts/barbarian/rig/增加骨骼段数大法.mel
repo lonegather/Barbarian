@@ -1,0 +1,56 @@
+ 
+global proc add_joint(){
+float $num_joint=`intField -q  -v  the_n_jnt`;
+
+
+string $a1[]=`ls -sl `;
+
+string $a2[]=`listRelatives -c  $a1[0]`;
+
+
+float $b1[]=`xform -q -ws -t  $a1[0]`;
+
+float $b2[]=`xform -q -ws -t  $a2[0]`;
+parent -w $a2[0];
+for ($i=0;$i<$num_joint;$i++)
+{
+
+select -r $a1[0];
+float $b3[]={($b1[0]-$b2[0])*($i+1.0)/($num_joint+1.0)+$b2[0],($b1[1]-$b2[1])*($i+1.0)/($num_joint+1.0)+$b2[1],($b1[2]-$b2[2])*($i+1.0)/($num_joint+1.0)+$b2[2]};
+
+
+
+joint -rad `getAttr ($a1[0]+".radius")` -p  $b3[0] $b3[1] $b3[2] -n ($a1[0]+"_insert_"+($num_joint-$i));
+
+if($i==0)
+{parent $a2[0]  ($a1[0]+"_insert_"+($num_joint-$i));}
+if($i>0)
+{
+   parent ($a1[0]+"_insert_"+($num_joint-$i+1)) ($a1[0]+"_insert_"+($num_joint-$i)) ;
+}
+
+
+}
+ 
+select -r $a1[0];
+
+}
+
+
+if(`window -ex FY_tool_2`) deleteUI FY_tool_2; 
+
+
+window -title "平均增加骨骼脚本" -sizeable 0 -tlb 0 FY_tool_2 ;
+rowColumnLayout -numberOfColumns 1  ;
+text -l "";
+text -l "";
+text -fn "boldLabelFont" -l "       先选择一个骨骼 ,输入要增加的骨骼数      ";
+text -l "";
+text -l "";
+intField  -v 1 the_n_jnt;
+text -l "";
+button -l "执行" -c "add_joint()";
+text -l "";
+text -l "";
+setParent ..;   
+showWindow FY_tool_2;

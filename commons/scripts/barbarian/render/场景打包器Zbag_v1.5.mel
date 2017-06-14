@@ -1,0 +1,2089 @@
+global proc string getURofRL(string $name_renderlayer)
+{
+    
+
+    string $theUR;
+    if(stringArrayCount("defaultRenderGlobals.currentRenderer", `editRenderLayerAdjustment -q -layer $name_renderlayer`)==0)
+    {if(`editRenderLayerGlobals -q -currentRenderLayer`==$name_renderlayer){$theUR=`getAttr defaultRenderGlobals.currentRenderer`;}
+    if(`editRenderLayerGlobals -q -currentRenderLayer`!=$name_renderlayer)
+            {string $all_c[]=`listConnections -c 1 "defaultRenderLayer"`; 
+            for ($one_c in $all_c)
+                        {
+                         string $temp_c[]=`listConnections -p 1 $one_c`;
+                          float $temp_if_3;
+                         if(stringArrayCount("defaultRenderGlobals.currentRenderer",$temp_c)==1)
+                             {
+                               $temp_if_3=1;
+                               string $temp_c2=`substring $one_c 1 (size($one_c) - 4)`;
+                               $theUR=`getAttr ($temp_c2+"value")`;
+                             
+                             }
+                           if($temp_if_3==0){$theUR=`getAttr "defaultRenderGlobals.currentRenderer"`;}  
+                             
+                        }
+            }
+          
+     }
+     
+    if(stringArrayCount("defaultRenderGlobals.currentRenderer", `editRenderLayerAdjustment -q -layer $name_renderlayer`)==1)
+    {if(`editRenderLayerGlobals -q -currentRenderLayer`==$name_renderlayer){$theUR=`getAttr defaultRenderGlobals.currentRenderer`;}
+    if(`editRenderLayerGlobals -q -currentRenderLayer`!=$name_renderlayer)
+            {string $all_c[]=`listConnections -c 1 $name_renderlayer`; 
+            for ($one_c in $all_c)
+                        {
+                         string $temp_c[]=`listConnections -p 1 $one_c`;
+                         if(stringArrayCount("defaultRenderGlobals.currentRenderer",$temp_c)==1)
+                             {
+                               string $temp_c2=`substring $one_c 1 (size($one_c) - 4)`;
+                               $theUR=`getAttr ($temp_c2+"value")`;
+                              
+                             }
+                        }
+            }
+    
+     }
+    
+
+     
+     
+   
+    return $theUR;
+}
+//////////////
+global proc float frameRate()
+{
+    string $thetime=`optionVar -q  workingUnitTime`;
+    float $fps_r;
+    if($thetime=="film"){$fps_r=24;}
+    if($thetime=="game"){$fps_r=15;}
+    if($thetime=="pal"){$fps_r=25;}
+    if($thetime=="ntsc"){$fps_r=30;}
+    if($thetime=="show"){$fps_r=48;}
+    if($thetime=="palf"){$fps_r=50;}
+    return $fps_r;
+}
+
+/////////////
+global proc zbag_info(string $get_fpath_mel,string $final_info_ref)
+{
+string $get_sn=`getTheSceneName`;
+string $range_frame=(`playbackOptions -q -min`)+"  至  "+(`playbackOptions -q -max`);
+string $scene_info="场景基本信息：\r\n----------------------------------------------------\r\n"+"原场景名 : "+$get_sn+"\r\n"+"帧范围 : "
++$range_frame+"\r\n"+"帧速率 ： "+(`frameRate`)+"\r\n";
+string $get_time=`date`;
+string $info_time=("\r\n打包时间 : "+$get_time);
+string $all_plugs[]=`pluginInfo -query -listPlugins`;
+string $all_plug_list="";
+for ($one_plug in $all_plugs)
+{
+	$all_plug_list+=($one_plug+"\r\n");
+}
+string $all_plug_list_final=("----------------------------------------------------\r\n\r\n\r\n已加载的插件 : \r\n"+$all_plug_list);
+string $allRenderLayer[]=`ls -type "renderLayer"`;
+string $all_renderlayer_inf="----------------------------------------------------\r\n\r\n\r\n渲染层信息 : \r\n";
+
+for ($rl in $allRenderLayer)
+{
+string $get_render=`getURofRL($rl)`;
+$all_renderlayer_inf+=$rl+"   ----------   "+$get_render+"\r\n";
+
+}
+
+string $all_info_final=$scene_info+$all_renderlayer_inf+$final_info_ref+$all_plug_list_final+$info_time;
+$all_info_final = `encodeString  $all_info_final`;
+python ("py_all_info=\""+$all_info_final+"\"");
+string $file_info=($get_fpath_mel+"场景信息.txt");
+python("f=open('"+$file_info+"','w')");
+python("f.write('"+$all_info_final+"'+'\\r\\n')");
+python("f.close()");
+
+
+}
+
+
+
+
+
+
+
+
+
+
+global proc string getTheBagPath(){
+ string $allname_scene=`file -q -sn`; 
+ string $allname_scene_base; 
+ string $allname_path;
+ if($allname_scene!=""){
+ $allname_scene_base= `basenameEx($allname_scene)`;
+ int $num_temp_base=size($allname_scene_base);
+ int $num_temp_allname=size($allname_scene);
+ $allname_path=`substring $allname_scene 1 ($num_temp_allname-$num_temp_base-3)`;
+ }
+
+ return $allname_path;
+
+} 
+
+/////////////////
+global proc match_file(){
+string $gethebagpath=`getTheBagPath`;
+string $all_file[]=`ls -type "file"`;
+python ("import os");
+string $final_path;
+for($one_file in $all_file)
+	{
+	
+	
+	if(`nodeType($one_file)`=="aiImage")
+	{
+		
+		   
+			$final_path=`getAttr ($one_file+".filename")`;
+			python ("(mydirname, myfilename) = os.path.split(\""+$final_path+"\")");
+			
+			string $final_path_baseex=python ("myfilename");
+			
+			if (`attributeExists "BJ_ZB" $one_file`==1)
+	         
+	         {
+	         	string $get_match_num=`getAttr  ($one_file+".BJ_ZB")`; 	
+	         	string $temp_c1=`basenameEx $final_path_baseex`;
+	         	string $temp_c2=`substring $final_path_baseex (size($temp_c1)+2) (size($final_path_baseex))`;
+	            setAttr -type "string" ($one_file+".filename") ($gethebagpath+"sourceimages/"+$temp_c1+"_"+$get_match_num+"."+$temp_c2);
+	         }
+	         
+	         	if (`attributeExists "BJ_ZB" $one_file`==0)
+	         
+	         {	
+	            setAttr -type "string" ($one_file+".filename") ($gethebagpath+"sourceimages/"+$final_path_baseex);
+	         }
+			
+		   
+	
+	  }
+	
+	if(`nodeType($one_file)`=="file"||`nodeType($one_file)`=="psdFileTex")
+	{
+		    
+			$final_path=`getAttr ($one_file+".fileTextureName")`;
+			
+			python ("(mydirname, myfilename) = os.path.split(\""+$final_path+"\")");
+			
+			string $final_path_baseex=python ("myfilename");
+			
+			if (`attributeExists "BJ_ZB" $one_file`==1)
+	         
+	         {
+	         	string $get_match_num=`getAttr  ($one_file+".BJ_ZB")`; 	
+	         	string $temp_c1=`basenameEx $final_path_baseex`;
+	         	string $temp_c2=`substring $final_path_baseex (size($temp_c1)+2) (size($final_path_baseex))`;
+	            setAttr -type "string" ($one_file+".fileTextureName") ($gethebagpath+"sourceimages/"+$temp_c1+"_"+$get_match_num+"."+$temp_c2);
+	         }
+	         
+	         	if (`attributeExists "BJ_ZB" $one_file`==0)
+	         
+	         {	
+	            setAttr -type "string" ($one_file+".fileTextureName") ($gethebagpath+"sourceimages/"+$final_path_baseex);
+	         }
+			
+			
+	}
+			
+
+			
+			
+			
+			
+			}
+			
+		}	
+//////////////
+
+global proc match_par()
+{
+
+string $get_sn=`getTheSceneName`;
+string $gethebagpath=`getTheBagPath`;
+
+workspace -fr "particles" ($gethebagpath+"cache/"+$get_sn+"/particles/");
+
+}
+
+////////////////
+
+
+
+
+ global proc match_N_4()
+{//1
+
+string $all_ncache[]={"nParticle缓存","nHair缓存","nCloth缓存","fluid缓存"};
+string $all_ncache_fold[]={"n_particles","n_hair","n_cloth","fluid"};
+string $all_ncache_type[]={"nParticle","hairSystem","nCloth","fluidShape"};
+for($ii=0;$ii<4;$ii++){//0
+
+	
+
+
+string $gethebagpath=`getTheBagPath`;
+string $get_sn=`getTheSceneName`;
+string $npar_path;
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{//3
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	string $get_xml_name=`getAttr ($all_dynNglob[$i_p]+".cacheName")`;
+	
+	if (nodeType($temp_outWhat[0])!="historySwitch"){//4
+	string $temp_outWhat_s[]=`listRelatives -f -s $temp_outWhat[0]`;
+	if (nodeType($temp_outWhat_s[0])==$all_ncache_type[$ii])
+{//5
+	
+             
+		
+			
+            
+ 
+
+
+int $if_ref=`referenceQuery -inr $temp_outWhat[0]`;
+string $aaa1[]=stringToStringArray($temp_outWhat_s[0],"|");
+string $aaa2[]=stringToStringArray($aaa1[size($aaa1)-1],":");
+string $aaa3=$aaa2[size($aaa2)-1];
+if($if_ref==0)
+{
+$npar_path=($gethebagpath+"cache/"+$get_sn+"/"+$all_ncache_fold[$ii]+"/"+$get_xml_name+"/");
+}
+if($if_ref==1)
+{
+string $get_spacename_temp=`referenceQuery -ns $temp_outWhat[0]`;
+int $temp_num=size($get_spacename_temp);
+string $get_spacename=`substring $get_spacename_temp 2 $temp_num`;
+
+$npar_path=$gethebagpath+"reference/cache/"+$get_spacename+"/"+$all_ncache_fold[$ii]+"/"+$get_xml_name+"/";
+}
+
+
+setAttr -type "string" ($all_dynNglob[$i_p]+".cachePath") $npar_path;
+
+
+
+
+
+
+}//5
+}//4
+}//3
+
+}//1
+}//0
+///////////////
+
+
+
+
+
+ global proc match_Geo()
+{//1
+
+
+
+
+
+
+	
+
+
+string $gethebagpath=`getTheBagPath`;
+string $get_sn=`getTheSceneName`;
+string $npar_path;
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{//3
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	string $get_xml_name=`getAttr ($all_dynNglob[$i_p]+".cacheName")`;
+	
+	if (nodeType($temp_outWhat[0])=="historySwitch"){
+	string $temp_outWhat_s[]=`listConnections  ($temp_outWhat[0]+".output"+"Geometry"+"[0]")`;
+	string $temp_outWhat_ss[]=`listRelatives -s -f  $temp_outWhat_s[0]`;
+	if (nodeType($temp_outWhat_ss[0])=="mesh")
+{//5
+	
+             
+		
+			
+            
+ 
+
+
+int $if_ref=`referenceQuery -inr $temp_outWhat_ss[0]`;
+string $aaa1[]=stringToStringArray($temp_outWhat_ss[0],"|");
+string $aaa2[]=stringToStringArray($aaa1[size($aaa1)-1],":");
+string $aaa3=$aaa2[size($aaa2)-1];
+if($if_ref==0)
+{
+$npar_path=($gethebagpath+"cache/"+$get_sn+"/"+"Geometry"+"/"+$get_xml_name+"/");
+}
+if($if_ref==1)
+{
+string $get_spacename_temp=`referenceQuery -ns $temp_outWhat[0]`;
+int $temp_num=size($get_spacename_temp);
+string $get_spacename=`substring $get_spacename_temp 2 $temp_num`;
+
+$npar_path=$gethebagpath+"/reference/cache/"+$get_spacename+"/"+"Geometry"+"/"+$get_xml_name+"/";
+}
+
+
+setAttr -type "string" ($all_dynNglob[$i_p]+".cachePath") $npar_path;
+
+
+
+
+
+
+}//5
+}//4
+}//3
+
+}//1
+
+//////////////////
+
+global proc match_abc(){
+string $gethebagpath=`getTheBagPath`;
+string $all_file[]=`ls -type "AlembicNode"`;
+python ("import os");
+string $final_path;
+for($one_file in $all_file)
+	{
+	
+	
+	
+	
+			$final_path=`getAttr ($one_file+".abc_File")`;
+			
+			python ("(mydirname, myfilename) = os.path.split(\""+$final_path+"\")");
+			
+			string $final_path_baseex=python ("myfilename");
+			
+			if (`attributeExists "BJ_ZB" $one_file`==1)
+	         
+	         {
+	         	string $get_match_num=`getAttr  ($one_file+".BJ_ZB")`; 	
+	         	string $temp_c1=`basenameEx $final_path_baseex`;
+	         	string $temp_c2=`substring $final_path_baseex (size($temp_c1)+2) (size($final_path_baseex))`;
+	            setAttr -type "string" ($one_file+".abc_File") ($gethebagpath+"sourceimages/"+$temp_c1+"_"+$get_match_num+"."+$temp_c2);
+	         }
+	         
+	         	if (`attributeExists "BJ_ZB" $one_file`==0)
+	         
+	         {	
+	            setAttr -type "string" ($one_file+".abc_File") ($gethebagpath+"sourceimages/"+$final_path_baseex);
+	         }
+			
+			
+	
+			
+
+			
+			
+			
+			
+			}
+			
+		}	
+
+////////////////////
+
+
+global proc match_ref(){
+string $gethebagpath=`getTheBagPath`;
+
+
+    string $cnm[]=`file -q -r -sharedReferenceFile`;
+string $all_file[];
+clear $all_file;
+for ($l in $cnm)
+{
+$all_file[size($all_file)]=`file -q -rfn $l`;
+
+}
+    
+
+
+
+python ("import os");
+string $final_path;
+for($one_file in $all_file)
+	{
+	
+	if (`connectionInfo -is ($one_file+".sharedReference")`!=1){
+	
+	
+			$final_path=`referenceQuery -wcn -f $one_file`;
+			
+			python ("(mydirname, myfilename) = os.path.split(\""+$final_path+"\")");
+			
+			string $final_path_baseex=python ("myfilename");
+			
+			if (`attributeExists "BJ_ZB" $one_file`==1)
+	         
+	         {
+	         	string $get_match_num=`getAttr  ($one_file+".BJ_ZB")`; 	
+	         	string $temp_c1=`basenameEx $final_path_baseex`;
+	         	string $temp_c2=`substring $final_path_baseex (size($temp_c1)+2) (size($final_path_baseex))`;
+	         	if(`referenceQuery -wcn -f $one_file`!=($gethebagpath+"reference/"+$temp_c1+"_"+$get_match_num+"."+$temp_c2)){
+	             file -loadReference $one_file ($gethebagpath+"reference/"+$temp_c1+"_"+$get_match_num+"."+$temp_c2);}
+	         }
+	         
+	         	if (`attributeExists "BJ_ZB" $one_file`==0)
+	         
+	         {	
+	            if(`referenceQuery -wcn -f $one_file`!=($gethebagpath+"reference/"+$final_path_baseex)){
+	            file -loadReference $one_file ($gethebagpath+"reference/"+$final_path_baseex);}
+	         }
+			
+			
+	
+			
+
+			
+			}
+			
+			
+			}
+			
+		}	
+
+
+global proc match_all()
+{
+	string $if_match=`confirmDialog -title "确认信息" -message "是否进行适配？"
+	-button "OK" -button "Cancel" -defaultButton "OK"
+	-cancelButton "Cancel" -dismissString "Cancel"`;
+	if ($if_match=="OK")
+	{
+		match_file();
+		
+		match_par();
+		
+		match_N_4();
+		
+		match_Geo();
+		 
+		match_abc();
+		 
+		match_ref();
+	}
+}
+
+
+
+
+
+
+global proc find_bag_position()
+{
+	 int $get_numb_fold2=0 ;
+	 python ("import os");
+	string $get_fpath=`textField -q -tx the_output_path`;
+	if(endsWith($get_fpath,"\\")!=1)
+	{
+		$get_fpath=($get_fpath+"\\");
+	}
+
+	string $get_bag_name=`textField -q -tx the_bag_name`;
+	python ("get_bag_name=\""+$get_bag_name+"\"");
+	$get_fpath_fr=fromNativePath($get_fpath);
+	
+	
+	python ("get_fpath_temp=\""+$get_fpath_fr+$get_bag_name+"/\"");
+	int $if_exists_2 = python ("os.path.exists(get_fpath_temp)");
+	if($if_exists_2==1)
+	{
+		python ("myfoldlist=os.listdir(\""+$get_fpath_fr+"\")");
+		string $all_fold[]=python ("myfoldlist");
+		
+		for ($fold_one in $all_fold)
+		{
+		python ("ifdir=os.path.isdir(\""+$get_fpath_fr+$fold_one+"\")");
+	
+		$get_numb_fold=python("ifdir");
+		if($get_numb_fold==1)
+		{
+			$get_numb_fold2++;
+			
+		}
+		}
+		string $the_num_fold=$get_numb_fold2+1;
+		python ("get_fpath_temp=\""+$get_fpath_fr+$get_bag_name+"_"+$the_num_fold+"/\"");
+		//python ("print get_fpath_temp");
+	}
+	
+
+	global string $get_fpath_mel;
+	$get_fpath_mel=python ("get_fpath_temp");
+	
+	
+}
+
+
+
+global proc start_bag(string $get_fpath_mel,string $final_info_ref)
+{
+
+
+bg_z_file($get_fpath_mel);
+
+bg_z_par($get_fpath_mel);
+
+bg_z_N_4($get_fpath_mel);
+
+bg_z_geo($get_fpath_mel);
+
+bg_z_abc($get_fpath_mel);
+
+bg_z_ref($get_fpath_mel,$final_info_ref);
+
+bg_z_maya($get_fpath_mel);
+
+
+}
+
+
+global proc final_start()
+{ 
+global string $get_fpath_mel;
+global string $final_info_ref;
+$final_info_ref="";
+find_bag_position();
+start_bag($get_fpath_mel,$final_info_ref);
+
+zbag_info($get_fpath_mel,$final_info_ref);
+}
+
+/////////////////
+global proc string getTheSceneName(){
+ string $allname_scene=`file  -q -sn`; 
+ string $allname_scene_base; 
+ if($allname_scene!=""){
+ $allname_scene_base= `basenameEx($allname_scene)`;}
+ else{$allname_scene_base="untitled";}
+ return $allname_scene_base;
+
+} 
+
+/////////////////////
+
+global proc bg_z_file(string $get_fpath_mel)
+{
+
+//copy file
+if (`checkBox -q -v "cb_贴图文件"`)
+	{
+	python ("import maya.cmds as mc");
+	python ("import shutil");
+	python ("import os");
+	python ("import glob");
+    float $pr_zb=0;
+    text -e -l "正在封装 贴图文件..." text_zbag;
+	string $all_file_temp[]=`ls -type "file"`;
+	string $all_aiImage_temp[];
+	clear $all_aiImage_temp;
+	string $all_render[]= `renderer -query -namesOfAvailableRenderers`;
+	if (stringArrayContains("arnold",$all_render)==1)
+	{
+	$all_aiImage_temp=`ls -type "aiImage"`;
+	}
+	string $all_file[]=stringArrayCatenate($all_file_temp,$all_aiImage_temp);
+	
+
+	
+	
+	
+	
+	
+	string $get_sn=`textField -q -tx the_bag_name`;
+	string $HZ=($get_fpath_mel+"sourceimages");
+	sysFile -md $HZ;
+	
+	python ("get_fpath=\""+$HZ+"\"");
+	string $final_path_all[];
+	clear $final_path_all;
+	string $final_path_base;
+	for($one_file in $all_file)
+	{
+	
+	
+	if(`nodeType($one_file)`=="aiImage")
+	{
+		if  (stringArrayContains(`getAttr ($one_file+".filename")`,$final_path_all)!=1)
+		   {
+			$final_path_all[size($final_path_all)]=`getAttr ($one_file+".filename")`;
+		   }
+	
+			                        }
+	
+	if(`nodeType($one_file)`=="file"||`nodeType($one_file)`=="psdFileTex")
+	{
+		    if  (stringArrayContains(`getAttr ($one_file+".fileTextureName")`,$final_path_all)!=1)
+			{
+			$final_path_all[size($final_path_all)]=`getAttr ($one_file+".fileTextureName")`;
+			}
+	}
+			}
+			$pr_zb+=(10000.0/size($final_path_all))*0.01;
+			for ($final_path in $final_path_all)
+			{
+			$final_path_base=`basenameEx($final_path)`;
+			python ("(mydirname, myfilename) = os.path.split(\""+$final_path+"\")");
+			string $final_path_baseex=python ("myfilename");
+			string $final_path_dir=python ("mydirname");
+			
+if(size($final_path)!=0)
+{
+			       	    float $all_sz=size($final_path_all);
+						int $final_pr;
+						python ("get_file=\""+$final_path+"\"");
+						python ("get_ext= myfilename.split(\".\")");
+						string $get_ext=python ("get_ext[-1]");
+						python ("get_file_2=get_fpath+\"/"+$final_path_base+"*.\"+\""+$get_ext+"\"");
+						
+						python ("get_file_3=get_fpath+\"/"+$final_path_baseex+"\"");
+						python ("get_file_4=get_fpath+\"/"+$final_path_base+"\"");
+						python ("get_file_5=\""+$final_path_base+"\"");
+						int $if_exists = python ("os.path.isfile(get_file)");
+						int $if_exists_2 = python ("os.path.isfile(get_file_3)");
+						int $if_exists_3 = python ("os.path.isfile(mydirname+'/'+get_file_5+'.tx')");
+						
+						
+						string $final_name_path;
+						if ($if_exists==1)
+						{
+						
+						
+						if($if_exists_2==0)
+						{
+						python ("shutil.copy(get_file,get_fpath)");
+						if ($if_exists_3==1){
+						python ("shutil.copy(mydirname+'/'+get_file_5+'.tx',get_fpath)");}
+						python ("final_new_name=get_file_4+\".\"+get_ext[-1]");
+						if(`attributeExists "BJ_ZB" $one_file`==1)
+						{
+							catch (`deleteAttr -attribute "BJ_ZB" $one_file`);
+						}
+					$pr_zb+=(10000.0/$all_sz)*0.01;
+					$final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						//$final_name_path=python ("final_new_name");
+						}
+						if($if_exists_2==1){
+						python ("myfilelist=glob.glob(get_file_2)");
+						
+						string $get_file_size1=python ("os.path.getsize(get_file)");
+						string $get_file_size2=python ("os.path.getsize(get_file_3)");
+						
+						if($get_file_size1!=$get_file_size2)
+						{
+						python ("num_exists=str(len(myfilelist))") ;
+						python ("final_new_name=get_file_4+\"_\"+num_exists+\".\"+get_ext[-1]");
+						python ("final_new_name_tx=get_file_4+\"_\"+num_exists+\".tx\"");
+						//$final_name_path= python ("final_new_name");
+						
+						python ("shutil.copy(get_file,final_new_name)");
+						if ($if_exists_3==1){
+						python ("shutil.copy(mydirname+'/'+get_file_5+'.tx',final_new_name_tx)");}
+						
+						string $get_num_file=python("num_exists");
+						
+						if(`attributeExists "BJ_ZB" $one_file`==0)
+						{
+						addAttr -ln "BJ_ZB"  -dt "string"  $one_file;
+
+						setAttr -e-keyable true ($one_file+".BJ_ZB");
+						}
+						
+						setAttr -type "string" ($one_file+".BJ_ZB") $get_num_file; 
+						
+							$pr_zb+=(10000.0/$all_sz)*0.01;
+							$final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						}
+						
+						if($get_file_size1==$get_file_size2)
+						{
+						
+						if(`attributeExists "BJ_ZB" $one_file`==1)
+						{
+							catch (`deleteAttr -attribute "BJ_ZB" $one_file`);
+						}
+						python ("shutil.copy(get_file,get_fpath)");	
+						if ($if_exists_3==1){
+						python ("shutil.copy(mydirname+'/'+get_file_5+'.tx',get_fpath)");}
+					    $pr_zb+=(10000.0/$all_sz)*0.01;
+					
+					    $final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						}
+						
+						}
+						}
+						
+						
+	progressBar -edit -pr $final_pr prog_zbag;
+	
+	
+	/*	
+	if(`nodeType($one_file)`=="aiImage")
+	{
+		
+			setAttr -type "string" ($one_file+".filename") $final_name_path ;
+		   
+	
+			                        }
+	
+	if(`nodeType($one_file)`=="file"||`nodeType($one_file)`=="psdFileTex")
+	{
+		
+		    setAttr -type "string" ($one_file+".fileTextureName") $final_name_path ;
+			
+	}
+	*/
+	
+}
+	
+	
+
+	
+	
+	}
+
+
+
+
+	}
+
+
+
+}
+
+///////////////////////////
+//bg_z_par($get_fpath_mel)
+
+ global proc bg_z_par(string $get_fpath_mel)
+{
+
+if (`checkBox -q -v "cb_particle缓存"`)
+	{
+	python ("import maya.cmds as mc");
+	python ("import shutil");
+	python ("import os");
+	python ("import glob");
+float $pr_zb=0;
+text -e -l "正在封装 Particle缓存..." text_zbag;
+
+string $all_dynglob[]=`ls -type "dynGlobals"`;
+string $all_dynParticle_add[];
+clear $all_dynParticle_add;
+string $get_cache_dir;
+for($i_p=0;$i_p<size($all_dynglob);$i_p++)
+{
+	int $if_disk_cache=`getAttr ($all_dynglob[$i_p]+".useParticleDiskCache")`;
+		if($if_disk_cache==1)
+		{
+			$get_cache_dir=`getAttr ($all_dynglob[$i_p]+".cacheDirectory")`;
+			$all_dynParticle_add[size($all_dynParticle_add)]=((`workspace -q -rd`)+(`workspace -fre "particles"`)+"/"+$get_cache_dir+"/");
+			
+		}
+
+
+
+
+
+
+}
+
+
+
+
+
+$all_dynParticle_add=stringArrayRemoveDuplicates($all_dynParticle_add);
+
+
+
+
+for ($o=0;$o<size($all_dynParticle_add);$o++)
+
+{
+string $get_cache_dir2=`getAttr ($all_dynglob[$o]+".cacheDirectory")`;
+	python ("get_cache_dir2=\""+$get_cache_dir2+"\"");
+	
+     string $get_sn=`textField -q -tx the_bag_name`;
+	string $HZ=($get_fpath_mel+"cache/"+$get_sn+"/particles/"+$get_cache_dir2);
+	sysFile -md $HZ;
+
+	python ("get_fpath=\""+$HZ+"\"");
+	python ("all_dynParticle_add=\""+$all_dynParticle_add[$o]+"\"");
+	python ("mypdclist=glob.glob(all_dynParticle_add+\"*.pdc\")");
+string $all_pdc[]=python("mypdclist");
+for ($oip in $all_pdc)
+{
+	float $all_sz=size($all_pdc);
+	$pr_zb+=(10000.0/$all_sz)*0.01;
+	int $final_pr=clamp(0,100,trunc($pr_zb)+1);
+	python ("oip=\""+$oip+"\"");
+	int $if_exists_pdc=python ("os.path.isfile(oip)");
+	
+	if ($if_exists_pdc==1)
+	{
+		
+		python ("shutil.copy(oip,get_fpath)");
+	}
+	progressBar -edit -pr $final_pr prog_zbag;
+}
+
+}
+
+}
+}
+	//////////////////////////////
+	
+	
+
+ global proc bg_z_N_4(string $get_fpath_mel)
+{//1
+
+string $all_ncache[]={"nParticle缓存","nHair缓存","nCloth缓存","fluid缓存"};
+string $all_ncache_fold[]={"n_particles","n_hair","n_cloth","fluid"};
+string $all_ncache_type[]={"nParticle","hairSystem","nCloth","fluidShape"};
+for($ii=0;$ii<4;$ii++){//0
+if (`checkBox -q -v ("cb_"+$all_ncache[$ii])`)
+	{//2
+	python ("import maya.cmds as mc");
+	python ("import shutil");
+	python ("import os");
+	python ("import glob");
+	python ("import  xml.dom.minidom");
+	float $pr_zb=0;
+	text -e -l ("正在封装 "+$all_ncache[$ii]+"...") text_zbag;
+	string $get_sn=`textField -q -tx the_bag_name`;
+string $npar_path=($get_fpath_mel+"cache/"+$get_sn+"/"+$all_ncache_fold[$ii]+"/");
+sysFile -md $npar_path;
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynNParticle_add[];
+clear $all_dynNParticle_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{//3
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	
+	
+	if (nodeType($temp_outWhat[0])!="historySwitch"){//4
+	string $temp_outWhat_s[]=`listRelatives -f -s $temp_outWhat[0]`;
+	if (nodeType($temp_outWhat_s[0])==$all_ncache_type[$ii])
+{//5
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{//6
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			string $get_cache_name=`getAttr ($all_dynNglob[$i_p]+".cacheName")`;
+			if(stringArrayContains($get_cache_dir+$get_cache_name,$all_dynNParticle_add)==0)
+			{//7
+
+string $new_add=$get_cache_dir+$get_cache_name;
+
+
+
+
+string $if_ex=python ("os.path.isfile(\""+$new_add+".xml\")");
+
+if($if_ex==1)
+		{//9
+python ("dom_fy=xml.dom.minidom.parse(\""+$new_add+".xml\")");
+
+python ("root_fy = dom_fy.documentElement");
+python  ("itemlist_1 = root_fy.getElementsByTagName('cacheType')");
+string $get_cache_type = python ("itemlist_1[0].getAttribute(\"Type\")");
+string $get_cache_format = python ("itemlist_1[0].getAttribute(\"Format\")");
+python  ("itemlist_2 = root_fy.getElementsByTagName('time')");
+string $get_cache_range = python ("itemlist_2[0].getAttribute(\"Range\")");
+python  ("itemlist_3 = root_fy.getElementsByTagName('cacheTimePerFrame')");
+string $get_cache_TimePerFrame = python ("itemlist_3[0].getAttribute(\"TimePerFrame\")");
+string $getR[] = stringToStringArray($get_cache_range,"-");
+int $getRss = $getR[0];
+int $getRse = $getR[1];
+int $get_unit = $get_cache_TimePerFrame;
+int $getss=$getRss/$get_unit;
+int $getse=$getRse/$get_unit;
+string $npar_path_f;
+int $if_ref=`referenceQuery -inr $temp_outWhat[0]`;
+
+if($if_ref==0)
+{
+$npar_path_f=($npar_path+"/"+basenameEx($new_add));
+}
+if($if_ref==1)
+{
+string $get_spacename_temp=`referenceQuery -ns $temp_outWhat[0]`;
+int $temp_num=size($get_spacename_temp);
+string $get_spacename=`substring $get_spacename_temp 2 $temp_num`;
+$npar_path_f=$get_fpath_mel+"/reference/cache/"+$get_spacename+"/"+$all_ncache_fold[$ii]+"/"+basenameEx($new_add);
+}
+
+
+
+sysFile -md $npar_path_f;
+if ($get_cache_type=="OneFile")
+	{//10
+		 
+		 int $if_exists_mc=python ("os.path.isfile(\""+$new_add+"."+$get_cache_format+"\")");
+	
+		if ($if_exists_mc==1)
+				{//11
+			python ("shutil.copy(\""+$new_add+".xml"+"\",\""+$npar_path_f+"\")");
+			python ("shutil.copy(\""+$new_add+"."+$get_cache_format+"\",\""+$npar_path_f+"\")");		
+				}//11
+					
+				
+			}//10
+	
+	
+if ($get_cache_type=="OneFilePerFrame")
+	{//12
+		 
+		 
+	
+		
+			python ("shutil.copy(\""+$new_add+".xml"+"\",\""+$npar_path_f+"\")");
+			
+			for ($v=$getss;$v<$getse+1;$v++)
+					{//13
+				int $if_exists_mc=python ("os.path.isfile(\""+$new_add+"Frame"+$v+"."+$get_cache_format+"\")");
+				if ($if_exists_mc==1)
+						{//14
+				python ("shutil.copy(\""+$new_add+"Frame"+$v+"."+$get_cache_format+"\",\""+$npar_path_f+"\")");
+						}//14
+					float $all_sz=$getse;
+				$pr_zb+=(10000.0/$all_sz)*0.01;
+				int $final_pr=clamp(0,100,trunc($pr_zb)+1);
+				progressBar -edit -pr $final_pr prog_zbag;
+					}//13
+			
+	}//12
+	
+	
+}//9
+
+
+}//7
+}//6
+}//5
+}//4
+}//3
+}//2
+}//1
+}//0
+////////////////
+ 
+ global proc bg_z_geo(string $get_fpath_mel)
+{//1
+
+
+
+if (`checkBox -q -v ("cb_"+"Geo缓存")`)
+	{//2
+	python ("import maya.cmds as mc");
+	python ("import shutil");
+	python ("import os");
+	python ("import glob");
+	python ("import  xml.dom.minidom");
+	float $pr_zb=0;
+	text -e -l ("正在封装 "+"Geo缓存"+"...") text_zbag;
+	string $get_sn=`textField -q -tx the_bag_name`;
+string $npar_path=($get_fpath_mel+"cache/"+$get_sn+"/"+"Geometry"+"/");
+sysFile -md $npar_path;
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynNParticle_add[];
+clear $all_dynNParticle_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{//3
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	
+	
+string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	if (nodeType($temp_outWhat[0])=="historySwitch"){
+	string $temp_outWhat_s[]=`listConnections  ($temp_outWhat[0]+".outputGeometry[0]")`;
+	string $temp_outWhat_ss[]=`listRelatives -s -f  $temp_outWhat_s[0]`;
+	if (nodeType($temp_outWhat_ss[0])=="mesh")
+{//5
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{//6
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			string $get_cache_name=`getAttr ($all_dynNglob[$i_p]+".cacheName")`;
+			if(stringArrayContains($get_cache_dir+$get_cache_name,$all_dynNParticle_add)==0)
+			{//7
+
+string $new_add=$get_cache_dir+$get_cache_name;
+
+
+
+
+string $if_ex=python ("os.path.isfile(\""+$new_add+".xml\")");
+
+if($if_ex==1)
+		{//9
+python ("dom_fy=xml.dom.minidom.parse(\""+$new_add+".xml\")");
+
+python ("root_fy = dom_fy.documentElement");
+python  ("itemlist_1 = root_fy.getElementsByTagName('cacheType')");
+string $get_cache_type = python ("itemlist_1[0].getAttribute(\"Type\")");
+string $get_cache_format = python ("itemlist_1[0].getAttribute(\"Format\")");
+python  ("itemlist_2 = root_fy.getElementsByTagName('time')");
+string $get_cache_range = python ("itemlist_2[0].getAttribute(\"Range\")");
+python  ("itemlist_3 = root_fy.getElementsByTagName('cacheTimePerFrame')");
+string $get_cache_TimePerFrame = python ("itemlist_3[0].getAttribute(\"TimePerFrame\")");
+string $getR[] = stringToStringArray($get_cache_range,"-");
+int $getRss = $getR[0];
+int $getRse = $getR[1];
+int $get_unit = $get_cache_TimePerFrame;
+int $getss=$getRss/$get_unit;
+int $getse=$getRse/$get_unit;
+string $npar_path_f;
+int $if_ref=`referenceQuery -inr $temp_outWhat[0]`;
+
+if($if_ref==0)
+{
+$npar_path_f=($npar_path+"/"+basenameEx($new_add));
+}
+if($if_ref==1)
+{
+string $get_spacename_temp=`referenceQuery -ns $temp_outWhat[0]`;
+int $temp_num=size($get_spacename_temp);
+string $get_spacename=`substring $get_spacename_temp 2 $temp_num`;
+$npar_path_f=$get_fpath_mel+"/reference/cache/"+$get_spacename+"/"+"Geometry"+"/"+basenameEx($new_add);
+}
+
+
+
+sysFile -md $npar_path_f;
+if ($get_cache_type=="OneFile")
+	{//10
+		 
+		 int $if_exists_mc=python ("os.path.isfile(\""+$new_add+"."+$get_cache_format+"\")");
+	
+		if ($if_exists_mc==1)
+				{//11
+			python ("shutil.copy(\""+$new_add+".xml"+"\",\""+$npar_path_f+"\")");
+			python ("shutil.copy(\""+$new_add+"."+$get_cache_format+"\",\""+$npar_path_f+"\")");		
+				}//11
+					
+				
+			}//10
+	
+	
+if ($get_cache_type=="OneFilePerFrame")
+	{//12
+		 
+		 
+	
+		
+			python ("shutil.copy(\""+$new_add+".xml"+"\",\""+$npar_path_f+"\")");
+			
+			for ($v=$getss;$v<$getse+1;$v++)
+					{//13
+				int $if_exists_mc=python ("os.path.isfile(\""+$new_add+"Frame"+$v+"."+$get_cache_format+"\")");
+				if ($if_exists_mc==1)
+						{//14
+				python ("shutil.copy(\""+$new_add+"Frame"+$v+"."+$get_cache_format+"\",\""+$npar_path_f+"\")");
+						}//14
+					float $all_sz=$getse;
+				$pr_zb+=(10000.0/$all_sz)*0.01;
+				int $final_pr=clamp(0,100,trunc($pr_zb)+1);
+				progressBar -edit -pr $final_pr prog_zbag;
+					}//13
+			
+	}//12
+	
+	
+}//9
+
+
+}//7
+}//6
+}//5
+}//4
+}//3
+}//2
+}//1
+
+
+/////////////////////////
+
+
+
+global proc bg_z_abc(string $get_fpath_mel)
+{
+if(`pluginInfo -q -l "AbcExport.mll"`)
+{
+//copy file
+if (`checkBox -q -v "cb_alembic缓存"`)
+	{
+	python ("import maya.cmds as mc");
+	python ("import shutil");
+	python ("import os");
+	python ("import glob");
+    float $pr_zb=0;
+    text -e -l "正在封装 alembic缓存..." text_zbag;
+	string $all_file[]=`ls -type "AlembicNode"`;
+
+
+	
+	
+
+	
+	
+	
+	
+	
+	string $get_sn=`textField -q -tx the_bag_name`;
+	string $HZ=($get_fpath_mel+"/cache/"+$get_sn+"/alembic/");
+	sysFile -md $HZ;
+	
+	python ("get_fpath=\""+$HZ+"\"");
+	string $final_path_all[];
+	clear $final_path_all;
+	string $final_path_base;
+	for($one_file in $all_file)
+	{
+	
+
+	
+		    if  (stringArrayContains(`getAttr ($one_file+".abc_File")`,$final_path_all)!=1)
+			{
+			$final_path_all[size($final_path_all)]=`getAttr ($one_file+".abc_File")`;
+			}
+	
+			}
+			$pr_zb+=(10000.0/size($final_path_all))*0.01;
+			for ($final_path in $final_path_all)
+			{
+			$final_path_base=`basenameEx($final_path)`;
+			python ("(mydirname, myfilename) = os.path.split(\""+$final_path+"\")");
+			string $final_path_baseex=python ("myfilename");
+			
+			
+if(size($final_path)!=0)
+{
+			       	    float $all_sz=size($final_path_all);
+						int $final_pr;
+						python ("get_file=\""+$final_path+"\"");
+						python ("get_ext= myfilename.split(\".\")");
+						string $get_ext=python ("get_ext[-1]");
+						python ("get_file_2=get_fpath+\"/"+$final_path_base+"*.\"+\""+$get_ext+"\"");
+						
+						python ("get_file_3=get_fpath+\"/"+$final_path_baseex+"\"");
+						python ("get_file_4=get_fpath+\"/"+$final_path_base+"\"");
+						int $if_exists = python ("os.path.isfile(get_file)");
+						int $if_exists_2 = python ("os.path.isfile(get_file_3)");
+						string $final_name_path;
+						if ($if_exists==1)
+						{
+						
+						
+						if($if_exists_2==0)
+						{
+						python ("shutil.copy(get_file,get_fpath)");
+						python ("final_new_name=get_file_4+\".\"+get_ext[-1]");
+						if(`attributeExists "BJ_ZB" $one_file`==1)
+						{
+							catch (`deleteAttr -attribute "BJ_ZB" $one_file`);
+						}
+					$pr_zb+=(10000.0/$all_sz)*0.01;
+					$final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						//$final_name_path=python ("final_new_name");
+						}
+						if($if_exists_2==1){
+						python ("myfilelist=glob.glob(get_file_2)");
+						
+						string $get_file_size1=python ("os.path.getsize(get_file)");
+						string $get_file_size2=python ("os.path.getsize(get_file_3)");
+						
+						if($get_file_size1!=$get_file_size2)
+						{
+						python ("num_exists=str(len(myfilelist))") ;
+						python ("final_new_name=get_file_4+\"_\"+num_exists+\".\"+get_ext[-1]");
+						//$final_name_path= python ("final_new_name");
+						
+						python ("shutil.copy(get_file,final_new_name)");
+						
+						string $get_num_file=python("num_exists");
+						
+						if(`attributeExists "BJ_ZB" $one_file`==0)
+						{
+						addAttr -ln "BJ_ZB"  -dt "string"  $one_file;
+
+						setAttr -e-keyable true ($one_file+".BJ_ZB");
+						}
+						
+						setAttr -type "string" ($one_file+".BJ_ZB") $get_num_file; 
+						
+							$pr_zb+=(10000.0/$all_sz)*0.01;
+							$final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						}
+						
+						if($get_file_size1==$get_file_size2)
+						{
+						
+						if(`attributeExists "BJ_ZB" $one_file`==1)
+						{
+							catch (`deleteAttr -attribute "BJ_ZB" $one_file`);
+						}
+						python ("shutil.copy(get_file,get_fpath)");	
+						
+					    $pr_zb+=(10000.0/$all_sz)*0.01;
+					
+					    $final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						}
+						
+						}
+						}
+						
+						
+	progressBar -edit -pr $final_pr prog_zbag;
+	
+	
+	
+}
+	
+	
+
+	
+	
+	}
+
+
+
+
+	}
+
+
+
+}
+
+
+}
+
+
+////////////
+
+
+
+global proc bg_z_ref(string $get_fpath_mel,string $final_info_ref)
+{
+
+//copy file
+if (`checkBox -q -v "cb_Reference资源"`)
+	{
+	python ("import maya.cmds as mc");
+	python ("import shutil");
+	python ("import os");
+	python ("import glob");
+    float $pr_zb=0;
+    text -e -l "正在封装 Reference资源..." text_zbag;
+    string $cnm[]=`file -q -r -sharedReferenceFile`;
+string $all_file_temp[];
+clear $all_file_temp;
+for ($l in $cnm)
+{
+$all_file_temp[size($all_file_temp)]=`file -q -rfn $l`;
+
+}
+    
+    
+	
+     string $all_file[];
+     clear $all_file;
+    for ($one_remove in $all_file_temp)
+    {
+    	 if (`connectionInfo -is ($one_remove+".sharedReference")`!=1)
+    	 {
+    	 	$all_file[size($all_file)]=$one_remove;
+         }
+   } 
+
+    string $old_ref[];
+    clear $old_ref;
+    string $new_ref[];
+	clear $new_ref;
+	global string $final_info_ref;
+
+	
+	
+	
+	
+	
+	string $get_sn=`textField -q -tx the_bag_name`;
+	string $HZ=($get_fpath_mel+"reference/");
+	sysFile -md $HZ;
+	
+	python ("get_fpath2=\""+$HZ+"\"");
+	string $final_path_all[];
+	clear $final_path_all;
+	string $final_path_base; 
+	for($one_file in $all_file)
+	{
+	
+
+	        if (`connectionInfo -is ($one_file+".sharedReference")`!=1){
+		    if  (stringArrayContains(`referenceQuery -wcn -f $one_file`,$final_path_all)!=1)
+			{
+			$final_path_all[size($final_path_all)]=`referenceQuery -wcn -f $one_file`;
+			$old_ref[size($old_ref)]=`referenceQuery -wcn -f $one_file`;
+			}
+	
+			}
+			
+			
+			
+			}
+			
+			for ($final_path in $final_path_all)
+			{
+			$final_path_base=`basenameEx($final_path)`;
+			python ("(mydirname2, myfilename2) = os.path.split(\""+$final_path+"\")");
+			string $final_path_baseex=python ("myfilename2");
+			
+			
+if(size($final_path)!=0)
+{
+			       	   $pr_zb+=(10000.0/size($final_path_all))*0.01;
+			       	    float $all_sz=size($final_path_all);
+						int $final_pr;
+						python ("get_file2=\""+$final_path+"\"");
+						python ("get_ext2= myfilename2.split(\".\")");
+						string $get_ext=python ("get_ext2[-1]");
+						python ("get_file_2_2=get_fpath2+\"/"+$final_path_base+"*.\"+\""+$get_ext+"\"");
+						
+						python ("get_file_3_2=get_fpath2+\""+$final_path_baseex+"\"");
+						python ("get_file_4_2=get_fpath2+\""+$final_path_base+"\"");
+						int $if_exists = python ("os.path.isfile(get_file2)");
+						int $if_exists_2 = python ("os.path.isfile(get_file_3_2)");
+						string $final_name_path;
+						if ($if_exists==1)
+						{
+						if($if_exists_2==1){//1
+						python ("myfilelist2=glob.glob(get_file_2_2)");
+						
+						string $get_file_size1=python ("os.path.getsize(get_file2)");
+						string $get_file_size2=python ("os.path.getsize(get_file_3_2)");
+						
+						
+						if($get_file_size1!=$get_file_size2)
+						{//2
+						python ("num_exists2=str(len(myfilelist2))") ;
+						python ("final_new_name2=get_file_4_2+\"_\"+num_exists2+\".\"+get_ext2[-1]");
+						//$final_name_path= python ("final_new_name");
+						
+						python ("shutil.copy(get_file2,final_new_name2)");
+						string $temp_new_ref=python ("final_new_name2");
+						$new_ref[size($new_ref)]=$temp_new_ref;
+						string $get_num_file=python("num_exists2");
+						
+						if(`attributeExists "BJ_ZB" $one_file`==0)
+							{//3
+						addAttr -ln "BJ_ZB"  -dt "string"  $one_file;
+
+						setAttr -e-keyable true ($one_file+".BJ_ZB");
+							}//3
+						
+						setAttr -type "string" ($one_file+".BJ_ZB") $get_num_file; 
+						
+							$pr_zb+=(10000.0/$all_sz)*0.01;
+							$final_pr=clamp(0,100,trunc($pr_zb)+1); 
+						}//2
+					
+						if($get_file_size1==$get_file_size2)
+							{//4
+						
+						if(`attributeExists "BJ_ZB" $one_file`==1)
+								{//5
+							catch (`deleteAttr -attribute "BJ_ZB" $one_file`);
+							 
+								}//5
+						python ("shutil.copy(get_file2,get_fpath2)");	
+					    python ("final_new_name2=get_file_4_2+\".\"+get_ext2[-1]");
+					  	string $temp_new_ref=python ("final_new_name2");
+						$new_ref[size($new_ref)]=$temp_new_ref;
+							
+					    $pr_zb+=(10000.0/$all_sz)*0.01;
+					
+					    $final_pr=clamp(0,100,trunc($pr_zb)+1); 
+					    
+							}//4
+
+						}//1
+						
+						if($if_exists_2==0)
+						{
+						python ("shutil.copy(get_file2,get_fpath2)");
+						python ("final_new_name2=get_file_4_2+\".\"+get_ext2[-1]");
+						//print "B1";
+						string $temp_new_ref=python ("final_new_name2");
+						$new_ref[size($new_ref)]=$temp_new_ref;
+						
+						if(`attributeExists "BJ_ZB" $one_file`==1)
+						{
+							catch (`deleteAttr -attribute "BJ_ZB" $one_file`);
+						}
+					$pr_zb+=(10000.0/$all_sz)*0.01;
+					$final_pr=clamp(0,100,trunc($pr_zb)+1); 
+                        
+						//$final_name_path=python ("final_new_name");
+						}
+						
+						
+						
+						
+						
+	progressBar -edit -pr $final_pr prog_zbag;
+	
+
+	
+}
+}
+	}
+//	print $new_ref;
+$final_info_ref="----------------------------------------------------\r\n\r\n\r\nReference信息 : \r\n";
+for ($i=0;$i<size($old_ref);$i++)	
+{
+$final_info_ref+=($old_ref[$i]+"   ---   "+$new_ref[$i]+"\r\n")	;
+}
+	
+	}
+	
+	}
+////////////
+
+global proc bg_z_maya(string $get_fpath_mel)
+{
+
+   string $get_bag_name=`textField -q -tx the_bag_name`;
+      
+      string $get_ext_file=`optionMenu -q -v ext_file`;
+      
+      if ($get_ext_file==".mb")
+      {
+     	 text -e -l "正在封装 mb文件..." text_zbag;
+     	 file -force -options "v=0;" -type "mayaBinary" -pr -ea ($get_fpath_mel+$get_bag_name+".mb");
+     	 
+      }
+      
+      if ($get_ext_file==".ma")
+      {
+      	text -e -l "正在封装 ma文件..." text_zbag;
+      	file -force -options "v=0;" -type "mayaAscii" -pr -ea ($get_fpath_mel+$get_bag_name+".ma");
+	  }
+      
+      
+      
+      
+      
+      
+  text -e -l "封装完成！" text_zbag;    
+      
+}  
+///////////////
+
+global proc int set_sl_h(int $num_item)
+{
+	int $get_item=clamp(15,120,$num_item*24);
+	
+	return $get_item;
+	
+}
+/////////
+
+global proc open_ppp(string $get_fpath_mel){
+   python ("import os");
+  
+   python ("os.startfile(\""+$get_fpath_mel+"\")");
+}
+
+
+///////////////
+
+global proc LL()
+{
+	string $get_out_fol[]=`fileDialog2 -fileMode 3 -caption "set the search path"`;
+	if(size($get_out_fol)!=0)
+	{
+		
+		textField -e -tx (toNativePath($get_out_fol[0])+"\\") the_output_path;
+	}
+	
+}
+
+global proc open_fold(string $input_path)
+{
+   	python ("import os");
+   	python ("import maya.cmds as mc");
+   	string $final_path=(`textField -q -tx $input_path`);
+    python ("temp_p=mc.textField(\""+$input_path+"\",q=True,tx=True)");
+    python ("temp_p.replace(\"\\\\\",\"/\")");
+    string $temp_exi= python ("temp_p");
+    if(`filetest -d $temp_exi`)
+    {
+	 python ("os.startfile(temp_p)");}
+ 
+    else{warning "目录不存在！！\n";}
+	//system ("start explorer \""+$final_path+"\"");
+
+	
+}
+/////////////
+
+
+
+/////////////////////////
+
+global proc open_fold2(string $input_path)
+{
+   	python ("import maya.cmds as mc");
+   	
+   	string $final_path_temp=fromNativePath(`textField -q -tx $input_path`);
+    
+	python ("myallpath=\""+$final_path_temp+"\"");
+	
+	python ("(mydirname, myfilename) = os.path.split(myallpath)");
+	
+	python ("mydirname.replace(\"\\\\\",\"/\")");
+	
+	string $final_path = python ("mydirname");
+    
+	if(`filetest -d $final_path`)
+    {
+	 python ("os.startfile(mydirname)");}
+	
+	 else{warning "目录不存在！！\n";}
+}
+
+//////////////
+global proc get_all_RN_cache(string $all_cache[])
+{
+string $cnm[]=`file -q -r -sharedReferenceFile`;
+string $all_dynNglob[];
+clear $all_dynNglob;
+for ($l in $cnm)
+{
+$all_dynNglob[size($all_dynNglob)]=`file -q -rfn $l`;
+
+}
+
+string $all_dynGeo_add[];
+clear $all_dynGeo_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{
+	
+	if (`connectionInfo -is ($all_dynNglob[$i_p]+".sharedReference")`!=1)  {
+	if(`referenceQuery  -il $all_dynNglob[$i_p]`==1){
+	string $get_path_RN=`referenceQuery -wcn -f $all_dynNglob[$i_p]`;
+
+	
+	$all_dynGeo_add[size($all_dynGeo_add)]=toNativePath($get_path_RN);
+			}
+			
+		}
+}
+$all_dynGeo_add=stringArrayRemoveDuplicates($all_dynGeo_add);
+int $if_cb=clamp(0,1,size($all_dynGeo_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[8]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[8]);
+for($p=0;$p<size($all_dynGeo_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[8]) -l (($p+1)+".") ("index_"+$all_cache[8]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[8]) -ed 0 -tx $all_dynGeo_add[$p] ("path_"+$all_cache[8]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[8]) -c ("open_fold2((\"path_\"+\""+$all_cache[8]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[8]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynGeo_add))`+30) ("sl_"+$all_cache[8]);
+}
+
+/////////////////
+
+ global proc get_all_ABC_cache(string $all_cache[])
+{
+if(`pluginInfo -q -l "AbcExport.mll"`){
+string $all_dynNglob[]=`ls -type "AlembicNode"`;
+string $all_dynABC_add[];
+clear $all_dynABC_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+				{
+	
+	string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".abc_File")`;
+	$all_dynABC_add[size($all_dynABC_add)]=toNativePath($get_cache_dir);
+				
+				}
+$all_dynABC_add=stringArrayRemoveDuplicates($all_dynABC_add);
+int $if_cb=clamp(0,1,size($all_dynABC_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[7]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[7]);
+for($p=0;$p<size($all_dynABC_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[7]) -l (($p+1)+".") ("index_"+$all_cache[7]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[7]) -ed 0 -tx $all_dynABC_add[$p] ("path_"+$all_cache[7]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[7]) -c ("open_fold2((\"path_\"+\""+$all_cache[7]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[7]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynABC_add))`+30) ("sl_"+$all_cache[7]);
+}
+}
+////////////////
+
+ global proc get_all_Geo_cache(string $all_cache[])
+{
+
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynGeo_add[];
+clear $all_dynGeo_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	if (nodeType($temp_outWhat[0])=="historySwitch"){
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			$all_dynGeo_add[size($all_dynGeo_add)]=toNativePath($get_cache_dir);
+			
+		}}
+}
+
+
+
+$all_dynGeo_add=stringArrayRemoveDuplicates($all_dynGeo_add);
+int $if_cb=clamp(0,1,size($all_dynGeo_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[6]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[6]);
+for($p=0;$p<size($all_dynGeo_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[6]) -l (($p+1)+".") ("index_"+$all_cache[6]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[6]) -ed 0 -tx $all_dynGeo_add[$p] ("path_"+$all_cache[6]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[6]) -c ("open_fold((\"path_\"+\""+$all_cache[6]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[6]+"_"+($p+1));
+
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynGeo_add))`+30) ("sl_"+$all_cache[6]);
+}
+
+
+//////////////////
+
+ global proc get_all_Fluid_cache(string $all_cache[])
+{
+
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynFluid_add[];
+clear $all_dynFluid_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	if (nodeType($temp_outWhat[0])!="historySwitch"){
+	string $temp_outWhat_s[]=`listRelatives -f -s $temp_outWhat[0]`;
+	if (nodeType($temp_outWhat_s[0])=="fluidShape"){
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			$all_dynFluid_add[size($all_dynFluid_add)]=toNativePath($get_cache_dir);
+			
+		}}}
+}
+
+
+
+$all_dynFluid_add=stringArrayRemoveDuplicates($all_dynFluid_add);
+int $if_cb=clamp(0,1,size($all_dynFluid_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[5]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[5]);
+for($p=0;$p<size($all_dynFluid_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[5]) -l (($p+1)+".") ("index_"+$all_cache[5]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[5]) -ed 0 -tx $all_dynFluid_add[$p] ("path_"+$all_cache[5]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[5]) -c ("open_fold((\"path_\"+\""+$all_cache[5]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[5]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynFluid_add))`+30) ("sl_"+$all_cache[5]);
+}
+
+/////////////////
+ global proc get_all_Ncloth_cache(string $all_cache[])
+{
+
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynNCloth_add[];
+clear $all_dynNCloth_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	if (nodeType($temp_outWhat[0])!="historySwitch"){
+	string $temp_outWhat_s[]=`listRelatives -f -s $temp_outWhat[0]`;
+	if (nodeType($temp_outWhat_s[0])=="nCloth"){
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			$all_dynNCloth_add[size($all_dynNCloth_add)]=toNativePath($get_cache_dir);
+			
+		}}}
+}
+
+
+
+$all_dynNCloth_add=stringArrayRemoveDuplicates($all_dynNCloth_add);
+int $if_cb=clamp(0,1,size($all_dynNCloth_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[4]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[4]);
+for($p=0;$p<size($all_dynNCloth_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[4]) -l (($p+1)+".") ("index_"+$all_cache[4]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[4]) -ed 0 -tx $all_dynNCloth_add[$p] ("path_"+$all_cache[4]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[4]) -c ("open_fold((\"path_\"+\""+$all_cache[4]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[4]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynNCloth_add))`+30) ("sl_"+$all_cache[4]);
+}
+
+
+
+//////////////
+
+ global proc get_all_Nhair_cache(string $all_cache[])
+{
+
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynNhair_add[];
+clear $all_dynNhair_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{
+	
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	if (nodeType($temp_outWhat[0])!="historySwitch"){
+	string $temp_outWhat_s[]=`listRelatives -f -s $temp_outWhat[0]`;
+	if (nodeType($temp_outWhat_s[0])=="hairSystem"){
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			$all_dynNhair_add[size($all_dynNhair_add)]=toNativePath($get_cache_dir);
+			
+		}}}
+}
+
+
+
+$all_dynNhair_add=stringArrayRemoveDuplicates($all_dynNhair_add);
+int $if_cb=clamp(0,1,size($all_dynNhair_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[3]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[3]);
+for($p=0;$p<size($all_dynNhair_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[3]) -l (($p+1)+".") ("index_"+$all_cache[3]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[3]) -ed 0 -tx $all_dynNhair_add[$p] ("path_"+$all_cache[3]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[3]) -c ("open_fold((\"path_\"+\""+$all_cache[3]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[3]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynNhair_add))`+30) ("sl_"+$all_cache[3]);   
+}
+
+
+//////////////////
+
+ global proc get_all_Npartcle_cache(string $all_cache[])
+{
+
+string $all_dynNglob[]=`ls -type "cacheFile"`;
+string $all_dynNParticle_add[];
+clear $all_dynNParticle_add;
+
+for($i_p=0;$i_p<size($all_dynNglob);$i_p++)
+{
+	string $temp_outWhat[]= `listConnections ($all_dynNglob[$i_p]+".outCacheData[0]")`;
+	if (nodeType($temp_outWhat[0])!="historySwitch"){
+	string $temp_outWhat_s[]=`listRelatives -f -s $temp_outWhat[0]`;
+	if (nodeType($temp_outWhat_s[0])=="nParticle"){
+	int $if_disk_cache=`getAttr ($all_dynNglob[$i_p]+".enable")`;
+		if($if_disk_cache==1)
+		{
+			string $get_cache_dir=`getAttr ($all_dynNglob[$i_p]+".cachePath")`;
+			$all_dynNParticle_add[size($all_dynNParticle_add)]=toNativePath($get_cache_dir);
+			
+		}}}
+}
+
+
+
+$all_dynNParticle_add=stringArrayRemoveDuplicates($all_dynNParticle_add);
+int $if_cb=clamp(0,1,size($all_dynNParticle_add));
+checkBox -e -en $if_cb  -v $if_cb ("cb_"+$all_cache[2]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[2]);
+
+for($p=0;$p<size($all_dynNParticle_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[2]) -l (($p+1)+".") ("index_"+$all_cache[2]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[2]) -ed 0 -tx $all_dynNParticle_add[$p] ("path_"+$all_cache[2]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[2]) -c ("open_fold((\"path_\"+\""+$all_cache[2]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[2]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynNParticle_add))`+30) ("sl_"+$all_cache[2]);
+}
+
+
+
+
+///////////////
+ global proc get_all_partcle_cache(string $all_cache[])
+{
+
+string $all_dynglob[]=`ls -type "dynGlobals"`;
+string $all_dynParticle_add[];
+clear $all_dynParticle_add;
+for($i_p=0;$i_p<size($all_dynglob);$i_p++)
+{
+	int $if_disk_cache=`getAttr ($all_dynglob[$i_p]+".useParticleDiskCache")`;
+		if($if_disk_cache==1)
+		{
+			string $get_cache_dir=`getAttr ($all_dynglob[$i_p]+".cacheDirectory")`;
+			$all_dynParticle_add[size($all_dynParticle_add)]=toNativePath((`workspace -q -rd`)+(`workspace -fre "particles"`)+"/"+$get_cache_dir+"/");
+			
+		}
+}
+
+
+
+
+
+$all_dynParticle_add=stringArrayRemoveDuplicates($all_dynParticle_add);
+int $if_cb=clamp(0,1,size($all_dynParticle_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[1]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[1]);
+for($p=0;$p<size($all_dynParticle_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[1]) -l (($p+1)+".") ("index_"+$all_cache[1]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[1]) -ed 0 -tx $all_dynParticle_add[$p] ("path_"+$all_cache[1]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[1]) -c ("open_fold((\"path_\"+\""+$all_cache[1]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[1]+"_"+($p+1));
+}     	
+scrollLayout -e -h (`set_sl_h(size($all_dynParticle_add))`+30) ("sl_"+$all_cache[1]);
+}
+
+
+
+
+
+
+global proc get_all_file(string $all_cache[])
+{
+python ("import maya.cmds as mc");
+python ("import os");
+string $all_file_temp[]=`ls -type "file"`;
+string $all_aiImage_temp[];
+clear $all_aiImage_temp;
+string $all_render[]= `renderer -query -namesOfAvailableRenderers`;
+if (stringArrayContains("arnold",$all_render)==1)
+{
+$all_aiImage_temp=`ls -type "aiImage"`;
+}
+string $all_file[]=stringArrayCatenate($all_file_temp,$all_aiImage_temp);
+string $get_add[];
+string $temp_ftn;
+clear $get_add;
+for( $one_file in $all_file)
+{
+if(`nodeType($one_file)`=="aiImage")
+{
+	
+		string $temp_ftn=`getAttr ($one_file+".filename")`;
+		if(size($temp_ftn)!=0){
+		python ("myallpath=mc.getAttr(\""+$one_file+".filename\")");
+		
+		python ("(mydirname, myfilename) = os.path.split(myallpath)");
+		string $final_path = python ("mydirname");
+		if(endsWith($final_path,"/")==1)
+			{
+				$get_add[size($get_add)]=toNativePath($final_path);
+			}
+		if(endsWith($final_path,"/")==0)
+			{
+				$get_add[size($get_add)]=(toNativePath($final_path)+"\\");
+			}
+		                                               }
+}	
+if(`nodeType($one_file)`=="file"||`nodeType($one_file)`=="psdFileTex")
+{
+	
+		string $temp_ftn=`getAttr ($one_file+".fileTextureName")`;
+		if(size($temp_ftn)!=0){
+		python ("myallpath=mc.getAttr(\""+$one_file+".fileTextureName\")");
+		
+		python ("(mydirname, myfilename) = os.path.split(myallpath)");
+		string $final_path = python ("mydirname");
+		if(endsWith($final_path,"/")==1)
+			{
+				$get_add[size($get_add)]=toNativePath($final_path);
+			}
+		if(endsWith($final_path,"/")==0)
+			{
+				$get_add[size($get_add)]=(toNativePath($final_path)+"\\");
+			}
+		                                               }
+}
+}
+
+$get_add=stringArrayRemoveDuplicates($get_add);
+int $if_cb=clamp(0,1,size($get_add));
+checkBox -e -en $if_cb -v $if_cb ("cb_"+$all_cache[0]);
+frameLayout -e -en $if_cb ("fl_"+$all_cache[0]);
+for($p=0;$p<size($get_add);$p++)
+{
+text  -p ("rcl_"+$all_cache[0]) -l (($p+1)+".") ("index_"+$all_cache[0]+"_"+($p+1));
+textField -p ("rcl_"+$all_cache[0]) -ed 0 -tx $get_add[$p] ("path_"+$all_cache[0]+"_"+($p+1));
+button  -p ("rcl_"+$all_cache[0]) -c ("open_fold((\"path_\"+\""+$all_cache[0]+"\"+\"_\"+"+($p+1)+"))") -l "打开" ("button_"+$all_cache[0]+"_"+($p+1));
+} 
+scrollLayout -e -h (`set_sl_h(size($get_add))`+30) ("sl_"+$all_cache[0]);
+}
+
+
+
+
+
+
+
+global proc get_fold()
+{
+	string $get_out_fold=`fileDialog2  -fileMode 3 -caption "set the search path"`;
+	
+}
+
+global proc win_zbg_start_UI()
+{
+if (`window -ex super_diaozhatian`){deleteUI super_diaozhatian;}
+
+window -t "maya场景封装器 Z-BAG v1.50 (2013-2015)"   -sizeable 1 super_diaozhatian;
+rowColumnLayout -nc 1   all_row;
+frameLayout  -l "场景外链文件位置信息" pp_1 ;
+
+string $all_cache[]={"贴图文件","particle缓存","nParticle缓存","nHair缓存","nCloth缓存","fluid缓存","Geo缓存","alembic缓存","Reference资源"};
+rowColumnLayout -nc 4 -cw 1 5 -cw 2 20 -cw 3 1 -cw 4 380 -w 530;
+for ($ccc in $all_cache)
+{
+text -l " " -h 20 ;
+checkBox -l "" ("cb_"+$ccc);
+text -l " ";
+frameLayout -w 500
+		    -en 0
+			-borderStyle "etchedIn"
+            -collapsable 1
+           	-collapse 1  -l $ccc ("fl_"+$ccc);
+frameLayout -e -l "贴图文件  (file、PSDfile和aiImage)" "fl_贴图文件"; 
+scrollLayout 
+        -horizontalScrollBarThickness 16
+        -verticalScrollBarThickness   16 ("sl_"+$ccc);   	
+rowColumnLayout -nc 3  -cw 1 25 -cw 2 410 ("rcl_"+$ccc); 
+
+setParent ..;
+setParent ..;
+setParent ..;
+}
+setParent ..;
+setParent ..;
+
+frameLayout -en 1 -h 100 -l "文件输出设置";
+rowColumnLayout  -nc 2 -cw 1 280 ;
+
+rowColumnLayout  -nc 5 -cw 1 5 -cw 2 50 -cw 3 155 -cw 4 5 -cw 5 60;
+text -l " ";
+text -fn "boldLabelFont" -l "输出位置";
+textField -tx "d:\\bag\\" the_output_path;
+text -l " ";
+button  -c "LL()" -l "浏览...";
+text -l " ";
+text -fn "boldLabelFont" -l "文件命名" ;
+textField -tx (`getTheSceneName`) the_bag_name;
+text -l " ";
+optionMenu -label "" ext_file;
+menuItem -l ".mb";
+menuItem -l ".ma";
+optionMenu -e -v ".mb" ext_file;
+setParent ..;
+columnLayout  -adj 1 -w 240;
+separator -height 2 -style "in";
+progressBar -maxValue 100  prog_zbag;
+text -h 20 -fn "boldLabelFont" -l "---" text_zbag;
+separator -height 2 -style "in";
+setParent ..;
+setParent ..;
+rowColumnLayout -nc 7 -cw 1 180 -cw 2 70 -cw 3 20 -cw 4 10 -cw 5 20 -cw 6 70 -cw 7 5;
+text -l " ";
+button -c "final_start()" -l "开始封装";
+text -l " ";
+text -l " ";
+text -l " ";
+button -c "open_ppp($get_fpath_mel)" -l "打开目录";
+text -l " ";
+
+
+setParent ..;
+setParent ..;
+setParent ..;
+
+showWindow super_diaozhatian;
+//cc_hwindow1();
+get_all_file($all_cache);
+get_all_partcle_cache($all_cache);
+get_all_Npartcle_cache($all_cache);
+get_all_Nhair_cache($all_cache);
+get_all_Ncloth_cache($all_cache);
+get_all_Fluid_cache($all_cache);
+get_all_Geo_cache($all_cache);
+get_all_ABC_cache($all_cache);
+get_all_RN_cache($all_cache);
+
+
+}
+
+
+
+
+global proc win_start_zbag()
+{
+if (`window -ex start_zbag`) {deleteUI start_zbag;}
+window -t "Z-bag v1.50"  -w 300 -h 280 -sizeable 0 start_zbag;
+
+rowColumnLayout  -w 300 -h 280;
+
+string $myScriptDir_Zbag_icon_logo = (`internalVar -userScriptDir`+"FY_tools_new/data/icon_data/UI_main/Zbag_data/zbag_icon_2.png");
+iconTextButton -ann "click to Visit the blog" -c "showHelp -absolute \"http://blog.sina.com.cn/u/1142154637\"" -image $myScriptDir_Zbag_icon_logo;
+text -l "";
+text -fn "boldLabelFont" -l "使用说明：";
+text -fn "boldLabelFont" -l "1、先使用封装器一键封装文件";
+text -fn "boldLabelFont" -l "2、打开输出目录中封装后的文件";
+text -fn "boldLabelFont" -l "3、使用适配器进行适配";
+text -l "";
+text -l "";
+rowColumnLayout -nc 5 -cw 1 50 ;
+text -l "";
+button -bgc 1.0 0.5 0.17 -h 40 -w 100 -c "win_zbg_start_UI()" -ann "打开封装器" -l "封装器";
+text -l "";
+button -bgc 1.0 0.5 0.17 -h 40 -w 100 -c "match_all()" -ann "打开适配器" -l "适配器";
+text -l "";
+setParent ..; 
+showWindow start_zbag;
+
+}
+python ("import maya.cmds as mc");
+python ("import shutil");
+python ("import os");
+python ("import glob");
+python ("import xml.dom.minidom");
+win_start_zbag();

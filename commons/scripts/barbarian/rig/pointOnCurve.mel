@@ -1,0 +1,27 @@
+global proc pointCurve(){
+    
+    string $sel[] = `ls -sl`;
+    string $listSel[] = `listRelatives -shapes $sel`;
+    
+    string $create_Poci = `createNode "pointOnCurveInfo"`;
+
+//    string $loc[] = `spaceLocator`;
+    
+    string $Jnt = `joint -p 0 0 0` ;
+    addAttr -ln "parameter"  -at double  -min 0 -dv 0 $Jnt;
+    setAttr -e-keyable true ($Jnt + ".parameter");
+    
+    connectAttr -f ($listSel[0] + ".worldSpace[0]") ($create_Poci + ".inputCurve");
+    
+    connectAttr -f ($create_Poci + ".position") ($Jnt + ".translate");
+    
+    select -r $sel[0];
+    select -tgl $Jnt ;
+    
+    tangentConstraint -weight 1 -aimVector 1 0 0 -upVector 0 1 0 -worldUpType "vector" -worldUpVector 0 1 0;
+
+    connectAttr -f ($Jnt + ".parameter") ($create_Poci + ".parameter");
+
+}
+
+pointCurve;

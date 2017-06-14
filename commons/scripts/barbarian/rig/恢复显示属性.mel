@@ -1,0 +1,23 @@
+global proc displyAllChannel ()
+{
+	string $myselection[] = `ls -long -selection`;
+
+	for ($item in $myselection)
+	{
+	    string $attrs[];
+
+	    $attrs[0] = "tx";
+	    $attrs[1] = "ty";
+	    $attrs[2] = "tz";
+	    $attrs[3] = "rx";
+	    $attrs[4] = "ry";
+	    $attrs[5] = "rz";
+	    $attrs[6] = "sx";
+	    $attrs[7] = "sy";
+	    $attrs[8] = "sz";
+	    $attrs[9] = "visibility";
+	    for ($attr in $attrs)
+		setAttr -keyable true -lock false ($item + "." + $attr);
+	};
+}
+displyAllChannel();

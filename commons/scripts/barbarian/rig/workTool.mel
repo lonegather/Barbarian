@@ -1,0 +1,308 @@
+if(`window -ex wpsWin`){ 
+deleteUI wpsWin;
+}
+window -title "workTool" wpsWin;
+columnLayout -adjustableColumn true;
+button -command "ADVModify" -bgc 0.9 0.9 0.9 -label "矫正ADV轴向" -h 40;
+button -command "ADVRecover" -bgc 0.7 0.9 0.7 -label "矫回ADV轴向" -h 40;
+button -command "ADVscale" -bgc 0.9 0.4 0.4 -label "修正ADV与大盘缩放问题" -h 40;
+button -command "advDrawStyle" -bgc 0.9 0.9 0.7 -label "ADV骨骼显示隐藏" -h 40;
+button -command "secondaryCtrl" -bgc 0.6 0.8 0.9 -label "次级控制器连接" -h 40;
+button -command "pointCurve" -bgc 0.7 0.6 0.7 -label "添加pointOnCurve骨骼" -h 40;
+button -command "closestPOS" -bgc 0.2 0.6 0.2 -label "添加曲面骨骼控制" -h 40;
+button -command "closestMesh" -bgc 0.3 0.3 0.6 -label "添加几何体骨骼控制" -h 40;
+button -command "nameCon" -bgc 0.9 0.9 0.1 -label "创建大盘" -h 40;
+
+
+window -e -wh 200 360 wpsWin;
+
+//showWindow 
+showWindow wpsWin;
+
+
+global proc ADVModify(){
+///// ADV back Rotate modify /////
+parent -w FKXBackA_M;
+setAttr "FKExtraBackA_M.rotateX" 0;
+setAttr "FKExtraBackA_M.rotateY" -90;
+setAttr "FKExtraBackA_M.rotateZ" -90;
+setAttr "FKBackA_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKBackA_M;
+parent FKXBackA_M FKBackA_M;
+
+parent -w FKXBackB_M;
+setAttr "FKExtraBackB_M.rotateX" 0;
+setAttr "FKExtraBackB_M.rotateY" -90;
+setAttr "FKExtraBackB_M.rotateZ" -90;
+setAttr "FKBackB_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKBackB_M;
+parent FKXBackB_M FKBackB_M;
+
+parent -w FKXChest_M;
+setAttr "FKExtraChest_M.rotateX" 0;
+setAttr "FKExtraChest_M.rotateY" -90;
+setAttr "FKExtraChest_M.rotateZ" -90;
+setAttr "FKChest_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKChest_M;
+parent FKXChest_M FKChest_M;
+
+parent -w FKXNeck_M;
+setAttr "FKExtraNeck_M.rotateX" -90;
+setAttr "FKExtraNeck_M.rotateY" 0;
+setAttr "FKExtraNeck_M.rotateZ" -90;
+setAttr "FKNeck_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKNeck_M;
+parent FKXNeck_M FKNeck_M;
+
+parent -w FKXHead_M;
+setAttr "FKExtraHead_M.rotateX" -90;
+setAttr "FKExtraHead_M.rotateY" 0;
+setAttr "FKExtraHead_M.rotateZ" -90;
+setAttr "FKHead_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKHead_M;
+parent FKXHead_M FKHead_M;
+
+delete HipSwingerGroupRoot_M_orientConstraint1;
+setAttr "HipSwingerOffsetRoot_M.rotateX" 0;
+setAttr "HipSwingerOffsetRoot_M.rotateY" 0;
+setAttr "HipSwingerOffsetRoot_M.rotateZ" 0;
+setAttr "HipSwingerRoot_M.rotateX" 90;
+setAttr "HipSwingerRoot_M.rotateY" 0;
+setAttr "HipSwingerRoot_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 HipSwingerRoot_M;
+orientConstraint -mo -weight 1 HipSwingerRoot_M HipSwingerGroupRoot_M;
+}
+
+
+global proc ADVRecover(){
+///// ADV back Rotate recover ///
+parent -w FKXBackA_M;
+setAttr "FKExtraBackA_M.rotateZ" 0;
+setAttr "FKExtraBackA_M.rotateX" 0;
+setAttr "FKExtraBackA_M.rotateY" 0;
+setAttr "FKBackA_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKBackA_M;
+parent FKXBackA_M FKBackA_M;
+
+parent -w FKXBackB_M;
+setAttr "FKExtraBackB_M.rotateZ" 0;
+setAttr "FKExtraBackB_M.rotateX" 0;
+setAttr "FKExtraBackB_M.rotateY" 0;
+setAttr "FKBackB_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKBackB_M;
+parent FKXBackB_M FKBackB_M;
+
+parent -w FKXChest_M;
+setAttr "FKExtraChest_M.rotateZ" 0;
+setAttr "FKExtraChest_M.rotateX" 0;
+setAttr "FKExtraChest_M.rotateY" 0;
+setAttr "FKChest_M.rotateZ" 90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKChest_M;
+parent FKXChest_M FKChest_M;
+
+parent -w FKXNeck_M;
+setAttr "FKExtraNeck_M.rotateZ" 0;
+setAttr "FKExtraNeck_M.rotateX" 0;
+setAttr "FKExtraNeck_M.rotateY" 0;
+setAttr "FKNeck_M.rotateZ" -90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKNeck_M;
+parent FKXNeck_M FKNeck_M;
+
+parent -w FKXHead_M;
+setAttr "FKExtraHead_M.rotateZ" 0;
+setAttr "FKExtraHead_M.rotateX" 0;
+setAttr "FKExtraHead_M.rotateY" 0;
+setAttr "FKHead_M.rotateZ" -90;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 FKHead_M;
+parent FKXHead_M FKHead_M;
+
+delete HipSwingerGroupRoot_M_orientConstraint1;
+setAttr "HipSwingerOffsetRoot_M.rotateX" 90;
+setAttr "HipSwingerOffsetRoot_M.rotateY" 0;
+setAttr "HipSwingerOffsetRoot_M.rotateZ" 90;
+setAttr "HipSwingerRoot_M.rotateX" -90;
+setAttr "HipSwingerRoot_M.rotateY" -90;
+setAttr "HipSwingerRoot_M.rotateZ" 0;
+makeIdentity -a 1 -t 0 -r 1 -s 0 -n 0 HipSwingerRoot_M;
+orientConstraint -mo -weight 1 HipSwingerRoot_M HipSwingerGroupRoot_M; 
+}
+
+
+
+//outmesh
+
+global proc outMesh(){
+string $sels[] = `ls -sl`;
+for ( $sel in $sels ) {
+string $newSel[] = `ls -l $sel`;
+for ( $newSelL in $newSel ) {
+string $selShape[] = `listRelatives -s -ni $newSelL`;
+connectAttr -f ( $selShape[0]+".outMesh" ) ( "ani_"+$selShape[0]+".inMesh" ) ;
+}
+}} 
+
+//secondary
+global proc secondaryCtrl(){
+string $Ctrl[] = `ls -sl`; 
+for ($fakeSel in $Ctrl){
+//link to Fake_secondaryCtrl_GRP 
+connectAttr -f ($fakeSel+".translate") ("Fake_"+$fakeSel+".translate");
+connectAttr -f ($fakeSel+".rotate") ("Fake_"+$fakeSel+".rotate");
+//link multiplyDivide
+string $multLink = `createRenderNodeCB -asUtility "" multiplyDivide ""`;
+string $mulName = `rename $multLink "mul_secoundry"` ; 
+connectAttr -f ($fakeSel+".translate") ($mulName+".input1");
+setAttr ($mulName+".input2X") -1;
+setAttr ($mulName+".input2Y") -1;
+setAttr ($mulName+".input2Z") -1;
+string $CtrlCsta[] = `listRelatives -p -ni $fakeSel`;
+connectAttr -f ($mulName+".output") ($CtrlCsta[0]+".translate"); 
+}
+}
+
+
+/////////create Asset//////// 
+global proc nameCon(){
+string $AST[] = `ls -typ "magicAsset"`;
+int $ASE = size ($AST);
+//print $AST;
+if ($ASE == 1)
+{
+group -em -n M_geo_01_Grp;
+group -em -n M_rig_01_Grp;
+curve -d 1 -p -1 0 -1 -p -1 0 -3 -p -2 0 -3 -p 0 0 -5 -p 2 0 -3 -p 1 0 -3 -p 1 0 -1 -p 3 0 -1 -p 3 0 -2 -p 5 0 0 -p 3 0 2 -p 3 0 1 -p 1 0 1 -p 1 0 3 -p 2 0 3 -p 0 0 5 -p -2 0 3 -p -1 0 3 -p -1 0 1 -p -3 0 1 -p -3 0 2 -p -5 0 0 -p -3 0 -2 -p -3 0 -1 -p -1 0 -1 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 ;
+rename "M_master_01_Ctrl";
+setAttr "M_master_01_CtrlShape.overrideEnabled" 1;
+setAttr M_master_01_CtrlShape.overrideColor 17;
+addAttr -ln "followPath_Ctrl" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "frontTwist" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "upTwist" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "sideTwist" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "ddd" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+
+group -n M_master_01_Grp;
+string $master[] =`ls -ap "M_master_01_Grp"`;
+//print $master;
+parent M_geo_01_Grp M_rig_01_Grp $AST;
+parent $master M_rig_01_Grp;
+}
+else
+{
+group -em -n firecA_Rig;
+string $GrpAst[] = `ls -sl`;
+print $GrpAst;
+for ($GrpAsts in $GrpAst)
+{
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".tx");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".ty");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".tz");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".rx");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".ry");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".rz");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".sx");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".sy");
+setAttr -lock true -keyable false -channelBox false ($GrpAsts + ".sz");
+group -em -n M_geo_01_Grp;
+group -em -n M_rig_01_Grp;
+curve -d 1 -p -1 0 -1 -p -1 0 -3 -p -2 0 -3 -p 0 0 -5 -p 2 0 -3 -p 1 0 -3 -p 1 0 -1 -p 3 0 -1 -p 3 0 -2 -p 5 0 0 -p 3 0 2 -p 3 0 1 -p 1 0 1 -p 1 0 3 -p 2 0 3 -p 0 0 5 -p -2 0 3 -p -1 0 3 -p -1 0 1 -p -3 0 1 -p -3 0 2 -p -5 0 0 -p -3 0 -2 -p -3 0 -1 -p -1 0 -1 -k 0 -k 1 -k 2 -k 3 -k 4 -k 5 -k 6 -k 7 -k 8 -k 9 -k 10 -k 11 -k 12 -k 13 -k 14 -k 15 -k 16 -k 17 -k 18 -k 19 -k 20 -k 21 -k 22 -k 23 -k 24 ;
+rename "M_master_01_Ctrl";
+setAttr "M_master_01_CtrlShape.overrideEnabled" 1;
+setAttr M_master_01_CtrlShape.overrideColor 17;
+addAttr -ln "followPath_Ctrl" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "frontTwist" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "upTwist" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+addAttr -ln "sideTwist" -at "float" -h 0 -k 1 M_master_01_Ctrl;
+group -n M_master_01_Grp;
+string $master[] =`ls -ap "M_master_01_Grp"`;
+parent M_geo_01_Grp M_rig_01_Grp $GrpAsts;
+parent $master M_rig_01_Grp;
+}
+} 
+}
+
+
+global proc ADVscale(){
+//////// human ADV scaleFix ///////
+if ( `objExists ScaleHelp_GRP` ) {
+delete ScaleHelp_GRP;
+}
+
+group -name ScaleHelp_GRP -em; xform -os -piv 0 0 0;
+parent ScaleHelp_GRP BendSystem;
+scaleConstraint -mo -weight 1 Main ScaleHelp_GRP;
+
+string $bendGrp[] = { "BendParentConstraintElbow_R","BendParentConstraintShoulder_R","BendParentConstraintHip_R","BendParentConstraintElbow_L",
+"BendParentConstraintShoulder_L","BendParentConstraintHip_L" };
+
+for ( $tmp in $bendGrp ) {
+connectAttr -f ScaleHelp_GRP.scale ( $tmp + ".scale" );
+}
+}
+
+/////////////closestPointOnSurfaceTool/////////////
+global proc closestPOS(){
+string $sel[] = `ls -sl`;
+for($selJnt in $sel){
+string $loc[] = `spaceLocator`;
+select -cl;
+string $JNT = `joint -p 0 0 0`;
+string $cnpoci = `createNode "closestPointOnSurface"`;
+string $cnpociName = `rename "nurbsClosest_C_CPOS"`;
+connectAttr -f ($selJnt+".worldSpace[0]") ($cnpociName+".inputSurface");
+connectAttr -f ($loc[0]+".translate") ($cnpociName+".inPosition");
+connectAttr -f ($cnpociName+".position") ($JNT+".translate");
+
+}
+}
+
+global proc closestMesh(){
+string $sel[] = `ls -sl`;
+for($selJnt in $sel){
+string $loc[] = `spaceLocator`;
+select -cl;
+string $JNT = `joint -p 0 0 0`;
+string $cnpoci = `createNode "closestPointOnMesh"`;
+string $cnpociName = `rename "nurbsClosest_C_CPOS"`;
+connectAttr -f ($selJnt+".worldMesh[0]") ($cnpociName+".inMesh");
+connectAttr -f ($selJnt+".worldMatrix[0]") ($cnpociName+".inputMatrix");
+connectAttr -f ($loc[0]+".translate") ($cnpociName+".inPosition");
+connectAttr -f ($cnpociName+".position") ($JNT+".translate");
+
+}
+}
+
+
+global proc advDrawStyle(){
+
+    string $seljoint[] = `ls -type "joint"`;
+    for($sels in $seljoint){
+    string $mjv = `attributeExists "joint_vis" Main`;
+    string $dry = `getAttr ($sels+".drawStyle")`;
+    if($dry == 0){
+    setAttr ($sels+".drawStyle") 2;
+    
+    }else{
+    setAttr ($sels+".drawStyle") 0;
+}
+}
+}
+
+global proc pointCurve(){
+    
+    string $sel[] = `ls -sl`;
+    string $listSel[] = `listRelatives -shapes $sel`;
+    
+    string $create_Poci = `createNode "pointOnCurveInfo"`;
+    
+    string $jointt = `joint -p 0 0 0` ;
+    
+    connectAttr -f ($listSel[0] + ".worldSpace[0]") ($create_Poci + ".inputCurve");
+    
+    connectAttr -f ($create_Poci + ".position") ($jointt + ".translate");
+    
+    select -r $sel[0];
+    select -tgl $jointt ;
+    
+    tangentConstraint -weight 1 -aimVector 1 0 0 -upVector 0 1 0 -worldUpType "vector" -worldUpVector 0 1 0;
+
+}

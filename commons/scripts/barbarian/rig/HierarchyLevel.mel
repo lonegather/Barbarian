@@ -1,0 +1,76 @@
+global proc HierarchyLevel(){
+    
+    string $LsMove[] = `ls "Main" "Move02" "Move03" "FitSkeleton" "MotionSystem" "DeformationSystem"`;
+    int $CL = size ($LsMove);
+
+    
+    if($CL > 1){
+
+        string $move02[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        rename "Move02";
+        setAttr "Move0Shape2.overrideEnabled" 1;
+        setAttr Move0Shape2.overrideColor 15;
+        
+        setAttr "Move02.scaleX" 5;
+        setAttr "Move02.scaleY" 5;
+        setAttr "Move02.scaleZ" 5;
+        FreezeTransformations;
+        DeleteHistory;
+                
+        string $move03[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        rename "Move03";
+        setAttr "Move0Shape3.overrideEnabled" 1;
+        setAttr Move0Shape3.overrideColor 15;
+        
+        setAttr "Move03.scaleX" 4;
+        setAttr "Move03.scaleY" 4;
+        setAttr "Move03.scaleZ" 4;
+        FreezeTransformations;
+        DeleteHistory;
+        
+        parent Move03 Move02 ;
+        string $cm[] = `listRelatives -children Main`;
+        select -r Move02 ;
+        parent Move02 Main ;
+        
+        select -r $cm;
+        parent FitSkeleton Move03 ;
+        
+        parent MotionSystem Move03 ;
+        
+        parent DeformationSystem Move03 ;
+        
+    }else{
+        
+        string $main[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        rename "Main";
+        setAttr "MainShape.overrideEnabled" 1;
+        setAttr MainShape.overrideColor 15;
+        setAttr "Main.scaleX" 6;
+        setAttr "Main.scaleY" 6;
+        setAttr "Main.scaleZ" 6;
+        FreezeTransformations;
+        DeleteHistory;
+        
+        string $move02[] = `circle -c 0 0 0 -nr 0 1 0 -sw 360 -r 1 -d 3 -ut 0 -tol 0.01 -s 8 -ch 1`;
+        rename "Move02";
+        setAttr "Move0Shape2.overrideEnabled" 1;
+        setAttr Move0Shape2.overrideColor 15;
+        setAttr "Move02.scaleX" 4.5;
+        setAttr "Move02.scaleY" 4.5;
+        setAttr "Move02.scaleZ" 4.5;
+        FreezeTransformations;
+        DeleteHistory;
+        
+
+        select -r Move02 ;
+        parent Move02 Main ;
+        
+        select -cl;
+        
+    }
+    
+    
+}
+
+HierarchyLevel;

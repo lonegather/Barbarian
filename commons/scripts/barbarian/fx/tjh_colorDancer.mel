@@ -1,0 +1,530 @@
+//Coded by Jinghai Tian in 2012.  
+
+//this procedure is to make the multi objects moving by the change color of the image  you pointed.
+
+
+//UI.
+global proc tjh_colorDancer()
+{
+if (`windowPref -exists audioDancer_window`)
+            windowPref -remove  audioDancer_window;     
+
+                  
+                  if (`window -exists audioDancer_window`)
+                  deleteUI audioDancer_window;
+
+
+window -w 260 -h 450  audioDancer_window;
+columnLayout -columnAlign "center";						
+		//text     -al "center" -l " _______________________________________________";
+		//separator -h 20 -w 260;
+		text     -al "center" -l "                      Color Dancer V1.1";
+		text     -al "center" -l "                              舞动之色";
+		separator -h 20 -w 260;
+		text     -al "center" -l " on november 2008-2012";
+		text     -al "center" -l " 程序设计：田静海  ";
+		//text     -al "center" -l " _______________________________________________";
+		separator -h 20 -w 260;
+		text     -al "center" -l " 功能：本程序允许使用图片色彩驱动群体动画。  ";
+
+		
+		//text     -al "center" -l " _______________________________________________";
+		separator -h 20 -w 260;
+		text     -al "center" -l " 使用方法：";
+		text     -al "center" -l " 1.填写参数,选择图片序列";
+		text     -al "center" -l " 2.创建nurbs平面和多边形种子物体";
+		text     -al "center" -l " 3.将种子物体放置于原点并冻结";
+		text     -al "center" -l " 4.先选nurbs平面，后选种子物体，执行！";
+		//text     -al "center" -l " _______________________________________________";
+		separator -h 20 -w 260;
+		rowLayout -numberOfColumns 3 
+				-columnWidth3 60 60 120;
+				
+				text -height 22 -w 60 -al "right" -l "  动态图片：";
+				global string $TJH_imageSequence;$TJH_imageSequence=`textField -w 60  -text "" `;
+				button  -w 120 -ann "选择音乐"  -label "选择图片"  -command  "string $imageSequencePath=`fileDialog -directoryMask \"*.*\"`;textField -edit -text $imageSequencePath $TJH_imageSequence;";
+				//text -height 22 -w 60 -al "right" -l "      ";
+				setParent ..;
+
+		rowLayout -numberOfColumns 4 
+				-columnWidth4 60 60 60 60;
+				
+				text -height 22 -w 60 -al "right" -l "  U向数量：";
+				global string $TJH_uNumber;$TJH_uNumber=`textField -w 60  -text 10 `;
+				text -height 22 -w 60 -al "right" -l "  V向数量：";
+				global string $TJH_vNumber;$TJH_vNumber=`textField -w 60  -text 10 `;
+				setParent ..;
+
+		rowLayout -numberOfColumns 4 
+				-columnWidth4 60 60 60 60;
+				
+				text -height 22 -w 60 -al "right" -l "  复制物体名称：";
+				global string $TJH_name;$TJH_name=`textField -w 60  -text tjh `;
+				text -height 22 -w 60 -al "right" -l "  控制属性：";
+				global string $TJH_ctrlAttribute;$TJH_ctrlAttribute=`textField -w 60  -text tz `;
+				setParent ..;
+		
+		rowLayout -numberOfColumns 2 
+				-columnWidth2 120 120;
+				
+				text -height 22 -w 120 -al "right" -l "  被控制属性的增量值：";
+				global string $TJH_attributeScale;$TJH_attributeScale=`textField -w 120  -text 1 `;
+				
+				setParent ..;
+
+
+		
+		string $comd1=" ";
+		       $comd1+="string $floatField1=`textField -q  -text  $TJH_imageSequence`;";
+		       $comd1+="string $floatField2=`textField -q  -text  $TJH_uNumber`;";
+		       $comd1+="string $floatField3=`textField -q  -text  $TJH_vNumber`;";
+		       $comd1+="string $floatField4=`textField -q  -text  $TJH_name`;";
+		       $comd1+="string $floatField5=`textField -q  -text  $TJH_ctrlAttribute`;";
+		       $comd1+="string $floatField6=`textField -q  -text  $TJH_attributeScale`;";
+		       $comd1+="createColorDancerProc_object  $floatField2 $floatField3 $floatField4 $floatField5 $floatField6 $floatField1";
+
+		string $comd2=" ";
+		       $comd2+="string $floatField1=`textField -q  -text  $TJH_imageSequence`;";
+		       $comd2+="string $floatField2=`textField -q  -text  $TJH_uNumber`;";
+		       $comd2+="string $floatField3=`textField -q  -text  $TJH_vNumber`;";
+		       $comd2+="string $floatField4=`textField -q  -text  $TJH_name`;";
+		       $comd2+="string $floatField5=`textField -q  -text  $TJH_ctrlAttribute`;";
+		       $comd2+="string $floatField6=`textField -q  -text  $TJH_attributeScale`;";
+		       $comd2+="createColorDancerProc_particle  $floatField2 $floatField3 $floatField4 $floatField5 $floatField6 $floatField1";
+
+		rowLayout -numberOfColumns 2 
+				-columnWidth2 120 120;
+
+				button  -w 120 -ann "创建物体阵列"  -label "创建物体阵列(推荐)"  -command  $comd1;
+				button  -w 120 -ann "创建粒子阵列"  -label "创建粒子阵列(速度慢)"  -command  $comd2;
+				
+
+				setParent ..;
+
+		rowLayout -numberOfColumns 3 
+				-columnWidth3 80 80 80;
+				
+				button  -w 80 -ann "选择色舞节点"  -label "选择色舞节点"  -command  "select -r $tjh_colorDancerNode;";
+				button  -w 80 -ann "选择图片节点"  -label "选择图片节点"  -command  "select -r $tjh_newFileNode;";
+				button  -w 80 -ann "返回操作"  -label "返回操作"  -command  "undo;";
+
+				//text -height 22 -w 60 -al "right" -l "      ";
+				setParent ..;
+
+		rowLayout -numberOfColumns 3 
+				-columnWidth3 80 80 80;
+
+				button  -w 80 -ann "动画序列开关"  -label "动画序列开关"  -command  "ColorDancerProc_setFileSequenceAnimationToggle;";
+				button  -w 80 -ann "刷新特效"  -label "刷新特效"  -command  "ColorDancerProc_refresh;";
+				button  -w 80 -ann "删除特效阵列"  -label "删除特效"  -command  "ColorDancerProc_deleteEffects";
+
+
+				//text -height 22 -w 60 -al "right" -l "      ";
+				setParent ..;
+		
+
+		//text     -al "center" -l " ___________________________________________________";
+		setParent ..;
+showWindow;
+}
+
+//copy and  Constrain seed objects on the nurbs surface with the pointOnSurface Node.
+//select the nurbs surface first,and  the seed object.
+global proc dulplicateAndConstrainObjectsOnSelectSurface(string $name,int $uNumber,int $vNumber  )
+{
+string  $selects[];
+	$selects=`ls -sl`;
+int     $sizeSel=size($selects);
+string $newGroupbase=`group -em`; 
+	$newGroupbase=`rename  $newGroupbase ("colorDancer_"+$newGroupbase)`;
+
+string $newGroupName[];
+int    $newGroupID=0;
+
+if ($sizeSel==2)
+	{
+
+	//progress window
+				     int $curProgress = 0;
+				     progressWindow
+					 -title "Creating ..."
+					 -progress $curProgress
+					 -status "finishing: 0%"
+					 -isInterruptable true;
+
+
+
+		int $nameNumber=0;
+		for($u=0;$u<$uNumber;$u++)
+		{
+		      for($v=0;$v<$vNumber;$v++)
+			{
+
+
+
+					//progress window
+					$curProgress = $nameNumber*100/($uNumber*$vNumber);
+
+						// Check if the dialog has been cancelled
+					 if ( `progressWindow -query -isCancelled` ) break;
+
+						 // Check if end condition has been reached
+					 if ( `progressWindow -query -progress` >= 100 ) break;
+
+					 progressWindow	     -edit
+							     -progress $curProgress
+							     -status ("finishing: "+$curProgress+"%");
+
+
+
+			$nameNumber++;
+			string $newDuplicateObject[];$newDuplicateObject=`duplicate -n ($name+$nameNumber) -rr $selects[1]`;
+				$newGroupName[$newGroupID]=`group $newDuplicateObject[0]`;
+				
+			//convert the int data type to float.
+			float $uFloat=$u;
+			float $vFloat=$v;
+			//create the pointOnSurfaceInfo node
+			string $newPointOnSurfaceInfoNode=`pointOnSurface -u ($uFloat/($uNumber-1)) -v ($vFloat/($vNumber-1)) -ch 1  $selects[0]`;
+			
+			connectAttr -f ($newPointOnSurfaceInfoNode+".position") ($newGroupName[$newGroupID]+".translate");
+			disconnectAttr  ($newPointOnSurfaceInfoNode+".position") ($newGroupName[$newGroupID]+".translate");
+			delete $newPointOnSurfaceInfoNode;
+
+			//string $newNormalConstraint[];$newNormalConstraint=`normalConstraint -weight 1 -aimVector 1 0 0 -upVector 0 1 0 -worldUpType "vector" -worldUpVector 0 1 0 $selects[0] $newDuplicateObject[0]`;
+			$newGroupID++;
+			}
+		}
+
+				//progress window close
+				progressWindow -endProgress;
+
+
+		select -r $newGroupName;
+		select -add $newGroupbase;
+		parent ;
+
+	}else{warning "please select one surface and one seed object!";};
+
+return;
+}
+
+
+global proc string createParticleInstancerOnSelectSurface(string $name,int $uNumber,int $vNumber)
+{
+string  $selects[];
+	$selects=`ls -sl`;
+int     $sizeSel=size($selects);
+string  $command="particle ";
+int   $u,$v;
+if ($sizeSel==2)
+	{
+
+
+
+		//progress window
+				     int $curProgress = 0;
+				     progressWindow
+					 -title "Creating ..."
+					 -progress $curProgress
+					 -status "finishing: 0%"
+					 -isInterruptable true;
+
+
+
+		int $nameNumber=0;
+		for($u=0;$u<$uNumber;$u++)
+		{
+		      for($v=0;$v<$vNumber;$v++)
+			{
+
+
+					//progress window
+					$curProgress = $nameNumber*100/($uNumber*$vNumber);
+
+						// Check if the dialog has been cancelled
+					 if ( `progressWindow -query -isCancelled` ) break;
+
+						 // Check if end condition has been reached
+					 if ( `progressWindow -query -progress` >= 100 ) break;
+
+					 progressWindow	     -edit
+							     -progress $curProgress
+							     -status ("finishing: "+$curProgress+"%");
+
+
+
+			$nameNumber++;
+			//string $newDuplicateObject[];$newDuplicateObject=`duplicate -n ($name+$nameNumber) -rr $selects[1]`;
+			//string $newGroupName=`group $newDuplicateObject[0]`;
+			//convert the int data type to float.
+			float $uFloat=$u;
+			float $vFloat=$v;
+			//create the pointOnSurfaceInfo node
+			float $newPointOnSurfaceInfoPosition[3]=`pointOnSurface -u ($uFloat/($uNumber-1)) -v ($vFloat/($vNumber-1)) -p  $selects[0]`;
+			$command+=" -p "+$newPointOnSurfaceInfoPosition[0]+" "+$newPointOnSurfaceInfoPosition[1]+" "+$newPointOnSurfaceInfoPosition[2];
+			//connectAttr -f ($newPointOnSurfaceInfoNode+".position") ($newGroupName+".translate");
+			//disconnectAttr  ($newPointOnSurfaceInfoNode+".position") ($newGroupName+".translate");
+			//delete $newPointOnSurfaceInfoNode;
+			print $newPointOnSurfaceInfoPosition;
+			//string $newNormalConstraint[];$newNormalConstraint=`normalConstraint -weight 1 -aimVector 1 0 0 -upVector 0 1 0 -worldUpType "vector" -worldUpVector 0 1 0 $selects[0] $newDuplicateObject[0]`;
+			
+			}
+		}
+
+
+				//progress window close
+				progressWindow -endProgress;
+
+	}else{warning "please select one surface and one seed object!";};
+
+	$command += " -n "+$name+"_colorDancer_"+"Particle";
+	//create particle.
+	global string $tjhnewParticle[];$tjhnewParticle=`eval $command`;print $tjhnewParticle;
+
+	$Instancer=`particleInstancer  -addObject -object $selects[1] -cycle None -cycleStep 1 -cycleStepUnits Frames -levelOfDetail Geometry -rotationUnits Degrees -rotationOrder XYZ -position worldPosition -age age $tjhnewParticle[1]`;
+	$Instancer=`rename  $Instancer ("colorDancer_"+$Instancer)`;
+
+return $tjhnewParticle[1];
+}
+
+//colorDancerCreateExpression  10 8 colortjh ty tjh.scale file1;
+
+global proc createColorDancerProc_object(	int $uNumber,
+					        int $vNumber,
+					      string $name,
+					      string $controlAttr,
+					      string $scaleAttr,
+					      string $imageSequence )
+{
+
+string  $selects[];
+	$selects=`ls -sl`;
+int     $sizeSel=size($selects);
+global string $tjh_newFileNode;
+
+if ($sizeSel==2)
+	{
+
+		
+		//$tjh_newFileNode=`createNode "file"`;
+		$tjh_newFileNode=`shadingNode -asTexture file`;
+		$tjh_newFileNode =`rename  $tjh_newFileNode ("colorDancer_"+$tjh_newFileNode)`;
+		
+		// Result: file4 // 
+		
+		setAttr -type "string" ($tjh_newFileNode+".fileTextureName") $imageSequence;
+		//setAttr ($tjh_newFileNode+".useFrameExtension") 1;
+
+
+		global string $tjh_colorDancerNode;$tjh_colorDancerNode=`createNode -n colorDancer "unknown"`;
+		addAttr -ln "visibility"  -at long -min 0 -max 1 -dv 1  $tjh_colorDancerNode;
+		setAttr -e-keyable true ($tjh_colorDancerNode+".visibility");
+		
+		//addAttr -ln "uNumber"  -at long -min 0 -max 100000 -dv $uNumber  $node;
+		//setAttr -e-keyable true ($node+".uNumber");
+		//addAttr -ln "vNumber"  -at long -min 0 -max 100000 -dv $vNumber  $node;
+		//setAttr -e-keyable true ($node+".vNumber");
+
+		//addAttr -ln "name"  -dt "string"  $node;
+		//setAttr -e-keyable true ($node+".name");
+		//setAttr -type "string" ($node+".name") $name;
+
+
+		//addAttr -ln "controlAttr"  -dt "string"  $node;
+		//setAttr -e-keyable true ($node+".controlAttr");
+		//setAttr -type "string" ($node+".controlAttr") $controlAttr;
+
+
+
+		addAttr -ln "scaleAttr"  -at double  -min -50 -max 50 -dv 1  $tjh_colorDancerNode;
+		setAttr -e-keyable true ($tjh_colorDancerNode+".scaleAttr");
+		float $scaleAttrConvertFloat=$scaleAttr;
+		setAttr ($tjh_colorDancerNode+".scaleAttr") $scaleAttrConvertFloat;
+
+		//addAttr -ln "imageSequence"  -dt "string"  $node;
+		//setAttr -e-keyable true ($node+".imageSequence");
+		//setAttr -type "string" ($node+".imageSequence") $imageSequence;
+		
+		select -r $selects[0];select -tgl $selects[1] ;
+		dulplicateAndConstrainObjectsOnSelectSurface $name $uNumber $vNumber;
+		//for($i=1;$i<($vNumber*$vNumber+1);$i++){connectAttr -f ($tjh_colorDancerNode+".visibility") ($name+$i+".visibility");};
+
+	string  $exp= "int $i;\r\n";
+		$exp+="float $disp[] = `colorAtPoint -mu 0 -mv 0 -xu 1 -xv 1 -su "+$uNumber+" -sv "+$vNumber+" "+$tjh_newFileNode+"`;\r\n";
+		$exp+="string $str = \"\";\r\n";
+		$exp+="for( $i = 0; $i < "+($uNumber*$vNumber)+"; $i++ )\r\n";
+		$exp+="{\r\n";
+		$exp+="$str +=  (\"setAttr "+$name+"\"+($i+1)+\"."+$controlAttr+" \" + $disp[$i]*"+($tjh_colorDancerNode+".scaleAttr")+"+\";\");\r\n";
+		$exp+="}\r\n";
+		$exp+="eval $str;";		
+	
+	string $expName =`expression -s $exp  -o "" -ae 1 -uc all `;
+	       $expName =`rename  $expName ("colorDancer_"+$expName)`;
+
+	addAttr -ln "visibility"  -at long -min 0 -max 1 -dv 1  $expName;
+	setAttr -e-keyable true ($expName+".visibility");
+	connectAttr -f ($tjh_colorDancerNode+".visibility") ($expName+".visibility");
+
+	//turn on the sequence.
+	ColorDancerProc_setFileSequenceAnimationToggle;
+	//refresh the file.
+	showEditor $tjh_newFileNode;
+
+      }else{warning "please select one surface and one seed object!";};
+
+
+
+}
+
+
+global proc createColorDancerProc_particle(	int $uNumber,
+					        int $vNumber,
+					      string $name,
+					      string $controlAttr,
+					      string $scaleAttr,
+					      string $imageSequence)
+{
+
+string  $selects[];
+	$selects=`ls -sl`;
+int     $sizeSel=size($selects);
+global string $tjh_newFileNode;
+
+if ($sizeSel==2)
+	{
+
+		
+		//$tjh_newFileNode=`createNode "file"`;
+		$tjh_newFileNode =`shadingNode -asTexture file`;
+		$tjh_newFileNode =`rename  $tjh_newFileNode ("colorDancer_"+$tjh_newFileNode)`;
+		setAttr -type "string" ($tjh_newFileNode+".fileTextureName") $imageSequence;
+		//setAttr ($tjh_newFileNode+".useFrameExtension") 1;
+
+
+		global string $tjh_colorDancerNode;$tjh_colorDancerNode=`createNode -n colorDancer "unknown"`;
+		addAttr -ln "visibility"  -at long -min 0 -max 1 -dv 1  $tjh_colorDancerNode;
+		setAttr -e-keyable true ($tjh_colorDancerNode+".visibility");
+		
+		addAttr -ln "scaleAttr"  -at double  -min -50 -max 50 -dv 1  $tjh_colorDancerNode;
+		setAttr -e-keyable true ($tjh_colorDancerNode+".scaleAttr");
+		float $scaleAttrConvertFloat=$scaleAttr;
+		setAttr ($tjh_colorDancerNode+".scaleAttr") $scaleAttrConvertFloat;
+
+		
+		select -r $selects[0];select -tgl $selects[1] ;
+		string $particleShape=`createParticleInstancerOnSelectSurface $name $uNumber $vNumber`;
+
+		addAttr -ln "positionInitialPP0"  -dt vectorArray  $particleShape;
+		addAttr -ln "positionInitialPP"  -dt vectorArray  $particleShape;
+		setAttr -e-keyable true ($particleShape+".positionInitialPP");
+
+		addAttr -ln "UPP0"  -dt doubleArray  $particleShape;
+		addAttr -ln "UPP"  -dt doubleArray  $particleShape;
+		setAttr -e-keyable true ($particleShape+".UPP");
+
+		addAttr -ln "VPP0"  -dt doubleArray  $particleShape;
+		addAttr -ln "VPP"  -dt doubleArray  $particleShape;
+		setAttr -e-keyable true ($particleShape+".VPP");
+
+
+		global string $tjhnewParticle[];
+	
+	//create expression start #########################################.
+		//method 1:*************************************
+	
+		
+		string  $exp_creation= $particleShape+".UPP = floor("+$particleShape+".particleId/"+$vNumber+")/"+($uNumber-1)+";\n";
+			$exp_creation+=$particleShape+".VPP = ("+$particleShape+".particleId%"+$vNumber+")/"+($vNumber-1)+";\n";
+			$exp_creation+="float $posTemp[3]; $posTemp= `pointOnSurface  -u ("+$particleShape+".UPP) -v ("+$particleShape+".VPP) -p "+$selects[0]+"`;\n";
+			$exp_creation+=$particleShape+".positionInitialPP=<<$posTemp[0],$posTemp[1],$posTemp[2]>>;";
+		
+		
+		string  $exp_runtime= "float $dispTemp[];$dispTemp = `colorAtPoint -u ("+$particleShape+".UPP) -v ("+$particleShape+".VPP)  "+$tjh_newFileNode+"`;\n";
+			$exp_runtime+="vector $posInitial = "+$particleShape+".positionInitialPP;\n";
+			
+			if($controlAttr=="tx")$exp_runtime+=$particleShape+".position = <<$posInitial.x+$dispTemp[0]*"+($tjh_colorDancerNode+".scaleAttr")+",$posInitial.y,$posInitial.z>>;";
+			if($controlAttr=="ty")$exp_runtime+=$particleShape+".position = <<$posInitial.x,$posInitial.y+$dispTemp[0]*"+($tjh_colorDancerNode+".scaleAttr")+",$posInitial.z>>;";
+			if($controlAttr=="tz")$exp_runtime+=$particleShape+".position = <<$posInitial.x,$posInitial.y,$posInitial.z+$dispTemp[0]*"+($tjh_colorDancerNode+".scaleAttr")+">>;";
+		
+			dynExpression -s $exp_creation  -c $particleShape;
+		string $expName =`dynExpression -s $exp_runtime  -rbd $particleShape`;
+		       //$expName =`rename  $expName ("colorDancer_"+$expName)`;
+
+
+		/* //method 2:*************************************
+		string  $exp= "float $id ="+$particleShape+".particleId;\n";
+			$exp+="float $u=floor($id/"+$vNumber+")/"+($uNumber-1)+";\n";
+			$exp+="float $v=($id%"+$vNumber+")/"+($vNumber-1)+";\n";
+			$exp+="float $postemp[3]; $postemp= `pointOnSurface  -u $u -v $v -p "+$selects[0]+"`;\n";
+			$exp+="float $disp[];$disp = `colorAtPoint -u $u -v $v  "+$tjh_newFileNode+"`;\n";
+			if($controlAttr=="tx")$exp+=$particleShape+".position = <<$postemp[0]-$disp[0]*"+($tjh_colorDancerNode+".scaleAttr")+",$postemp[1],$postemp[2]>>;";
+			if($controlAttr=="ty")$exp+=$particleShape+".position = <<$postemp[0],$postemp[1]-$disp[0]*"+($tjh_colorDancerNode+".scaleAttr")+",$postemp[2]>>;";
+			if($controlAttr=="tz")$exp+=$particleShape+".position = <<$postemp[0],$postemp[1],$postemp[2]-$disp[0]*"+($tjh_colorDancerNode+".scaleAttr")+">>;";
+		
+			
+		string $expName =`dynExpression -s $exp  -rad $particleShape`;
+		       //$expName =`rename  $expName ("colorDancer_"+$expName)`;
+		*/ //********************************************************
+	//create expression end ##############################################.
+
+
+
+	//addAttr -ln "visibility"  -at long -min 0 -max 1 -dv 1  $expName;
+	//setAttr -e-keyable true ($expName+".visibility");
+	connectAttr -f ($tjh_colorDancerNode+".visibility") ($expName+".visibility");
+
+	//turn on the sequence.
+	ColorDancerProc_setFileSequenceAnimationToggle;
+	//refresh the file.
+	showEditor $tjh_newFileNode;
+
+      }else{warning "please select one surface and one seed object!";};
+
+
+}
+
+
+global proc ColorDancerProc_deleteEffects()
+{
+select -cl;
+string  $selects[];
+	$selects = `ls "*colorDancer*"`;
+int     $sizeSel = size($selects); 
+
+for($i=0;$i<$sizeSel;$i++)
+		{
+
+		string $connectNode[];$connectNode=eval("listConnections  -scn off -d on -s off "+$selects[$i]);
+		string $node="";
+		
+		for ($node in $connectNode)
+			{
+			if(`objExists $node`)delete $node;
+			}; 
+		if(`objExists $selects[$i]`)delete $selects[$i];
+		};
+
+}
+
+global proc ColorDancerProc_refresh()
+{
+float $CurrentTime=`currentTime -query`;
+currentTime ($CurrentTime+1);
+currentTime $CurrentTime;
+}
+
+global proc ColorDancerProc_setFileSequenceAnimationToggle()
+{
+global string $tjh_newFileNode;
+
+int $testData=`getAttr ($tjh_newFileNode+".useFrameExtension")`;
+
+if($testData==0)setAttr ($tjh_newFileNode+".useFrameExtension") 1;
+if($testData==1)setAttr ($tjh_newFileNode+".useFrameExtension") 0;
+}
+
+tjh_colorDancer();
+//particle -e -or 4 -at position -vv 8 0 6.997918 particleShape2 ;
+//colorDancer;
+//createColorDancerProc 10 10 tjh ty 1.0 file1;

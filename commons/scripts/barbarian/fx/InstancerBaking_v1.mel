@@ -1,0 +1,588 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2011 loganathan perumal - Copyright (C) 2011 FxKiller
+// www.3drevolution.in
+// logu.rock@gmail.com
+//
+//  Instancer Baking V 1.0 
+//  Script File
+//  There is no restrictions to use or modify but its your own risk.
+//
+//  Creation Date:  January 20, 2011
+//
+//
+//  Description:
+//	To convert particle instancer into geometry
+//	Select the particle and choose frame range currentFrame or sequence or time slider 
+//	and click instancer baking button
+//	that is...! enjoy
+//  bug:
+//	If you find any bug please send me that information to me logu.rock@gmail.com
+//////////////////////////////////////////////////////////////////////////////////
+
+//Particles Instancer to Geometry Baking
+global proc BakeInstancer()
+{
+	global string $Start;
+	global string $End;
+	global string $Eframe;
+	global string $Sframe;
+	global string $pTypeOption;
+	global string $fTypeOption;
+	float $startFrame;
+	float $endFrame;
+
+		
+	string $selection[]		= 	`ls-sl`;
+	string $particleName[] 	= 	`listRelatives -s $selection`;
+	string $pName			=	$particleName[0];
+	string $instancerName[]	=	`particleInstancer -q -name $selection[0]`;
+
+	string $insName			=	$instancerName[0];
+	string $objects[]		=	`particleInstancer -name $insName -q -object $pName`;
+	int $count;
+	$count 				=	`particle -ct -q $pName`;
+	string $objectRotation		=	`particleInstancer -name $insName -q -rotation $pName`;
+	string $objectRotationType	=	`particleInstancer -name $insName -q -rotationType $pName`;
+	string $objectPosition		=	`particleInstancer -name $insName -q -position $pName`;
+	string $objectIndex		=	`particleInstancer -name $insName -q -objectIndex $pName`;
+	string $objectScale		=	`particleInstancer -name $insName -q -scale $pName`;
+	string $objectAimDir		=	`particleInstancer -name $insName -q -aimDirection $pName`;
+	string $objectAimPos		=	`particleInstancer -name $insName -q -aimPosition $pName`;
+	string $objectAimAxis		=	`particleInstancer -name $insName -q -aimAxis $pName`;
+	string $objectAimUpAxis	=	`particleInstancer -name $insName -q -aimUpAxis $pName`;
+	string $objectAimWorldUp	=	`particleInstancer -name $insName -q -aimWorldUp $pName`;
+
+
+	string $group			=	`group -w -n "BakedObjects" -em`;
+
+	string $FrmRangeOpt = `optionMenu -q -v $fTypeOption`;
+	
+	if($FrmRangeOpt == "currentFrame")
+	{
+		int $cFrame = `currentTime -q`;
+		$startFrame		=	$cFrame;
+		$endFrame		=	$cFrame;
+	
+	}
+	else if($FrmRangeOpt == "Sequence")
+	{
+		$startFrame 	= `textField -q -tx $Start`;
+		$endFrame	= `textField -q -tx $End`;
+	}
+	else if($FrmRangeOpt == "TimeSlider")
+	{
+		$startFrame		=	`playbackOptions -q -min`;
+		$endFrame		=	`playbackOptions -q -max`;
+	}	
+	
+	string $DoubleAttrs[]; string $VectorAttrs[];
+	float $pos[];float $s[]; int $indexN; float $rot[]; float $size[]; vector $AimDirection; vector $AimPosition; vector $AimAxis;
+	vector $AimUpAxis; vector $AimWorldUp; vector $objAimDir; float $matrix[]; vector $ObjAimAxis; vector $ObjAimUp; vector $ObjAimWup;
+
+	for ($f=$startFrame; $f<($endFrame+1); $f++)
+	{
+		currentTime $f;
+		$count 		=	`particle -ct -q $pName`;
+		for($i=0; $i<$count; $i++)
+		{ 
+			if (`particle -ct -q $pName`>0)
+			{
+			//print ("breaks");
+				if(!`objExists ("Geometry"+$i)`)
+				{
+			
+					$DoubleAttrs = `particle -q -ppd $pName`;
+					$VectorAttrs = `particle -q -ppv $pName`;
+					//getting Attribute Values
+
+					$pos	= `particle -at $objectPosition -or $i -q $pName`;
+
+					if($objectIndex !="")
+					{ 
+						$s = `particle -at $objectIndex -or $i -q $pName`;
+						$indexN = $s[0];
+					}
+					else
+					{
+						$indexN=0;
+					}
+
+					if($objectRotation !="")
+					{
+						$rot	= `particle -at $objectRotation -or $i -q $pName`;
+					}
+					if($objectScale !="")
+					{
+						$size	= `particle -at $objectScale -or $i -q $pName`;
+					}
+					else	
+					{
+						$size	= {1,1,1};
+					}
+					
+					if($objectAimDir !="")
+					{
+						$AimDirection	= `particle -at $objectAimDir -or $i -q $pName`;
+						$objAimDir = unit($AimDirection);
+					}
+					else
+					{
+						$AimDirection	= <<1,0,0>>;
+					}
+					if($objectAimPos !="")
+					{
+						$AimPosition	= `particle -at $objectAimPos -or $i -q $pName`;
+					}
+					else
+					{
+						$AimPosition	= <<0,0,0>>;
+					}
+					if($objectAimAxis !="")
+					{
+						$AimAxis	= `particle -at $objectAimAxis -or $i -q $pName`;
+					}
+					else
+					{
+						$AimAxis	= <<1,0,0>>;
+					}
+					if($objectAimUpAxis !="")
+					{
+						$AimUpAxis	= `particle -at $objectAimUpAxis -or $i -q $pName`;
+					}
+					else
+					{
+						$AimUpAxis	= <<0,1,0>>;
+					}
+					if($objectAimWorldUp !="")
+					{
+						$AimWorldUp	= `particle -at $objectAimWorldUp -or $i -q $pName`;
+					}
+					else
+					{
+						$AimWorldUp	= <<0,1,0>>;
+					}
+					// setting attribute Values 
+					$matrix = `getAttr ( $insName+".worldMatrix")`;
+					$ObjAimAxis = pointMatrixMult ($AimAxis, $matrix); 
+					$ObjAimUp = pointMatrixMult ($AimUpAxis, $matrix); 
+					$ObjAimWup= pointMatrixMult ($AimWorldUp, $matrix);
+					string $duplicate[]=`duplicate  -n ("Geometry"+$i) $objects[$indexN]`;
+		
+					if($objectRotation !="")
+					{
+						for($rotAttr in $DoubleAttrs)
+						{
+							if($rotAttr ==$objectRotation)
+							{
+								xform -ro $rot[0] $rot[0] $rot[0] $duplicate[0];
+							}
+						}
+						for($rotAttr in $VectorAttrs)
+						{
+							if($rotAttr==$objectRotation)
+							{
+								xform -ro $rot[0] $rot[1] $rot[2] $duplicate[0];
+							}
+						}
+					}
+					if($objectRotation =="" && $objectAimDir !="")
+					{
+						xform -ws -t 0 0 0 $duplicate[0];
+						xform -a -ws -t 0 0 0 -sh 0 0 0 $duplicate[0];
+						xform -a -ws -t ($objAimDir.x) ($objAimDir.y) ($objAimDir.z) $group;
+						aimConstraint -offset 0 0 0 -weight 1 -aimVector ($ObjAimAxis.x) ($ObjAimAxis.y) ($ObjAimAxis.z) 
+						-upVector ($ObjAimUp.x) ($ObjAimUp.y) ($ObjAimUp.z) -worldUpType "vector" -worldUpVector ($ObjAimWup.x) ($ObjAimWup.y) ($ObjAimWup.z) $group $duplicate[0];
+						aimConstraint -e -rm $group $duplicate[0]; 
+					}
+					if($objectRotation =="" && $objectAimDir =="" && $objectAimPos !="")
+					{
+						xform -ws -t 0 0 0 $duplicate[0];
+						xform -a -ws -t $pos[0] $pos[1] $pos[2] -sh 0 0 0 $duplicate[0];
+						xform -a -ws -t ($AimPosition.x) ($AimPosition.y) ($AimPosition.z) $group;
+						aimConstraint -offset 0 0 0 -weight 1 -aimVector ($ObjAimAxis.x) ($ObjAimAxis.y) ($ObjAimAxis.z) 
+						-upVector ($ObjAimUp.x) ($ObjAimUp.y) ($ObjAimUp.z) -worldUpType "vector" -worldUpVector ($AimWorldUp.x) ($AimWorldUp.y) ($AimWorldUp.z) $group $duplicate[0];
+						aimConstraint -e -rm $group $duplicate[0]; 
+					}
+
+					if($objectScale !="")
+					{
+						for($scaleAttr in $DoubleAttrs)
+						{
+							if($scaleAttr ==$objectScale)
+							{
+								xform -s $size[0] $size[0] $size[0] $duplicate[0];
+							}
+						}
+						for($scaleAttr in $VectorAttrs)
+						{
+							if($scaleAttr==$objectScale)
+							{
+								xform -s $size[0] $size[1] $size[2] $duplicate[0];
+							}
+						}
+					}
+
+					xform -a -ws -wd -t $pos[0] $pos[1] $pos[2] $duplicate[0];
+					xform -ztp -wd -ws -cp -p 1 $duplicate[0];
+					setKeyframe ($duplicate[0] + ".tx");
+					setKeyframe ($duplicate[0] + ".ty");
+					setKeyframe ($duplicate[0] + ".tz");
+					setKeyframe ($duplicate[0] + ".rx");
+					setKeyframe ($duplicate[0] + ".ry");
+					setKeyframe ($duplicate[0] + ".rz");
+					setKeyframe ($duplicate[0] + ".sx");
+					setKeyframe ($duplicate[0] + ".sy");
+					setKeyframe ($duplicate[0] + ".sz");
+					setKeyframe -at "visibility" -t ($f-1) -v 0 $duplicate[0];
+					setKeyframe -at "visibility" -v 1 $duplicate[0];
+
+				clear $pos;
+				clear $duplicate;
+				clear $s;
+				clear $rot;
+				clear $size;
+				clear $matrix;
+				}
+
+				else
+
+				{	
+					$pos	= `particle -at $objectPosition -or $i -q $pName`;
+					//select ("Geometry"+$i);
+					$DoubleAttrs = `particle -q -ppd $pName`;
+					$VectorAttrs = `particle -q -ppv $pName`;
+
+					if($objectRotation !="")
+					{
+						$rot	= `particle -at $objectRotation -or $i -q $pName`;
+					}
+					if($objectScale !="")
+					{
+						$size	= `particle -at $objectScale -or $i -q $pName`;
+					}
+					else	
+					{
+						$size	= {1,1,1};
+					}
+					
+					if($objectAimDir !="")
+					{
+						$AimDirection	= `particle -at $objectAimDir -or $i -q $pName`;
+						$objAimDir = unit($AimDirection);
+					}
+					else
+					{
+						$AimDirection	= <<1,0,0>>;
+					}
+					if($objectAimPos !="")
+					{
+						$AimPosition	= `particle -at $objectAimPos -or $i -q $pName`;
+					}
+					else
+					{
+						$AimPosition	= <<0,0,0>>;
+					}
+					if($objectAimAxis !="")
+					{
+						$AimAxis	= `particle -at $objectAimAxis -or $i -q $pName`;
+					}
+					else
+					{
+						$AimAxis	= <<1,0,0>>;
+					}
+					if($objectAimUpAxis !="")
+					{
+						$AimUpAxis	= `particle -at $objectAimUpAxis -or $i -q $pName`;
+					}
+					else
+					{
+						$AimUpAxis	= <<0,1,0>>;
+					}
+					if($objectAimWorldUp !="")
+					{
+						$AimWorldUp	= `particle -at $objectAimWorldUp -or $i -q $pName`;
+					}
+					else
+					{
+						$AimWorldUp	= <<0,1,0>>;
+					}
+
+					// setting attribute Values 
+					$matrix = `getAttr ( $insName+".worldMatrix")`;
+					$ObjAimAxis = pointMatrixMult ($AimAxis, $matrix); 
+					$ObjAimUp = pointMatrixMult ($AimUpAxis, $matrix); 
+					$ObjAimWup= pointMatrixMult ($AimWorldUp, $matrix);
+					
+					if($objectRotation !="")
+					{
+						for($rotAttr in $DoubleAttrs)
+						{
+							if($rotAttr ==$objectRotation)
+							{
+								xform -ro $rot[0] $rot[0] $rot[0]  ("Geometry"+$i);
+								setKeyframe ("Geometry"+$i + ".rx");
+								setKeyframe ("Geometry"+$i + ".ry");
+								setKeyframe ("Geometry"+$i + ".rz");
+							}
+						}
+						for($rotAttr in $VectorAttrs)
+						{
+							if($rotAttr==$objectRotation)
+							{
+								xform -ro $rot[0] $rot[1] $rot[2]  ("Geometry"+$i);
+								setKeyframe ("Geometry"+$i + ".rx");
+								setKeyframe ("Geometry"+$i + ".ry");
+								setKeyframe ("Geometry"+$i + ".rz");
+							}
+						}
+					} 
+					if($objectRotation =="" && $objectAimDir !="")
+					{
+						xform -ws -t 0 0 0  ("Geometry"+$i);
+						xform -a -ws -t 0 0 0 -ro 0 0 0  -sh 0 0 0  ("Geometry"+$i);
+						xform -a -ws -s $size[0] $size[1] $size[2]("Geometry"+$i);
+						xform -a -ws -t ($objAimDir.x) ($objAimDir.y) ($objAimDir.z) $group;
+						aimConstraint -offset 0 0 0 -weight 1 -aimVector ($ObjAimAxis.x) ($ObjAimAxis.y) ($ObjAimAxis.z) 
+						-upVector ($ObjAimUp.x) ($ObjAimUp.y) ($ObjAimUp.z) -worldUpType "vector" -worldUpVector ($AimWorldUp.x) ($AimWorldUp.y) ($AimWorldUp.z) $group  ("Geometry"+$i);
+						setKeyframe ("Geometry"+$i + ".rx");
+						setKeyframe ("Geometry"+$i + ".ry");
+						setKeyframe ("Geometry"+$i + ".rz");
+						aimConstraint -e -rm $group  ("Geometry"+$i); 
+					}
+					if($objectRotation =="" && $objectAimDir =="" && $objectAimPos !="")
+					{
+						xform -ws -t 0 0 0  ("Geometry"+$i);
+						xform -a -ws -t $pos[0] $pos[1] $pos[2] -sh 0 0 0  ("Geometry"+$i);
+						xform -a -ws -t ($AimPosition.x) ($AimPosition.y) ($AimPosition.z) $group;
+						aimConstraint -offset 0 0 0 -weight 1 -aimVector ($ObjAimAxis.x) ($ObjAimAxis.y) ($ObjAimAxis.z) 
+						-upVector ($ObjAimUp.x) ($ObjAimUp.y) ($ObjAimUp.z) -worldUpType "vector" -worldUpVector ($AimWorldUp.x) ($AimWorldUp.y) ($AimWorldUp.z) $group  ("Geometry"+$i);
+						setKeyframe ("Geometry"+$i + ".rx");
+						setKeyframe ("Geometry"+$i + ".ry");
+						setKeyframe ("Geometry"+$i + ".rz");
+						aimConstraint -e -rm $group  ("Geometry"+$i); 
+					}
+
+					if($objectScale !="")
+					{
+						for($scaleAttr in $DoubleAttrs)
+						{
+							if($scaleAttr ==$objectScale)
+							{
+								xform -s $size[0] $size[0] $size[0]  ("Geometry"+$i);
+							}
+						}
+						for($scaleAttr in $VectorAttrs)
+						{
+							if($scaleAttr==$objectScale)
+							{
+								xform -s $size[0] $size[1] $size[2]  ("Geometry"+$i);
+							}
+						}
+					}
+
+				xform -ztp -wd -ws -cp -p 1  ("Geometry"+$i);
+				xform -a -ws -wd -t $pos[0] $pos[1] $pos[2]  ("Geometry"+$i);
+					setKeyframe ("Geometry"+$i + ".tx");
+					setKeyframe ("Geometry"+$i + ".ty");
+					setKeyframe ("Geometry"+$i + ".tz");
+
+					setKeyframe ("Geometry"+$i + ".sx");
+					setKeyframe ("Geometry"+$i + ".sy");
+					setKeyframe ("Geometry"+$i + ".sz");
+					setKeyframe ("Geometry"+$i + ".visibility");
+
+				clear $pos;
+				clear $s;
+				clear $rot;
+				clear $size;	
+				clear $matrix;
+				}
+
+			}
+		}
+	}
+	$count 		=	`particle -ct -q $pName`;
+	for ($i=0; $i<$count; $i++)
+	{
+		xform -a -t 0 0 0 $group; 
+		//select ("Geometry"+$i);
+		parent -a ("Geometry"+$i) $group;  
+	}
+}
+//-----------------------------------------------------------------------------------------------------------------------
+// Particle Instancer Baking UI
+global string $Start;
+global string $End;
+global string $Eframe;
+global string $Sframe;
+global string $pTypeOption;
+global string $fTypeOption;
+
+//--------------------------------------------------
+global proc ParticleUI()
+{
+global string $Start;
+global string $End;
+global string $Eframe;
+global string $Sframe;
+global string $pTypeOption;
+global string $fTypeOption;
+
+	if(`window -q -ex ParticleInstancerBakingUI`)
+	deleteUI ParticleInstancerBakingUI;
+	if(`windowPref -q -ex ParticleInstancerBakingUI`)
+	windowPref -r ParticleInstancerBakingUI;
+	window -title"ParticleInstancerBaking ver 1.0    | www.3drevolution.in |" -s 0 -w 450 -h 250 ParticleInstancerBakingUI; 
+	formLayout myUIFL;
+	text -l "ParticleType   :" ParType;
+	text -l "Frame Range  :" fRange;
+	$Sframe = `text -l "StartFrame" -en 0 `;
+	$Eframe = `text -l "EndFrame" -en 0 `;
+	$Start = `textField -w 40 -h 25 -en 0 `;
+	$End = `textField -w 40 -h 25 -en 0 `;
+	
+	$pTypeOption = `optionMenu -label "" -changeCommand "print #1" pTypeOPT`;
+            	menuItem -label "particle          ";
+
+	$fTypeOption =`optionMenu -label "" -changeCommand "sequence"`;
+            	menuItem -label "currentFrame";
+            	menuItem -label "Sequence";
+            	menuItem -label "TimeSlider";
+
+	separator -w 450 sep;
+	button -l "InstancerBaking" -c "BakeInstancer" -w 115 -h 30 btnsIB;
+	button -l "Clear Initial State" -c "clearInitialState" -w 100 -h 30 btnsCIS;
+	button -l "Close" -c "deleteUI ParticleInstancerBakingUI " -w 100 -h 30 btnsClose;
+	formLayout -e
+
+		-af 	"ParType" 	"left"	30
+		-af	"ParType"	"top"	20
+		-af 	"fRange" 	"left"	30
+		-af	"fRange"	"top"	70
+		-af 	$Sframe 	"left"	30
+		-af	$Sframe		"top"	120
+		-af 	$Eframe 	"left" 145
+		-af	$Eframe		"top"	120
+
+		-af 	$Start	 	"left"	88
+		-af	$Start		"top"	117
+		-af 	$End  		"left" 200
+		-af	$End 		"top"	117
+
+		-af 	"pTypeOPT" 	"left" 120
+		-af	"pTypeOPT"	"top"	20
+
+		-af 	$fTypeOption 	"left" 120
+		-af	$fTypeOption	"top"	70
+
+
+		-af 	"sep" 	"left"	0
+		-af	"sep"	"top"	165
+
+		-af 	"btnsIB" 	"left"	30
+		-af	"btnsIB"	"top"	175
+		-af	"btnsClose"	"left"	290
+		-af	"btnsClose"	"top"	175
+		-af	"btnsCIS"	"top"	175
+		-af 	"btnsCIS"	"left"	170
+	myUIFL;
+
+	showWindow ParticleInstancerBakingUI;
+} 
+ParticleUI;
+//-----------------------------------------------------------------------------
+global proc InstancerBaking()
+{
+	global string $Start;
+	global string $End;
+	global string $Eframe;
+	global string $Sframe;
+	global string $pTypeOption;
+	global string $fTypeOption;
+		
+	string $FrmRangeOpt = `optionMenu -q -v $fTypeOption`;
+	
+	if($FrmRangeOpt == "currentFrame")
+	{
+	
+	}
+	else if($FrmRangeOpt == "Sequence")
+	{
+
+	}
+	else if($FrmRangeOpt == "TimeSlider")
+	{
+
+	}
+}
+//------------------------------------------------------------------------
+global proc sequence()
+{
+	global string $Start;
+	global string $End;
+	global string $Eframe;
+	global string $Sframe;
+	global string $pTypeOption;
+	global string $fTypeOption;
+
+	string $seq = `optionMenu -q -v $fTypeOption`;
+
+	if($seq == "Sequence")
+	{
+		text -e -en 1 $Sframe;
+		text -e -en 1 $Eframe;
+		textField -e -en 1 $Start;
+		textField -e -en 1 $End;
+	}
+	else
+	{
+		text -e -en 0 $Sframe;
+		text -e -en 0 $Eframe;
+		textField -e -en 0 $Start;
+		textField -e -en 0 $End;
+	}
+}
+//-----------------------------------------------------------------------------
+//clear Initial State
+global proc clearInitialState()
+{
+	string $Dattrs[];
+	string $Vattrs[];
+	string $particle[] = `ls-sl`;
+	string $pName[] = `listRelatives -s $particle[0]`;
+
+	if(`objExists $pName[0]`)
+	{
+		$Dattrs = `particle -q -ppd $pName`;
+		$Vattrs = `particle -q -ppv $pName`;
+		
+		for ($Dattr in $Dattrs)
+		{
+			if(`attributeQuery -ex -n $pName[0] ($Dattr+"0")`)
+				{
+				print ($Dattr+"\n");
+				setAttr($pName[0] + "." + $Dattr + "0") -type "doubleArray" 0;
+				}
+
+		}
+		
+		for ($Vattr in $Vattrs)
+		{
+			if(`attributeQuery -ex -n $pName[0] ($Vattr + "0")`)
+				setAttr($pName[0] + "." + $Vattr + "0") -type "vectorArray" 0;
+		}
+	
+		setAttr ($pName[0] + ".nid0") 0;
+		setAttr ($pName[0] + ".particleId0") -type "doubleArray" 0;		
+		setAttr ($pName[0] + ".age0") -type "doubleArray" 0;
+	}
+	else
+	{
+		warning "please chech... Object is not exists";
+	}
+	int $startFrame = `playbackOptions -q -min`;
+	$cTime = `currentTime -q`;
+	currentTime -e ($cTime+1);
+	currentTime -e ($startFrame);
+}
+//------------------------------------------- end of script -----------------------------------------------------------

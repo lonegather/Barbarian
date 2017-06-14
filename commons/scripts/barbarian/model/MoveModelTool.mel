@@ -1,0 +1,33 @@
+global proc TurnUp(){
+    
+    string $sels[] = `ls -sl`;
+    reorder -relative -1 $sels;
+    
+}
+
+global proc TurnDown(){
+    
+    string $sels[] = `ls -sl`;
+    reorder -relative 1 $sels;
+        
+}
+   
+//窗口界面
+if (`window -ex tmWin`){
+    
+    deleteUI tmWin;}
+
+window -t "大纲物体移动工具" -wh 300 70 tmWin ;
+columnLayout -adj true;
+
+text -l "选择大纲内需要移动的模型\n点击按钮执行\n";
+
+button -l "向上"  -w 10 -h 25 -c "TurnUp";
+
+text -l "" -h 5;
+
+button -l "向下" -w 10 -h 25 -c "TurnDown";
+
+window -e -wh 250 98 tmWin;
+showWindow tmWin;
+

@@ -1,0 +1,24 @@
+string $sel[] = `ls- sl`;
+if(!size($sel))
+{
+    confirmDialog -title "" -message "请先选择物体"    -button "确定"    -defaultButton "确定"    -cancelButton "确定"     -dismissString "确定" ;	
+}
+else
+{//else start
+string $confirmIt = `confirmDialog -title "Confirm" -message "确认赋予随机颜色?"    -button "Yes"    -button "No"     -defaultButton "Yes"    -cancelButton "No"     -dismissString "No"`;
+if($confirmIt == "Yes")
+{
+for($each in $sel)
+{
+string $previewShaderName = `shadingNode -asShader blinn`;
+float $hueRandom = rand(1+size($each)*0.01);
+vector $rgbRandom = `hsv_to_rgb <<$hueRandom,0.7,0.75>>`;
+setAttr ($previewShaderName+".color") -type double3 ($rgbRandom.x)($rgbRandom.y)($rgbRandom.z);
+setAttr ($previewShaderName+".eccentricity") 0.15;
+string $previewShadingSGName = `sets -renderable true -noSurfaceShader true -empty -name ($previewShaderName+"SG")`;
+connectAttr -f ($previewShaderName+".outColor") ($previewShadingSGName+".surfaceShader");
+sets -e -forceElement $previewShadingSGName $each;
+}
+select -clear;
+};
+};//else end
