@@ -1,6 +1,6 @@
-﻿import barbarian.utils.checkingBoxBase as cbb
-import pymel.core as pm
+﻿import pymel.core as pm
 import maya.mel as mm
+import barbarian.utils.checkingBoxBase as cbb
 
 '''
 class checkingBoxCmd(cbb.checkingBoxCmd):
