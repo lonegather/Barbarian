@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>551</width>
-    <height>58</height>
+    <width>1087</width>
+    <height>60</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -25,624 +25,982 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" columnstretch="1,1,1,1,1,1,1,1,1">
-   <property name="leftMargin">
-    <number>2</number>
+  <widget class="QPushButton" name="modelBtn_2">
+   <property name="geometry">
+    <rect>
+     <x>7</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
    </property>
-   <property name="topMargin">
-    <number>0</number>
+   <property name="text">
+    <string/>
    </property>
-   <property name="rightMargin">
-    <number>2</number>
+   <property name="+visible" stdset="0">
+    <string>False</string>
    </property>
-   <property name="bottomMargin">
-    <number>0</number>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5.mel\&quot;;&quot;</string>
    </property>
-   <property name="spacing">
-    <number>2</number>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_8">
+   <property name="geometry">
+    <rect>
+     <x>632</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
    </property>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="modelBtn_2">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5.mel\&quot;;&quot;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="7">
-    <widget class="QPushButton" name="modelBtn_8">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-     <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.model.checkModel.checkModel()</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="6">
-    <widget class="QPushButton" name="modelBtn_6">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/石头生成工具.mel\&quot;;&quot;</string>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="8">
-    <widget class="Line" name="line_2">
-     <property name="minimumSize">
-      <size>
-       <width>3</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QPushButton" name="modelBtn_4">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/MoveModelTool.mel\&quot;;&quot;</string>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="modelBtn_3">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/CreateCharacterGroup.mel\&quot;;&quot;</string>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="5">
-    <widget class="QPushButton" name="modelBtn_5">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/批量传递UV.mel\&quot;;&quot;</string>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="Line" name="line">
-     <property name="minimumSize">
-      <size>
-       <width>3</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="4">
-    <widget class="QPushButton" name="modelBtn_7">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/去除重复的物体名.mel\&quot;;&quot;</string>
-     </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="6">
-    <widget class="QFrame" name="frame_6">
-     <property name="minimumSize">
-      <size>
-       <width>102</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_6">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Rock Generator</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="7">
-    <widget class="QFrame" name="frame_8">
-     <property name="minimumSize">
-      <size>
-       <width>65</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_8">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>模型检查</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QFrame" name="frame_4">
-     <property name="minimumSize">
-      <size>
-       <width>63</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_4">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>大纲整理</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="QFrame" name="frame_7">
-     <property name="minimumSize">
-      <size>
-       <width>65</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_7">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>重名检查</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QFrame" name="frame_3">
-     <property name="minimumSize">
-      <size>
-       <width>75</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_3">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>创建角色组</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QFrame" name="frame_5">
-     <property name="minimumSize">
-      <size>
-       <width>55</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_5">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>传递UV</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QFrame" name="frame_2">
-     <property name="minimumSize">
-      <size>
-       <width>90</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="modelCLBtn_2">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>ADV绑定插件</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-  </layout>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/gg_propUIN.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_6">
+   <property name="geometry">
+    <rect>
+     <x>525</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/closestPOS.mel\&quot;;&quot;</string>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>1120</x>
+     <y>0</y>
+     <width>16</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>3</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_4">
+   <property name="geometry">
+    <rect>
+     <x>166</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/advDrawStyle.mel\&quot;;&quot;</string>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_3">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/HierarchyLevel.mel\&quot;;&quot;</string>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_5">
+   <property name="geometry">
+    <rect>
+     <x>403</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/pointOnCurve.mel\&quot;;&quot;</string>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>2</x>
+     <y>0</y>
+     <width>16</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>3</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_7">
+   <property name="geometry">
+    <rect>
+     <x>283</x>
+     <y>35</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/jointTool.mel\&quot;;&quot;</string>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_6">
+   <property name="geometry">
+    <rect>
+     <x>525</x>
+     <y>0</y>
+     <width>105</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>105</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_6">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>几何体曲面骨骼</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_8">
+   <property name="geometry">
+    <rect>
+     <x>632</x>
+     <y>0</y>
+     <width>80</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>80</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_8">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>gg_propUIN</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_4">
+   <property name="geometry">
+    <rect>
+     <x>166</x>
+     <y>0</y>
+     <width>115</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>115</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_4">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>ADV骨骼显示隐藏</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_7">
+   <property name="geometry">
+    <rect>
+     <x>283</x>
+     <y>0</y>
+     <width>118</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>118</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_7">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Barbarian骨骼工具</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_3">
+   <property name="geometry">
+    <rect>
+     <x>99</x>
+     <y>0</y>
+     <width>65</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>65</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_3">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>整理层级</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_5">
+   <property name="geometry">
+    <rect>
+     <x>403</x>
+     <y>0</y>
+     <width>120</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>120</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_5">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>pointOnCurve骨骼</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_2">
+   <property name="geometry">
+    <rect>
+     <x>7</x>
+     <y>0</y>
+     <width>90</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>90</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_2">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>ADV绑定插件</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_9">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>0</y>
+     <width>80</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>80</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_9">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>控制器大全</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_9">
+   <property name="geometry">
+    <rect>
+     <x>740</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/绑定控制器设置工具大全.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_10">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>0</y>
+     <width>115</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>115</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_10">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Barbarian权重工具</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_10">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/skinTool.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_11">
+   <property name="geometry">
+    <rect>
+     <x>940</x>
+     <y>0</y>
+     <width>91</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>10</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_11">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>批量拷贝权重</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_11">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/copyAllWeightTool.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
   <zorder>modelBtn_2</zorder>
   <zorder>frame_2</zorder>
   <zorder>line</zorder>
@@ -659,6 +1017,12 @@
   <zorder>frame_8</zorder>
   <zorder>line_2</zorder>
   <zorder>modelBtn_8</zorder>
+  <zorder>frame_9</zorder>
+  <zorder>modelBtn_9</zorder>
+  <zorder>frame_10</zorder>
+  <zorder>modelBtn_10</zorder>
+  <zorder>frame_11</zorder>
+  <zorder>modelBtn_11</zorder>
  </widget>
  <resources/>
  <connections>
@@ -771,6 +1135,54 @@
     <hint type="destinationlabel">
      <x>574</x>
      <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_9</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_9</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>788</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>755</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_10</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_10</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>878</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>855</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_11</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_11</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1008</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>975</x>
+     <y>51</y>
     </hint>
    </hints>
   </connection>
