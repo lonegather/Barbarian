@@ -1,0 +1,2 @@
+import barbarian.rig.copySkin
+
