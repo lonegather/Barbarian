@@ -12,6 +12,7 @@ import barbarian.render
 import barbarian.fx
 import barbarian.utils
 
+
 class Entrance(object):
     '''
     --------------------------------------------------------------------------------
