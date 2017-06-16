@@ -202,7 +202,8 @@ class nameShapes(cbb.checkingBoxCmd):
         nodes = pm.ls(type='transform')
         for node in nodes:
             shapes = pm.listRelatives(node,s=1,f=1,type=('mesh','nurbsSurface'))
-            if shapes!=None:
+            if len(shapes):
+                print shapes
                 shape = shapes[0]
                 name = node.rsplit('|',1)[-1] + 'Shape'
                 if not shape.endswith(name):
