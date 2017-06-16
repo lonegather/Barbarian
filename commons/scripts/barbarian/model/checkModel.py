@@ -1,16 +1,17 @@
 ﻿import pymel.core as pm
 import maya.mel as mm
-import barbarian.utils.checkingBoxBase as cbb
+from barbarian.utils import checkingBoxBase
 
 '''
 class checkingBoxCmd(cbb.checkingBoxCmd):
     pass
 '''
-class checkingBoxUI(cbb.checkingBoxUI):
+class checkingBoxUI(checkingBoxBase.checkingBoxUI):
+    
     title = 'Checking Box - Model'
     win_height = 530
     def updateList(self, *args):
-        cbb.checkingBoxUI.updateList(self,*args)
+        checkingBoxBase.checkingBoxUI.updateList(self,*args)
         #checking1()
         clearRedundantShapes()
         clearUnusedNodes()
@@ -27,7 +28,7 @@ class checkingBoxUI(cbb.checkingBoxUI):
         checkScale()
         checkOthers()
 # Cmds ========================================
-class checking1(cbb.checkingBoxCmd):
+class checking1(checkingBoxBase.checkingBoxCmd):
     label = u'checking1'
     def cmd(self):
         #self.cont = ''
@@ -35,9 +36,9 @@ class checking1(cbb.checkingBoxCmd):
         self.cont += u'Finish'
         return 1
     def showInfo(self):
-        cbb.checkingBoxCmd.showInfo(self)
+        checkingBoxBase.checkingBoxCmd.showInfo(self)
         pm.text(al='left',l='other info')
-class clearLightLinkers(cbb.checkingBoxCmd):
+class clearLightLinkers(checkingBoxBase.checkingBoxCmd):
     label = u'清理灯光链接'
     def cmd(self):
         try:
@@ -48,7 +49,7 @@ class clearLightLinkers(cbb.checkingBoxCmd):
             self.cont = u'清理失败。'
             return 0
 
-class zeroMeshPoints(cbb.checkingBoxCmd):
+class zeroMeshPoints(checkingBoxBase.checkingBoxCmd):
     label = u'顶点归零'
     def cmd(self):
         try:
@@ -61,7 +62,7 @@ class zeroMeshPoints(cbb.checkingBoxCmd):
             self.cont = u'归零失败。'
             return 0
 
-class checkNamespace(cbb.checkingBoxCmd):
+class checkNamespace(checkingBoxBase.checkingBoxCmd):
     label = u'检查namespace'
     def cmd(self):
         from barbarian.utils import checkNamespace
@@ -74,7 +75,7 @@ class checkNamespace(cbb.checkingBoxCmd):
             self.cont = u'请删除场景中的Namespace。'
             return 0
 
-class checkSameObjs(cbb.checkingBoxCmd):
+class checkSameObjs(checkingBoxBase.checkingBoxCmd):
     label = u'检查同名的物体'
     def cmd(self):
         import barbarian.utils.checkSameName as checkSameName
@@ -86,12 +87,12 @@ class checkSameObjs(cbb.checkingBoxCmd):
             self.cont = u'点击下列物体名称进行选择'
             return 0
     def showInfo(self):
-        cbb.checkingBoxCmd.showInfo(self)
+        checkingBoxBase.checkingBoxCmd.showInfo(self)
         import barbarian.utils.checkSameName as checkSameName
         ins = checkSameName.checkSameName()
         ins.check()
         ins.showUI(self.infoUI)
-class checkNormals(cbb.checkingBoxCmd):
+class checkNormals(checkingBoxBase.checkingBoxCmd):
     label = u'检查法线'
     def cmd(self):
         mm.eval('setNamedPanelLayout "Single Perspective View"')
@@ -104,7 +105,7 @@ class checkNormals(cbb.checkingBoxCmd):
         self.cont += u'实体显示\n'
         self.cont += u'\n请检查各物体的法线...\n'
         return .5
-class checkOthers(cbb.checkingBoxCmd):
+class checkOthers(checkingBoxBase.checkingBoxCmd):
     label = u'其它检查项目'
     def cmd(self):
         self.cont = u'请检查：\n'
@@ -112,7 +113,7 @@ class checkOthers(cbb.checkingBoxCmd):
         self.cont += u'2.布线结构\n'
         self.cont += u'3.物体穿插\n'
         return .5
-class checkUVSets(cbb.checkingBoxCmd):
+class checkUVSets(checkingBoxBase.checkingBoxCmd):
     label = u'检查UV'
     def cmd(self):
         cont = u''
@@ -134,7 +135,7 @@ class checkUVSets(cbb.checkingBoxCmd):
             self.cont = u'所有物体UVSet正常！\n'
             self.cont += u'请检查UV是否有重叠和扭曲的情况...\n'
             return .5
-class cleanup(cbb.checkingBoxCmd):
+class cleanup(checkingBoxBase.checkingBoxCmd):
     label = u'cleanup检查模型错误'
     def cmd(self):
         cmd = r'polyCleanupArgList 3 { "0","2","1","0","1","0","1","0","0","1e-005","0","1e-005","0","1e-005","0","1","1" }'
@@ -152,7 +153,7 @@ class cleanup(cbb.checkingBoxCmd):
             for item in result:
                 self.cont += item + '\n'
             return .5
-class clearUnusedNodes(cbb.checkingBoxCmd):
+class clearUnusedNodes(checkingBoxBase.checkingBoxCmd):
     label = u'清理无用的节点'
     def cmd(self):
         self.cont = ''
@@ -193,7 +194,7 @@ class clearUnusedNodes(cbb.checkingBoxCmd):
                     act = node + '\n'
         return act
 
-class nameShapes(cbb.checkingBoxCmd):
+class nameShapes(checkingBoxBase.checkingBoxCmd):
     label = u'shape名称与transform名称一致'
     def cmd(self):
         self.cont = ''
@@ -225,7 +226,7 @@ class nameShapes(cbb.checkingBoxCmd):
             return 1
         else:
             return 0
-class clearRedundantShapes(cbb.checkingBoxCmd):
+class clearRedundantShapes(checkingBoxBase.checkingBoxCmd):
     label = u'清除多余的shape节点'
     def cmd(self):
         count = 0
@@ -240,7 +241,7 @@ class clearRedundantShapes(cbb.checkingBoxCmd):
         self.cont += u'注：\n不处理中介节点'
         return 1
 
-class delHistory(cbb.checkingBoxCmd):
+class delHistory(checkingBoxBase.checkingBoxCmd):
     label = u'删除历史'
     def cmd(self):
         self.cont = self.zeroSmooth()
@@ -272,7 +273,7 @@ class delHistory(cbb.checkingBoxCmd):
             cont = u'处理smooth节点： %s\n'%len(nodes)
         return cont
 
-class checkAxis(cbb.checkingBoxCmd):
+class checkAxis(checkingBoxBase.checkingBoxCmd):
     label = u'轴心点回物体中心，位移旋转缩放属性设为默认值'
     def cmd(self):
         error = ''
@@ -292,7 +293,7 @@ class checkAxis(cbb.checkingBoxCmd):
         self.cont = u'处理物体： %s\n'%len(objs)
         return 1
 
-class checkScale(cbb.checkingBoxCmd):
+class checkScale(checkingBoxBase.checkingBoxCmd):
     label = u'检查模型比例'
     cont = ''
     def cmd(self):
