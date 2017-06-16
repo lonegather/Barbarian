@@ -81,7 +81,7 @@ class Renamer(object):
         sels = pm.ls(sl=True)
         
         name = pm.textField(cls.renameTextField, q=True, tx=True)
-        options = pm.optionMenu(cls.prefixOptionMenu, q=True, v=True)
+        options = pm.button(cls.prefixOptionMenu, q=True, v=True)
     
         for sel in sels:
     
@@ -129,6 +129,6 @@ class Renamer(object):
         
         pm.textField(cls.prefixTextField, e=True, enable=prefChkState)
         pm.textField(cls.suffixTextField, e=True, enable=suffChkState)
-        pm.optionMenu(cls.prefixOptionMenu, e=True, enable=not prefChkState)
+        pm.button(cls.prefixOptionMenu, e=True, enable=not prefChkState)
         
         

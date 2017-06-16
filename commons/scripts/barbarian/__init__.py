@@ -23,6 +23,7 @@ class Entrance(object):
         
         if pm.control("itBtn", exists=True):
             pm.deleteUI("itBtn")
+            pm.deleteUI("opMnu")
         
         from barbarian.utils import getPath, getHelp, kIcon
         
@@ -33,6 +34,7 @@ class Entrance(object):
             image=getPath(kIcon, "logo.jpg"), 
             width=80, flat=0, parent=layout, 
             backgroundColor=[.2,.2,.2], command=pm.Callback(getHelp))
+        self.menu = pm.optionMenu("opMnu", width=80, parent=layout)
         
         currentMode = pm.setMenuMode()
         
@@ -45,7 +47,7 @@ class Entrance(object):
                      "renderingMenuSet": (currentMode == "renderingMenuSet"),
                      "dynamicsMenuSet": (currentMode == "dynamicsMenuSet")}
     
-        pm.popupMenu(parent=self.button)
+        pm.popupMenu(parent=self.layout)
         pm.menuItem(label=u'模型', radioButton=state_dic["modelingMenuSet"],
                     command=lambda *args: pm.setMenuMode("modelingMenuSet"))
         pm.menuItem(label=u'绑定', radioButton=state_dic["riggingMenuSet"],
@@ -78,7 +80,8 @@ class Entrance(object):
             width = pm.control(self.widget, q=True, width=True)
             pm.control(self.widget, e=True, parent=self.layout, width=width)
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
-            pm.shelfLayout(self.layout, e=True, position=(self.widget, 2))
+            pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
+            pm.shelfLayout(self.layout, e=True, position=(self.widget, 3))
         except:
             self.widget = None
         
@@ -93,11 +96,11 @@ Tool Initialization at Maya Startup
 '''
 #initialize plugins
 plugins = ["pyPBMpegCmd", "CustomDeformers"]
-try:
-    for i in plugins:
+for i in plugins:
+    try:
         pm.loadPlugin(i)
-except:
-    pass
+    except:
+        pass
 
 #initialize entrance
 if not pm.shelfLayout("PuTao", exists=True):
