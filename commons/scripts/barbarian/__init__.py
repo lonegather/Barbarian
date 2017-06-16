@@ -21,11 +21,14 @@ class Entrance(object):
     
     def __init__(self, layout):
         
+        if pm.control("itBtn", exists=True):
+            pm.deleteUI("itBtn")
+        
         from barbarian.utils import getPath, getHelp, kIcon
         
         self.widget = None
         self.layout = layout
-        self.button = pm.iconTextButton(
+        self.button = pm.iconTextButton("itBtn",
             style="iconAndTextHorizontal",
             image=getPath(kIcon, "logo.jpg"), 
             width=80, flat=0, parent=layout, 
@@ -33,7 +36,7 @@ class Entrance(object):
         
         currentMode = pm.setMenuMode()
         
-        pm.scriptJob(event=["MenuModeChanged", self.__build__], permanent=True)
+        pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
         self.__build__()
     
         state_dic = {"modelingMenuSet": (currentMode == "modelingMenuSet"),
@@ -68,8 +71,8 @@ class Entrance(object):
         if not currentMode in mi_dic:
             return
         
-        if(self.widget):
-            pm.deleteUI(self.widget)
+        if pm.control("Form", exists=True):
+            pm.deleteUI("Form")
         try:
             self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % currentMode))
             width = pm.control(self.widget, q=True, width=True)
