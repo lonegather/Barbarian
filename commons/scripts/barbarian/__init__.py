@@ -24,23 +24,23 @@ class Entrance(object):
         if pm.control("itBtn", exists=True):
             pm.deleteUI("itBtn")
             pm.deleteUI("opMnu")
+        pm.shelfLayout(layout, e=True, spacing=5)
         
-        from barbarian.utils import getPath, getHelp, kIcon
+        from barbarian.utils import getPath, getHelp, kIcon, getProject, getConfig, setProject
         
         self.widget = None
         self.layout = layout
-        self.button = pm.iconTextButton("itBtn",
-            style="iconAndTextHorizontal",
-            image=getPath(kIcon, "logo.jpg"), 
-            width=80, flat=0, parent=layout, 
+        self.button = pm.iconTextButton("itBtn", style="iconAndTextHorizontal",
+            image=getPath(kIcon, "logo.jpg"), width=33, flat=0, parent=layout, 
             backgroundColor=[.2,.2,.2], command=pm.Callback(getHelp))
-        self.menu = pm.optionMenu("opMnu", width=80, parent=layout)
+        self.menu = pm.optionMenu("opMnu", width=85, parent=layout, l=u"<选择项目>", 
+                                  backgroundColor=[.2,.2,.2], enableBackground=True,
+                                  changeCommand=setProject)
+        projects = getProject(all=True)
+        for prj in projects:
+            pm.menuItem(l=prj)
         
         currentMode = pm.setMenuMode()
-        
-        pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
-        self.__build__()
-    
         state_dic = {"modelingMenuSet": (currentMode == "modelingMenuSet"),
                      "riggingMenuSet": (currentMode == "riggingMenuSet"),
                      "animationMenuSet": (currentMode == "animationMenuSet"),
@@ -59,9 +59,11 @@ class Entrance(object):
         pm.menuItem(label=u'特效', radioButton=state_dic["dynamicsMenuSet"],
                     command=lambda *args: pm.setMenuMode("dynamicsMenuSet"))
         
+        pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
+        pm.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
+        self.__build__()
+    
     def __build__(self):
-        
-        from barbarian.utils import getPath, kUI
         
         currentMode = pm.setMenuMode()
         mi_dic = {"modelingMenuSet": u"[模型]",
@@ -69,25 +71,38 @@ class Entrance(object):
                   "animationMenuSet": u"[动画]",
                   "renderingMenuSet": u"[渲染]",
                   "dynamicsMenuSet": u"[特效]"}
+        if not currentMode in mi_dic: return
         
-        if not currentMode in mi_dic:
-            return
+        from barbarian.utils import getPath, kUI, getProject
         
         if pm.control("Form", exists=True):
             pm.deleteUI("Form")
-        try:
-            self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % currentMode))
+        try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % currentMode))
+        except: self.widget = None
+        else:
             width = pm.control(self.widget, q=True, width=True)
-            pm.control(self.widget, e=True, parent=self.layout, width=width)
+            pm.control(self.widget, e=True, parent=self.layout, width=width, enable=bool(getProject()))
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
             pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
             pm.shelfLayout(self.layout, e=True, position=(self.widget, 3))
-        except:
-            self.widget = None
         
         #To fix a control refresh bug
-        pm.control(self.button, e=True, manage=False)
-        pm.iconTextButton(self.button, e=True, manage=True, label=mi_dic[currentMode])
+        #pm.control(self.button, e=True, manage=False)
+        #pm.iconTextButton(self.button, e=True, manage=True, label=mi_dic[currentMode])
+
+    def __refreshUI__(self):
+        
+        from barbarian.utils import getProject
+        
+        if getProject(): 
+            try: pm.deleteUI("emptyMI")
+            except: pass
+            pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
+        else:
+            if not pm.menuItem("emptyMI", exists=True): pm.menuItem("emptyMI", l="", parent=self.menu)
+            pm.optionMenu(self.menu, e=True, v="", width=85, l=u"<选择项目>")
+        
+        pm.control(self.widget, e=True, enable=bool(getProject()))
 
 '''
 --------------------------------------------------------------------------------
@@ -97,10 +112,8 @@ Tool Initialization at Maya Startup
 #initialize plugins
 plugins = ["pyPBMpegCmd", "CustomDeformers"]
 for i in plugins:
-    try:
-        pm.loadPlugin(i)
-    except:
-        pass
+    try: pm.loadPlugin(i)
+    except: pass
 
 #initialize entrance
 if not pm.shelfLayout("PuTao", exists=True):
