@@ -1,0 +1,22 @@
+<projects>
+	<project name="PT">
+		<time>25</time>
+		<linear>centimeter</linear>
+		<camera>MainCam</camera>
+		<camResX>1280</camResX>
+		<camResY>720</camResY>
+		<playblastScale>0.75</playblastScale>
+		<animLibPath>P:\PT\DB\</animLibPath>
+		<facialLibPath>P:\PT\DB\</facialLibPath>
+	</project>
+	<project name="MB">
+		<time>25</time>
+		<linear>centimeter</linear>
+		<camera>MainCam</camera>
+		<camResX>1280</camResX>
+		<camResY>720</camResY>
+		<playblastScale>0.75</playblastScale>
+		<animLibPath>P:\MB\DB\</animLibPath>
+		<facialLibPath>P:\MB\DB\</facialLibPath>
+	</project>
+</projects>
