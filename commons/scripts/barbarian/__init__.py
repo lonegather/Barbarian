@@ -62,6 +62,7 @@ class Entrance(object):
         pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
         pm.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
         self.__build__()
+        self.__refreshUI__()
     
     def __build__(self):
         
