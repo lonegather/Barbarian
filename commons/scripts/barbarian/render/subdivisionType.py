@@ -28,7 +28,7 @@ def UI():
 	myWindow = cmds.window(windowName, t="SubdivisionSelection")
 	column_layout = cmds.columnLayout(p=myWindow, adj=True, )
 
-	subdivision_menu = cmds.optionMenuGrp(l="type", cw=(1,50), changeCommand="subdivisionType()")
+	subdivision_menu = cmds.optionMenuGrp(l="type", cw=(1,50), changeCommand="subdivisionType")
 	none = cmds.menuItem(l="none")
 	catclark = cmds.menuItem(l="catclark")
 	linear = cmds.menuItem(l="linear")
