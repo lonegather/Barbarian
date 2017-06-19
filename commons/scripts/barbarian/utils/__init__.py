@@ -77,10 +77,6 @@ def getProject(**kwargs):
         return pm.optionVar(q="PutaoTools_Project")
 
 
-def __isProjectUnselected__():
-    return bool(not pm.optionVar(q="PutaoTools_Project"))
-
-
 class ConfigHandler(xml.sax.ContentHandler):
     '''
     --------------------------------------------------------------------------------
@@ -265,7 +261,7 @@ Configuration Setup at Maya Startup
 '''
 try: pm.condition("ProjectChanged", delete=True)
 except: pass
-pm.condition("ProjectChanged", state=__isProjectUnselected__())
+pm.condition("ProjectChanged", state=True)
 
 __parser__ = xml.sax.make_parser()
 __parser__.setFeature(xml.sax.handler.feature_namespaces, 0)
