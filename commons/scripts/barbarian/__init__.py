@@ -33,9 +33,7 @@ class Entrance(object):
         self.button = pm.iconTextButton("itBtn", style="iconAndTextHorizontal",
             image=getPath(kIcon, "logo.jpg"), width=33, flat=0, parent=layout, 
             backgroundColor=[.2,.2,.2], command=pm.Callback(getHelp))
-        self.menu = pm.optionMenu("opMnu", width=85, parent=layout, l=u"<选择项目>", 
-                                  backgroundColor=[.2,.2,.2], enableBackground=True,
-                                  changeCommand=setProject)
+        self.menu = pm.optionMenu("opMnu", parent=layout, changeCommand=setProject)
         projects = getProject(all=True)
         for prj in projects:
             pm.menuItem(l=prj)
@@ -66,16 +64,9 @@ class Entrance(object):
     
     def __build__(self):
         
-        currentMode = pm.setMenuMode()
-        mi_dic = {"modelingMenuSet": u"[模型]",
-                  "riggingMenuSet": u"[绑定]",
-                  "animationMenuSet": u"[动画]",
-                  "renderingMenuSet": u"[渲染]",
-                  "dynamicsMenuSet": u"[特效]"}
-        if not currentMode in mi_dic: return
-        
         from barbarian.utils import getPath, kUI, getProject
         
+        currentMode = pm.setMenuMode()
         if pm.control("Form", exists=True):
             pm.deleteUI("Form")
         try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % currentMode))
@@ -86,22 +77,13 @@ class Entrance(object):
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
             pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
             pm.shelfLayout(self.layout, e=True, position=(self.widget, 3))
-        
-        #To fix a control refresh bug
-        #pm.control(self.button, e=True, manage=False)
-        #pm.iconTextButton(self.button, e=True, manage=True, label=mi_dic[currentMode])
 
     def __refreshUI__(self):
         
         from barbarian.utils import getProject
         
-        if getProject(): 
-            try: pm.deleteUI("emptyMI")
-            except: pass
-            pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
-        else:
-            if not pm.menuItem("emptyMI", exists=True): pm.menuItem("emptyMI", l="", parent=self.menu)
-            pm.optionMenu(self.menu, e=True, v="", width=85, l=u"<选择项目>")
+        if getProject(): pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
+        else: pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
         
         pm.control(self.widget, e=True, enable=bool(getProject()))
 
