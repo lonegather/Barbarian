@@ -56,81 +56,6 @@ def skinChangeWindow():
             
         
         
-<<<<<<< .mine
-        windowMain = cmds.window( "SCwindow", title = "skinChange_V0.1")
-        formMain = cmds.formLayout(numberOfDivisions=100)
-        
-        # Creating Element <<text>> "skinChange"
-        textTitle = cmds.text(label="skinChange", w=306, h=34)
-        cmds.formLayout( formMain, edit=True, attachForm=[(textTitle, 'top', 0), ( textTitle, 'left', 6)] )
-        #=========================================
-        # Creating Element <<button>> "assign_old_object"
-        buttonOld = cmds.button( backgroundColor=(1,1,0), label="assign_old_object", w=306, h=34, c=GEO1Input)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonOld, 'top', 34), ( buttonOld, 'left', 6)] )
-        #=========================================
-        # Creating Element <<textField>> "GEO1show"
-        textFieldOld = cmds.textField( ed=0, w=238, h=23)
-        cmds.formLayout( formMain, edit=True, attachForm=[(textFieldOld, 'top', 73), ( textFieldOld, 'left', 41)] )
-        #=========================================
-        # Creating Element <<button>> "assign_new_object"
-        buttonNew = cmds.button( backgroundColor=(0.392157,0.862745,1), label="assign_new_object", w=306, h=34, c=GEO2Input)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonNew, 'top', 102), ( buttonNew, 'left', 6)] )
-        #=========================================
-        # Creating Element <<textField>> "GEO2show"
-        textFieldNew = cmds.textField( ed=0, w=238, h=23)
-        cmds.formLayout( formMain, edit=True, attachForm=[(textFieldNew, 'top', 141), ( textFieldNew, 'left', 41)] )
-        #=========================================
-        # Creating Element <<button>> "changSkin"
-        buttonChange = cmds.button( label="changSkin", w=68, h=34, c=changeSkin)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonChange, 'top', 187), ( buttonChange, 'left', 41)] )
-        #=========================================
-        # Creating Element <<button>> "clear"
-        buttonClear = cmds.button( label="clear", w=68, h=34, c=clear)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonClear, 'top', 187), ( buttonClear, 'left', 210)] )
-        #=========================================
-        
-        cmds.setParent( '..' )
-        cmds.showWindow( windowMain )
-        cmds.window( "SCwindow", edit=True, widthHeight=(320.0, 256.0))
-
-||||||| .r49
-        windowMain = cmds.window( "SCwindow", title = "skinChange_V0.1")
-        formMain = cmds.formLayout(numberOfDivisions=100)
-        
-        # Creating Element <<text>> "skinChange"
-        textTitle = cmds.text(label="skinChange", w=306, h=34)
-        cmds.formLayout( formMain, edit=True, attachForm=[(textTitle, 'top', 0), ( textTitle, 'left', 6)] )
-        #=========================================
-        # Creating Element <<button>> "assign_old_object"
-        buttonOld = cmds.button( backgroundColor=(1,1,0), label="assign_old_object", w=306, h=34, c=GEO1Input)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonOld, 'top', 34), ( buttonOld, 'left', 6)] )
-        #=========================================
-        # Creating Element <<textField>> "GEO1show"
-        textFieldOld = cmds.textField( ed=0, w=238, h=23)
-        cmds.formLayout( formMain, edit=True, attachForm=[(textFieldOld, 'top', 73), ( textFieldOld, 'left', 41)] )
-        #=========================================
-        # Creating Element <<button>> "assign_new_object"
-        buttonNew = cmds.button( backgroundColor=(0.392157,0.862745,1), label="assign_new_object", w=306, h=34, c=GEO2Input)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonNew, 'top', 102), ( buttonNew, 'left', 6)] )
-        #=========================================
-        # Creating Element <<textField>> "GEO2show"
-        textFieldNew = cmds.textField( ed=0, w=238, h=23)
-        cmds.formLayout( formMain, edit=True, attachForm=[(textFieldNew, 'top', 141), ( textFieldNew, 'left', 41)] )
-        #=========================================
-        # Creating Element <<button>> "changSkin"
-        buttonChange = cmds.button( label="changSkin", w=68, h=34, c=changeSkin)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonChange, 'top', 187), ( buttonChange, 'left', 41)] )
-        #=========================================
-        # Creating Element <<button>> "clear"
-        buttonClear = cmds.button( label="clear", w=68, h=34, c=clear)
-        cmds.formLayout( formMain, edit=True, attachForm=[(buttonClear, 'top', 187), ( buttonClear, 'left', 210)] )
-        #=========================================
-        
-        cmds.setParent( '..' )
-        cmds.showWindow( windowMain )
-        cmds.window( "SCwindow", edit=True, widthHeight=(320.0, 256.0))
-
-=======
     ####### create main window #######
     if cmds.window("SCwindow", ex=True):
         cmds.deleteUI ("SCwindow")
@@ -171,4 +96,3 @@ def skinChangeWindow():
     cmds.showWindow( windowMain )
     cmds.window( "SCwindow", edit=True, widthHeight=(320.0, 256.0))
     
->>>>>>> .r52
