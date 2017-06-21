@@ -2,6 +2,9 @@ import os
 import xml.sax
 import pymel.core as pm
 
+__all__ = ["Renamer", "kIcon", "kBinary", "kUI",
+           "getPath", "getHelp", "getConfig", "getProject", "setProject"]
+
 kIcon = "../commons/icons/"
 kBinary = "../commons/bin/"
 kUI = "../commons/ui/"
