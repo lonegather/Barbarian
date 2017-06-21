@@ -1,212 +1,71 @@
-//quick select
-//elbowRotHelper_L_001_GRP
-select -r elbowRotHelper_L_001_GRP ;
-select -add Elbow_L ;
-parent;
-setAttr "elbowRotHelper_L_001_GRP.translateX" 0;
-setAttr "elbowRotHelper_L_001_GRP.translateY" 0;
-setAttr "elbowRotHelper_L_001_GRP.translateZ" 0;
-setAttr "elbowRotHelper_L_001_GRP.rotateX" 0;
-setAttr "elbowRotHelper_L_001_GRP.rotateY" 0;
-setAttr "elbowRotHelper_L_001_GRP.rotateZ" 180;
-parent -w;
-select -r ElbowPart1_L ;
-select -add elbowInputOffset_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r ShoulderPart2_L ;
-select -add elbowRotHelper_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+global proc DingWei(){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//把对象名存到数组中方便下面做循环调用
+string $advJntName[]={"Elbow_L","Elbow_R","Knee_L","Knee_R","Wrist_L","Wrist_R","Shoulder_L","Shoulder_R","Hip_L","Hip_R"};
+string $advJntNameHel[]={"ShoulderPart2_L","ShoulderPart2_R","HipPart2_L","HipPart2_R","ElbowPart2_L","ElbowPart2_R","Scapula_L","Scapula_R","Root_M","Root_M"};
+string $advJntNameOff[]={"ElbowPart1_L","ElbowPart1_R","Knee_L","Knee_R","Wrist_L","Wrist_R","Shoulder_L","Shoulder_R","Hip_L","Hip_R"};
+string $grpNameHel[]={"elbowRotHelper_L_001_GRP","elbowRotHelper_R_001_GRP","kneeRotHelper_L_001_GRP","kneeRotHelper_R_001_GRP","wristRotHelper_L_001_GRP","wristRotHelper_R_001_GRP","shoulderRotHelper_L_001_GRP","shoulderRotHelper_R_001_GRP","hipRotHelper_L_001_GRP","hipRotHelper_R_001_GRP"};
+string $grpNameOff[]={"elbowInputOffset_L_001_GRP","elbowInputOffset_R_001_GRP","kneeInputOffset_L_001_GRP","kneeInputOffset_R_001_GRP","wristInputOffset_L_001_GRP","wristInputOffset_R_001_GRP","shoulderInputOffset_L_001_GRP","shoulderInputOffset_R_001_GRP","hipInputOffset_L_001_GRP","hipInputOffset_R_001_GRP"};
+string $attName[]={".translateX",".translateY",".translateZ",".rotateX",".rotateY",".rotateZ"};
 
-//elbowRotHelper_R_001_GRP
-select -r elbowRotHelper_R_001_GRP ;
-select -add Elbow_R ;
-parent;
-setAttr "elbowRotHelper_R_001_GRP.translateX" 0;
-setAttr "elbowRotHelper_R_001_GRP.translateY" 0;
-setAttr "elbowRotHelper_R_001_GRP.translateZ" 0;
-setAttr "elbowRotHelper_R_001_GRP.rotateX" 0;
-setAttr "elbowRotHelper_R_001_GRP.rotateY" 0;
-setAttr "elbowRotHelper_R_001_GRP.rotateZ" 180;
-parent -w;
-select -r ElbowPart1_R ;
-select -add elbowInputOffset_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r ShoulderPart2_R ;
-select -add elbowRotHelper_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-
-//kneeRotHelper_L_001_GRP
-select -r kneeRotHelper_L_001_GRP ;
-select -add Knee_L ;
-parent;
-setAttr "kneeRotHelper_L_001_GRP.rotateZ" 0;
-setAttr "kneeRotHelper_L_001_GRP.translateX" 0;
-setAttr "kneeRotHelper_L_001_GRP.translateY" 0;
-setAttr "kneeRotHelper_L_001_GRP.translateZ" 0;
-setAttr "kneeRotHelper_L_001_GRP.rotateX" 0;
-setAttr "kneeRotHelper_L_001_GRP.rotateY" 0;
-setAttr "kneeRotHelper_L_001_GRP.rotateZ" 180;
-parent -w;
-select -r HipPart2_L ;
-select -add kneeRotHelper_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r Knee_L ;
-select -add kneeInputOffset_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//把工具创建的对象P给相应的骨骼
+for ($i=0;$i<10;$i++){
+    float $att[]=`xform -q -ws -t $grpNameHel[$i]`;
+    parent -a $grpNameHel[$i] $advJntName[$i];
+    for ($q=0;$q<6;$q++){
+        if ($q==5){
+            setAttr ($grpNameHel[$i]+$attName[$q]) 180;
+        }else{
+            setAttr ($grpNameHel[$i]+$attName[$q]) 0;
+        }
+    }
+    parent -w;
+    for ($w=0;$w<2;$w++){
+        if ($w==0){
+            parent -a $grpNameHel[$i] $advJntNameHel[$i];
+        }else{
+            parent -a $grpNameOff[$i] $advJntNameOff[$i];
+        }
+    }  
+}
+}
 
 
-//kneeRotHelper_R_001_GRP
-select -r kneeRotHelper_R_001_GRP ;
-select -add Knee_R ;
-parent;
-setAttr "kneeRotHelper_R_001_GRP.translateX" 0;
-setAttr "kneeRotHelper_R_001_GRP.translateY" 0;
-setAttr "kneeRotHelper_R_001_GRP.translateZ" 0;
-setAttr "kneeRotHelper_R_001_GRP.rotateX" 0;
-setAttr "kneeRotHelper_R_001_GRP.rotateY" 0;
-setAttr "kneeRotHelper_R_001_GRP.rotateZ" 180;
-parent -w;
-select -r HipPart2_R ;
-select -add kneeRotHelper_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r Knee_R ;
-select -add kneeInputOffset_R_001_GRP ;
-ParentConstraint;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+global proc GuiWei(){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//一键复原
 
+string $grpNameHel[]={"elbowRotHelper_L_001_GRP","elbowRotHelper_R_001_GRP","kneeRotHelper_L_001_GRP","kneeRotHelper_R_001_GRP","wristRotHelper_L_001_GRP","wristRotHelper_R_001_GRP","shoulderRotHelper_L_001_GRP","shoulderRotHelper_R_001_GRP","hipRotHelper_L_001_GRP","hipRotHelper_R_001_GRP"};
+string $grpNameOff[]={"elbowInputOffset_L_001_GRP","elbowInputOffset_R_001_GRP","kneeInputOffset_L_001_GRP","kneeInputOffset_R_001_GRP","wristInputOffset_L_001_GRP","wristInputOffset_R_001_GRP","shoulderInputOffset_L_001_GRP","shoulderInputOffset_R_001_GRP","hipInputOffset_L_001_GRP","hipInputOffset_R_001_GRP"};
+string $attName[]={".translateX",".translateY",".translateZ",".rotateX",".rotateY",".rotateZ"};
+float $attEnd[]={2.68,8.996557097,1.408860367e-007,0,0,0,-2.68,8.996557328,4.69620377e-008,0,0,0,0.4879040419,3.264279818,0.1028623244,0,0,-90,-0.4879040419,3.264279818,0.1028623244,0,0,90,4.088693578,8.996555581,-0.002325134734,0,0,0,-4.088693578,8.996556823,-0.00232563948,0,0,0,0.9854847249,8.996557097,1.408860367e-007,0,0,0,-0.9854847249,8.996557328,4.69620377e-008,0,0,0,0.4879040419,5.662756533,0.1028623244,0,0,-90,-0.4879040419,5.662756533,0.1028623244,0,0,90};
+for ($i=0;$i<size($grpNameHel);$i++){
+    parent -a $grpNameOff[$i] $grpNameHel[$i];
+    parent -w $grpNameHel[$i];
+    for ($q=0;$q<6;$q++){
+        setAttr ($grpNameHel[$i]+$attName[$q]) $attEnd[$i*6+$q];
+        setAttr ($grpNameOff[$i]+$attName[$q]) 0;
+    }
+}
+}
 
-//wristRotHelper_L_001_GRP
-select -r wristRotHelper_L_001_GRP ;
-select -add Wrist_L ;
-parent;
-setAttr "wristRotHelper_L_001_GRP.translateX" 0;
-setAttr "wristRotHelper_L_001_GRP.translateY" 0;
-setAttr "wristRotHelper_L_001_GRP.translateZ" 0;
-setAttr "wristRotHelper_L_001_GRP.rotateX" 0;
-setAttr "wristRotHelper_L_001_GRP.rotateY" 0;
-setAttr "wristRotHelper_L_001_GRP.rotateZ" 180;
-parent -w;
-select -r Wrist_L ;
-select -add wristInputOffset_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r ElbowPart2_L ;
-select -add wristRotHelper_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+//窗口界面
+if (`window -ex xxWin`){
+    
+    deleteUI xxWin;}
 
+window -t "修型工具执行界面" -wh 300 70 xxWin ;
+columnLayout -adj true;
 
-//wristRotHelper_R_001_GRP
-select -r wristRotHelper_R_001_GRP ;
-select -add Wrist_R ;
-parent;
-setAttr "wristRotHelper_R_001_GRP.translateX" 0;
-setAttr "wristRotHelper_R_001_GRP.translateY" 0;
-setAttr "wristRotHelper_R_001_GRP.translateZ" 0;
-setAttr "wristRotHelper_R_001_GRP.rotateX" 0;
-setAttr "wristRotHelper_R_001_GRP.rotateY" 0;
-setAttr "wristRotHelper_R_001_GRP.rotateZ" 180;
-parent -w;
-select -r Wrist_R ;
-select -add wristInputOffset_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r ElbowPart2_R ;
-select -add wristRotHelper_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+text -l "";
 
-//shoulderRotHelper_L_001_GRP
-select -r shoulderRotHelper_L_001_GRP ;
-select -add Shoulder_L ;
-parent;
-setAttr "shoulderRotHelper_L_001_GRP.translateX" 0;
-setAttr "shoulderRotHelper_L_001_GRP.translateY" 0;
-setAttr "shoulderRotHelper_L_001_GRP.translateZ" 0;
-setAttr "shoulderRotHelper_L_001_GRP.rotateX" 0;
-setAttr "shoulderRotHelper_L_001_GRP.rotateY" 0;
-setAttr "shoulderRotHelper_L_001_GRP.rotateZ" 180;
-parent -w;
-select -r Shoulder_L ;
-select -add shoulderInputOffset_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r Scapula_L ;
-select -add shoulderRotHelper_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+button -l "定位"  -w 10 -h 28 -c "DingWei";
 
-//shoulderRotHelper_R_001_GRP
-select -r shoulderRotHelper_R_001_GRP ;
-select -add Shoulder_R ;
-parent;
-setAttr "shoulderRotHelper_R_001_GRP.translateX" 0;
-setAttr "shoulderRotHelper_R_001_GRP.translateY" 0;
-setAttr "shoulderRotHelper_R_001_GRP.translateZ" 0;
-setAttr "shoulderRotHelper_R_001_GRP.rotateX" 0;
-setAttr "shoulderRotHelper_R_001_GRP.rotateY" 0;
-setAttr "shoulderRotHelper_R_001_GRP.rotateZ" 180;
-parent -w;
-select -r Shoulder_R ;
-select -add shoulderInputOffset_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r Scapula_R ;
-select -add shoulderRotHelper_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+text -l "" -h 5;
 
+button -l "复原" -w 10 -h 28 -c "GuiWei";
 
-//hipRotHelper_L_001_GRP
-select -r hipRotHelper_L_001_GRP ;
-select -add Hip_L ;
-parent;
-setAttr "hipRotHelper_L_001_GRP.translateX" 0;
-setAttr "hipRotHelper_L_001_GRP.translateY" 0;
-setAttr "hipRotHelper_L_001_GRP.translateZ" 0;
-setAttr "hipRotHelper_L_001_GRP.rotateX" 0;
-setAttr "hipRotHelper_L_001_GRP.rotateY" 0;
-setAttr "hipRotHelper_L_001_GRP.rotateZ" 180;
-parent -w;
-select -r Hip_L ;
-select -add hipInputOffset_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r Root_M ;
-select -add hipRotHelper_L_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
+window -e -wh 250 100 xxWin;
+showWindow xxWin;
 
-//hipRotHelper_R_001_GRP
-select -r hipRotHelper_R_001_GRP ;
-select -add Hip_R ;
-parent;
-setAttr "hipRotHelper_R_001_GRP.translateX" 0;
-setAttr "hipRotHelper_R_001_GRP.translateY" 0;
-setAttr "hipRotHelper_R_001_GRP.translateZ" 0;
-setAttr "hipRotHelper_R_001_GRP.rotateX" 0;
-setAttr "hipRotHelper_R_001_GRP.rotateY" 0;
-setAttr "hipRotHelper_R_001_GRP.rotateZ" 180;
-parent -w;
-select -r Hip_R ;
-select -add hipInputOffset_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-select -r Root_M ;
-select -add hipRotHelper_R_001_GRP ;
-doCreateParentConstraintArgList 1 { "1","0","0","0","0","0","0","1","","1" };
-parentConstraint -mo -weight 1;
-
-
-select -r hipRotHelper_R_001_GRP ;
-select -r hipRotHelper_R_001_GRP hipRotHelper_L_001_GRP shoulderRotHelper_R_001_GRP shoulderRotHelper_L_001_GRP wristRotHelper_R_001_GRP wristRotHelper_L_001_GRP kneeRotHelper_R_001_GRP kneeRotHelper_L_001_GRP elbowRotHelper_R_001_GRP elbowRotHelper_L_001_GRP ;
-group; xform -os -piv 0 0 0;
-rename "helper_C_001_GRP";
