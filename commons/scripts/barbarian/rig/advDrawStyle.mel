@@ -1,13 +1,13 @@
-global proc advDrawStyle(){
-    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+global proc advAllJnt(){
+
 //定义adv的骨骼名称数组
 string $jntType[]={"","FKX","IKX","FKOffset","IKSp"};
-string $advJnt[]={"Root_M", "Hip_R", "HipPart1_R", "HipPart2_R", "Knee_R", "Ankle_R", "Toes_R", "ToesEnd_R", "RootPart1_M", "RootPart2_M", "Spine1_M", "Spine1Part1_M", "Spine1Part2_M", "Chest_M", "Scapula_R", "Shoulder_R", "ShoulderPart1_R", "ShoulderPart2_R", "Elbow_R", "ElbowPart1_R", "ElbowPart2_R", "Wrist_R", "MiddleFinger1_R", "MiddleFinger2_R", "MiddleFinger3_R", "MiddleFinger4_R", "ThumbFinger1_R", "ThumbFinger2_R", "ThumbFinger3_R", "ThumbFinger4_R", "IndexFinger1_R", "IndexFinger2_R", "IndexFinger3_R", "IndexFinger4_R", "Cup_R", "PinkyFinger1_R", "PinkyFinger2_R", "PinkyFinger3_R", "PinkyFinger4_R", "RingFinger1_R", "RingFinger2_R", "RingFinger3_R", "RingFinger4_R", "Neck_M", "NeckPart1_M", "NeckPart2_M", "Head_M", "Eye_R", "EyeEnd_R", "Jaw_M", "JawEnd_M", "HeadEnd_M", "Eye_L", "EyeEnd_L", "Scapula_L", "Shoulder_L", "ShoulderPart1_L", "ShoulderPart2_L", "Elbow_L", "ElbowPart1_L", "ElbowPart2_L", "Wrist_L", "MiddleFinger1_L", "MiddleFinger2_L", "MiddleFinger3_L", "MiddleFinger4_L", "ThumbFinger1_L", "ThumbFinger2_L", "ThumbFinger3_L", "ThumbFinger4_L", "IndexFinger1_L", "IndexFinger2_L", "IndexFinger3_L", "IndexFinger4_L", "Cup_L", "PinkyFinger1_L", "PinkyFinger2_L", "PinkyFinger3_L", "PinkyFinger4_L", "RingFinger1_L", "RingFinger2_L", "RingFinger3_L", "RingFinger4_L", "Hip_L", "HipPart1_L", "HipPart2_L", "Knee_L", "Ankle_L", "Toes_L", "ToesEnd_L"};
+string $advJnt[]={"Root_M", "Hip_R", "HipPart1_R", "HipPart2_R", "HipPart3_R", "HipPart4_R", "Knee_R", "KneePart1_R", "KneePart2_R", "KneePart3_R", "KneePart4_R", "Ankle_R", "Toes_R", "ToesEnd_R", "RootPart1_M", "RootPart2_M", "Spine1_M", "Spine1Part1_M", "Spine1Part2_M", "Chest_M", "Scapula_R", "Shoulder_R", "ShoulderPart1_R", "ShoulderPart2_R", "ShoulderPart3_R", "ShoulderPart4_R", "Elbow_R", "ElbowPart1_R", "ElbowPart2_R", "ElbowPart3_R", "ElbowPart4_R", "Wrist_R", "MiddleFinger1_R", "MiddleFinger2_R", "MiddleFinger3_R", "MiddleFinger4_R", "ThumbFinger1_R", "ThumbFinger2_R", "ThumbFinger3_R", "ThumbFinger4_R", "IndexFinger1_R", "IndexFinger2_R", "IndexFinger3_R", "IndexFinger4_R", "Cup_R", "PinkyFinger1_R", "PinkyFinger2_R", "PinkyFinger3_R", "PinkyFinger4_R", "RingFinger1_R", "RingFinger2_R", "RingFinger3_R", "RingFinger4_R", "Neck_M", "NeckPart1_M", "NeckPart2_M", "NeckPart3_M", "NeckPart4_M", "NeckPart5_M", "Head_M", "Eye_R", "EyeEnd_R", "Jaw_M", "JawEnd_M", "HeadEnd_M", "Eye_L", "EyeEnd_L", "Scapula_L", "Shoulder_L", "ShoulderPart1_L", "ShoulderPart2_L", "ShoulderPart3_L", "ShoulderPart4_L", "Elbow_L", "ElbowPart1_L", "ElbowPart2_L", "ElbowPart3_L", "ElbowPart4_L", "Wrist_L", "MiddleFinger1_L", "MiddleFinger2_L", "MiddleFinger3_L", "MiddleFinger4_L", "ThumbFinger1_L", "ThumbFinger2_L", "ThumbFinger3_L", "ThumbFinger4_L", "IndexFinger1_L", "IndexFinger2_L", "IndexFinger3_L", "IndexFinger4_L", "Cup_L", "PinkyFinger1_L", "PinkyFinger2_L", "PinkyFinger3_L", "PinkyFinger4_L", "RingFinger1_L", "RingFinger2_L", "RingFinger3_L", "RingFinger4_L", "Hip_L", "HipPart1_L", "HipPart2_L", "HipPart3_L", "HipPart4_L", "Knee_L", "KneePart1_L", "KneePart2_L", "KneePart3_L", "KneePart4_L","Ankle_L", "Toes_L", "ToesEnd_L"};
 //切换骨骼的显示隐藏
 for ($i=0;$i<size($jntType);$i++){
     for($sels in $advJnt){
         if (`objExists ($jntType[$i]+$sels)`) {
-            //string $mjv = `attributeExists "joint_vis" Main`;
             string $dry = `getAttr ($jntType[$i]+$sels+".drawStyle")`;
             if ($dry == 0 ){
                 setAttr ($jntType[$i]+$sels+".drawStyle") 2;
@@ -16,7 +16,75 @@ for ($i=0;$i<size($jntType);$i++){
             }
         }
     }
-}        
 }
 
-advDrawStyle;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+global proc advSkinJnt(){
+
+//定义advSkin的骨骼名称数组
+string $advJnt[]={"Root_M", "Hip_R", "HipPart1_R", "HipPart2_R", "HipPart3_R", "HipPart4_R", "Knee_R", "KneePart1_R", "KneePart2_R", "KneePart3_R", "KneePart4_R", "Ankle_R", "Toes_R", "ToesEnd_R", "RootPart1_M", "RootPart2_M", "Spine1_M", "Spine1Part1_M", "Spine1Part2_M", "Chest_M", "Scapula_R", "Shoulder_R", "ShoulderPart1_R", "ShoulderPart2_R", "ShoulderPart3_R", "ShoulderPart4_R", "Elbow_R", "ElbowPart1_R", "ElbowPart2_R", "ElbowPart3_R", "ElbowPart4_R", "Wrist_R", "MiddleFinger1_R", "MiddleFinger2_R", "MiddleFinger3_R", "MiddleFinger4_R", "ThumbFinger1_R", "ThumbFinger2_R", "ThumbFinger3_R", "ThumbFinger4_R", "IndexFinger1_R", "IndexFinger2_R", "IndexFinger3_R", "IndexFinger4_R", "Cup_R", "PinkyFinger1_R", "PinkyFinger2_R", "PinkyFinger3_R", "PinkyFinger4_R", "RingFinger1_R", "RingFinger2_R", "RingFinger3_R", "RingFinger4_R", "Neck_M", "NeckPart1_M", "NeckPart2_M", "NeckPart3_M", "NeckPart4_M", "NeckPart5_M", "Head_M", "Eye_R", "EyeEnd_R", "Jaw_M", "JawEnd_M", "HeadEnd_M", "Eye_L", "EyeEnd_L", "Scapula_L", "Shoulder_L", "ShoulderPart1_L", "ShoulderPart2_L", "ShoulderPart3_L", "ShoulderPart4_L", "Elbow_L", "ElbowPart1_L", "ElbowPart2_L", "ElbowPart3_L", "ElbowPart4_L", "Wrist_L", "MiddleFinger1_L", "MiddleFinger2_L", "MiddleFinger3_L", "MiddleFinger4_L", "ThumbFinger1_L", "ThumbFinger2_L", "ThumbFinger3_L", "ThumbFinger4_L", "IndexFinger1_L", "IndexFinger2_L", "IndexFinger3_L", "IndexFinger4_L", "Cup_L", "PinkyFinger1_L", "PinkyFinger2_L", "PinkyFinger3_L", "PinkyFinger4_L", "RingFinger1_L", "RingFinger2_L", "RingFinger3_L", "RingFinger4_L", "Hip_L", "HipPart1_L", "HipPart2_L", "HipPart3_L", "HipPart4_L", "Knee_L", "KneePart1_L", "KneePart2_L", "KneePart3_L", "KneePart4_L","Ankle_L", "Toes_L", "ToesEnd_L"};
+//切换骨骼的显示隐藏
+for($sels in $advJnt){
+    if (`objExists $sels`) {
+        string $dry = `getAttr ($sels+".drawStyle")`;
+        if ($dry == 0 ){
+            setAttr ($sels+".drawStyle") 2;
+        }else{
+            setAttr ($sels+".drawStyle") 0;
+        }
+    }
+}
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+global proc shouJnt(){
+
+//显示所有的骨骼
+string $allJnt[] = `ls -type "joint"`;
+for($sels in $allJnt){
+    string $dry = `getAttr ($sels+".drawStyle")`;
+    if($dry == 0){
+    }else{
+        setAttr ($sels+".drawStyle") 0;
+    }
+}
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+global proc hiddenJnt(){
+
+//隐藏所有的骨骼
+string $allJnt[] = `ls -type "joint"`;
+for($sels in $allJnt){
+    string $dry = `getAttr ($sels+".drawStyle")`;
+    if($dry == 0){
+        setAttr ($sels+".drawStyle") 2;
+    }
+}
+
+}
+
+if(`window -ex AdvDrawWin`){
+    
+    deleteUI AdvDrawWin;
+    
+}
+window -w 240 -h 230 -vis 1 -t "骨骼的显示隐藏" AdvDrawWin;
+columnLayout -adjustableColumn on;
+     text -height 40   -font "fixedWidthFont" -l "adv_All骨骼的显示与隐藏";	
+     button -l "切换" -w 150 -h 25 -c "advAllJnt";
+     text -height 40   -font "fixedWidthFont" -l "adv_Skin骨骼的显示与隐藏";	
+     button -l "切换" -w 150 -h 25 -c "advSkinJnt";
+     text -height 40   -font "fixedWidthFont" -l "显示所有的骨骼";	
+     button -l "显示" -w 150 -h 25 -c "shouJnt";
+     text -height 40   -font "fixedWidthFont" -l "隐藏所有的骨骼";	
+     button -l "隐藏" -w 150 -h 25 -c "hiddenJnt";
+     
+window -e -wh 240 261 AdvDrawWin;
+     
+showWindow AdvDrawWin;
+

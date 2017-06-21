@@ -789,7 +789,7 @@
   <widget class="Line" name="line_2">
    <property name="geometry">
     <rect>
-     <x>1510</x>
+     <x>1570</x>
      <y>0</y>
      <width>16</width>
      <height>33</height>
@@ -1099,7 +1099,7 @@
     <rect>
      <x>1120</x>
      <y>0</y>
-     <width>71</width>
+     <width>91</width>
      <height>33</height>
     </rect>
    </property>
@@ -1154,7 +1154,7 @@
      </font>
     </property>
     <property name="text">
-     <string>修型工具</string>
+     <string>身体修型工具</string>
     </property>
     <property name="icon">
      <iconset>
@@ -1190,7 +1190,7 @@
   <widget class="QFrame" name="frame_14">
    <property name="geometry">
     <rect>
-     <x>1200</x>
+     <x>1220</x>
      <y>0</y>
      <width>61</width>
      <height>33</height>
@@ -1264,7 +1264,7 @@
   <widget class="QPushButton" name="modelBtn_14">
    <property name="geometry">
     <rect>
-     <x>1210</x>
+     <x>1230</x>
      <y>40</y>
      <width>32</width>
      <height>23</height>
@@ -1278,6 +1278,285 @@
    </property>
    <property name="-command" stdset="0">
     <string>&quot;source \&quot;barbarian/rig/批量改名.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_15">
+   <property name="geometry">
+    <rect>
+     <x>1290</x>
+     <y>0</y>
+     <width>91</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_15">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>表情镜像工具</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_15">
+   <property name="geometry">
+    <rect>
+     <x>1300</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/表情镜像工具.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_16">
+   <property name="geometry">
+    <rect>
+     <x>1390</x>
+     <y>0</y>
+     <width>71</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_16">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>毛囊工具</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_16">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/djRivet.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_17">
+   <property name="geometry">
+    <rect>
+     <x>1470</x>
+     <y>0</y>
+     <width>50</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_17">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Rivet</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_17">
+   <property name="geometry">
+    <rect>
+     <x>1480</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/Rivet.mel\&quot;;&quot;</string>
    </property>
   </widget>
   <zorder>modelBtn_2</zorder>
@@ -1308,6 +1587,12 @@
   <zorder>modelBtn_13</zorder>
   <zorder>frame_14</zorder>
   <zorder>modelBtn_14</zorder>
+  <zorder>frame_15</zorder>
+  <zorder>modelBtn_15</zorder>
+  <zorder>frame_16</zorder>
+  <zorder>modelBtn_16</zorder>
+  <zorder>frame_17</zorder>
+  <zorder>modelBtn_17</zorder>
  </widget>
  <resources/>
  <connections>
@@ -1515,6 +1800,54 @@
     </hint>
     <hint type="destinationlabel">
      <x>1225</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_15</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_15</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1338</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1315</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_16</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_16</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1438</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1405</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_17</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_17</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1538</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1495</x>
      <y>51</y>
     </hint>
    </hints>
