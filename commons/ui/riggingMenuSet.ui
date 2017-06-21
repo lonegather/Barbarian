@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1320</width>
-    <height>96</height>
+    <width>1645</width>
+    <height>89</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -789,7 +789,7 @@
   <widget class="Line" name="line_2">
    <property name="geometry">
     <rect>
-     <x>1180</x>
+     <x>1510</x>
      <y>0</y>
      <width>16</width>
      <height>33</height>
@@ -1094,6 +1094,192 @@
     <string>lambda *args: barbarian.rig.copySkin.skinChangeWindow()</string>
    </property>
   </widget>
+  <widget class="QFrame" name="frame_13">
+   <property name="geometry">
+    <rect>
+     <x>1120</x>
+     <y>0</y>
+     <width>71</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_13">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>修型工具</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_13">
+   <property name="geometry">
+    <rect>
+     <x>1140</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/xiuxing.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
+  <widget class="QFrame" name="frame_14">
+   <property name="geometry">
+    <rect>
+     <x>1200</x>
+     <y>0</y>
+     <width>61</width>
+     <height>33</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>50</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>33</height>
+    </size>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Panel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <property name="lineWidth">
+    <number>1</number>
+   </property>
+   <widget class="QCommandLinkButton" name="modelCLBtn_14">
+    <property name="geometry">
+     <rect>
+      <x>-6</x>
+      <y>-2</y>
+      <width>150</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>41</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>命名工具</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>0</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="modelBtn_14">
+   <property name="geometry">
+    <rect>
+     <x>1210</x>
+     <y>40</y>
+     <width>32</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="+visible" stdset="0">
+    <string>False</string>
+   </property>
+   <property name="-command" stdset="0">
+    <string>&quot;source \&quot;barbarian/rig/批量改名.mel\&quot;;&quot;</string>
+   </property>
+  </widget>
   <zorder>modelBtn_2</zorder>
   <zorder>frame_2</zorder>
   <zorder>line</zorder>
@@ -1118,6 +1304,10 @@
   <zorder>modelBtn_11</zorder>
   <zorder>frame_12</zorder>
   <zorder>modelBtn_12</zorder>
+  <zorder>frame_13</zorder>
+  <zorder>modelBtn_13</zorder>
+  <zorder>frame_14</zorder>
+  <zorder>modelBtn_14</zorder>
  </widget>
  <resources/>
  <connections>
@@ -1293,6 +1483,38 @@
     </hint>
     <hint type="destinationlabel">
      <x>1035</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_13</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_13</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1188</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>35</x>
+     <y>31</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>modelCLBtn_14</sender>
+   <signal>clicked()</signal>
+   <receiver>modelBtn_14</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1268</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1225</x>
      <y>51</y>
     </hint>
    </hints>

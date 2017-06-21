@@ -1,0 +1,283 @@
+	if (`window -ex BRreNameWin`)
+
+	deleteUI  BRreNameWin;
+	window -title "Batch Renaming Window"
+    	-wh 500 300  -mxb 0  BRreNameWin;    		
+  formLayout renOptionFom;
+	frameLayout -l "改名操作" -labelAlign "center"
+			 renOptionFrm;
+	columnLayout renOptionLay;
+	radioButtonGrp -numberOfRadioButtons 3
+    	  -label "改名类型"
+			-labelArray3 "加前缀" "加后缀" "替换字符"
+			-sl 1 renType;
+	radioButtonGrp -numberOfRadioButtons 2 -shareCollection renType
+			-label ""
+			-labelArray2  "取新名" "" renType2;
+
+	radioButtonGrp
+     	-numberOfRadioButtons 2
+     	-label "操作范围"
+	    -labelArray2 "被选物体" "包括子物体" 
+			-sl 1 renRange;
+	setParent..;
+	setParent..;
+	frameLayout -l "替换字符" -labelAlign "center"
+			 repNameFrm;
+	 		
+	columnLayout -adjustableColumn true  repNameLay;
+	textFieldGrp 
+			-label "旧文字" -en 0	
+			-text "old" oldstring;
+
+	textFieldGrp
+			-label "新字符" -en 0 
+			-text "new" newstring;
+	setParent..;
+	setParent..;
+
+	frameLayout -l "新名称" -labelAlign "center"
+			 newNameFrm;
+
+	columnLayout -adjustableColumn true newNameLay;
+	textFieldGrp 
+			-label "前缀" -en 1
+			-text "Prefix_" preString ;
+	textFieldGrp 
+			-label "后缀" -en 0
+			-text "_Postfix" postString ;
+	textFieldGrp 
+			-label "物体名" -en 0
+			-text "Obj_" objString ;
+	setParent..;
+	setParent..;
+
+	button -l "Replace" 
+			-annotation "Rename Objects Operation"
+			-c "gxb_BRrenameTool_Main;deleteUI  BRreNameWin;" okBtn;
+	button -l "Apply" 
+			-annotation "Rename Objects Operation"
+			-c "gxb_BRrenameTool_Main;" optBtn;
+	button -l "Close"
+			-annotation "Close Curren Windows"
+			-c "deleteUI  BRreNameWin;" closeBtn;	
+	setParent..;
+
+	string $cmdOnOldStr = "textFieldGrp -e -en 1 oldstring;";
+	string $cmdOffOldStr = "textFieldGrp -e -en 0 oldstring;";
+
+	string $cmdOnNewStr = "textFieldGrp -e -en 1 newstring;";
+	string $cmdOffNewStr = "textFieldGrp -e -en 0 newstring;";
+
+	string $cmdOnObjStr = "textFieldGrp -e -en 1 objString;";
+	string $cmdOffObjStr = "textFieldGrp -e -en 0 objString;";
+
+	string $cmdOnPreStr = "textFieldGrp -e -en 1 preString;";
+	string $cmdOffPreStr = "textFieldGrp -e -en 0 preString;";
+
+	string $cmdOnPosStr = "textFieldGrp -e -en 1 postString;";
+	string $cmdOffPosStr = "textFieldGrp -e -en 0 postString;";
+
+
+
+	radioButtonGrp -e -on1 ($cmdOnPreStr + $cmdOffOldStr + $cmdOffNewStr + $cmdOffObjStr + $cmdOffPosStr)
+			-on2 ($cmdOffPreStr + $cmdOffOldStr + $cmdOffNewStr + $cmdOffObjStr + $cmdOnPosStr)
+			-on3 ($cmdOffPreStr + $cmdOnOldStr + $cmdOnNewStr + $cmdOffObjStr + $cmdOffPosStr)
+			renType;
+	radioButtonGrp -e
+			-on1 ($cmdOffPreStr + $cmdOffOldStr + $cmdOffNewStr + $cmdOnObjStr + $cmdOffPosStr)
+			-on2 ($cmdOffPreStr + $cmdOffOldStr + $cmdOffNewStr + $cmdOffObjStr + $cmdOffPosStr)
+			renType2;
+
+	formLayout -e	
+		-af okBtn left 5
+		-af okBtn bottom 5 
+		-ap okBtn right 0 30 
+
+		-ac optBtn left 5 okBtn
+		-af optBtn bottom 5 
+		-ap optBtn right 0 65 
+
+		-ac closeBtn left 5 optBtn
+		-af closeBtn bottom 5
+		-af closeBtn right 5
+
+		-af renOptionFrm top 5
+		-af renOptionFrm left 5
+		-af renOptionFrm right 5 
+
+		-ac repNameFrm top 5 renOptionFrm
+		-af repNameFrm left 5
+		-af repNameFrm right 5 
+
+		-ac newNameFrm top 5 repNameFrm
+		-af newNameFrm left 5
+		-af newNameFrm right 5 
+		renOptionFom;
+
+showWindow BRreNameWin;
+
+
+
+proc BRaddPrefix(string $seled[],string $prefix)
+{
+	for($i=0;$i<`size $seled`;$i++)
+	{
+		string $namepiece[];
+		int $j = (`size $seled`)-$i-1;
+		int  $tok = `tokenize $seled[$j] "|"  $namepiece`;
+
+		string $name_temp = $prefix + $namepiece[$tok-1] ;
+		rename $seled[$j] $name_temp;
+	}
+}
+
+proc BRaddPostfix(string $seled[],string $postfix)
+{
+	for($i=0;$i<`size $seled`;$i++)
+	{
+		string $namepiece[];
+		int $j = (`size $seled`)-$i-1;
+		int  $tok = `tokenize $seled[$j] "|"  $namepiece`;
+
+		string $name_temp = $namepiece[$tok-1] + $postfix ;
+		rename $seled[$j] $name_temp;
+	}
+}
+
+proc BRrepLetter(string $seled[],string $oldLetter,string $newLetter)
+{
+	for($i=0;$i<`size $seled`;$i++)
+	{
+		string $namepiece[];
+		int $j = (`size $seled`)-$i-1;
+		int  $tok = `tokenize $seled[$j] "|"  $namepiece`;
+
+		string $name_temp = `substitute $oldLetter $namepiece[$tok-1] $newLetter`;
+		rename $seled[$j] $name_temp;
+	}
+}
+
+proc BRrenShap(string $seled[])
+{
+	int $j = size ($seled);
+	string $namepiece[];
+
+	for ($i=0;$i<$j;$i++)
+	{
+	select -r $seled[$i];
+	string $shapes[] = `ls -dag -leaf -sl`;
+	int $num = `tokenize $seled[$i] "|" $namepiece` -1;
+
+	if(size($shapes) == 1)
+		{
+	string $shapName = $namepiece[$num] + "Shape" ;
+	rename $shapes[0]   $shapName;
+		}
+	else
+		{
+		
+for($ii=0;$ii<size($shapes);$ii++)
+			{
+	string $temp = $ii+1;
+	string $shapName = $namepiece[$num] + "Shape" + $temp;
+	rename $shapes[$ii]   $shapName;
+			}
+		}
+	}
+}
+
+proc BRnewName(string $seled[],string $newName)
+{
+	int $j = size ($seled);
+	
+for($i=0;$i<`size $seled`;$i++)
+	{
+	int $j = (`size $seled`)-$i-1;
+	string $name_temp = $newName + $j;
+		rename $seled[$j] $name_temp;
+	}
+}
+
+global proc gxb_BRrenameTool_Main()
+{
+	string $tmp[],$tmp1[],$sel_list[],$shap[];
+
+	int $renType = `radioButtonGrp -q -sl renType` 
+		+ sign(float(`radioButtonGrp -q -sl renType2`))*3.0
+		+ `radioButtonGrp -q -sl renType2`;
+	int $renRang = `radioButtonGrp -q -sl renRange`;
+
+	string $oldName = `textFieldGrp -q -text oldstring`;
+	string $newName = `textFieldGrp -q -text newstring`;
+	string $prefix	= `textFieldGrp -q -text preString`;
+	string $postfix = `textFieldGrp -q -text postString`;
+	string $objName = `textFieldGrp -q -text objString`;
+
+	if($renRang == 1)
+	{
+		$tmp1 = `ls -l -sl`;
+		$shap = `ls -s -l -sl`;
+	}
+	else
+	{
+		$tmp1 = `ls -sl`;
+	select -hi $tmp1;
+		$tmp1 = `ls -l -sl`;
+	}
+	$shap = `ls -s -l -sl`;
+	$tmp = stringArrayRemove($shap, $tmp1);
+
+	for($i=0;$i<`size $tmp`;$i++)
+	{
+	if($i<(`size $tmp`)-1)
+		{
+	int $j = $i+1;
+			$sel_list[$j] = $tmp[$i];
+	for($jj = $j;$jj>0;$jj--)
+			{
+	string $buffer[];
+	if (`tokenize $sel_list[$jj] "|" $buffer` < `tokenize $sel_list[$jj-1] "|" $buffer`)
+				{
+	string $temp = $sel_list[$jj-1];
+					$sel_list[$jj-1] = $sel_list[$jj];
+					$sel_list[$jj] = $temp;
+				}
+			}
+		}
+	else
+		{
+			$sel_list[0] = $tmp[ $i];
+		}
+	}
+
+	for($i=0;$i<`size $tmp`;$i++)
+	{
+			$sel_list[$i] = $tmp[$i];
+	}
+
+	switch ($renType)
+	{
+	    case 1:
+		BRaddPrefix($sel_list,$prefix);
+		break;
+	    case 2:
+		BRaddPostfix($sel_list, $postfix);
+	        break;
+	    case 3:
+		BRrepLetter($sel_list,$oldName,$newName);
+	        break;
+	    case 4:
+		BRnewName($sel_list,$objName);
+	        break;
+	    case 5:
+		BRrenShap($sel_list);
+	        break;
+	}
+}
+
+
+
+
+
+
