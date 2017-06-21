@@ -1,0 +1,12 @@
+window -w 240 -h 230 -vis 1 -t "骨骼的显示隐藏";
+columnLayout -adjustableColumn on;
+     text -height 40   -font "fixedWidthFont" -l "adv骨骼的显示与隐藏";	
+     button -l "切换" -w 150 -h 25 -c "advAllJnt";
+     text -height 40   -font "fixedWidthFont" -l "advSkin骨骼的显示与隐藏";	
+     button -l "切换" -w 150 -h 25 -c "advSkinJnt";
+     text -height 40   -font "fixedWidthFont" -l "All骨骼的显示与隐藏";	
+     button -l "切换" -w 150 -h 25 -c "AllJnt";
+
+
+
+source "F:/紫夜-帮助/紫夜-Mel/命令-mel/骨骼的显示隐藏";
