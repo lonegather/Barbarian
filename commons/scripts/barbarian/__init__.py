@@ -73,7 +73,7 @@ class Entrance(object):
         except: self.widget = None
         else:
             width = pm.control(self.widget, q=True, width=True)
-            pm.control(self.widget, e=True, parent=self.layout, width=width, enable=bool(getProject()))
+            pm.control(self.widget, e=True, parent=self.layout, width=width)
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
             pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
             pm.shelfLayout(self.layout, e=True, position=(self.widget, 3))
@@ -84,8 +84,7 @@ class Entrance(object):
         
         if getProject(): pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
         else: pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
-        
-        pm.control(self.widget, e=True, enable=bool(getProject()))
+
 
 '''
 --------------------------------------------------------------------------------
