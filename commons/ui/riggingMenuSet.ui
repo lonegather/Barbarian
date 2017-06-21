@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1638</width>
+    <width>1681</width>
     <height>33</height>
    </rect>
   </property>
@@ -322,11 +322,22 @@
        <height>33</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string/>
+      <string>跟踪骨骼</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/rig/批量建立跟踪骨骼.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
      </property>
     </widget>
    </item>
