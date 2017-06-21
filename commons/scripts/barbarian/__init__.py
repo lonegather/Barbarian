@@ -11,6 +11,8 @@ import barbarian.anim
 import barbarian.render
 import barbarian.fx
 import barbarian.utils
+from barbarian.utils import *
+
 
 class Entrance(object):
     '''
@@ -18,43 +20,34 @@ class Entrance(object):
     Class Representing the Entrance UI
     --------------------------------------------------------------------------------
     '''
-    
     def __init__(self, layout):
-        
         if pm.control("itBtn", exists=True):
             pm.deleteUI("itBtn")
             pm.deleteUI("opMnu")
         pm.shelfLayout(layout, e=True, spacing=5)
         
-        from barbarian.utils import getPath, getHelp, kIcon, getProject, getConfig, setProject
-        
         self.widget = None
         self.layout = layout
-        self.button = pm.iconTextButton("itBtn", style="iconAndTextHorizontal",
+        self.button = pm.iconTextButton("itBtn", style="iconOnly",
             image=getPath(kIcon, "logo.jpg"), width=33, flat=0, parent=layout, 
-            backgroundColor=[.2,.2,.2], command=pm.Callback(getHelp))
+            command=pm.Callback(getHelp))
         self.menu = pm.optionMenu("opMnu", parent=layout, changeCommand=setProject)
+        
         projects = getProject(all=True)
+        currentMode = pm.setMenuMode()
+        
         for prj in projects:
             pm.menuItem(l=prj)
-        
-        currentMode = pm.setMenuMode()
-        state_dic = {"modelingMenuSet": (currentMode == "modelingMenuSet"),
-                     "riggingMenuSet": (currentMode == "riggingMenuSet"),
-                     "animationMenuSet": (currentMode == "animationMenuSet"),
-                     "renderingMenuSet": (currentMode == "renderingMenuSet"),
-                     "dynamicsMenuSet": (currentMode == "dynamicsMenuSet")}
-    
-        pm.popupMenu(parent=self.layout)
-        pm.menuItem(label=u'模型', radioButton=state_dic["modelingMenuSet"],
+        pm.popupMenu(parent=self.layout, allowOptionBoxes=True)
+        pm.menuItem(label=u'模型', radioButton=(currentMode == "modelingMenuSet"),
                     command=lambda *args: pm.setMenuMode("modelingMenuSet"))
-        pm.menuItem(label=u'绑定', radioButton=state_dic["riggingMenuSet"],
+        pm.menuItem(label=u'绑定', radioButton=(currentMode == "riggingMenuSet"),
                     command=lambda *args: pm.setMenuMode("riggingMenuSet"))
-        pm.menuItem(label=u'动画', radioButton=state_dic["animationMenuSet"],
+        pm.menuItem(label=u'动画', radioButton=(currentMode == "animationMenuSet"),
                     command=lambda *args: pm.setMenuMode("animationMenuSet"))
-        pm.menuItem(label=u'渲染', radioButton=state_dic["renderingMenuSet"],
+        pm.menuItem(label=u'渲染', radioButton=(currentMode == "renderingMenuSet"),
                     command=lambda *args: pm.setMenuMode("renderingMenuSet"))
-        pm.menuItem(label=u'特效', radioButton=state_dic["dynamicsMenuSet"],
+        pm.menuItem(label=u'特效', radioButton=(currentMode == "dynamicsMenuSet"),
                     command=lambda *args: pm.setMenuMode("dynamicsMenuSet"))
         
         pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
@@ -63,13 +56,9 @@ class Entrance(object):
         self.__refreshUI__()
     
     def __build__(self):
-        
-        from barbarian.utils import getPath, kUI, getProject
-        
-        currentMode = pm.setMenuMode()
         if pm.control("Form", exists=True):
             pm.deleteUI("Form")
-        try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % currentMode))
+        try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()))
         except: self.widget = None
         else:
             width = pm.control(self.widget, q=True, width=True)
@@ -79,9 +68,6 @@ class Entrance(object):
             pm.shelfLayout(self.layout, e=True, position=(self.widget, 3))
 
     def __refreshUI__(self):
-        
-        from barbarian.utils import getProject
-        
         if getProject(): pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
         else: pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
 
@@ -91,6 +77,9 @@ class Entrance(object):
 Tool Initialization at Maya Startup
 --------------------------------------------------------------------------------
 '''
+#for debug purpose only
+debug()
+
 #initialize plugins
 for i in ["pyPBMpegCmd", "CustomDeformers"]:
     try: pm.loadPlugin(i)

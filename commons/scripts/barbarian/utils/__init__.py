@@ -1,13 +1,22 @@
 import os
+import sys
 import xml.sax
 import pymel.core as pm
 
-__all__ = ["Renamer", "kIcon", "kBinary", "kUI",
+__all__ = ["debug", "Renamer", "kIcon", "kBinary", "kUI",
            "getPath", "getHelp", "getConfig", "getProject", "setProject"]
 
 kIcon = "../commons/icons/"
 kBinary = "../commons/bin/"
 kUI = "../commons/ui/"
+
+
+def debug():
+    try:
+        sys.path.append(r'C:\Users\Administrator\.p2\pool\plugins\org.python.pydev_5.8.0.201706061859\pysrc')
+        import pydevd
+    except: return
+    else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
 
 
 def getPath(key="", f=""):
