@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
+    <width>372</width>
     <height>58</height>
    </rect>
   </property>
@@ -25,536 +25,174 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" columnstretch="1,1,1,1,1,1,1">
-   <property name="leftMargin">
-    <number>2</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>2</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
-   <property name="spacing">
-    <number>2</number>
-   </property>
-   <item row="0" column="0">
-    <widget class="Line" name="line">
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QFrame" name="frame">
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="fxCLBtn">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>花瓣</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QFrame" name="frame_2">
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="fxCLBtn_2">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>垃圾</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="3">
-    <widget class="QFrame" name="frame_3">
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="fxCLBtn_3">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>舞动</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="QFrame" name="frame_4">
-     <property name="minimumSize">
-      <size>
-       <width>40</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="fxCLBtn_4">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>流光</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QFrame" name="frame_5">
-     <property name="minimumSize">
-      <size>
-       <width>105</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Panel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <widget class="QCommandLinkButton" name="fxCLBtn_5">
-      <property name="geometry">
-       <rect>
-        <x>-6</x>
-        <y>-2</y>
-        <width>150</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>41</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>Instancer Baking</string>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../icons/Barbarian.png</normaloff>../icons/Barbarian.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </widget>
-   </item>
-   <item row="0" column="6">
-    <widget class="Line" name="line_2">
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1,1">
+   <item>
     <widget class="QPushButton" name="fxBtn">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string/>
+      <string>花瓣</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_flower_fall.mel\&quot;;&quot;</string>
      </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
+   <item>
     <widget class="QPushButton" name="fxBtn_2">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string/>
+      <string>垃圾</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_rubbish_dumper.mel\&quot;;&quot;</string>
      </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="3">
+   <item>
     <widget class="QPushButton" name="fxBtn_3">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string/>
+      <string>舞动</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_colorDancer.mel\&quot;;&quot;</string>
      </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="4">
+   <item>
     <widget class="QPushButton" name="fxBtn_4">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string/>
+      <string>流光</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_car_motion_lighting.mel\&quot;;&quot;</string>
      </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="5">
+   <item>
     <widget class="QPushButton" name="fxBtn_5">
+     <property name="minimumSize">
+      <size>
+       <width>130</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>130</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string/>
+      <string>Instancer Baking</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/InstancerBaking_v1.mel\&quot;;&quot;</string>
      </property>
-     <property name="+visible" stdset="0">
-      <string>False</string>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>fxCLBtn</sender>
-   <signal>clicked()</signal>
-   <receiver>fxBtn</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>39</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>47</x>
-     <y>51</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fxCLBtn_2</sender>
-   <signal>clicked()</signal>
-   <receiver>fxBtn_2</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>116</x>
-     <y>38</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fxCLBtn_3</sender>
-   <signal>clicked()</signal>
-   <receiver>fxBtn_3</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>191</x>
-     <y>38</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fxCLBtn_4</sender>
-   <signal>clicked()</signal>
-   <receiver>fxBtn_4</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>299</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>266</x>
-     <y>38</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fxCLBtn_5</sender>
-   <signal>clicked()</signal>
-   <receiver>fxBtn_5</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>374</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>373</x>
-     <y>38</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

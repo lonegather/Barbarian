@@ -24,9 +24,7 @@ class Entrance(object):
         if pm.control("itBtn", exists=True):
             pm.deleteUI("itBtn")
             pm.deleteUI("opMnu")
-        pm.shelfLayout(layout, e=True, spacing=5)
         
-        self.widget = None
         self.layout = layout
         self.button = pm.iconTextButton("itBtn", style="iconOnly",
             image=getPath(kIcon, "logo.jpg"), width=33, flat=0, parent=layout, 
@@ -56,17 +54,21 @@ class Entrance(object):
         self.__refreshUI__()
     
     def __build__(self):
-        if pm.control("Form", exists=True):
-            pm.deleteUI("Form")
-        try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()), verbose=True)
-        except: self.widget = None
+        if pm.control("Form", exists=True): pm.deleteUI("Form")
+        widgets = pm.layout(self.layout, q=True, ca=True)
+        for widget in widgets:
+            if widget != "itBtn" and widget != "opMnu":
+                pm.deleteUI(widget)
+        
+        try: pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()))
+        except: pass
         else:
-            tmp = pm.layout("gridLayout", q=True, ca=True)
-            width = pm.control(self.widget, q=True, width=True)
-            pm.control(self.widget, e=True, parent=self.layout, width=width)
+            widgets = pm.layout("horizontalLayout", q=True, ca=True)
+            for widget in widgets:
+                width = pm.control(widget, q=True, width=True)
+                pm.control(widget, e=True, parent=self.layout, width=width)
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
             pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
-            pm.shelfLayout(self.layout, e=True, position=(self.widget, 3))
 
     def __refreshUI__(self):
         if getProject(): pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
