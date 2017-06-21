@@ -58,9 +58,10 @@ class Entrance(object):
     def __build__(self):
         if pm.control("Form", exists=True):
             pm.deleteUI("Form")
-        try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()))
+        try: self.widget = pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()), verbose=True)
         except: self.widget = None
         else:
+            tmp = pm.layout("gridLayout", q=True, ca=True)
             width = pm.control(self.widget, q=True, width=True)
             pm.control(self.widget, e=True, parent=self.layout, width=width)
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
