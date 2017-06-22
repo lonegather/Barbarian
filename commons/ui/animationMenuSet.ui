@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>336</width>
+    <width>296</width>
     <height>51</height>
    </rect>
   </property>
@@ -38,8 +38,14 @@
     <widget class="QPushButton" name="animBtn">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>50</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
@@ -68,8 +74,14 @@
     <widget class="QPushButton" name="animBtn_2">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>70</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
@@ -95,8 +107,14 @@
     <widget class="QPushButton" name="animBtn_3">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>70</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
@@ -122,8 +140,14 @@
     <widget class="QPushButton" name="animBtn_4">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>70</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
