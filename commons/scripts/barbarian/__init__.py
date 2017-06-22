@@ -57,7 +57,8 @@ class Entrance(object):
         if pm.control("Form", exists=True): pm.deleteUI("Form")
         widgets = pm.layout(self.layout, q=True, ca=True)
         for widget in widgets:
-            if widget != "itBtn" and widget != "opMnu":
+            isShelfButton = pm.shelfButton(widget, exists=True)
+            if (not isShelfButton) and widget != "itBtn" and widget != "opMnu":
                 pm.deleteUI(widget)
         
         try: pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()))
