@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1740</width>
+    <width>1711</width>
     <height>51</height>
    </rect>
   </property>
@@ -39,7 +39,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>Z:/Workflow/Barbarian_1.0/icons/asLogo.png</normaloff>Z:/Workflow/Barbarian_1.0/icons/asLogo.png</iconset>
+       <normaloff>../icons/asLogo.png</normaloff>../icons/asLogo.png</iconset>
      </property>
      <property name="iconSize">
       <size>

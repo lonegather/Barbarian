@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
+    <width>336</width>
     <height>51</height>
    </rect>
   </property>
@@ -42,6 +42,14 @@
        <height>33</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>拍屏</string>
      </property>
@@ -50,6 +58,9 @@
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="+width" stdset="0">
+      <string>50</string>
      </property>
     </widget>
    </item>
@@ -61,11 +72,16 @@
        <height>33</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>曲线平滑</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/anim/autoTangent.mel\&quot;;&quot;</string>
@@ -83,11 +99,16 @@
        <height>33</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>相机震动</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/anim/cameraShaker.mel\&quot;;&quot;</string>
@@ -105,11 +126,16 @@
        <height>33</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
       <string>曲线噪波</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/anim/yygaddnoise.mel\&quot;;&quot;</string>
