@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1908</width>
+    <width>2272</width>
     <height>51</height>
    </rect>
   </property>
@@ -25,8 +25,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
     <widget class="QPushButton" name="modelBtn_2">
      <property name="minimumSize">
       <size>
@@ -52,7 +52,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item>
     <widget class="QPushButton" name="modelBtn_3">
      <property name="minimumSize">
       <size>
@@ -80,7 +80,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
+   <item>
     <widget class="QPushButton" name="modelBtn_4">
      <property name="minimumSize">
       <size>
@@ -119,7 +119,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
+   <item>
     <widget class="QPushButton" name="modelBtn_7">
      <property name="minimumSize">
       <size>
@@ -155,7 +155,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="4">
+   <item>
     <widget class="QPushButton" name="modelBtn_5">
      <property name="minimumSize">
       <size>
@@ -188,7 +188,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="5">
+   <item>
     <widget class="QPushButton" name="modelBtn_6">
      <property name="minimumSize">
       <size>
@@ -221,7 +221,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="6">
+   <item>
     <widget class="QPushButton" name="modelBtn_8">
      <property name="minimumSize">
       <size>
@@ -248,7 +248,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="7">
+   <item>
     <widget class="QPushButton" name="modelBtn_9">
      <property name="minimumSize">
       <size>
@@ -275,7 +275,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="8">
+   <item>
     <widget class="QPushButton" name="modelBtn_10">
      <property name="minimumSize">
       <size>
@@ -308,7 +308,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="9">
+   <item>
     <widget class="QPushButton" name="modelBtn_11">
      <property name="minimumSize">
       <size>
@@ -341,7 +341,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="10">
+   <item>
     <widget class="QPushButton" name="modelBtn_12">
      <property name="minimumSize">
       <size>
@@ -374,7 +374,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="11">
+   <item>
     <widget class="QPushButton" name="modelBtn_13">
      <property name="minimumSize">
       <size>
@@ -401,7 +401,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="12">
+   <item>
     <widget class="QPushButton" name="modelBtn_14">
      <property name="minimumSize">
       <size>
@@ -428,7 +428,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="13">
+   <item>
     <widget class="QPushButton" name="modelBtn_15">
      <property name="minimumSize">
       <size>
@@ -455,7 +455,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="14">
+   <item>
     <widget class="QPushButton" name="modelBtn_16">
      <property name="minimumSize">
       <size>
@@ -482,7 +482,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="15">
+   <item>
     <widget class="QPushButton" name="modelBtn_17">
      <property name="minimumSize">
       <size>
@@ -509,7 +509,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="16">
+   <item>
     <widget class="QPushButton" name="modelBtn_18">
      <property name="minimumSize">
       <size>
@@ -536,7 +536,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="17">
+   <item>
     <widget class="QPushButton" name="modelBtn_19">
      <property name="minimumSize">
       <size>
@@ -569,6 +569,138 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_20">
+     <property name="minimumSize">
+      <size>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>调色工具</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/gg_colorUI.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_21">
+     <property name="minimumSize">
+      <size>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>恢复属性</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/恢复显示属性.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_22">
+     <property name="minimumSize">
+      <size>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>约束工具</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/dynamicParent.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_23">
+     <property name="minimumSize">
+      <size>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>骨骼动力学</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/cgTkDynChain.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
   </layout>
   <zorder>modelBtn_2</zorder>
   <zorder>modelBtn_3</zorder>
@@ -588,6 +720,10 @@
   <zorder>modelBtn_17</zorder>
   <zorder>modelBtn_18</zorder>
   <zorder>modelBtn_19</zorder>
+  <zorder>modelBtn_20</zorder>
+  <zorder>modelBtn_21</zorder>
+  <zorder>modelBtn_22</zorder>
+  <zorder>modelBtn_23</zorder>
  </widget>
  <resources/>
  <connections/>
