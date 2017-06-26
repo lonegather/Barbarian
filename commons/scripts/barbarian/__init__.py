@@ -83,7 +83,7 @@ Tool Initialization at Maya Startup
 --------------------------------------------------------------------------------
 '''
 #for debug purpose only
-debug()
+#debug()
 
 #initialize plugins
 for i in ["pyPBMpegCmd", "CustomDeformers"]:

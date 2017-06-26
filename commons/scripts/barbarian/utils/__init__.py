@@ -12,6 +12,8 @@ kUI = "../commons/ui/"
 
 
 def debug():
+    path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
+    if path not in sys.path: sys.path.append(path)
     try: import pydevd
     except: return
     else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
