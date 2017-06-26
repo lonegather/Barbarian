@@ -26,27 +26,25 @@ class Entrance(object):
             pm.deleteUI("opMnu")
         
         self.layout = layout
-        self.button = pm.iconTextButton("itBtn", style="iconOnly",
-            image=getPath(kIcon, "logo.jpg"), width=33, flat=0, parent=layout, 
-            command=pm.Callback(getHelp))
+        self.button = pm.iconTextButton("itBtn", style="iconOnly", width=33, 
+            image=getPath(kIcon, "logo.jpg"), parent=layout, command=getHelp)
         self.menu = pm.optionMenu("opMnu", parent=layout, changeCommand=setProject)
         
         projects = getProject(all=True)
         currentMode = pm.setMenuMode()
         
-        for prj in projects:
-            pm.menuItem(l=prj)
+        for prj in projects: pm.menuItem(l=prj)
         pm.popupMenu(parent=self.layout, allowOptionBoxes=True)
         pm.menuItem(label=u'模型', radioButton=(currentMode == "modelingMenuSet"),
-                    command=lambda *args: pm.setMenuMode("modelingMenuSet"))
+                    command=pm.Callback(pm.setMenuMode, "modelingMenuSet"))
         pm.menuItem(label=u'绑定', radioButton=(currentMode == "riggingMenuSet"),
-                    command=lambda *args: pm.setMenuMode("riggingMenuSet"))
+                    command=pm.Callback(pm.setMenuMode, "riggingMenuSet"))
         pm.menuItem(label=u'动画', radioButton=(currentMode == "animationMenuSet"),
-                    command=lambda *args: pm.setMenuMode("animationMenuSet"))
+                    command=pm.Callback(pm.setMenuMode, "animationMenuSet"))
         pm.menuItem(label=u'渲染', radioButton=(currentMode == "renderingMenuSet"),
-                    command=lambda *args: pm.setMenuMode("renderingMenuSet"))
+                    command=pm.Callback(pm.setMenuMode, "renderingMenuSet"))
         pm.menuItem(label=u'特效', radioButton=(currentMode == "dynamicsMenuSet"),
-                    command=lambda *args: pm.setMenuMode("dynamicsMenuSet"))
+                    command=pm.Callback(pm.setMenuMode, "dynamicsMenuSet"))
         
         pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
         pm.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
@@ -64,12 +62,15 @@ class Entrance(object):
         try: pm.loadUI(f=getPath(kUI, "%s.ui" % pm.setMenuMode()))
         except: pass
         else:
+            pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
+            pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
             widgets = pm.layout("horizontalLayout", q=True, ca=True)
+            position = 3
             for widget in widgets:
                 width = pm.control(widget, q=True, width=True)
                 pm.control(widget, e=True, parent=self.layout, width=width)
-            pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
-            pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
+                pm.shelfLayout(self.layout, e=True, position=(widget, position))
+                position = position + 1
 
     def __refreshUI__(self):
         if getProject(): pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
