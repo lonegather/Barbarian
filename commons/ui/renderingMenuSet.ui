@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>531</width>
-    <height>58</height>
+    <width>605</width>
+    <height>51</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -207,11 +207,11 @@
      <property name="text">
       <string>细分级别</string>
      </property>
-     <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.render.subdivisionType.UI()</string>
-     </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/render/subdivisionType.mel\&quot;;&quot;</string>
      </property>
     </widget>
    </item>

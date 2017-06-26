@@ -561,11 +561,11 @@
      <property name="text">
       <string>融合变形工具</string>
      </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/批量建立跟踪骨骼.mel\&quot;;&quot;</string>
-     </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.rig.blendShapeManage.blendShapeManage_UI()</string>
      </property>
     </widget>
    </item>

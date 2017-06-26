@@ -33,7 +33,7 @@ global proc Riggest_controllers ()
 string $get_script_path = `internalVar -userScriptDir`;
 //string $my_tool_path_rig="//192.168.26.239/cg/Resource/Support/MAYA/scripts/NE_T/others/";
 //C:\Users\gzyangfei\Documents\maya\2015-x64\scripts\FY_tools_new\data\icon_data\UI_main\Riggest_icons
-string $new_icon_f=("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/");
+string $new_icon_f=("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/");
 
 if (`window -exists mc_lord`)
 
@@ -96,11 +96,11 @@ checkBox -label "Y" -cc "lockhide" ty;
 
 checkBox -label "Z" -cc "lockhide" tz;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") px;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/x.XPM") px;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/y.XPM") py;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/y.XPM") py;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/z.XPM") pz;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/z.XPM") pz;
 
 
 formLayout -e
@@ -160,11 +160,11 @@ checkBox -label "Y" -cc "lockhide" ry;
 
 checkBox -label "Z" -cc "lockhide" rz;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") px;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/x.XPM") px;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/y.XPM") py;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/y.XPM") py;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/z.XPM") pz;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/z.XPM") pz;
 
 formLayout -e
 
@@ -220,11 +220,11 @@ checkBox -label "Y" -cc "lockhide" sy;
 
 checkBox -label "Z" -cc "lockhide" sz;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") px;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/x.XPM") px;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") py;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/x.XPM") py;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/x.XPM") pz;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/x.XPM") pz;
 
 formLayout -e
 
@@ -372,75 +372,75 @@ scrollLayout -cr 40 ;
 gridLayout -numberOfColumns 7 -cellWidthHeight 37 37 ;
 
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b01.png") -c Riggest_B01 Riggest_B01;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b01.png") -c Riggest_B01 Riggest_B01;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b02.png") -c Riggest_B02 Riggest_B02;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b02.png") -c Riggest_B02 Riggest_B02;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b03.png") -c Riggest_B03 Riggest_B03;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b03.png") -c Riggest_B03 Riggest_B03;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b04.png") -c Riggest_B04 Riggest_B04;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b04.png") -c Riggest_B04 Riggest_B04;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b05.png") -c Riggest_B05 Riggest_B05;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b05.png") -c Riggest_B05 Riggest_B05;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b06.png") -c Riggest_B06 Riggest_B06;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b06.png") -c Riggest_B06 Riggest_B06;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b07.png") -c Riggest_B07 Riggest_B07;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b07.png") -c Riggest_B07 Riggest_B07;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b08.png") -c Riggest_B08 Riggest_B08;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b08.png") -c Riggest_B08 Riggest_B08;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b09.png") -c Riggest_B09 Riggest_B09;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b09.png") -c Riggest_B09 Riggest_B09;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b10.png") -c Riggest_B10 Riggest_B10;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b10.png") -c Riggest_B10 Riggest_B10;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b11.png") -c Riggest_B11 Riggest_B11;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b11.png") -c Riggest_B11 Riggest_B11;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b12.png") -c Riggest_B12 Riggest_B12;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b12.png") -c Riggest_B12 Riggest_B12;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b13.png") -c Riggest_B13 Riggest_B13;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b13.png") -c Riggest_B13 Riggest_B13;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b14.png") -c Riggest_B14 Riggest_B14;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b14.png") -c Riggest_B14 Riggest_B14;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b15.png") -c Riggest_B15 Riggest_B15;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b15.png") -c Riggest_B15 Riggest_B15;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b16.png") -c Riggest_B16 Riggest_B16;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b16.png") -c Riggest_B16 Riggest_B16;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b17.png") -c Riggest_B17 Riggest_B17;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b17.png") -c Riggest_B17 Riggest_B17;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b18.png") -c Riggest_B18 Riggest_B18;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b18.png") -c Riggest_B18 Riggest_B18;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b19.png") -c Riggest_B19 Riggest_B19;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b19.png") -c Riggest_B19 Riggest_B19;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b20.png") -c Riggest_B20 Riggest_B20;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b20.png") -c Riggest_B20 Riggest_B20;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b21.png") -c Riggest_B21 Riggest_B21;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b21.png") -c Riggest_B21 Riggest_B21;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b22.png") -c Riggest_B22 Riggest_B22;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b22.png") -c Riggest_B22 Riggest_B22;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b23.png") -c Riggest_B23 Riggest_B23;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b23.png") -c Riggest_B23 Riggest_B23;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b24.png") -c Riggest_B24 Riggest_B24;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b24.png") -c Riggest_B24 Riggest_B24;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b25.png") -c Riggest_B25 Riggest_B25;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b25.png") -c Riggest_B25 Riggest_B25;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b26.png") -c Riggest_B26 Riggest_B26;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b26.png") -c Riggest_B26 Riggest_B26;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b27.png") -c Riggest_B27 Riggest_B27;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b27.png") -c Riggest_B27 Riggest_B27;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b28.png") -c Riggest_B28 Riggest_B28;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b28.png") -c Riggest_B28 Riggest_B28;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b29.png") -c Riggest_B29 Riggest_B29;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b29.png") -c Riggest_B29 Riggest_B29;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b30.png") -c Riggest_B30 Riggest_B30;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b30.png") -c Riggest_B30 Riggest_B30;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b31.png") -c Riggest_B31 Riggest_B31;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b31.png") -c Riggest_B31 Riggest_B31;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b32.png") -c Riggest_B32 Riggest_B32;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b32.png") -c Riggest_B32 Riggest_B32;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b33.png") -c Riggest_B33 Riggest_B33;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b33.png") -c Riggest_B33 Riggest_B33;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b34.png") -c Riggest_B34 Riggest_B34;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b34.png") -c Riggest_B34 Riggest_B34;
 
-symbolButton -image ("Z:/Workflow/Barbarian_1.0/icons/Riggest_icons/Riggest_b35.png") -c Riggest_B35 Riggest_B35;
+symbolButton -image ("Z:/Workflow/Barbarian_1.0/commons/icons/Riggest_icons/Riggest_b35.png") -c Riggest_B35 Riggest_B35;
 
 setParent $mco;
 

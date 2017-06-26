@@ -124,14 +124,14 @@ setAttr (($selJnt[0]) + ".rz") 0;
 
 global proc pjge(){
     
-    source "Z:/Workflow/Barbarian_1.0/scripts/Rig/增加骨骼段数大法.mel";    
+    source "Z:/Workflow/Barbarian_1.0/commons/scripts/barbarian/rig/增加骨骼段数大法.mel";    
     
 }
 
 
 global proc qxge(){
     
-    source "Z:/Workflow/Barbarian_1.0/scripts/Rig/曲线创建骨骼2.mel";
+    source "Z:/Workflow/Barbarian_1.0/commons/scripts/barbarian/rig/曲线创建骨骼2.mel";
 
     
 }

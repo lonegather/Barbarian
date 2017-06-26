@@ -1,0 +1,60 @@
+global proc SubdivisionType(){
+    
+    string $sels[] = `ls -sl`;
+    int $subd_type = `intSliderGrp -q -v int_Slider`;
+    string $options_type = `optionMenuGrp -q -v subdivision_menu`;
+    
+    int $number;
+   
+    if($options_type == "none"){
+        
+        int $number = 0;
+        for($i=0; $i<size($sels); $i++){
+            
+            setAttr ($sels[$i] + ".aiSubdivIterations") $subd_type;
+            setAttr ($sels[$i] + ".aiSubdivType") $number;
+        
+    }
+    }
+    
+    if($options_type == "catclark"){    
+
+        int $number = 1;
+        for($selv in $sels){
+            
+            setAttr ($selv + ".aiSubdivIterations") $subd_type;
+            setAttr ($selv + ".aiSubdivType") $number;
+    }
+    }
+    
+    if($options_type == "linear"){
+        
+        int $number = 2;
+        for($i=0; $i<size($sels); $i++){
+            
+            setAttr ($sels[$i] + ".aiSubdivIterations") $subd_type;
+            setAttr ($sels[$i] + ".aiSubdivType") $number;
+        
+    }
+    }
+    
+}
+   
+//窗口界面
+if (`window -ex subWin`){
+    deleteUI subWin;}
+
+window -t "批量修改Arnold渲染器细分级别" -wh 300 70 subWin ;
+columnLayout -adj true;
+
+optionMenuGrp -l "type" -cw 1 50 -changeCommand "SubdivisionType" subdivision_menu;
+menuItem -l "none";
+menuItem -l "catclark";
+menuItem -l "linear";
+
+intSliderGrp -label "Iterations" -field true -minValue 0 -maxValue 5 -fieldMinValue 0 -fieldMaxValue 5 -value 0  -cw 1 50  
+             -cc "SubdivisionType" int_Slider;
+
+window -e -wh 300 65 subWin;
+showWindow subWin;
+
