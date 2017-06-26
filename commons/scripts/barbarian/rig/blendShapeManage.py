@@ -1138,7 +1138,7 @@ def CSSCMainRoutine(nameMesh):
     #get the select objects
     #return: skinned mesh, tweak node, scuplt mesh, scuplt tranform, skinCluster Node
     selObj = CSSCSelectionCheck()
-    s
+    
     #check the select objects
     #return 2d list contain point id and world motion vector.
     operationList = CSSCTopologyCheck(selObj)

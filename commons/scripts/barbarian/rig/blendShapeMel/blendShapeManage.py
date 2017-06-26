@@ -366,7 +366,7 @@ class CreativeBlendShape():
 		return count
 
 	def tragetIndexItem(self):
-		GetWeightIndex = 'source "barbarian/utils/gg_BSpiritCorrectiveShape.mel"; gg_GetWeightIndex '+str(self.BlendShape[0])+' '+str(self.tragetBlendShape)+' '
+		GetWeightIndex = 'source "barbarian/rig/blendShapeMel/gg_BSpiritCorrectiveShape.mel"; gg_GetWeightIndex '+str(self.BlendShape[0])+' '+str(self.tragetBlendShape)+' '
 
 		tragetIndexItem  = mel.eval(GetWeightIndex) 
 		return tragetIndexItem 
