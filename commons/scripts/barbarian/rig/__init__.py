@@ -1,2 +1,2 @@
 import barbarian.rig.copySkin
-import barbarian.rig.blendShapeMel.blendShapeManage
+import barbarian.rig.blendShapeManage
