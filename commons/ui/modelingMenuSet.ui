@@ -70,7 +70,7 @@
       </font>
      </property>
      <property name="text">
-      <string>创建角色组</string>
+      <string>创建项目组</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/CreateCharacterGroup.mel\&quot;;&quot;</string>
