@@ -394,7 +394,7 @@
       <string>身体修型工具</string>
      </property>
      <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/xiuxing.mel\&quot;;&quot;</string>
+      <string>&quot;source \&quot;barbarian/rig/修型工具.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
