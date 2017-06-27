@@ -64,7 +64,7 @@ def blendShape_Node():
 
 def Create_UI():
 	cmds.columnLayout('')
-	cmds.textFieldButtonGrp('newNameText',label='Name for new target:',cw3= (120 ,260,80),bl='Create',bc= 'CreateFinishtextFieldButton()')
+	cmds.textFieldButtonGrp('newNameText',label='Name for new target:',cw3= (120 ,260,80),bl='Create',bc= lambda *args:CreateFinishtextFieldButton())
 	cmds.text(label = 'Options',height = 20 )
 	cmds.checkBox('HideBox',label='Hide skinned mesh during blendShape target creation' ,height = 20 , value =True)
 	cmds.checkBox('CreateBox',label='Create blendShapeNode,if not existing', align='left' ,height = 20 , value =True)
@@ -122,7 +122,7 @@ def Edit_UI():
 	cmds.columnLayout()
 	text2 = cmds.textScrollList('targetInbetweenText',allowMultiSelection=True, height =  150,width = 100,sc='setBlendShape()')
 	cmds.floatField('InbetweenField',w=100,en=False)
-	cmds.button( l='inputGeomTarget',c='CreativeBlendShape().inputGeomTarget()')
+	cmds.button( l='inputGeomTarget',c=lambda *args:CreativeBlendShape().inputGeomTarget())
 	cmds.setParent( '..' )
 	cmds.setParent( '..' )
 
@@ -137,13 +137,13 @@ def Edit_UI():
 	cmds.checkBoxGrp('Inbetween',label='Add in-between target:',columnWidth=( 1, 160),of1='inbetweenBox()',on1='inbetweenBox()')
 
 	cmds.floatSliderGrp('InbetweenSlider',label ='In-between weight:', field= True,min= -10.00, max =10.00 ,pre =2, enable =False ,adj= 3 ,cw3=( 140, 80,200))
-	cmds.button('EditAddbetweenButton',label = 'inbetweenEdit',c='inbetweenEditAddButton()',width = 50,enable=False)
+	cmds.button('EditAddbetweenButton',label = 'inbetweenEdit',c=lambda *args: inbetweenEditAddButton(), width = 50,enable=False)
 	cmds.setParent( '..' )
 	cmds.setParent( '..' )
 
 	cmds.frameLayout( w= 425,label='Mirror Target', collapsable = True, labelAlign='top', borderStyle='etchedIn',marginHeight =2,marginWidth =2 ,collapse =True )
 	cmds.columnLayout()
-	cmds.textFieldButtonGrp('MirrorTargetText',label='          >>',cw3= (150 ,150,120),bl=' Mirror ',bc= 'CreativeBlendShape().MirrorBlendShape(0),freshTargetBlendShape("append")')
+	cmds.textFieldButtonGrp('MirrorTargetText',label='          >>',cw3= (150 ,150,120),bl=' Mirror ',bc= lambda *args: CreativeBlendShape().MirrorBlendShape(0) and freshTargetBlendShape("append"))
 	cmds.setParent( '..' )
 	cmds.setParent( '..' )
 #############################################	
@@ -157,7 +157,7 @@ def Edit_UI():
 	cmds.text(l="")
 	cmds.button(l="Source",c='editField("sourceField")')
 	cmds.setParent( '..' )
-	cmds.button(l="Apply",w=420,c='CreativeBlendShape().MirrorBlendShape(1)')
+	cmds.button(l="Apply",w=420,c=lambda *args: CreativeBlendShape().MirrorBlendShape(1))
 	cmds.setParent( '..' )
 	cmds.setParent( '..' )
 ##########################################	
@@ -170,8 +170,8 @@ def Edit_UI():
 	cmds.button(l="Target1",c='editField("target_1Field")')
 	cmds.button(l="Target2",c='editField("target_2Field")')
 	cmds.setParent( '..' )
-	cmds.button(l="create",w=420,c='CreativeBlendShape().blendTwoAttrCreate()')
-	cmds.button(l="finish",w=420,c='CreativeBlendShape().blendTwoAttrConnect()')
+	cmds.button(l="create",w=420,c=lambda *args:CreativeBlendShape().blendTwoAttrCreate())
+	cmds.button(l="finish",w=420,c=lambda *args:CreativeBlendShape().blendTwoAttrConnect())
 
 	cmds.setParent( '..' )
 	cmds.setParent( '..' )
@@ -184,17 +184,17 @@ def blendShapeManage():
 		cmds.deleteUI('blendShapeManage')
 	cmds.window('blendShapeManage',mb=True,t= 'blendShapeManage_'+blendShapeManage_version())
 	cmds.menu(l='Eidt')
-	cmds.menuItem(l='Append',c='CreativeBlendShape().AppendTarget(),freshTargetBlendShape("append")')
-	cmds.menuItem(l='Delete',c='CreativeBlendShape().RemoveTarget(),freshTargetBlendShape("remove")')
-	cmds.menuItem(l='Gain',c='CreativeBlendShape().GainTarget()')
-	cmds.menuItem(l='Rename',c= 'CreativeBlendShape().RenameTarget(),freshTargetBlendShape("append")')
-	cmds.menuItem(l='RevertTarget',c= 'CreativeBlendShape().GainTarget_All_for()')
+	cmds.menuItem(l='Append',c=lambda *args:CreativeBlendShape().AppendTarget() and freshTargetBlendShape("append"))
+	cmds.menuItem(l='Delete',c=lambda *args:CreativeBlendShape().RemoveTarget() and freshTargetBlendShape("remove"))
+	cmds.menuItem(l='Gain',c=lambda *args:CreativeBlendShape().GainTarget())
+	cmds.menuItem(l='Rename',c= lambda *args:CreativeBlendShape().RenameTarget() and freshTargetBlendShape("append"))
+	cmds.menuItem(l='RevertTarget',c= lambda *args:CreativeBlendShape().GainTarget_All_for())
 
 	cmds.setParent('..')
 	cmds.menu(l='help')
 	cmds.menuItem(label= "GGHelp" )
 	cmds.menuItem(d=True)
-	cmds.menuItem(label ="Close",c ="cmds.window('blendShapeManage',e=True,vis=0)")
+	cmds.menuItem(label ="Close",c =lambda *args:cmds.window('blendShapeManage',e=True,vis=0))
 	cmds.menuItem(label =blendShapeManage_version())
 	cmds.columnLayout('')
 	cmds.rowColumnLayout( numberOfColumns=2, columnWidth=[(1, 300),(2,180)] )
