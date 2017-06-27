@@ -78,8 +78,8 @@ def Clone_UI():
 	TargetGoemerty = cmds.textFieldButtonGrp('TargetGoemerty',label='Target Goemerty:',tx=meshShapeSel(),cw3= (100 ,280,100),bl='Reload',bc= '',ed=False,eb=False)
 
 	SourceGoemerty = cmds.textFieldButtonGrp('SourceGoemerty',label='Source Goemerty:',cw3= (100 ,280,100),bl='Reload')
-	cmds.textFieldButtonGrp('SourceGoemerty',e=True,bc='loadText("SourceGoemerty")')
-	cmds.button(label='Apply',c='creativeTargetClone()')
+	cmds.textFieldButtonGrp('SourceGoemerty',e=True,bc=lambda *args: loadText("SourceGoemerty"))
+	cmds.button(label='Apply',c=lambda *args: creativeTargetClone())
 	cmds.setParent('..')
 
 def creativeTargetClone():
@@ -105,10 +105,10 @@ def Edit_UI():
 	
 	cmds.columnLayout()
 	cmds.popupMenu(mm=True)
-	cmds.menuItem(l ="Append",rp= "N",c='CreativeBlendShape().AppendTarget(),freshTargetBlendShape("append")')
-	cmds.menuItem(l= "Delete",rp ="S",c= 'CreativeBlendShape().RemoveTarget(),freshTargetBlendShape("remove")')
-	cmds.menuItem(l= "Gian",rp ="W",c= 'CreativeBlendShape().GainTarget()')
-	cmds.menuItem(l= "Rename",rp ="E",c= 'CreativeBlendShape().RenameTarget(),freshTargetBlendShape("append")')
+	cmds.menuItem(l ="Append",rp= "N",c= lambda *args: CreativeBlendShape().AppendTarget() and freshTargetBlendShape("append"))
+	cmds.menuItem(l= "Delete",rp ="S",c= lambda *args: CreativeBlendShape().RemoveTarget() and freshTargetBlendShape("remove"))
+	cmds.menuItem(l= "Gian",rp ="W",c= lambda *args: CreativeBlendShape().GainTarget())
+	cmds.menuItem(l= "Rename",rp ="E",c= lambda *args: CreativeBlendShape().RenameTarget() and freshTargetBlendShape("append"))
 	
 	def cbTBS():
 		inbetweenWieght(),getBlendShapeIndex()
