@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>792</width>
+    <width>878</width>
     <height>51</height>
    </rect>
   </property>
@@ -131,6 +131,39 @@
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_11">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>去除Namespace</string>
+     </property>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.model.RemoveNamespace.RemoveNamespace()</string>
      </property>
     </widget>
    </item>
@@ -279,6 +312,7 @@
   <zorder>modelBtn_8</zorder>
   <zorder>modelBtn_9</zorder>
   <zorder>modelBtn_10</zorder>
+  <zorder>modelBtn_11</zorder>
  </widget>
  <resources/>
  <connections/>
