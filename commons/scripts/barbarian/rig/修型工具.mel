@@ -1,0 +1,77 @@
+global proc DaoLu(){
+    
+    file -import -type "mayaAscii"  -ignoreVersion -ra true -mergeNamespacesOnClash true -namespace ":" 
+    -options "v=0;p=17;f=0"  -pr "Z:/Workflow/Barbarian_1.0/commons/scripts/barbarian/rig/biped_blendshapeHelpers.ma";
+    
+}
+
+global proc DingWei(){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//把对象名存到数组中方便下面做循环调用
+string $advJntName[]={"Elbow_L","Elbow_R","Knee_L","Knee_R","Wrist_L","Wrist_R","Shoulder_L","Shoulder_R","Hip_L","Hip_R"};
+string $advJntNameHel[]={"ShoulderPart2_L","ShoulderPart2_R","HipPart2_L","HipPart2_R","ElbowPart2_L","ElbowPart2_R","Scapula_L","Scapula_R","Root_M","Root_M"};
+string $advJntNameOff[]={"ElbowPart1_L","ElbowPart1_R","Knee_L","Knee_R","Wrist_L","Wrist_R","Shoulder_L","Shoulder_R","Hip_L","Hip_R"};
+string $grpNameHel[]={"elbowRotHelper_L_001_GRP","elbowRotHelper_R_001_GRP","kneeRotHelper_L_001_GRP","kneeRotHelper_R_001_GRP","wristRotHelper_L_001_GRP","wristRotHelper_R_001_GRP","shoulderRotHelper_L_001_GRP","shoulderRotHelper_R_001_GRP","hipRotHelper_L_001_GRP","hipRotHelper_R_001_GRP"};
+string $grpNameOff[]={"elbowInputOffset_L_001_GRP","elbowInputOffset_R_001_GRP","kneeInputOffset_L_001_GRP","kneeInputOffset_R_001_GRP","wristInputOffset_L_001_GRP","wristInputOffset_R_001_GRP","shoulderInputOffset_L_001_GRP","shoulderInputOffset_R_001_GRP","hipInputOffset_L_001_GRP","hipInputOffset_R_001_GRP"};
+string $attName[]={".translateX",".translateY",".translateZ",".rotateX",".rotateY",".rotateZ"};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//把工具创建的对象P给相应的骨骼
+for ($i=0;$i<10;$i++){
+    float $att[]=`xform -q -ws -t $grpNameHel[$i]`;
+    parent -a $grpNameHel[$i] $advJntName[$i];
+    for ($q=0;$q<6;$q++){
+        if ($q==5){
+            setAttr ($grpNameHel[$i]+$attName[$q]) 180;
+        }else{
+            setAttr ($grpNameHel[$i]+$attName[$q]) 0;
+        }
+    }
+    parent -w;
+    for ($w=0;$w<2;$w++){
+        if ($w==0){
+            parent -a $grpNameHel[$i] $advJntNameHel[$i];
+        }else{
+            parent -a $grpNameOff[$i] $advJntNameOff[$i];
+        }
+    }  
+}
+}
+
+
+global proc GuiWei(){
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//一键复原
+
+string $grpNameHel[]={"elbowRotHelper_L_001_GRP","elbowRotHelper_R_001_GRP","kneeRotHelper_L_001_GRP","kneeRotHelper_R_001_GRP","wristRotHelper_L_001_GRP","wristRotHelper_R_001_GRP","shoulderRotHelper_L_001_GRP","shoulderRotHelper_R_001_GRP","hipRotHelper_L_001_GRP","hipRotHelper_R_001_GRP"};
+string $grpNameOff[]={"elbowInputOffset_L_001_GRP","elbowInputOffset_R_001_GRP","kneeInputOffset_L_001_GRP","kneeInputOffset_R_001_GRP","wristInputOffset_L_001_GRP","wristInputOffset_R_001_GRP","shoulderInputOffset_L_001_GRP","shoulderInputOffset_R_001_GRP","hipInputOffset_L_001_GRP","hipInputOffset_R_001_GRP"};
+string $attName[]={".translateX",".translateY",".translateZ",".rotateX",".rotateY",".rotateZ"};
+float $attEnd[]={2.68,8.996557097,1.408860367e-007,0,0,0,-2.68,8.996557328,4.69620377e-008,0,0,0,0.4879040419,3.264279818,0.1028623244,0,0,-90,-0.4879040419,3.264279818,0.1028623244,0,0,90,4.088693578,8.996555581,-0.002325134734,0,0,0,-4.088693578,8.996556823,-0.00232563948,0,0,0,0.9854847249,8.996557097,1.408860367e-007,0,0,0,-0.9854847249,8.996557328,4.69620377e-008,0,0,0,0.4879040419,5.662756533,0.1028623244,0,0,-90,-0.4879040419,5.662756533,0.1028623244,0,0,90};
+for ($i=0;$i<size($grpNameHel);$i++){
+    parent -a $grpNameOff[$i] $grpNameHel[$i];
+    parent -w $grpNameHel[$i];
+    for ($q=0;$q<6;$q++){
+        setAttr ($grpNameHel[$i]+$attName[$q]) $attEnd[$i*6+$q];
+        setAttr ($grpNameOff[$i]+$attName[$q]) 0;
+    }
+}
+}
+
+//窗口界面
+if (`window -ex xxWin`){
+    
+    deleteUI xxWin;}
+
+window -t "修型工具执行界面" -wh 300 70 xxWin ;
+columnLayout -adj true;
+
+     text -height 40   -font "fixedWidthFont" -l "导入身体修型工具";	
+     button -l "导入" -w 150 -h 25 -c "DaoLu";
+     text -height 40   -font "fixedWidthFont" -l "把修型工具装配至骨骼关节";	
+     button -l "装配" -w 150 -h 25 -c "DingWei";
+     text -height 40   -font "fixedWidthFont" -l "把修型工具归位";	
+     button -l "复原" -w 150 -h 25 -c "GuiWei";
+
+window -e -wh 250 200 xxWin;
+showWindow xxWin;
+
