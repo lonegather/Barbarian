@@ -155,9 +155,6 @@ class ConfigHandler(xml.sax.ContentHandler):
             self.facialLibPath = content
 
 
-
-
-
 '''
 --------------------------------------------------------------------------------
 Configuration Setup at Maya Startup
