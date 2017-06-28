@@ -47,14 +47,18 @@ if (`window -ex subWin`){
 window -t "批量修改Arnold渲染器细分级别" -wh 300 70 subWin ;
 columnLayout -adj true;
 
-optionMenuGrp -l "type" -cw 1 50 -changeCommand "SubdivisionType" subdivision_menu;
+optionMenuGrp -l "type" -cw 1 50 -changeCommand "" subdivision_menu;
 menuItem -l "none";
 menuItem -l "catclark";
 menuItem -l "linear";
 
+text -height 5 -l "";
 intSliderGrp -label "Iterations" -field true -minValue 0 -maxValue 5 -fieldMinValue 0 -fieldMaxValue 5 -value 0  -cw 1 50  
-             -cc "SubdivisionType" int_Slider;
+             -cc "" int_Slider;
 
-window -e -wh 300 65 subWin;
+text -height 5 -l "";
+button -l "执行" -c "SubdivisionType" QD;
+
+window -e -wh 300 80 subWin;
 showWindow subWin;
 
