@@ -189,7 +189,7 @@
              <string>自定义后缀</string>
             </property>
             <property name="+changeCommand" stdset="0">
-             <string>lambda *args: barbarian.utils.Renamer.refresh()</string>
+             <string>lambda *args: barbarian.model.Renamer.refresh()</string>
             </property>
            </widget>
           </item>
@@ -245,7 +245,7 @@
              <string>自定义前缀</string>
             </property>
             <property name="+changeCommand" stdset="0">
-             <string>lambda *args: barbarian.utils.Renamer.refresh()</string>
+             <string>lambda *args: barbarian.model.Renamer.refresh()</string>
             </property>
            </widget>
           </item>
