@@ -17,8 +17,6 @@ class Renamer(object):
     prefixTextField  = "prefixInput"
     suffixTextField  = "suffixInput"
     prefixOptionMenu = "prefixCmb"
-    prefixCheckBox   = "prefixChk"
-    suffixCheckBox   = "suffixChk"
     
     def __init__(self):
         if pm.window(Renamer.win, exists=True):
@@ -86,34 +84,34 @@ class Renamer(object):
                     prefix = ""
                     tmp_dic = dg_type_dic
                     break
-            
-            if pm.checkBox(cls.prefixCheckBox, q=True, value=True):
-                prefix = pm.textField(cls.prefixTextField, q=True, text=True)
-                if prefix: prefix = prefix + "_"
                 
             try: suffix = "_" + num_str + "_" + tmp_dic[obj_type]
             except: continue
             
-            useCustomSuffix = pm.checkBox(cls.suffixCheckBox, q=True, value=True)
-            if useCustomSuffix:
-                suffix = pm.textField(cls.suffixTextField, q=True, text=True)
-                if suffix: suffix = "_" + suffix
-            
             new_name = prefix + name + suffix
     
-            while not useCustomSuffix and pm.objExists(new_name) and new_name != sel:
+            while pm.objExists(new_name) and new_name != sel:
                 num = num + 1
                 num_str = "%02d" % num
                 new_name = prefix + name + "_" + \
                     num_str + "_" + tmp_dic[obj_type]
     
             pm.rename(sel, new_name)
-    
-    @classmethod
-    def refresh(cls):
-        prefChkState = pm.checkBox(cls.prefixCheckBox, q=True, value=True)
-        suffChkState = pm.checkBox(cls.suffixCheckBox, q=True, value=True)
         
-        pm.textField(cls.prefixTextField, e=True, enable=prefChkState)
-        pm.textField(cls.suffixTextField, e=True, enable=suffChkState)
-        pm.optionMenu(cls.prefixOptionMenu, e=True, enable=not prefChkState)
+    @classmethod
+    def addPrefix(cls):
+        sels = pm.ls(sl=True)
+        name = pm.textField(cls.prefixTextField, q=True, tx=True)
+        
+        for sel in sels:
+            pm.rename(sel, name+"_"+sel)
+        
+    @classmethod
+    def addSuffix(cls):
+        sels = pm.ls(sl=True)
+        name = pm.textField(cls.suffixTextField, q=True, tx=True)
+        
+        for sel in sels:
+            pm.rename(sel, sel+"_"+name)
+
+
