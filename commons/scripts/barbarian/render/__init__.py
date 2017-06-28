@@ -1,2 +1,1 @@
-﻿import barbarian.render.subdivisionType
-import barbarian.render.selectObjectType
+﻿import barbarian.render.selectObjectType
