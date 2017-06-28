@@ -48,7 +48,7 @@
       </size>
      </property>
      <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5.mel\&quot;;&quot;</string>
+      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5.mel\&quot;;AdvancedSkeleton5&quot;</string>
      </property>
     </widget>
    </item>
