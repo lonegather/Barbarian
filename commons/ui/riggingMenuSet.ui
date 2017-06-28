@@ -429,11 +429,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_15">
+    <widget class="QPushButton" name="modelBtn_19">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>105</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>105</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
@@ -445,13 +451,13 @@
       </font>
      </property>
      <property name="text">
-      <string>表情镜像工具</string>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/表情镜像工具.mel\&quot;;&quot;</string>
+      <string>融合变形工具</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.rig.blendShapeMel.blendShapeManage.blendShapeManage_UI()</string>
      </property>
     </widget>
    </item>
@@ -537,17 +543,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_19">
+    <widget class="QPushButton" name="modelBtn_15">
      <property name="minimumSize">
       <size>
-       <width>105</width>
+       <width>0</width>
        <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>105</width>
-       <height>16777215</height>
       </size>
      </property>
      <property name="font">
@@ -559,13 +559,13 @@
       </font>
      </property>
      <property name="text">
-      <string>融合变形工具</string>
+      <string>表情镜像工具</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/表情镜像工具.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
-     </property>
-     <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.rig.blendShapeMel.blendShapeManage.blendShapeManage_UI()</string>
      </property>
     </widget>
    </item>

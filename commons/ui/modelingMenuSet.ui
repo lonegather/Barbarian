@@ -27,33 +27,6 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QPushButton" name="modelBtn_2">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>重命名</string>
-     </property>
-     <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.model.Renamer()</string>
-     </property>
-     <property name="-bgc" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QPushButton" name="modelBtn_3">
      <property name="minimumSize">
       <size>
@@ -81,7 +54,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_4">
+    <widget class="QPushButton" name="modelBtn_2">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -97,10 +70,37 @@
       </font>
      </property>
      <property name="text">
-      <string>大纲整理</string>
+      <string>重命名</string>
      </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/MoveModelTool.mel\&quot;;&quot;</string>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.model.Renamer()</string>
+     </property>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_8">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>模型检查</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.model.checkModel.checkModel()</string>
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
@@ -195,6 +195,33 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="modelBtn_4">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>大纲整理</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/model/MoveModelTool.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="modelBtn_6">
      <property name="minimumSize">
       <size>
@@ -269,33 +296,6 @@
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/FileTextureManager.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-bgc" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="modelBtn_8">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>模型检查</string>
-     </property>
-     <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.model.checkModel.checkModel()</string>
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
