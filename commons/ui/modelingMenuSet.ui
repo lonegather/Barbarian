@@ -46,7 +46,7 @@
       <string>重命名</string>
      </property>
      <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.utils.Renamer()</string>
+      <string>lambda *args: barbarian.model.Renamer()</string>
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
