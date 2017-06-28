@@ -107,6 +107,9 @@
           <property name="text">
            <string>查找</string>
           </property>
+          <property name="+command" stdset="0">
+           <string>lambda *args: barbarian.model.Renamer.search()</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -147,6 +150,9 @@
           </property>
           <property name="text">
            <string>替换</string>
+          </property>
+          <property name="+command" stdset="0">
+           <string>lambda *args: barbarian.model.Renamer.replace()</string>
           </property>
          </widget>
         </item>

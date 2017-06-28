@@ -13,6 +13,8 @@ class Renamer(object):
     --------------------------------------------------------------------------------
     '''
     win              = "renamerWin"
+    searchTextField  = "searchInput"
+    replaceTextField = "replaceInput"
     renameTextField  = "middleInput"
     prefixTextField  = "prefixInput"
     suffixTextField  = "suffixInput"
@@ -113,5 +115,21 @@ class Renamer(object):
         
         for sel in sels:
             pm.rename(sel, sel+"_"+name)
+            
+    @classmethod
+    def search(cls):
+        find_string = pm.textField(cls.searchTextField, q=True, text=True)
+        matches = pm.ls("*" + find_string + "*", type="transform")
+        pm.select(matches, r=True)
+    
+    @classmethod
+    def replace(cls):
+        find_string = pm.textField(cls.searchTextField, q=True, text=True)
+        replace_string = pm.textField(cls.replaceTextField, q=True, text=True)
+        matches = pm.ls(sl=True)
+        
+        for match in matches:
+            new_name = match.split("|")[-1].replace(find_string, replace_string)
+            pm.rename(match, new_name)
 
 
