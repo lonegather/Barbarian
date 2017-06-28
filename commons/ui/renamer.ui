@@ -352,7 +352,7 @@
            <string>重命名</string>
           </property>
           <property name="+command" stdset="0">
-           <string>lambda *args: barbarian.utils.Renamer.rename()</string>
+           <string>lambda *args: barbarian.model.Renamer.rename()</string>
           </property>
          </widget>
         </item>

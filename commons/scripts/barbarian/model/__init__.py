@@ -91,7 +91,9 @@ class Renamer(object):
                 prefix = pm.textField(cls.prefixTextField, q=True, text=True)
                 if prefix: prefix = prefix + "_"
                 
-            suffix = "_" + num_str + "_" + tmp_dic[obj_type]
+            try: suffix = "_" + num_str + "_" + tmp_dic[obj_type]
+            except: continue
+            
             useCustomSuffix = pm.checkBox(cls.suffixCheckBox, q=True, value=True)
             if useCustomSuffix:
                 suffix = pm.textField(cls.suffixTextField, q=True, text=True)
