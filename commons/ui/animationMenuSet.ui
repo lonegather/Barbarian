@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
+    <width>428</width>
     <height>51</height>
    </rect>
   </property>
@@ -33,7 +33,93 @@
   <property name="windowTitle">
    <string>anim</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QPushButton" name="animBtn_6">
+     <property name="minimumSize">
+      <size>
+       <width>70</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>65</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/biped_background.png</normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/biped_background.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>270</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5Files/Selector/biped.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animBtn_5">
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>33</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/poseLib.png</normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/poseLib.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>33</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;P:/PT/Doc/06_Maya_Plugin/库插件/poseLib6.6/poseLib.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <widget class="QPushButton" name="animBtn">
      <property name="minimumSize">
