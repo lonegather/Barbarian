@@ -159,7 +159,7 @@ class ConfigHandler(xml.sax.ContentHandler):
 def __wireframe__(*args):
     allPanels = pm.getPanel(type='modelPanel')
     for p in allPanels:
-        pm.modelEditor(p, edit=1, displayAppearance='wireframe')
+        pm.modelEditor(p, edit=1, displayAppearance='boundingBox')
 
 '''
 --------------------------------------------------------------------------------
