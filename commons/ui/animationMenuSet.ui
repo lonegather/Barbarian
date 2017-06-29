@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
-    <height>51</height>
+    <width>534</width>
+    <height>88</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -154,6 +154,94 @@
      <property name="+width" stdset="0">
       <string>50</string>
      </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <widget class="QLineEdit" name="animOffsetInput">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>50</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="maxLength">
+       <number>5</number>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>...</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="animOffsetBtn">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>1</y>
+        <width>49</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>偏移帧</string>
+      </property>
+      <property name="-backgroundColor" stdset="0">
+       <string>.25 .25 .25</string>
+      </property>
+      <property name="+command" stdset="0">
+       <string>lambda *args: barbarian.anim.cmdKeyframe()</string>
+      </property>
+     </widget>
     </widget>
    </item>
    <item>
