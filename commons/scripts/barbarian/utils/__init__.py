@@ -2,6 +2,7 @@ import os
 import sys
 import xml.sax
 import pymel.core as pm
+import maya.OpenMaya as om
 
 __all__ = ["debug", "kIcon", "kBinary", "kUI",
            "getPath", "getHelp", "getConfig", "getProject", "setProject"]
@@ -155,6 +156,11 @@ class ConfigHandler(xml.sax.ContentHandler):
             self.facialLibPath = content
 
 
+def __wireframe__(*args):
+    allPanels = pm.getPanel(type='modelPanel')
+    for p in allPanels:
+        pm.modelEditor(p, edit=1, displayAppearance='wireframe')
+
 '''
 --------------------------------------------------------------------------------
 Configuration Setup at Maya Startup
@@ -182,6 +188,7 @@ if not pm.optionVar(exists="PutaoTools_Project"):
     pm.optionVar(sv=("PutaoTools_Project_AnimLibPath", ""))
     pm.optionVar(sv=("PutaoTools_Project_FacialLibPath", ""))
 
+om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, __wireframe__)
                  
 
 
