@@ -1,15 +1,36 @@
-import pymel.core as pm
+import maya.cmds as mc
 
 def RemoveNamespace():
-    nameSpaces = pm.namespaceInfo(lon = True)
+    nameSpaces = mc.namespaceInfo(lon = True)
     
     for name in ['UI', 'shared']:
         nameSpaces.remove(name) 
     
     while nameSpaces:
         for names in nameSpaces:
-            removeNamespace = pm.namespace(mergeNamespaceWithRoot = True, removeNamespace = names)
-        pm.namespace(setNamespace = ":")
-        nameSpaces = pm.namespaceInfo(lon = True)
+            removeNamespace = mc.namespace(mergeNamespaceWithRoot = True, removeNamespace = names)
+        mc.namespace(setNamespace = ":")
+        nameSpaces = mc.namespaceInfo(lon = True)
         for name in ['UI', 'shared']:
             nameSpaces.remove(name) 
+            
+            
+    amount = 0
+    
+    mc.progressWindow(    title="½ø¶È",
+                                            progress=amount,
+                                            status="progress: 0%",
+                                            isInterruptable=True )
+    while True :
+            if mc.progressWindow( query=True, isCancelled=True ) :
+                    break
+    
+            if mc.progressWindow( query=True, progress=True ) >= 1 :
+                    break
+    
+            amount += 1
+    
+            mc.progressWindow( edit=True, progress=amount, status=('progress: ' + `amount` + '%' ) )
+    
+    
+    mc.progressWindow(endProgress=1)
