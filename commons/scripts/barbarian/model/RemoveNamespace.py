@@ -6,33 +6,18 @@ def RemoveNamespace():
     for name in ['UI', 'shared']:
         nameSpaces.remove(name) 
     
+    mc.progressWindow(title=u"进度", status=u"清理中...")
+    
     while nameSpaces:
-        for names in nameSpaces:
-            removeNamespace = mc.namespace(mergeNamespaceWithRoot = True, removeNamespace = names)
+        mc.progressWindow(e=True, progress=0, max=len(nameSpaces))
+        for name in nameSpaces:
+            mc.namespace(mergeNamespaceWithRoot = True, removeNamespace = name)
+            mc.progressWindow(e=True, step=1)
         mc.namespace(setNamespace = ":")
         nameSpaces = mc.namespaceInfo(lon = True)
         for name in ['UI', 'shared']:
             nameSpaces.remove(name) 
-            
-            
-    amount = 0
     
-    mc.progressWindow(    title="进度",
-                                            progress=amount,
-                                            status="progress: 0%",
-                                            isInterruptable=True )
-    while True :
-            if mc.progressWindow( query=True, isCancelled=True ) :
-                    break
-    
-            if mc.progressWindow( query=True, progress=True ) >= 1 :
-                    break
-    
-            amount += 1
-    
-            mc.progressWindow( edit=True, progress=amount, status=('progress: ' + `amount` + '%' ) )
-    
-    
+    mc.pause(sec=1)
     mc.progressWindow(endProgress=1)
-    
-    mc.confirmDialog( title=u'提示', message=u'NameSpace已清理完毕', button=['OK'], defaultButton='OK' )
+    mc.confirmDialog( title=u'完成', message=u'NameSpace已清理完毕', button=['OK'], defaultButton='OK' )
