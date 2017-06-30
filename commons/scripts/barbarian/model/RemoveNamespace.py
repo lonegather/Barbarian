@@ -1,4 +1,4 @@
-import maya.cmds as mc
+ï»¿import maya.cmds as mc
 
 def RemoveNamespace():
     nameSpaces = mc.namespaceInfo(lon = True)
@@ -17,7 +17,7 @@ def RemoveNamespace():
             
     amount = 0
     
-    mc.progressWindow(    title="½ø¶È",
+    mc.progressWindow(    title="è¿›åº¦",
                                             progress=amount,
                                             status="progress: 0%",
                                             isInterruptable=True )
