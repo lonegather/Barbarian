@@ -26,7 +26,7 @@ class Entrance(object):
             pm.deleteUI("opMnu")
         
         self.layout = layout
-        pm.shelfLayout(layout, e=True, spacing=3)
+        pm.shelfLayout(layout, e=True, backgroundColor=[0.1,0.0,0.15], spacing=3)
         self.button = pm.iconTextButton("itBtn", style="iconOnly", width=33, 
             image=getPath(kIcon, "logo.png"), parent=layout, command=getHelp)
         self.menu = pm.optionMenu("opMnu", parent=layout, nbg=True, changeCommand=setProject)
