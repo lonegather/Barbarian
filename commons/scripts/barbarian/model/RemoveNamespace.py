@@ -34,3 +34,5 @@ def RemoveNamespace():
     
     
     mc.progressWindow(endProgress=1)
+    
+    mc.confirmDialog( title='提示', message='NameSpace已清理完毕', button=['OK'], defaultButton='OK' )
