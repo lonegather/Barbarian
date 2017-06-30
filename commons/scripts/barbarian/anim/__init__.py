@@ -6,7 +6,12 @@ def cmdPlayblast():
 
 
 def cmdKeyframe():
-    offset = int(textField("animOffsetInput", q=True, tx=True))
+    txt = textField("animOffsetInput", q=True, tx=True)
+    if txt: offset = int(txt)
+    else:
+        confirmDialog(message=u'请输入有效数值：负值为向左移动，正值为向右移动',ma="center", 
+                      icon="information", title=u"", button=['OK'], defaultButton='OK')
+        return
     
     animCurves = []
     for ac in ls(type="animCurveTL"): animCurves.append(ac)
