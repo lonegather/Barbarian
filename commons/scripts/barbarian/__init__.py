@@ -5,13 +5,18 @@ Created on 2017.6.9
 '''
 
 import pymel.core as pm
-import barbarian.model
-import barbarian.rig
-import barbarian.anim
-import barbarian.render
-import barbarian.fx
-import barbarian.utils
 from barbarian.utils import *
+
+try: import barbarian.model
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+try: import barbarian.rig
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+try: import barbarian.anim
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+try: import barbarian.render
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+try: import barbarian.fx
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
 
 
 class Entrance(object):
@@ -83,8 +88,6 @@ class Entrance(object):
 Tool Initialization at Maya Startup
 --------------------------------------------------------------------------------
 '''
-#for debug purpose only
-#debug()
 
 #initialize plugins
 for i in ["pyPBMpegCmd", "CustomDeformers"]:

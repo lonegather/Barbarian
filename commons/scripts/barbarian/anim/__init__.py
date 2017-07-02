@@ -1,22 +1,68 @@
 ﻿from pymel.core import *
+from barbarian.utils import *
 
-def cmdPlayblast():
-    print "playblast"
-    pass
+
+def cmdCameraOperation(option):
+    if option == "create":
+        pass
+    elif option == "lock":
+        pass
+    elif option == "delete":
+        pass
+
+
+class PlayblastOption():
+    
+    win = "playblastOptionDialog"
+    textField = "playblastNameInput"
+    defaultCB = "playblastCBDefault"
+    okBtn = "playblastBtnOK"
+    cancelBtn = "playblastBtnCancel"
+    
+    @classmethod
+    def UI(cls):
+        if window(cls.win, exists=True): deleteUI(cls.win)
+        loadUI(f=getPath(kUI, "playblastoption.ui"))
+        showWindow(cls.win)
+        if not optionVar(exists="PutaoTools_HUD_Animator"):
+            checkBox(cls.defaultCB, e=True, value=True)
+            textField(cls.textField, e=True, enable=False)
+        else:
+            checkBox(cls.defaultCB, e=True, value=False)
+            textField(cls.textField, e=True, tx=optionVar(q="PutaoTools_HUD_Animator"))
+      
+    @classmethod
+    def changeHUDName(cls):
+        name = textField(cls.textField, q=True, tx=True)
+        if checkBox(cls.defaultCB, q=True, value=True):
+            optionVar(remove="PutaoTools_HUD_Animator")
+        else:
+            optionVar(sv=("PutaoTools_HUD_Animator", name))
+        
+    @classmethod
+    def refreshUI(cls):
+        if checkBox(cls.defaultCB, q=True, value=True): 
+            textField(cls.textField, e=True, enable=False)
+        else: 
+            textField(cls.textField, e=True, enable=True)
 
 
 def cmdKeyframe():
-    txt = textField("animOffsetInput", q=True, tx=True)
-    if txt: offset = int(txt)
-    else:
+    try: offset = int(textField("animOffsetInput", q=True, tx=True))
+    except:
         confirmDialog(message=u'请输入有效数值：负值为向左移动，正值为向右移动',ma="center", 
-                      icon="information", title=u"", button=['OK'], defaultButton='OK')
+                      icon="information", title=u"", button=['Confirm'], defaultButton='Confirm')
         return
     
     animCurves = []
     for ac in ls(type="animCurveTL"): animCurves.append(ac)
     for ac in ls(type="animCurveTA"): animCurves.append(ac)
     for ac in ls(type="animCurveTU"): animCurves.append(ac)
+    
+    if not len(animCurves): 
+        confirmDialog(message=u'未找到关键帧信息',ma="center", 
+                      icon="information", title=u"", button=['Confirm'], defaultButton='Confirm')
+        return
     
     progressWindow(title=u"进度", status=u"处理中...")
     progressWindow(e=True, progress=0, max=len(animCurves))

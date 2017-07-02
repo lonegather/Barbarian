@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>534</width>
-    <height>88</height>
+    <width>714</width>
+    <height>51</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -35,124 +35,175 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QPushButton" name="animBtn_6">
+    <widget class="Line" name="line_2">
      <property name="minimumSize">
       <size>
-       <width>70</width>
-       <height>33</height>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_7">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_2">
+     <property name="minimumSize">
+      <size>
+       <width>65</width>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>65</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/biped_background.png</normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/biped_background.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>270</width>
-       <height>35</height>
-      </size>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5Files/Selector/biped.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="animBtn_5">
-     <property name="minimumSize">
-      <size>
-       <width>50</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>33</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/poseLib.png</normaloff>Z:/Workflow/Barbarian_1.0/commons/icons/poseLib.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>33</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;P:/PT/Doc/06_Maya_Plugin/库插件/poseLib6.6/poseLib.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="animBtn">
-     <property name="minimumSize">
-      <size>
-       <width>50</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>50</width>
        <height>16777215</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
      </property>
-     <property name="text">
-      <string>拍屏</string>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
      </property>
-     <property name="-command" stdset="0">
-      <string>pyPBMpeg</string>
+     <widget class="QPushButton" name="animBtn">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>45</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>45</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>45</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="statusTip">
+       <string>一键生成拍屏mov，存放位置与当前场景文件同目录</string>
+      </property>
+      <property name="text">
+       <string>拍屏</string>
+      </property>
+      <property name="-command" stdset="0">
+       <string>pyPBMpeg</string>
+      </property>
+      <property name="-backgroundColor" stdset="0">
+       <string>0.25 0.25 0.25</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>45</x>
+        <y>0</y>
+        <width>20</width>
+        <height>33</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>33</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>≡</string>
+      </property>
+      <property name="-bgc" stdset="0">
+       <string>0.25 0.25 0.25</string>
+      </property>
+      <property name="+command" stdset="0">
+       <string>lambda *args: barbarian.anim.PlayblastOption.UI()</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_10">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
      </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
      </property>
-     <property name="+width" stdset="0">
-      <string>50</string>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
@@ -174,7 +225,7 @@
       <enum>QFrame::Box</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Sunken</enum>
      </property>
      <widget class="QLineEdit" name="animOffsetInput">
       <property name="geometry">
@@ -208,20 +259,23 @@
       <property name="placeholderText">
        <string>...</string>
       </property>
+      <property name="-bgc" stdset="0">
+       <string>.15 .15 .15</string>
+      </property>
      </widget>
      <widget class="QPushButton" name="animOffsetBtn">
       <property name="geometry">
        <rect>
         <x>50</x>
-        <y>1</y>
-        <width>49</width>
-        <height>31</height>
+        <y>0</y>
+        <width>50</width>
+        <height>33</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>31</height>
+        <height>33</height>
        </size>
       </property>
       <property name="font">
@@ -245,16 +299,139 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_2">
+    <widget class="Line" name="line_3">
      <property name="minimumSize">
       <size>
-       <width>70</width>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_8">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animBtn_6">
+     <property name="minimumSize">
+      <size>
+       <width>75</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>70</width>
+       <width>75</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ BIPED ≡</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5Files/Selector/biped.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animBtn_5">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ 表情库 ≡</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;P:/PT/Doc/06_Maya_Plugin/库插件/poseLib6.6/poseLib.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animBtn_2">
+     <property name="minimumSize">
+      <size>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
        <height>16777215</height>
       </size>
      </property>
@@ -262,12 +439,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>曲线平滑</string>
+      <string>≡ 曲线平滑 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/anim/autoTangent.mel\&quot;;&quot;</string>
@@ -278,16 +455,16 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_3">
+    <widget class="QPushButton" name="animBtn_4">
      <property name="minimumSize">
       <size>
-       <width>70</width>
+       <width>90</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>70</width>
+       <width>90</width>
        <height>16777215</height>
       </size>
      </property>
@@ -295,12 +472,45 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>相机震动</string>
+      <string>≡ 曲线噪波 ≡</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/anim/yygaddnoise.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animBtn_3">
+     <property name="minimumSize">
+      <size>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ 相机震动 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/anim/cameraShaker.mel\&quot;;&quot;</string>
@@ -311,35 +521,59 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_4">
+    <widget class="Line" name="line_5">
      <property name="minimumSize">
       <size>
-       <width>70</width>
-       <height>33</height>
+       <width>1</width>
+       <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>70</width>
+       <width>1</width>
        <height>16777215</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="text">
-      <string>曲线噪波</string>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_9">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
      </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/anim/yygaddnoise.mel\&quot;;&quot;</string>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
      </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_6">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
