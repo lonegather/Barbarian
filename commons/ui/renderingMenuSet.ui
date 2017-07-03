@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>616</width>
+    <width>724</width>
     <height>51</height>
    </rect>
   </property>
@@ -30,20 +30,26 @@
     <widget class="QPushButton" name="modelBtn_2">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>90</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>贴图路径</string>
+      <string>≡ 贴图路径 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/FileTextureManager.mel\&quot;;&quot;</string>
@@ -57,13 +63,13 @@
     <widget class="QPushButton" name="modelBtn_3">
      <property name="minimumSize">
       <size>
-       <width>110</width>
+       <width>130</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>110</width>
+       <width>130</width>
        <height>16777215</height>
       </size>
      </property>
@@ -71,12 +77,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>贴图查看与拷贝</string>
+      <string>≡ 贴图查看与拷贝 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/sourceTexture.mel\&quot;;&quot;</string>
@@ -90,7 +96,13 @@
     <widget class="QPushButton" name="modelBtn_4">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
        <height>33</height>
       </size>
      </property>
@@ -98,12 +110,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>UFR_7.0</string>
+      <string>≡ UFR_7.0 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/UFR_7.0(专业版).mel\&quot;;&quot;</string>
@@ -117,7 +129,13 @@
     <widget class="QPushButton" name="modelBtn_7">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
        <height>33</height>
       </size>
      </property>
@@ -125,12 +143,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>修复凹凸</string>
+      <string>≡ 修复凹凸 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/修复模型smooth凹凸问题.mel\&quot;;&quot;</string>
@@ -144,7 +162,13 @@
     <widget class="QPushButton" name="modelBtn_5">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
        <height>33</height>
       </size>
      </property>
@@ -152,12 +176,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>透明开关</string>
+      <string>≡ 透明开关 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/OpaSwitch.mel\&quot;;&quot;</string>
@@ -171,7 +195,13 @@
     <widget class="QPushButton" name="modelBtn_6">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>100</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
        <height>33</height>
       </size>
      </property>
@@ -179,12 +209,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>RS辅助工具</string>
+      <string>≡ RS辅助工具 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/RedShiftRename.mel\&quot;;&quot;</string>
@@ -198,7 +228,13 @@
     <widget class="QPushButton" name="modelBtn_8">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
        <height>33</height>
       </size>
      </property>
@@ -206,12 +242,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>细分级别</string>
+      <string>≡ 细分级别 ≡</string>
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
