@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>810</width>
+    <width>817</width>
     <height>51</height>
    </rect>
   </property>
@@ -55,6 +55,25 @@
    </item>
    <item>
     <widget class="Line" name="line">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_11">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -179,11 +198,11 @@
       <property name="text">
        <string>拍屏</string>
       </property>
-      <property name="-command" stdset="0">
-       <string>pyPBMpeg</string>
-      </property>
       <property name="-backgroundColor" stdset="0">
        <string>0.25 0.25 0.25</string>
+      </property>
+      <property name="+command" stdset="0">
+       <string>lambda *args: barbarian.anim.PlayblastOption.playblast()</string>
       </property>
      </widget>
      <widget class="QPushButton" name="pushButton">
@@ -329,9 +348,6 @@
        <string>lambda *args: barbarian.anim.cmdKeyframe()</string>
       </property>
      </widget>
-     <zorder>animOffsetInput</zorder>
-     <zorder>animOffsetBtn</zorder>
-     <zorder>frame_2</zorder>
     </widget>
    </item>
    <item>

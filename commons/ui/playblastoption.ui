@@ -4,15 +4,15 @@
  <widget class="QMainWindow" name="playblastOptionDialog">
   <property name="geometry">
    <rect>
-    <x>300</x>
-    <y>200</y>
-    <width>250</width>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
     <height>138</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>250</width>
+    <width>300</width>
     <height>0</height>
    </size>
   </property>
@@ -144,7 +144,35 @@
           </font>
          </property>
          <property name="text">
-          <string>确认</string>
+          <string>应用并拍屏</string>
+         </property>
+         <property name="+command" stdset="0">
+          <string>lambda *args: barbarian.anim.PlayblastOption.changeHUDName(True)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>应用</string>
          </property>
          <property name="+command" stdset="0">
           <string>lambda *args: barbarian.anim.PlayblastOption.changeHUDName()</string>
@@ -172,7 +200,7 @@
           </font>
          </property>
          <property name="text">
-          <string>取消</string>
+          <string>关闭</string>
          </property>
         </widget>
        </item>

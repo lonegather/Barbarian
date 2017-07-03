@@ -16,8 +16,6 @@ class PlayblastOption():
     win = "playblastOptionDialog"
     textField = "playblastNameInput"
     defaultCB = "playblastCBDefault"
-    okBtn = "playblastBtnOK"
-    cancelBtn = "playblastBtnCancel"
     
     @classmethod
     def UI(cls):
@@ -32,12 +30,14 @@ class PlayblastOption():
             textField(cls.textField, e=True, tx=optionVar(q="PutaoTools_HUD_Animator"))
       
     @classmethod
-    def changeHUDName(cls):
+    def changeHUDName(cls, pb=False):
         name = textField(cls.textField, q=True, tx=True)
         if checkBox(cls.defaultCB, q=True, value=True):
             optionVar(remove="PutaoTools_HUD_Animator")
         else:
             optionVar(sv=("PutaoTools_HUD_Animator", name))
+            
+        if pb: cls.playblast()
         
     @classmethod
     def refreshUI(cls):
@@ -45,6 +45,10 @@ class PlayblastOption():
             textField(cls.textField, e=True, enable=False)
         else: 
             textField(cls.textField, e=True, enable=True)
+    
+    @classmethod
+    def playblast(cls):
+        mel.eval("pyPBMpeg")
 
 
 def cmdKeyframe():
