@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>878</width>
+    <width>985</width>
     <height>51</height>
    </rect>
   </property>
@@ -30,20 +30,26 @@
     <widget class="QPushButton" name="modelBtn_3">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>105</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>105</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>创建项目组</string>
+      <string>≡ 创建项目组 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/CreateCharacterGroup.mel\&quot;;&quot;</string>
@@ -65,12 +71,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>重命名</string>
+      <string>≡ 重命名 ≡</string>
      </property>
      <property name="+command" stdset="0">
       <string>lambda *args: barbarian.model.Renamer()</string>
@@ -92,12 +98,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>模型检查</string>
+      <string>≡ 模型检查 ≡</string>
      </property>
      <property name="+command" stdset="0">
       <string>lambda *args: barbarian.model.checkModel.checkModel()</string>
@@ -179,12 +185,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>传递UV</string>
+      <string>≡ 传递UV ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/批量传递UV.mel\&quot;;&quot;</string>
@@ -206,12 +212,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>大纲整理</string>
+      <string>≡ 大纲整理 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/MoveModelTool.mel\&quot;;&quot;</string>
@@ -225,20 +231,26 @@
     <widget class="QPushButton" name="modelBtn_6">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>125</width>
        <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>125</width>
+       <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>石头生成工具</string>
+      <string>≡ 石头生成工具 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/石头生成工具.mel\&quot;;&quot;</string>
@@ -260,12 +272,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>模型代理</string>
+      <string>≡ 模型代理 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/ModelAgent.mel\&quot;;&quot;</string>
@@ -287,12 +299,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>贴图路径</string>
+      <string>≡ 贴图路径 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/render/FileTextureManager.mel\&quot;;&quot;</string>
