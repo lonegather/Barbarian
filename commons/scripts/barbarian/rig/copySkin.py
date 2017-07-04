@@ -1,4 +1,4 @@
-import maya.cmds as cmds
+﻿import maya.cmds as cmds
 def skinChangeWindow(): 
     Warnings = ['///warning: << same name >>///', '///warning: select << bind-able object >>///', '///warning: select << ONE >>///','']
     ### <<button>> "assign_old_geometry" commend impacrt ###     

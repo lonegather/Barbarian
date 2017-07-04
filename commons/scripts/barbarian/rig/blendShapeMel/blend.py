@@ -1,4 +1,4 @@
-import pathAdd
+ï»¿import pathAdd
 reload(pathAdd)
 
 from blendShapeManage import *
@@ -7,6 +7,6 @@ reload(blendShapeManage)
 mel.eval('source gg_BSpiritCorrectiveShape')
 blendShapeManage.blendShapeManage_UI()
 
-#°Ñ gg_BSpiritCorrectiveShape Õâ¸ö·Åµ½ C:\Users\Äã×Ô¼ºµÄµçÄÔÃû\Documents\maya\2013-x64\scriptsÄ¿Â¼ÏÂ£¬
-#blendShapeManage ·Åµ½Äã×Ô¼ºÄ¿Â¼ºÍ C:\Users\Äã×Ô¼ºµÄµçÄÔÃû\Documents\maya\2013-x64\scriptsÄ¿Â¼ÏÂ¶¼ĞĞ¡£
-#È»ºó¾ÍÓä¿ìµÄÍæË£°É¡£
+#æŠŠ gg_BSpiritCorrectiveShape è¿™ä¸ªæ”¾åˆ° C:\Users\ä½ è‡ªå·±çš„ç”µè„‘å\Documents\maya\2013-x64\scriptsç›®å½•ä¸‹ï¼Œ
+#blendShapeManage æ”¾åˆ°ä½ è‡ªå·±ç›®å½•å’Œ C:\Users\ä½ è‡ªå·±çš„ç”µè„‘å\Documents\maya\2013-x64\scriptsç›®å½•ä¸‹éƒ½è¡Œã€‚
+#ç„¶åå°±æ„‰å¿«çš„ç©è€å§ã€‚

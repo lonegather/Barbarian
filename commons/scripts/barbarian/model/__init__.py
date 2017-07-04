@@ -1,4 +1,4 @@
-import barbarian.model.checkModel
+﻿import barbarian.model.checkModel
 import barbarian.model.RemoveNamespace
 
 import pymel.core as pm

@@ -1,4 +1,4 @@
-import maya.cmds as cmds
+﻿import maya.cmds as cmds
 import maya.mel as mel
 import maya.OpenMaya as mo
 from maya.cmds import *

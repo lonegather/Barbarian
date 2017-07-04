@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 path = ["C:\Users\Administrator\Documents\maya\scripts\Barbarian_Data\Rig\blendShapeMel\blendShapeManage"]
 
 for i in path:

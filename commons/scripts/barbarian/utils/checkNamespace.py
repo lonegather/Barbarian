@@ -1,4 +1,4 @@
-import pymel.core as pm
+﻿import pymel.core as pm
 
 class CheckNamespace():
 	def __init__(self, state = 0):
