@@ -1,6 +1,6 @@
 <projects>
 	<project name="PT">
-		<time>25</time>
+		<time>pal</time>
 		<linear>centimeter</linear>
 		<camera>MainCam</camera>
 		<camResX>1280</camResX>
@@ -10,7 +10,7 @@
 		<facialLibPath>P:\PT\DB\</facialLibPath>
 	</project>
 	<project name="MB">
-		<time>25</time>
+		<time>pal</time>
 		<linear>centimeter</linear>
 		<camera>MainCam</camera>
 		<camResX>1280</camResX>

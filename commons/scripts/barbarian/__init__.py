@@ -79,7 +79,9 @@ class Entrance(object):
                 position = position + 1
 
     def __refreshUI__(self):
-        if getProject(): pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
+        if getProject(): 
+            pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
+            pm.currentUnit(time=getConfig(time=True))
         else: pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
 
 

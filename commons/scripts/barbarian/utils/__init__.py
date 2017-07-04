@@ -139,7 +139,7 @@ class ConfigHandler(xml.sax.ContentHandler):
     def characters(self, content):
         xml.sax.ContentHandler.characters(self, content)
         if self.current == "time":
-            self.time = int(content)
+            self.time = content
         elif self.current == "linear":
             self.linear = content
         elif self.current == "camera":
