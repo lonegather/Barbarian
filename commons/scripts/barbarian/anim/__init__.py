@@ -66,10 +66,7 @@ class PlayblastOption():
             videoName = videoName + videoNameList[i]
             if i < len(videoNameList) - 1 :
                 videoName = videoName + '.'
-                
-        videoOutName = videoName + 'mov'
-        videoName = videoName + 'avi'
-        
+        videoName = videoName + 'mov'
         
         pathList = str(fullPath).split(fileName)
         path = ""
@@ -77,43 +74,32 @@ class PlayblastOption():
             path = path + pathList[i]
             
         videoPath = path + videoName
-        videoOutPath = path + videoOutName
         
         soundTmp = mel.eval('$tmpVar=$gPlayBackSlider')
         soundObj = timeControl(soundTmp, q=1, sound=1)
         
         startFrame = playbackOptions(q=1, minTime=1)
-        endFrame = playbackOptions(q=1, maxTime=1)
         
         cls.__makeHUD__()
         
         if soundObj :
-            playblastFile = playblast(sound=soundObj, combineSound=True,
-                                      st=startFrame, et=endFrame, 
-                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
-                                      percent=getConfig(playblastScale=True)*100, 
-                                      filename=videoPath, forceOverwrite=True, 
-                                      format='avi', compression='none', quality=100, 
-                                      clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+            playblast(sound=soundObj, combineSound=True,
+                      sequenceTime=False, 
+                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
+                      percent=getConfig(playblastScale=True)*100, 
+                      filename=videoPath, forceOverwrite=True, 
+                      format='qt', compression='H.264', quality=100, 
+                      clearCache=True, viewer=True, showOrnaments=True, offScreen=False)
         else :
-            playblastFile = playblast(st=startFrame, et=endFrame, 
-                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
-                                      percent=getConfig(playblastScale=True)*100, 
-                                      filename=videoPath, forceOverwrite=True, 
-                                      format='avi', compression='none', quality=100, 
-                                      clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+            playblast(sequenceTime=False, 
+                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
+                      percent=getConfig(playblastScale=True)*100, 
+                      filename=videoPath, forceOverwrite=True, 
+                      format='qt', compression='H.264', quality=100, 
+                      clearCache=True, viewer=True, showOrnaments=True, offScreen=False)
         
         cls.__clearHUD__()
-        
-        mp = getPath("../commons/bin/", "ffmpeg")
-        resultCmd = r'%s -i %s -vcodec "mpeg4" -y -qscale 0 %s' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
-        print(resultCmd + "\n")
-        out = os.popen(resultCmd).read()
-        sys.stderr.write("out: " + out)
-        os.remove(playblastFile)
-        os.system('explorer "%s"' % os.path.abspath(videoOutPath))
-        
-        #os.system('explorer "%s"' % os.path.abspath(playblastFile))
+
         currentTime(startFrame)
         
     @classmethod
