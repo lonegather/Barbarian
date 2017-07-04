@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import xml.sax
 import pymel.core as pm
@@ -45,6 +45,11 @@ def getConfig(**kwargs):
     Provide Project Configuration
     --------------------------------------------------------------------------------
     '''
+    if not getProject():
+        pm.confirmDialog(message=u'请选择当前项目',ma="center", 
+                         icon="warning", title=u"", button=['Confirm'], defaultButton='Confirm')
+        raise Exception(u"请选择当前项目")
+    
     attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
     for attr in attrList:
         if attr in kwargs and kwargs[attr]:
