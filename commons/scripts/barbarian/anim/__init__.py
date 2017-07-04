@@ -104,12 +104,10 @@ class PlayblastOption():
         cls.__clearHUD__()
             
         mp = os.getenv('BARBARIAN_LOCATION')
-        mp += "../commons/bin/ffmpeg.exe"
+        mp += "../commons/bin/ffmpeg"
         resultCmd = r'%s -i %s -vcodec "mpeg4" -y -qscale 0 %s' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
         print(resultCmd + "\n")
-        sys.stderr.write('Encodeing...\n')
         out = os.popen(resultCmd).read()
-        sys.stderr.write("out: " + out)
         os.remove(playblastFile)
         os.system('explorer "%s"' % os.path.abspath(videoOutPath))
 
