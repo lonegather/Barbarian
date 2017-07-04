@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
+    <width>447</width>
     <height>58</height>
    </rect>
   </property>
@@ -30,13 +30,13 @@
     <widget class="QPushButton" name="fxBtn">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
@@ -44,12 +44,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>花瓣</string>
+      <string>≡ 花瓣 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_flower_fall.mel\&quot;;&quot;</string>
@@ -63,13 +63,13 @@
     <widget class="QPushButton" name="fxBtn_2">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
@@ -77,12 +77,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>垃圾</string>
+      <string>≡ 垃圾 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_rubbish_dumper.mel\&quot;;&quot;</string>
@@ -96,13 +96,13 @@
     <widget class="QPushButton" name="fxBtn_3">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
@@ -110,12 +110,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>舞动</string>
+      <string>≡ 舞动 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_colorDancer.mel\&quot;;&quot;</string>
@@ -129,13 +129,13 @@
     <widget class="QPushButton" name="fxBtn_4">
      <property name="minimumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>50</width>
+       <width>65</width>
        <height>16777215</height>
       </size>
      </property>
@@ -143,12 +143,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>流光</string>
+      <string>≡ 流光 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/tjh_car_motion_lighting.mel\&quot;;&quot;</string>
@@ -162,13 +162,13 @@
     <widget class="QPushButton" name="fxBtn_5">
      <property name="minimumSize">
       <size>
-       <width>130</width>
+       <width>145</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>130</width>
+       <width>145</width>
        <height>16777215</height>
       </size>
      </property>
@@ -176,12 +176,12 @@
       <font>
        <family>微软雅黑</family>
        <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="text">
-      <string>Instancer Baking</string>
+      <string>≡ Instancer Baking ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/fx/InstancerBaking_v1.mel\&quot;;&quot;</string>

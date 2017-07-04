@@ -5,7 +5,7 @@ Created on 2017.6.9
 '''
 
 import pymel.core as pm
-from barbarian.utils import *
+from barbarian.utils import getPath, getProject, setProject, getConfig, getHelp, kIcon, kUI
 
 try: import barbarian.model
 except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")

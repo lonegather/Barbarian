@@ -1,5 +1,5 @@
 ﻿from pymel.core import *
-from barbarian.utils import *
+from barbarian.utils import getPath, getConfig, kUI
 from pymel.internal.pmcmds import file
 import os, sys
 
@@ -18,6 +18,7 @@ class PlayblastOption():
     win = "playblastOptionDialog"
     textField = "playblastNameInput"
     defaultCB = "playblastCBDefault"
+    HUDCB = "playblastCBHUD"
     
     @classmethod
     def UI(cls):
@@ -30,14 +31,24 @@ class PlayblastOption():
         else:
             checkBox(cls.defaultCB, e=True, value=False)
             textField(cls.textField, e=True, tx=optionVar(q="PutaoTools_HUD_Animator"))
+            
+        if (not optionVar(exists="PutaoTools_HUD_Padding")) or optionVar(q="PutaoTools_HUD_Padding"):
+            checkBox(cls.HUDCB, e=True, value=True)
+            optionVar(iv=("PutaoTools_HUD_Padding", 120))
+        else: checkBox(cls.HUDCB, e=True, value=False)
       
     @classmethod
-    def changeHUDName(cls, pb=False):
+    def changeHUD(cls, pb=False):
         name = textField(cls.textField, q=True, tx=True)
         if checkBox(cls.defaultCB, q=True, value=True):
             optionVar(remove="PutaoTools_HUD_Animator")
         else:
             optionVar(sv=("PutaoTools_HUD_Animator", name))
+            
+        if checkBox(cls.HUDCB, q=True, value=True):
+            optionVar(iv=("PutaoTools_HUD_Padding", 120))
+        else:
+            optionVar(iv=("PutaoTools_HUD_Padding", 0))
             
         if pb: cls.playblast()
         
@@ -83,19 +94,38 @@ class PlayblastOption():
         startFrame = playbackOptions(q=1, minTime=1)
         endFrame = playbackOptions(q=1, maxTime=1)
         
+        panel = playblast(activeEditor=True).split("|")[-1]
+        currentCam = modelPanel(panel, q=True, camera=True)
+        
+        padding = 0
+        if (not optionVar(exists="PutaoTools_HUD_Padding")) or optionVar(q="PutaoTools_HUD_Padding"):
+            optionVar(iv=("PutaoTools_HUD_Padding", 120))
+            padding = optionVar(q="PutaoTools_HUD_Padding")
+            cam = listRelatives(currentCam)[0]
+            setAttr(cam+".displayFilmGate", 0)
+            setAttr(cam+".displayResolution", 1)
+            setAttr(cam+".displayGateMask", 1)
+            setAttr(cam+".displayGateMaskOpacity", 1.0)
+            setAttr(cam+".displayGateMaskColor", [0.0,0.0,0.0])
+            setAttr(cam+".displaySafeAction", 1)
+            setAttr(cam+".overscan", 1)
+            setAttr(cam+".filmFit", 1)
+            
+            select(clear=True)
+        
         cls.__makeHUD__()
         
         if soundObj :
             playblastFile = playblast(sound=soundObj, combineSound=True,
                                       st=startFrame, et=endFrame, 
-                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
+                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
                                       percent=getConfig(playblastScale=True), 
                                       filename=videoPath, forceOverwrite=True, 
                                       format='avi', compression='none', quality=100, 
                                       clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
         else :
             playblastFile = playblast(st=startFrame, et=endFrame, 
-                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
+                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
                                       percent=getConfig(playblastScale=True), 
                                       filename=videoPath, forceOverwrite=True, 
                                       format='avi', compression='none', quality=100, 
@@ -117,7 +147,7 @@ class PlayblastOption():
     def __makeHUD__(cls):
         cls.__clearHUD__()
         
-        headsUpDisplay("HUD_Time", section=1, block=0, label="Date:",
+        headsUpDisplay("HUD_Time", section=0, block=0, label="Date:",
                        dataFontSize="large", 
                        labelFontSize="large", 
                        blockSize="large", 
