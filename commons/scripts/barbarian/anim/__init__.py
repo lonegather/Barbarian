@@ -1,6 +1,7 @@
 ﻿from pymel.core import *
 from barbarian.utils import *
 from pymel.internal.pmcmds import file
+import os, sys
 
 
 def cmdCameraOperation(option):
@@ -50,6 +51,73 @@ class PlayblastOption():
     @classmethod
     def playblast(cls):
         
+        fullPath = file(q=1, exn=1)
+        fileName = file(q=1, sn=1, shn=1)
+        
+        if fileName == '' :
+            confirmDialog(message=u'文件未保存',ma="center", 
+                      icon="information", title=u"")
+            return
+        
+        videoNameList = str(fileName).split(".")
+        videoName = ""
+        
+        for i in range(len(videoNameList) - 1) :
+            videoName = videoName + videoNameList[i]
+            if i < len(videoNameList) - 1 :
+                videoName = videoName + '.'
+                
+        videoOutName = videoName + 'mov'
+        videoName = videoName + 'avi'
+        
+        
+        pathList = str(fullPath).split(fileName)
+        path = ""
+        for i in range(len(pathList) - 1) :
+            path = path + pathList[i]
+            
+        videoPath = path + videoName
+        videoOutPath = path + videoOutName
+        
+        soundTmp = mel.eval('$tmpVar=$gPlayBackSlider')
+        soundObj = timeControl(soundTmp, q=1, sound=1)
+        
+        startFrame = playbackOptions(q=1, minTime=1)
+        endFrame = playbackOptions(q=1, maxTime=1)
+        
+        cls.__makeHUD__()
+        
+        if soundObj :
+            playblastFile = playblast(sound=soundObj, combineSound=True,
+                                      st=startFrame, et=endFrame, 
+                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
+                                      percent=getConfig(playblastScale=True)*100, 
+                                      filename=videoPath, forceOverwrite=True, 
+                                      format='avi', compression='none', quality=100, 
+                                      clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+        else :
+            playblastFile = playblast(st=startFrame, et=endFrame, 
+                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
+                                      percent=getConfig(playblastScale=True)*100, 
+                                      filename=videoPath, forceOverwrite=True, 
+                                      format='avi', compression='none', quality=100, 
+                                      clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+        
+        cls.__clearHUD__()
+        
+        mp = getPath("../commons/bin/", "ffmpeg")
+        resultCmd = r'%s -i %s -vcodec "mpeg4" -y -qscale 0 %s' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
+        print(resultCmd + "\n")
+        out = os.popen(resultCmd).read()
+        sys.stderr.write("out: " + out)
+        os.remove(playblastFile)
+        os.system('explorer "%s"' % os.path.abspath(videoOutPath))
+        
+        #os.system('explorer "%s"' % os.path.abspath(playblastFile))
+        currentTime(startFrame)
+        
+    @classmethod
+    def __makeHUD__(cls):
         cls.__clearHUD__()
         
         headsUpDisplay("HUD_Time", section=1, block=0, label="Date:",
@@ -81,10 +149,7 @@ class PlayblastOption():
                        labelFontSize="large", 
                        blockSize="large", 
                        command=cls.__frame__, attachToRefresh=True)
-        
-        mel.eval("pyPBMpeg")
-        cls.__clearHUD__()
-        
+    
     @classmethod
     def __clearHUD__(cls):
         for i in range(0, 10):
@@ -110,12 +175,7 @@ class PlayblastOption():
     
     @classmethod
     def __camera__(cls):
-        panel = getPanel(withFocus=True)
-        panelType = getPanel(typeOf=panel)
-        views = getPanel(type="modelPanel")
-        if not mel.eval("gmatch \"%s\" \"modelPanel*\";"%panelType):
-            panel = views[0]
-        
+        panel = playblast(activeEditor=True).split("|")[-1]
         camera = modelPanel(panel, q=True, camera=True)
         cameraShape = listRelatives(camera, shapes=True)
         if cameraShape: camera = cameraShape[0]
