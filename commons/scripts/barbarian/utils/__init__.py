@@ -63,7 +63,7 @@ def setProject(name):
     for project in __handler__.config:
         if project["name"] == name:
             pm.optionVar(sv=("PutaoTools_Project", name))
-            pm.optionVar(iv=("PutaoTools_Project_Time", project["time"]))
+            pm.optionVar(sv=("PutaoTools_Project_Time", project["time"]))
             pm.optionVar(sv=("PutaoTools_Project_Linear", project["linear"]))
             pm.optionVar(sv=("PutaoTools_Project_Camera", project["camera"]))
             pm.optionVar(iv=("PutaoTools_Project_CamResX", project["camResX"]))
