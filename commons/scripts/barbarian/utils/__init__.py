@@ -149,7 +149,7 @@ class ConfigHandler(xml.sax.ContentHandler):
         elif self.current == "camResY":
             self.camResY = int(content)
         elif self.current == "playblastScale":
-            self.playblastScale = float(content)
+            self.playblastScale = int(content)
         elif self.current == "animLibPath":
             self.animLibPath = content
         elif self.current == "facialLibPath":

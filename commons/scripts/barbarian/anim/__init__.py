@@ -86,14 +86,14 @@ class PlayblastOption():
             playblast(sound=soundObj, combineSound=True,
                       sequenceTime=False, 
                       widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
-                      percent=getConfig(playblastScale=True)*100, 
+                      percent=getConfig(playblastScale=True), 
                       filename=videoPath, forceOverwrite=True, 
                       format='qt', compression='H.264', quality=100, 
                       clearCache=True, viewer=True, showOrnaments=True, offScreen=False)
         else :
             playblast(sequenceTime=False, 
                       widthHeight=[getConfig(camResX=True), getConfig(camResY=True)], 
-                      percent=getConfig(playblastScale=True)*100, 
+                      percent=getConfig(playblastScale=True), 
                       filename=videoPath, forceOverwrite=True, 
                       format='qt', compression='H.264', quality=100, 
                       clearCache=True, viewer=True, showOrnaments=True, offScreen=False)
