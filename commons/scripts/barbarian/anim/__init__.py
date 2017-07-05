@@ -115,21 +115,25 @@ class PlayblastOption():
         
         cls.__makeHUD__()
         
-        if soundObj :
-            playblastFile = playblast(sound=soundObj, combineSound=True,
-                                      st=startFrame, et=endFrame, 
-                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
-                                      percent=getConfig(playblastScale=True), 
-                                      filename=videoPath, forceOverwrite=True, 
-                                      format='avi', compression='none', quality=100, 
-                                      clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
-        else :
-            playblastFile = playblast(st=startFrame, et=endFrame, 
-                                      widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
-                                      percent=getConfig(playblastScale=True), 
-                                      filename=videoPath, forceOverwrite=True, 
-                                      format='avi', compression='none', quality=100, 
-                                      clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+        try:
+            if soundObj :
+                playblastFile = playblast(sound=soundObj, combineSound=True,
+                                          st=startFrame, et=endFrame, 
+                                          widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
+                                          percent=getConfig(playblastScale=True), 
+                                          filename=videoPath, forceOverwrite=True, 
+                                          format='avi', compression='none', quality=100, 
+                                          clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+            else :
+                playblastFile = playblast(st=startFrame, et=endFrame, 
+                                          widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
+                                          percent=getConfig(playblastScale=True), 
+                                          filename=videoPath, forceOverwrite=True, 
+                                          format='avi', compression='none', quality=100, 
+                                          clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
+        except: 
+            cls.__clearHUD__()
+            return
         
         cls.__clearHUD__()
             
