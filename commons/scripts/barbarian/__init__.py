@@ -53,6 +53,7 @@ class Entrance(object):
                     command=pm.Callback(pm.setMenuMode, "dynamicsMenuSet"))
         
         pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
+        pm.scriptJob(event=["NewSceneOpened", self.__refreshUI__], parent=self.menu)
         pm.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
         self.__build__()
         self.__refreshUI__()
