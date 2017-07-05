@@ -67,7 +67,7 @@ class PlayblastOption():
         
         if fileName == '' :
             confirmDialog(message=u'文件未保存',ma="center", 
-                      icon="information", title=u"")
+                      icon="information", title=u"PuTao")
             return
         
         videoNameList = str(fileName).split(".")
@@ -223,8 +223,8 @@ class PlayblastOption():
 def cmdKeyframe():
     try: offset = int(textField("animOffsetInput", q=True, tx=True))
     except:
-        confirmDialog(message=u'请输入有效数值：负值为向左移动，正值为向右移动',ma="center", 
-                      icon="information", title=u"", button=['Confirm'], defaultButton='Confirm')
+        confirmDialog(message=u'请输入有效数值：负值为向左移动，正值为向右移动', 
+                      icon="information", title=u"PuTao")
         return
     
     animCurves = []
@@ -233,8 +233,7 @@ def cmdKeyframe():
     for ac in ls(type="animCurveTU"): animCurves.append(ac)
     
     if not len(animCurves): 
-        confirmDialog(message=u'未找到关键帧信息',ma="center", 
-                      icon="information", title=u"", button=['Confirm'], defaultButton='Confirm')
+        confirmDialog(message=u'未找到关键帧信息', icon="information", title=u"PuTao")
         return
     
     progressWindow(title=u"进度", status=u"处理中...")

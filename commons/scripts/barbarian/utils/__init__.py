@@ -46,8 +46,7 @@ def getConfig(**kwargs):
     --------------------------------------------------------------------------------
     '''
     if not getProject():
-        pm.confirmDialog(message=u'请选择当前项目',ma="center", 
-                         icon="warning", title=u"", button=['Confirm'], defaultButton='Confirm')
+        pm.confirmDialog(message=u'请选择当前项目',ma="center", icon="warning", title=u"PuTao")
         raise Exception(u"请选择当前项目")
     
     attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
@@ -183,7 +182,7 @@ __parser__.setContentHandler(__handler__)
 try:
     __parser__.parse(getPath("../commons/config/", "config.xml"))
 except Exception, e:
-    pm.confirmDialog(message=u"加载配置出现问题："+e[-1],ma="center", title=u"错误", icon="critical")
+    pm.confirmDialog(message=u"加载配置出现问题：%s"%e, title=u"PuTao", icon="critical")
     pm.optionVar(rm="PutaoTools_Project")
 
 if not pm.optionVar(exists="PutaoTools_Project"):

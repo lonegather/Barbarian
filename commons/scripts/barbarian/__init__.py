@@ -8,15 +8,15 @@ import pymel.core as pm
 from barbarian.utils import getPath, getProject, setProject, getConfig, getHelp, kIcon, kUI
 
 try: import barbarian.model
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
 try: import barbarian.rig
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
 try: import barbarian.anim
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
 try: import barbarian.render
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
 try: import barbarian.fx
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, icon="critical")
+except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
 
 
 class Entrance(object):
