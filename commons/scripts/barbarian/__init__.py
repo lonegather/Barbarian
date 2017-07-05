@@ -93,7 +93,7 @@ Tool Initialization at Maya Startup
 '''
 
 #initialize plugins
-for i in ["pyPBMpegCmd", "CustomDeformers"]:
+for i in ["pyPBMpegCmd", "CustomDeformers", "animImportExport"]:
     try: pm.loadPlugin(i)
     except: pass
 
