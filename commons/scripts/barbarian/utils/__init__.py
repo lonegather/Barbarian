@@ -175,12 +175,16 @@ try: pm.condition("ProjectChanged", delete=True)
 except: pass
 pm.condition("ProjectChanged", state=True)
 
+__handler__ = ConfigHandler()
 __parser__ = xml.sax.make_parser()
 __parser__.setFeature(xml.sax.handler.feature_namespaces, 0)
-
-__handler__ = ConfigHandler()
 __parser__.setContentHandler(__handler__)
-__parser__.parse(getPath("../commons/config/", "config.xml"))
+
+try:
+    __parser__.parse(getPath("../commons/config/", "config.xml"))
+except Exception, e:
+    pm.confirmDialog(message=u"加载配置出现问题："+e[-1],ma="center", title=u"错误", icon="critical")
+    pm.optionVar(rm="PutaoTools_Project")
 
 if not pm.optionVar(exists="PutaoTools_Project"):
     pm.optionVar(sv=("PutaoTools_Project", ""))
