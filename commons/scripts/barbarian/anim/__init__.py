@@ -141,7 +141,7 @@ class PlayblastOption():
             
         mp = os.getenv('BARBARIAN_LOCATION')
         mp += "../commons/bin/ffmpeg"
-        resultCmd = r'"%s" -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
+        resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
         print(resultCmd + "\n")
         out = os.popen(resultCmd).read()
         os.remove(playblastFile)
