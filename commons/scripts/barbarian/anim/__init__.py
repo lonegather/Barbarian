@@ -6,7 +6,6 @@ from pymel.core import *
 from barbarian.utils import getPath, getConfig, kUI
 from pymel.internal.pmcmds import file
 import os, sys
-from _codecs import ascii_decode
 
 
 def cmdCameraOperation(option):
@@ -153,9 +152,8 @@ class PlayblastOption():
         resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
         print(resultCmd + "\n")
         os.system(unicode(resultCmd))
-        
+        os.system(r'explorer "%s"' % os.path.abspath(videoOutPath))
         os.remove(playblastFile)
-        os.system('explorer "%s"' % os.path.abspath(videoOutPath))
 
         currentTime(startFrame)
         

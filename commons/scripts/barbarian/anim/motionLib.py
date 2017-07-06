@@ -1,3 +1,4 @@
+﻿# -*- coding: utf-8 -*-
 '''
 Created on 2017.7.5
 
@@ -6,7 +7,7 @@ Created on 2017.7.5
 
 import os
 import pymel.core as pm
-from barbarian.utils import getConfig
+from barbarian.utils import getPath, kUI, getProject, setProject, getConfig
 from pymel.internal.pmcmds import file
 
 
@@ -14,10 +15,70 @@ class AnimRepository(object):
     '''
     classdocs
     '''
+    win = "motionLibOption"
+    tab = "motionLibTab"
+    opMnuProject = "motionLibCBProject"
+    opMnuCharactor = "motionLibCBCharactor"
+    btnImport = "motionLibBtnImport"
+    tslImport = "motionLibLVImport"
+    isImport = "motionLibHSCopies"
+    
+    path = ""
+    char = ""
+    namespace = ""
     
     @classmethod
     def UI(cls):
-        pass
+        if pm.window(cls.win, exists=True): pm.deleteUI(cls.win)
+        pm.loadUI(f=getPath(kUI, "motionLib.ui"))
+        pm.showWindow(cls.win)
+        
+        projects = getProject(all=True)
+        
+        if not projects:
+            pm.control(cls.tab, e=True, enable=False)
+        else: 
+            for project in projects:
+                pm.menuItem(l=project, parent=cls.opMnuProject)
+            pm.optionMenu(cls.opMnuProject, e=True, changeCommand=setProject)
+            if not getProject(): setProject(projects[0])
+            pm.optionMenu(cls.opMnuProject, e=True, v=getProject())
+            pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshList], parent=cls.win)
+        
+        chars = cls.getCharactors()
+        #script job things here (when reference file was added or removed):
+        
+        if not chars:
+            pm.control(cls.tab, e=True, enable=False)
+        else:
+            for char in chars:
+                pm.menuItem(l=char, parent=cls.opMnuCharactor)
+            pm.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshList)
+            cls.refreshList(pm.optionMenu(cls.opMnuCharactor, q=True, v=True))
+        
+        
+    @classmethod
+    def refreshList(cls, value=None):
+        if not value: value = pm.optionMenu(cls.opMnuCharactor, q=True, v=True)
+        cls.path = getConfig(animLibPath=True)
+        cls.char = value.split(":")[-1]
+        cls.namespace = value
+        files = cls.getFileList(cls.path+cls.char)
+        pm.textScrollList(cls.tslImport, e=True, removeAll=True)
+        pm.textScrollList(cls.tslImport, e=True, append=files)
+    
+    @classmethod
+    def getCharactors(cls):
+        pm.namespace(set = ":")
+        allNS = pm.namespaceInfo(lon=True, r=True, an=True)
+        for ns in [':UI', ':shared']:
+            allNS.remove(ns)
+        
+        newNS = []
+        for ns in allNS:
+            children = pm.namespaceInfo(ns, lon=True, r=True, an=True)
+            if (not children) and (not ns.find("C_") == -1): newNS.append(ns)
+        return newNS
     
     @classmethod
     def getFileList(cls, path):
@@ -38,14 +99,20 @@ class AnimRepository(object):
         return fileList
         
     @classmethod
-    def animImport(cls, filePath, time, copies=1):
-        fileName = filePath.split("/")[-1]
-        fileNameSpace = fileName.split(".")[0]
+    def animImport(cls):
+        time = int(pm.currentTime(q=True))
+        copies = pm.intSlider(cls.isImport, q=True, value=True)
+        sel = pm.textScrollList(cls.tslImport, q=True, selectItem=True)
+        if not sel: return
+        filePath = cls.path + cls.char + "\\" + sel[0] + ".anim"
+        
+        pm.select(cls.namespace+":Main", r=True)
+        
         opt = "targetTime=3;option=merge;pictures=0;connect=0;"
         opt = opt + "time=%d;" % time
-        opt = opt + "copies=%d" % copies
+        opt = opt + "copies=%d;" % copies
         
-        file(filePath, type="animImport", ns=fileNameSpace, options=opt, 
+        file(filePath, type="animImport", ns=cls.namespace, options=opt, 
              i=True, iv=True, ra=True, mnc=False, pr=True)
         
     @classmethod
@@ -56,7 +123,6 @@ class AnimRepository(object):
         opt = opt + "copyKeyCmd=-animation objects "
         opt = opt + "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
         opt = opt + "-option curve -hierarchy below -controlPoints 0 -shape 0 "
-        
         file(filePath, type="animExport", options=opt, 
              force=True, es=True, pr=True)
         

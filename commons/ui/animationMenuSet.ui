@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>792</width>
+    <width>878</width>
     <height>51</height>
    </rect>
   </property>
@@ -123,7 +123,7 @@
       <string>&quot;source \&quot;barbarian/anim/cameraShaker.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
+      <string>.3 .3 .3</string>
      </property>
     </widget>
    </item>
@@ -202,7 +202,7 @@
        <string>拍屏</string>
       </property>
       <property name="-backgroundColor" stdset="0">
-       <string>0.25 0.25 0.25</string>
+       <string>.3 .3 .3</string>
       </property>
       <property name="+command" stdset="0">
        <string>lambda *args: barbarian.anim.PlayblastOption.playblast()</string>
@@ -235,7 +235,7 @@
        <string>≡</string>
       </property>
       <property name="-bgc" stdset="0">
-       <string>0.25 0.25 0.25</string>
+       <string>.3 .3 .3</string>
       </property>
       <property name="+command" stdset="0">
        <string>lambda *args: barbarian.anim.PlayblastOption.UI()</string>
@@ -345,7 +345,7 @@
        <string>偏移帧</string>
       </property>
       <property name="-backgroundColor" stdset="0">
-       <string>.25 .25 .25</string>
+       <string>.3 .3 .3</string>
       </property>
       <property name="+command" stdset="0">
        <string>lambda *args: barbarian.anim.cmdKeyframe()</string>
@@ -470,6 +470,39 @@
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;P:/PT/Doc/06_Maya_Plugin/库插件/poseLib6.6/poseLib.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ 动作库 ≡</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.anim.motionLib.AnimRepository.UI()</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
