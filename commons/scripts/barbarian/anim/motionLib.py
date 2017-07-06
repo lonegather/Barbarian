@@ -25,6 +25,8 @@ class AnimRepository(object):
         fileList = p.read().split("\n")
         p.close()
         del fileList[-1]
+        for i in range(0, len(fileList)):
+            fileList[i] = fileList[i].split(".anim")[0]
         return fileList
     
     @classmethod

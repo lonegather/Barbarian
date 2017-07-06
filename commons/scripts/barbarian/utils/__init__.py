@@ -1,4 +1,6 @@
-﻿import os
+﻿# -*- coding: utf-8 -*-
+
+import os
 import sys
 import xml.sax
 import pymel.core as pm

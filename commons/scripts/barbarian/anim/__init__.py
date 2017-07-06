@@ -1,9 +1,12 @@
-﻿import barbarian.anim.motionLib
+# -*- coding: utf-8 -*-
+
+import barbarian.anim.motionLib
 
 from pymel.core import *
 from barbarian.utils import getPath, getConfig, kUI
 from pymel.internal.pmcmds import file
 import os, sys
+from _codecs import ascii_decode
 
 
 def cmdCameraOperation(option):
@@ -67,12 +70,18 @@ class PlayblastOption():
         fullPath = file(q=1, exn=1)
         fileName = file(q=1, sn=1, shn=1)
         
+        try: fullPath.decode("utf-8")
+        except:
+            confirmDialog(message=u'请勿使用中文路径或文件名',ma="center", 
+                      icon="information", title=u"PuTao")
+            return
+        
         if fileName == '' :
             confirmDialog(message=u'文件未保存',ma="center", 
                       icon="information", title=u"PuTao")
             return
         
-        videoNameList = str(fileName).split(".")
+        videoNameList = fileName.split(".")
         videoName = ""
         
         for i in range(len(videoNameList) - 1) :
@@ -82,7 +91,7 @@ class PlayblastOption():
         videoOutName = videoName + 'mov'
         videoName = videoName + 'avi'
         
-        pathList = str(fullPath).split(fileName)
+        pathList = fullPath.split(fileName)
         path = ""
         for i in range(len(pathList) - 1) :
             path = path + pathList[i]
@@ -143,7 +152,8 @@ class PlayblastOption():
         mp += "../commons/bin/ffmpeg"
         resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
         print(resultCmd + "\n")
-        out = os.popen(resultCmd).read()
+        os.system(unicode(resultCmd))
+        
         os.remove(playblastFile)
         os.system('explorer "%s"' % os.path.abspath(videoOutPath))
 
