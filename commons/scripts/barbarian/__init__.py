@@ -85,7 +85,8 @@ class Entrance(object):
         if getProject(): 
             pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
             pm.currentUnit(time=getConfig(time=True))
-        else: pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
+        elif getProject(all=True): pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
+        else: pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
 
 
 '''

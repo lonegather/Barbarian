@@ -47,15 +47,18 @@ def getConfig(**kwargs):
     Provide Project Configuration
     --------------------------------------------------------------------------------
     '''
-    if not getProject():
+    if not getProject(all=True):
+        pm.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
+        raise Exception(u"项目配置异常")
+    elif not getProject():
         pm.confirmDialog(message=u'请选择当前项目',ma="center", icon="warning", title=u"PuTao")
         raise Exception(u"请选择当前项目")
-    
-    attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
-    for attr in attrList:
-        if attr in kwargs and kwargs[attr]:
-            for project in __handler__.config:
-                if project["name"] == getProject(): return project[attr]
+    else:
+        attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
+        for attr in attrList:
+            if attr in kwargs and kwargs[attr]:
+                for project in __handler__.config:
+                    if project["name"] == getProject(): return project[attr]
                 
     return None
 
@@ -184,7 +187,7 @@ __parser__.setContentHandler(__handler__)
 try:
     __parser__.parse(getPath("../commons/config/", "config.xml"))
 except Exception, e:
-    pm.confirmDialog(message=u"加载配置出现问题：%s"%e, title=u"PuTao", icon="critical")
+    pm.confirmDialog(message=u"加载配置出现问题，无法读取项目列表", title=u"PuTao", icon="warning")
     pm.optionVar(rm="PutaoTools_Project")
 
 if not pm.optionVar(exists="PutaoTools_Project"):

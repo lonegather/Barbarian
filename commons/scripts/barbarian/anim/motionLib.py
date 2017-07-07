@@ -63,9 +63,16 @@ class AnimRepository(object):
         cls.path = getConfig(animLibPath=True)
         cls.char = value.split(":")[-1]
         cls.namespace = value
-        files = cls.getFileList(cls.path+cls.char)
+        files = cls.getFileList(cls.path+cls.getOrigChar(cls.char))
         pm.textScrollList(cls.tslImport, e=True, removeAll=True)
         pm.textScrollList(cls.tslImport, e=True, append=files)
+    
+    @classmethod    
+    def getOrigChar(cls, char):
+        chars = cls.getDirectoryList(cls.path)
+        for orig in chars:
+            if not char.find(orig) == -1:
+                return orig
     
     @classmethod
     def getCharactors(cls):
@@ -104,15 +111,15 @@ class AnimRepository(object):
         copies = pm.intSlider(cls.isImport, q=True, value=True)
         sel = pm.textScrollList(cls.tslImport, q=True, selectItem=True)
         if not sel: return
-        filePath = cls.path + cls.char + "\\" + sel[0] + ".anim"
         
-        pm.select(cls.namespace+":Main", r=True)
-        
+        filePath = cls.path + cls.getOrigChar(cls.char) + "\\" + sel[0] + ".anim"
         opt = "targetTime=3;option=merge;pictures=0;connect=0;"
         opt = opt + "time=%d;" % time
         opt = opt + "copies=%d;" % copies
         
-        file(filePath, type="animImport", ns=cls.namespace, options=opt, 
+        pm.select(cls.namespace+":Main", r=True)
+        
+        file(filePath, type="animImport", ns=sel[0], options=opt, 
              i=True, iv=True, ra=True, mnc=False, pr=True)
         
     @classmethod
