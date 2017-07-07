@@ -56,12 +56,14 @@ class Entrance(object):
         
         pm.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
         pm.scriptJob(event=["NewSceneOpened", self.__refreshUI__], parent=self.menu)
+        pm.scriptJob(event=["timeUnitChanged", self.__refreshUI__], parent=self.menu)
+        pm.scriptJob(event=["linearUnitChanged", self.__refreshUI__], parent=self.menu)
         pm.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
         self.__build__()
         self.__refreshUI__()
     
     def __build__(self):
-        if pm.control("Form", exists=True): pm.deleteUI("Form")
+        while pm.control("Form", exists=True): pm.deleteUI("Form")
         widgets = pm.layout(self.layout, q=True, ca=True)
         for widget in widgets:
             isShelfButton = pm.shelfButton(widget, exists=True)
@@ -73,7 +75,7 @@ class Entrance(object):
         else:
             pm.shelfLayout(self.layout, e=True, position=(self.button, 1))
             pm.shelfLayout(self.layout, e=True, position=(self.menu, 2))
-            widgets = pm.layout("horizontalLayout", q=True, ca=True)
+            widgets = pm.layout("menuSetLayout", q=True, ca=True)
             position = 3
             for widget in widgets:
                 width = pm.control(widget, q=True, width=True)

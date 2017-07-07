@@ -22,6 +22,7 @@ class AnimRepository(object):
     btnImport = "motionLibBtnImport"
     tslImport = "motionLibLVImport"
     isImport = "motionLibHSCopies"
+    lblWarning = "motionLibLWarning"
     
     path = ""
     char = ""
@@ -31,6 +32,7 @@ class AnimRepository(object):
     def UI(cls):
         if pm.window(cls.win, exists=True): pm.deleteUI(cls.win)
         pm.loadUI(f=getPath(kUI, "motionLib.ui"))
+        pm.window(cls.win, e=True, toolbox=True, leftEdge=100, topEdge=100)
         pm.showWindow(cls.win)
         
         projects = getProject(all=True)
@@ -56,9 +58,10 @@ class AnimRepository(object):
             pm.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshList)
             cls.refreshList(pm.optionMenu(cls.opMnuCharactor, q=True, v=True))
         
-        
     @classmethod
     def refreshList(cls, value=None):
+        pm.optionMenu(cls.opMnuProject, e=True, v=getProject())
+        
         if not value: value = pm.optionMenu(cls.opMnuCharactor, q=True, v=True)
         cls.path = getConfig(animLibPath=True)
         cls.char = value.split(":")[-1]
@@ -113,7 +116,7 @@ class AnimRepository(object):
         if not sel: return
         
         filePath = cls.path + cls.getOrigChar(cls.char) + "\\" + sel[0] + ".anim"
-        opt = "targetTime=3;option=merge;pictures=0;connect=0;"
+        opt = "targetTime=3;option=insert;pictures=0;connect=0;"
         opt = opt + "time=%d;" % time
         opt = opt + "copies=%d;" % copies
         
@@ -135,16 +138,6 @@ class AnimRepository(object):
         
         
 '''
-file -import 
-     -type "animImport"  
-     -ignoreVersion 
-     -ra true 
-     -mergeNamespacesOnClash false 
-     -namespace "walk" 
-     -options ";targetTime=3;time=10;copies=1;option=merge;pictures=0;connect=0;"  
-     -pr 
-     "F:/walk.anim";
-     
 file -force 
      -options "precision=8;intValue=17;nodeNames=1;verboseUnits=0;whichRange=2;range=0:24;options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=1;useChannelBox=0;
                copyKeyCmd=-animation objects -time >0:24> -float >0:24> -option curve -hierarchy below -controlPoints 0 -shape 0 " 

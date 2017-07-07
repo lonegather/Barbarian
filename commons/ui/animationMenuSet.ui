@@ -33,7 +33,7 @@
   <property name="windowTitle">
    <string>anim</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="menuSetLayout">
    <item>
     <widget class="Line" name="line_2">
      <property name="minimumSize">
