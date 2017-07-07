@@ -63,7 +63,7 @@ class Entrance(object):
         self.__refreshUI__()
     
     def __build__(self):
-        while pm.control("Form", exists=True): pm.deleteUI("Form")
+        while pm.control("menuSetForm", exists=True): pm.deleteUI("menuSetForm")
         widgets = pm.layout(self.layout, q=True, ca=True)
         for widget in widgets:
             isShelfButton = pm.shelfButton(widget, exists=True)

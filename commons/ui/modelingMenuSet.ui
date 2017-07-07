@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>menuSetForm</class>
+ <widget class="QWidget" name="menuSetForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -27,7 +27,7 @@
   </property>
   <layout class="QHBoxLayout" name="menuSetLayout">
    <item>
-    <widget class="QPushButton" name="modelBtn_3">
+    <widget class="QPushButton" name="modelMSBtn_3">
      <property name="minimumSize">
       <size>
        <width>102</width>
@@ -60,7 +60,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_2">
+    <widget class="QPushButton" name="modelMSBtn_2">
      <property name="minimumSize">
       <size>
        <width>75</width>
@@ -93,7 +93,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_8">
+    <widget class="QPushButton" name="modelMSBtn_8">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -126,7 +126,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_7">
+    <widget class="QPushButton" name="modelMSBtn_7">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -153,7 +153,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_11">
+    <widget class="QPushButton" name="modelMSBtn_11">
      <property name="minimumSize">
       <size>
        <width>120</width>
@@ -186,7 +186,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_5">
+    <widget class="QPushButton" name="modelMSBtn_5">
      <property name="minimumSize">
       <size>
        <width>80</width>
@@ -219,7 +219,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_4">
+    <widget class="QPushButton" name="modelMSBtn_4">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -252,7 +252,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_6">
+    <widget class="QPushButton" name="modelMSBtn_6">
      <property name="minimumSize">
       <size>
        <width>110</width>
@@ -285,7 +285,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_10">
+    <widget class="QPushButton" name="modeMSlBtn_10">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -318,7 +318,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_9">
+    <widget class="QPushButton" name="modelMSBtn_9">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -351,16 +351,16 @@
     </widget>
    </item>
   </layout>
-  <zorder>modelBtn_2</zorder>
-  <zorder>modelBtn_3</zorder>
-  <zorder>modelBtn_4</zorder>
-  <zorder>modelBtn_5</zorder>
-  <zorder>modelBtn_6</zorder>
-  <zorder>modelBtn_7</zorder>
-  <zorder>modelBtn_8</zorder>
-  <zorder>modelBtn_9</zorder>
-  <zorder>modelBtn_10</zorder>
-  <zorder>modelBtn_11</zorder>
+  <zorder>modelMSBtn_2</zorder>
+  <zorder>modelMSBtn_3</zorder>
+  <zorder>modelMSBtn_4</zorder>
+  <zorder>modelMSBtn_5</zorder>
+  <zorder>modelMSBtn_6</zorder>
+  <zorder>modelMSBtn_7</zorder>
+  <zorder>modelMSBtn_8</zorder>
+  <zorder>modelMSBtn_9</zorder>
+  <zorder>modeMSlBtn_10</zorder>
+  <zorder>modelMSBtn_11</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>menuSetForm</class>
+ <widget class="QWidget" name="menuSetForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -35,7 +35,7 @@
   </property>
   <layout class="QHBoxLayout" name="menuSetLayout">
    <item>
-    <widget class="Line" name="line_2">
+    <widget class="Line" name="animMSLine_2">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line">
+    <widget class="Line" name="animMSLine">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -73,7 +73,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_11">
+    <widget class="Line" name="animMSLine_11">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -92,7 +92,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_7">
+    <widget class="QPushButton" name="animMSBtn_7">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -128,7 +128,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_7">
+    <widget class="Line" name="animMSLine_7">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -147,7 +147,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame_2">
+    <widget class="QFrame" name="animMSFrame_2">
      <property name="minimumSize">
       <size>
        <width>65</width>
@@ -244,7 +244,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_10">
+    <widget class="Line" name="animMSLine_10">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -263,7 +263,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="animMSFrame">
      <property name="minimumSize">
       <size>
        <width>100</width>
@@ -354,7 +354,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_3">
+    <widget class="Line" name="animMSLine_3">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -373,7 +373,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_4">
+    <widget class="Line" name="animMSLine_4">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -392,7 +392,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_8">
+    <widget class="Line" name="animMSLine_8">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -411,7 +411,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_6">
+    <widget class="QPushButton" name="animMSBtn_6">
      <property name="minimumSize">
       <size>
        <width>75</width>
@@ -444,7 +444,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_5">
+    <widget class="QPushButton" name="animMSBtn_5">
      <property name="minimumSize">
       <size>
        <width>80</width>
@@ -477,7 +477,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="animMSBtn_8">
      <property name="minimumSize">
       <size>
        <width>80</width>
@@ -510,7 +510,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_2">
+    <widget class="QPushButton" name="animMSBtn_2">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -543,7 +543,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_4">
+    <widget class="QPushButton" name="animMSBtn_4">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -576,7 +576,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animBtn_3">
+    <widget class="QPushButton" name="animMSBtn_3">
      <property name="minimumSize">
       <size>
        <width>90</width>
@@ -609,7 +609,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_5">
+    <widget class="Line" name="animMSLine_5">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -628,7 +628,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_9">
+    <widget class="Line" name="animMSLine_9">
      <property name="minimumSize">
       <size>
        <width>1</width>
@@ -647,7 +647,7 @@
     </widget>
    </item>
    <item>
-    <widget class="Line" name="line_6">
+    <widget class="Line" name="animMSLine_6">
      <property name="minimumSize">
       <size>
        <width>1</width>

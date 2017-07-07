@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>menuSetForm</class>
+ <widget class="QWidget" name="menuSetForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -27,7 +27,7 @@
   </property>
   <layout class="QHBoxLayout" name="menuSetLayout" stretch="1,1,1,1,1">
    <item>
-    <widget class="QPushButton" name="fxBtn">
+    <widget class="QPushButton" name="fxMSBtn">
      <property name="minimumSize">
       <size>
        <width>65</width>
@@ -60,7 +60,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="fxBtn_2">
+    <widget class="QPushButton" name="fxMSBtn_2">
      <property name="minimumSize">
       <size>
        <width>65</width>
@@ -93,7 +93,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="fxBtn_3">
+    <widget class="QPushButton" name="fxMSBtn_3">
      <property name="minimumSize">
       <size>
        <width>65</width>
@@ -126,7 +126,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="fxBtn_4">
+    <widget class="QPushButton" name="fxMSBtn_4">
      <property name="minimumSize">
       <size>
        <width>65</width>
@@ -159,7 +159,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="fxBtn_5">
+    <widget class="QPushButton" name="fxMSBtn_5">
      <property name="minimumSize">
       <size>
        <width>145</width>
