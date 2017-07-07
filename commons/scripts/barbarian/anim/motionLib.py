@@ -66,6 +66,7 @@ class AnimRepository(object):
         cls.path = getConfig(animLibPath=True)
         cls.char = value.split(":")[-1]
         cls.namespace = value
+        
         files = cls.getFileList(cls.path+cls.getOrigChar(cls.char))
         pm.textScrollList(cls.tslImport, e=True, removeAll=True)
         pm.textScrollList(cls.tslImport, e=True, append=files)
@@ -73,9 +74,11 @@ class AnimRepository(object):
     @classmethod    
     def getOrigChar(cls, char):
         chars = cls.getDirectoryList(cls.path)
+        print chars
         for orig in chars:
             if not char.find(orig) == -1:
                 return orig
+        return char
     
     @classmethod
     def getCharactors(cls):
