@@ -87,6 +87,8 @@ class Entrance(object):
         if getProject(): 
             pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
             pm.currentUnit(time=getConfig(time=True))
+            pm.setAttr("%s.width"%pm.ls(renderResolutions=True)[0], getConfig(camResX=True))
+            pm.setAttr("%s.height"%pm.ls(renderResolutions=True)[0], getConfig(camResY=True))
         elif getProject(all=True): pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
         else: pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
 

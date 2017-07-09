@@ -7,6 +7,7 @@ Created on 2017.7.5
 
 import os
 import pymel.core as pm
+import maya.OpenMaya as om
 from barbarian.utils import getPath, kUI, getProject, setProject, getConfig
 from pymel.internal.pmcmds import file
 
@@ -23,16 +24,23 @@ class AnimRepository(object):
     tslImport = "motionLibLVImport"
     isImport = "motionLibHSCopies"
     lblWarning = "motionLibLWarning"
+    txtExportStart = "motionLibLEExportStart"
+    txtExportEnd = "motionLibLEExportEnd"
+    txtExportFile = "motionLibLEExportFile"
+    
+    charsDic = {}
+    menuItems = []
+    messages = []
+    outCurves = []
     
     path = ""
-    char = ""
     namespace = ""
     
     @classmethod
     def UI(cls):
         if pm.window(cls.win, exists=True): pm.deleteUI(cls.win)
         pm.loadUI(f=getPath(kUI, "motionLib.ui"))
-        pm.window(cls.win, e=True, toolbox=True, leftEdge=100, topEdge=100)
+        pm.window(cls.win, e=True, closeCommand=cls.cleanUp, mxb=False, leftEdge=100, topEdge=100)
         pm.showWindow(cls.win)
         
         projects = getProject(all=True)
@@ -43,54 +51,70 @@ class AnimRepository(object):
             for project in projects:
                 pm.menuItem(l=project, parent=cls.opMnuProject)
             pm.optionMenu(cls.opMnuProject, e=True, changeCommand=setProject)
+            pm.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshData)
             if not getProject(): setProject(projects[0])
-            pm.optionMenu(cls.opMnuProject, e=True, v=getProject())
-            pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshList], parent=cls.win)
+            pm.textField(cls.txtExportStart, e=True, tx=int(pm.playbackOptions(q=1, minTime=1)))
+            pm.textField(cls.txtExportEnd, e=True, tx=int(pm.playbackOptions(q=1, maxTime=1)))
+            pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshData], parent=cls.win)
         
-        chars = cls.getCharactors()
-        #script job things here (when reference file was added or removed):
-        
-        if not chars:
-            pm.control(cls.tab, e=True, enable=False)
-        else:
-            for char in chars:
-                pm.menuItem(l=char, parent=cls.opMnuCharactor)
-            pm.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshList)
-            cls.refreshList(pm.optionMenu(cls.opMnuCharactor, q=True, v=True))
-        
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterLoadReference, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterUnloadReference, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterImportReference, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterNew, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterOpen, cls.refreshCharacters))
+        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterImport, cls.refreshCharacters))
+        cls.refreshCharacters()
+    
     @classmethod
-    def refreshList(cls, value=None):
+    def refreshCharacters(cls, *args):
+        chars = cls.getCharacters()
+        pm.control(cls.tab, e=True, enable=bool(chars))
+        for mi in cls.menuItems: pm.deleteUI(mi)
+        cls.menuItems = []
+        cls.charsDic = {}
+        for char in chars:
+            cls.charsDic[char] = "%s <%s>"%(cls.getOrigChar(char.split(":")[-1]).split("C_")[-1], char)
+            cls.menuItems.append(pm.menuItem(l=cls.charsDic[char], parent=cls.opMnuCharactor))
+        cls.refreshData()
+    
+    @classmethod
+    def refreshData(cls, *args):
         pm.optionMenu(cls.opMnuProject, e=True, v=getProject())
-        
-        if not value: value = pm.optionMenu(cls.opMnuCharactor, q=True, v=True)
-        cls.path = getConfig(animLibPath=True)
-        cls.char = value.split(":")[-1]
-        cls.namespace = value
-        
-        files = cls.getFileList(cls.path+cls.getOrigChar(cls.char))
         pm.textScrollList(cls.tslImport, e=True, removeAll=True)
-        pm.textScrollList(cls.tslImport, e=True, append=files)
+        cls.namespace = ""
+        cls.path = ""
+        if not pm.optionMenu(cls.opMnuCharactor, q=True, numberOfItems=True): return
+        cls.namespace = pm.optionMenu(cls.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
+        cls.path = getConfig(animLibPath=True) + cls.getOrigChar(cls.namespace.split(":")[-1])
+        pm.select("%s:Main"%cls.namespace, r=True)
+        pm.textScrollList(cls.tslImport, e=True, append=cls.getFileList(cls.path))
+    
+    @classmethod
+    def cleanUp(cls, *args):
+        for msg in cls.messages:
+            om.MMessage.removeCallback(msg)
+        cls.messages = []
+        cls.menuItems = []
     
     @classmethod    
     def getOrigChar(cls, char):
-        chars = cls.getDirectoryList(cls.path)
-        print chars
-        for orig in chars:
-            if not char.find(orig) == -1:
-                return orig
+        files = file(q=True, reference=True)
+        for rf in files:
+            if char == file(rf, q=True, namespace=True):
+                char = rf.split("/")[-1].split(".")[0]
         return char
     
     @classmethod
-    def getCharactors(cls):
+    def getCharacters(cls):
         pm.namespace(set = ":")
-        allNS = pm.namespaceInfo(lon=True, r=True, an=True)
-        for ns in [':UI', ':shared']:
-            allNS.remove(ns)
-        
+        allNS = pm.namespaceInfo(lon=True, r=True)
         newNS = []
         for ns in allNS:
-            children = pm.namespaceInfo(ns, lon=True, r=True, an=True)
-            if (not children) and (not ns.find("C_") == -1): newNS.append(ns)
+            if (ns.split(":")[-1].find("C_") == 0) \
+            and pm.objExists("%s:Main"%ns): 
+                newNS.append(ns)
         return newNS
     
     @classmethod
@@ -110,7 +134,48 @@ class AnimRepository(object):
         p.close()
         del fileList[-1]
         return fileList
+    
+    @classmethod
+    def constructProxy(cls):
+        pm.namespace(set = ":")
+        pm.select("%s:Main"%cls.namespace, r=True, hi=True)
+        dags = pm.ls(sl=True)
+        pm.group(name="%s:Proxy"%cls.namespace, empty=True)
+        for dag in dags:
+            shape = pm.listRelatives(dag, s=True)
+            if shape and pm.objectType(shape[0]) == "nurbsCurve":
+                loc = pm.spaceLocator(name=dag+"___Proxy")
+                pm.parent(loc, "%s:Proxy"%cls.namespace)
+    
+    @classmethod
+    def copyFromProxy(cls):
+        animCurves = []
+        for ac in pm.ls(type="animCurveTL"): animCurves.append(ac)
+        for ac in pm.ls(type="animCurveTA"): animCurves.append(ac)
+        for ac in pm.ls(type="animCurveTU"): animCurves.append(ac)
         
+        cls.destructProxy()
+        
+    @classmethod
+    def copyToProxy(cls):
+        animCurves = []
+        for ac in pm.ls(type="animCurveTL"): animCurves.append(ac)
+        for ac in pm.ls(type="animCurveTA"): animCurves.append(ac)
+        for ac in pm.ls(type="animCurveTU"): animCurves.append(ac)
+        
+        for cv in animCurves:
+            out = pm.connectionInfo("%s.output"%cv, destinationFromSource=True)[0]
+            if len(out.split(cls.namespace))==2:
+                cls.outCurves.append(cv)
+                print "%s.output"%cv, "->", "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1])
+                #pm.connectAttr("%s.output"%cv, "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1]))
+                
+        
+    @classmethod
+    def destructProxy(cls):
+        pm.delete("%s:Proxy"%cls.namespace)
+        
+    
     @classmethod
     def animImport(cls):
         time = int(pm.currentTime(q=True))
@@ -118,34 +183,54 @@ class AnimRepository(object):
         sel = pm.textScrollList(cls.tslImport, q=True, selectItem=True)
         if not sel: return
         
-        filePath = cls.path + cls.getOrigChar(cls.char) + "\\" + sel[0] + ".anim"
+        #cls.constructProxy()
+        
+        filePath = cls.path + "\\" + sel[0] + ".anim"
         opt = "targetTime=3;option=insert;pictures=0;connect=0;"
         opt = opt + "time=%d;" % time
         opt = opt + "copies=%d;" % copies
         
-        pm.select(cls.namespace+":Main", r=True)
+        pm.select("%s:Main"%cls.namespace, r=True)
         
         file(filePath, type="animImport", ns=sel[0], options=opt, 
              i=True, iv=True, ra=True, mnc=False, pr=True)
         
+        #import pymel.mayautils
+        #pymel.mayautils.executeDeferred(cls.copyFromProxy)
+        
     @classmethod
-    def animExport(cls, filePath, startTime, endTime):
+    def animExport(cls):
+        try: startTime = int(pm.textField(cls.txtExportStart, q=True, tx=True))
+        except: 
+            pm.confirmDialog(message=u"无效数值", icon="information")
+            return
+        try: endTime = int(pm.textField(cls.txtExportEnd, q=True, tx=True))
+        except: 
+            pm.confirmDialog(message=u"无效数值", icon="information")
+            return
+        outFile = pm.textField(cls.txtExportFile, q=True, tx=True)
+        if not outFile: return
+        filePath = cls.path + "\\" + outFile + ".anim"
         opt = "precision=8;intValue=17;nodeNames=1;verboseUnits=0;whichRange=2;"
         opt = opt + "range=%d:%d;" % (startTime, endTime)
-        opt = opt + "options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=1;useChannelBox=0;"
+        opt = opt + "options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=0;useChannelBox=0;"
         opt = opt + "copyKeyCmd=-animation objects "
         opt = opt + "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
         opt = opt + "-option curve -hierarchy below -controlPoints 0 -shape 0 "
-        file(filePath, type="animExport", options=opt, 
-             force=True, es=True, pr=True)
         
+        cls.constructProxy()
+        cls.copyToProxy()
+        pm.select("%s:Main"%cls.namespace, r=True)
         
-'''
-file -force 
-     -options "precision=8;intValue=17;nodeNames=1;verboseUnits=0;whichRange=2;range=0:24;options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=1;useChannelBox=0;
-               copyKeyCmd=-animation objects -time >0:24> -float >0:24> -option curve -hierarchy below -controlPoints 0 -shape 0 " 
-     -typ "animExport" 
-     -pr 
-     -es 
-     "F:/walk.anim";
-'''
+        try:
+            file(filePath, type="animExport", options=opt, 
+                 force=True, es=True, pr=True)
+        except:
+            pm.confirmDialog(message=u"无法创建文件", icon="warning")
+            cls.destructProxy()
+            raise
+            return
+        
+        #cls.destructProxy()
+        pm.pause(sec=1)
+        cls.refreshData()

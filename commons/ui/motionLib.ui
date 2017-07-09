@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>251</width>
-    <height>400</height>
+    <width>242</width>
+    <height>313</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>400</height>
-   </size>
   </property>
   <property name="font">
    <font>
@@ -26,37 +20,21 @@
    <string>动作库</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
-      <item row="0" column="1">
-       <widget class="QComboBox" name="motionLibCBProject">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-       </widget>
-      </item>
+      <property name="horizontalSpacing">
+       <number>2</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>2</number>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="Label">
         <property name="minimumSize">
          <size>
-          <width>70</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>50</width>
-          <height>16777215</height>
+          <width>55</width>
+          <height>30</height>
          </size>
         </property>
         <property name="font">
@@ -73,17 +51,27 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="Label_2">
+      <item row="0" column="1">
+       <widget class="QComboBox" name="motionLibCBProject">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>70</width>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="Label_2">
+        <property name="minimumSize">
+         <size>
+          <width>55</width>
           <height>30</height>
          </size>
         </property>
@@ -102,64 +90,38 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="spacing">
-         <number>3</number>
+       <widget class="QComboBox" name="motionLibCBCharactor">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <item>
-         <widget class="QComboBox" name="motionLibCBCharactor">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>30</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="motionLibBtnRefresh">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>../icons/refresh.png</normaloff>../icons/refresh.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QListWidget" name="motionLibLVImport">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="autoScrollMargin">
+       <number>17</number>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QTabWidget" name="motionLibTab">
@@ -169,37 +131,48 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Triangular</enum>
+      </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
         <string>导入</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0,0">
-        <item>
-         <widget class="QListWidget" name="motionLibLVImport">
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="autoScrollMargin">
-           <number>17</number>
-          </property>
-         </widget>
-        </item>
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0">
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
         <item>
          <layout class="QFormLayout" name="formLayout">
+          <property name="horizontalSpacing">
+           <number>2</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>2</number>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>45</width>
               <height>30</height>
              </size>
             </property>
@@ -211,6 +184,9 @@
             </property>
             <property name="text">
              <string>拷贝：</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -256,10 +232,10 @@
                </font>
               </property>
               <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
+               <enum>QFrame::Panel</enum>
               </property>
               <property name="frameShadow">
-               <enum>QFrame::Plain</enum>
+               <enum>QFrame::Sunken</enum>
               </property>
               <property name="text">
                <string>1</string>
@@ -274,13 +250,6 @@
          </layout>
         </item>
         <item>
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLabel" name="motionLibLWarning">
           <property name="font">
            <font>
@@ -290,6 +259,13 @@
           </property>
           <property name="text">
            <string>导入操作无法撤消，建议先保存文件</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -347,17 +323,234 @@
        <attribute name="title">
         <string>导出</string>
        </attribute>
-       <widget class="QWidget" name="horizontalLayoutWidget_2">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>20</y>
-          <width>160</width>
-          <height>80</height>
-         </rect>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>5</number>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2"/>
-       </widget>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>5</number>
+        </property>
+        <item>
+         <layout class="QFormLayout" name="formLayout_3">
+          <property name="horizontalSpacing">
+           <number>2</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>2</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="minimumSize">
+             <size>
+              <width>75</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>帧范围：</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="minimumSize">
+             <size>
+              <width>75</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>文件名：</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="motionLibLEExportFile">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QFrame" name="frame">
+            <property name="minimumSize">
+             <size>
+              <width>90</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>90</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Panel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="motionLibLEExportStart">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>微软雅黑</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="motionLibLEExportEnd">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>28</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <family>微软雅黑</family>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>导出</string>
+            </property>
+            <property name="+command" stdset="0">
+             <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animExport()</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>关闭</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -395,6 +588,22 @@
     <hint type="destinationlabel">
      <x>211</x>
      <y>303</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>motionLibOption</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>175</x>
+     <y>361</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>199</y>
     </hint>
    </hints>
   </connection>

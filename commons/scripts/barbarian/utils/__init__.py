@@ -90,13 +90,16 @@ def getProject(**kwargs):
     Get Current Project or List of Projects Available
     --------------------------------------------------------------------------------
     '''
+    projects = []
+    for project in __handler__.config:
+        projects.append(project["name"])
     if "all" in kwargs and kwargs["all"]:
-        projects = []
-        for project in __handler__.config:
-            projects.append(project["name"])
         return projects
     else:
-        return pm.optionVar(q="PutaoTools_Project")
+        currentPrj = pm.optionVar(q="PutaoTools_Project")
+        for project in projects:
+            if project == currentPrj: return project
+        return ""
 
 
 class ConfigHandler(xml.sax.ContentHandler):
