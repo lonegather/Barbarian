@@ -27,6 +27,7 @@ class AnimRepository(object):
     txtExportStart = "motionLibLEExportStart"
     txtExportEnd = "motionLibLEExportEnd"
     txtExportFile = "motionLibLEExportFile"
+    progressBar = "motionLibPB"
     
     charsDic = {}
     menuItems = []
@@ -55,6 +56,7 @@ class AnimRepository(object):
             if not getProject(): setProject(projects[0])
             pm.textField(cls.txtExportStart, e=True, tx=int(pm.playbackOptions(q=1, minTime=1)))
             pm.textField(cls.txtExportEnd, e=True, tx=int(pm.playbackOptions(q=1, maxTime=1)))
+            pm.progressBar(cls.progressBar, e=True, visible=False)
             pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshData], parent=cls.win)
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
@@ -69,6 +71,7 @@ class AnimRepository(object):
     
     @classmethod
     def refreshCharacters(cls, *args):
+        pm.namespace(set = ":")
         chars = cls.getCharacters()
         pm.control(cls.tab, e=True, enable=bool(chars))
         for mi in cls.menuItems: pm.deleteUI(mi)
@@ -81,6 +84,7 @@ class AnimRepository(object):
     
     @classmethod
     def refreshData(cls, *args):
+        pm.namespace(set = ":")
         pm.optionMenu(cls.opMnuProject, e=True, v=getProject())
         pm.textScrollList(cls.tslImport, e=True, removeAll=True)
         cls.namespace = ""
@@ -88,8 +92,10 @@ class AnimRepository(object):
         if not pm.optionMenu(cls.opMnuCharactor, q=True, numberOfItems=True): return
         cls.namespace = pm.optionMenu(cls.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
         cls.path = getConfig(animLibPath=True) + cls.getOrigChar(cls.namespace.split(":")[-1])
-        pm.select("%s:Main"%cls.namespace, r=True)
         pm.textScrollList(cls.tslImport, e=True, append=cls.getFileList(cls.path))
+        
+        pm.select("%s:Group"%cls.namespace, r=True)
+        pm.pickWalk(d="down")
     
     @classmethod
     def cleanUp(cls, *args):
@@ -100,6 +106,7 @@ class AnimRepository(object):
     
     @classmethod    
     def getOrigChar(cls, char):
+        pm.namespace(set = ":")
         files = file(q=True, reference=True)
         for rf in files:
             if char == file(rf, q=True, namespace=True):
@@ -109,12 +116,15 @@ class AnimRepository(object):
     @classmethod
     def getCharacters(cls):
         pm.namespace(set = ":")
-        allNS = pm.namespaceInfo(lon=True, r=True)
+        refs = file(q=True, reference=True)
+        fileList = cls.getDirectoryList(getConfig(animLibPath=True))
         newNS = []
-        for ns in allNS:
-            if (ns.split(":")[-1].find("C_") == 0) \
-            and pm.objExists("%s:Main"%ns): 
-                newNS.append(ns)
+        for ref in refs:
+            ref = ref.split("/")[-1]
+            for f in fileList:
+                if not ref.find(f) == -1:
+                    newNS.append(file(ref, q=True, namespace=True))
+                    break
         return newNS
     
     @classmethod
@@ -138,7 +148,8 @@ class AnimRepository(object):
     @classmethod
     def constructProxy(cls):
         pm.namespace(set = ":")
-        pm.select("%s:Main"%cls.namespace, r=True, hi=True)
+        pm.select("%s:Group"%cls.namespace, r=True)
+        pm.select(pm.pickWalk(d="down"), r=True, hi=True)
         dags = pm.ls(sl=True)
         pm.group(name="%s:Proxy"%cls.namespace, empty=True)
         for dag in dags:
@@ -179,6 +190,7 @@ class AnimRepository(object):
     
     @classmethod
     def animImport(cls):
+        pm.namespace(set = ":")
         time = int(pm.currentTime(q=True))
         copies = pm.intSlider(cls.isImport, q=True, value=True)
         sel = pm.textScrollList(cls.tslImport, q=True, selectItem=True)
@@ -191,7 +203,8 @@ class AnimRepository(object):
         opt = opt + "time=%d;" % time
         opt = opt + "copies=%d;" % copies
         
-        pm.select("%s:Main"%cls.namespace, r=True)
+        pm.select("%s:Group"%cls.namespace, r=True)
+        pm.pickWalk(d="down")
         
         file(filePath, type="animImport", ns=sel[0], options=opt, 
              i=True, iv=True, ra=True, mnc=False, pr=True)
@@ -201,6 +214,7 @@ class AnimRepository(object):
         
     @classmethod
     def animExport(cls):
+        pm.namespace(set = ":")
         try: startTime = int(pm.textField(cls.txtExportStart, q=True, tx=True))
         except: 
             pm.confirmDialog(message=u"无效数值", icon="information")
@@ -219,9 +233,12 @@ class AnimRepository(object):
         opt = opt + "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
         opt = opt + "-option curve -hierarchy below -controlPoints 0 -shape 0 "
         
+        #for testing
+        #cls.destructProxy()
         #cls.constructProxy()
         #cls.copyToProxy()
-        pm.select("%s:Main"%cls.namespace, r=True)
+        pm.select("%s:Group"%cls.namespace, r=True)
+        pm.pickWalk(d="down")
         
         try:
             file(filePath, type="animExport", options=opt, 
