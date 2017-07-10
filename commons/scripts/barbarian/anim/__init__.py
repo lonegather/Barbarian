@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import barbarian.anim.motionLib
+import barbarian.anim.CreateProjectCamera
 
 from pymel.core import *
 from barbarian.utils import getPath, getConfig, kUI
