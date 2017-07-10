@@ -57,7 +57,7 @@ class AnimRepository(object):
             pm.textField(cls.txtExportStart, e=True, tx=int(pm.playbackOptions(q=1, minTime=1)))
             pm.textField(cls.txtExportEnd, e=True, tx=int(pm.playbackOptions(q=1, maxTime=1)))
             pm.progressBar(cls.progressBar, e=True, visible=False)
-            pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshData], parent=cls.win)
+            pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshCharacters], parent=cls.win)
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
