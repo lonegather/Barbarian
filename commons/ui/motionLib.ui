@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>242</width>
-    <height>346</height>
+    <height>382</height>
    </rect>
   </property>
   <property name="font">
@@ -261,52 +261,26 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <property name="spacing">
-           <number>2</number>
+         <widget class="QPushButton" name="motionLibBtnImport">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
           </property>
-          <item>
-           <widget class="QPushButton" name="motionLibBtnImport">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>导入</string>
-            </property>
-            <property name="+command" stdset="0">
-             <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animImport()</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>关闭</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>导入</string>
+          </property>
+          <property name="+command" stdset="0">
+           <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animImport()</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -476,52 +450,26 @@
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="spacing">
-           <number>2</number>
+         <widget class="QPushButton" name="pushButton_3">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
           </property>
-          <item>
-           <widget class="QPushButton" name="pushButton_3">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>导出</string>
-            </property>
-            <property name="+command" stdset="0">
-             <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animExport()</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>30</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>关闭</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>导出</string>
+          </property>
+          <property name="+command" stdset="0">
+           <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animExport()</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -540,22 +488,6 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>motionLibOption</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>305</x>
-     <y>333</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>210</x>
-     <y>185</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>motionLibHSCopies</sender>
    <signal>valueChanged(int)</signal>
    <receiver>label_2</receiver>
@@ -568,22 +500,6 @@
     <hint type="destinationlabel">
      <x>211</x>
      <y>303</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>motionLibOption</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>175</x>
-     <y>361</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>199</y>
     </hint>
    </hints>
   </connection>
