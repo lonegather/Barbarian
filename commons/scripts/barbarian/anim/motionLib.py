@@ -164,9 +164,10 @@ class AnimRepository(object):
         for ac in pm.ls(type="animCurveTU"): animCurves.append(ac)
         
         for cv in animCurves:
-            out = pm.connectionInfo("%s.output"%cv, destinationFromSource=True)[0]
-            if len(out.split(cls.namespace))==2:
+            out = pm.connectionInfo("%s.output"%cv, destinationFromSource=True)
+            if out and len(out[0].split(cls.namespace))==2:
                 cls.outCurves.append(cv)
+                out = out[0]
                 print "%s.output"%cv, "->", "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1])
                 #pm.connectAttr("%s.output"%cv, "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1]))
                 
@@ -218,8 +219,8 @@ class AnimRepository(object):
         opt = opt + "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
         opt = opt + "-option curve -hierarchy below -controlPoints 0 -shape 0 "
         
-        cls.constructProxy()
-        cls.copyToProxy()
+        #cls.constructProxy()
+        #cls.copyToProxy()
         pm.select("%s:Main"%cls.namespace, r=True)
         
         try:
