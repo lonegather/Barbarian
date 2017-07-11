@@ -7,19 +7,17 @@ Created on 2017.6.9
 '''
 
 import pymel.core as pm
-from barbarian.utils import getPath, getProject, setProject, getConfig, getHelp, kIcon, kUI
+import barbarian.reloader
 
-try: import barbarian.model
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
-try: import barbarian.rig
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
-try: import barbarian.anim
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
-try: import barbarian.render
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
-try: import barbarian.fx
-except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
-
+def showMain():
+    from barbarian.utils import getPath, kUI
+    
+    win = "PuTaoMain"
+    opMnu = "PuTaoMainCB"
+    
+    if pm.window(win, exists=True): pm.deleteUI(win)
+    pm.loadUI(f=getPath(kUI, "main.ui"))
+    pm.showWindow(win)
 
 class Entrance(object):
     '''
@@ -28,6 +26,8 @@ class Entrance(object):
     --------------------------------------------------------------------------------
     '''
     def __init__(self, layout):
+        from barbarian.utils import getPath, getProject, setProject, kIcon
+        
         if pm.control("itBtn", exists=True):
             pm.deleteUI("itBtn")
             pm.deleteUI("opMnu")
@@ -35,7 +35,7 @@ class Entrance(object):
         self.layout = layout
         pm.shelfLayout(layout, e=True, backgroundColor=[0.2,0.2,0.2], spacing=3)
         self.button = pm.iconTextButton("itBtn", style="iconOnly", width=33, 
-            image=getPath(kIcon, "logo.png"), parent=layout, command=getHelp)
+            image=getPath(kIcon, "logo.png"), parent=layout, command=showMain)
         self.menu = pm.optionMenu("opMnu", parent=layout, nbg=True, changeCommand=setProject)
         
         projects = getProject(all=True)
@@ -63,6 +63,8 @@ class Entrance(object):
         self.__refreshUI__()
     
     def __build__(self):
+        from barbarian.utils import getPath, kUI
+        
         while pm.control("menuSetForm", exists=True): pm.deleteUI("menuSetForm")
         widgets = pm.layout(self.layout, q=True, ca=True)
         for widget in widgets:
@@ -84,6 +86,8 @@ class Entrance(object):
                 position = position + 1
 
     def __refreshUI__(self):
+        from barbarian.utils import getProject, getConfig
+        
         if getProject(): 
             pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
             pm.currentUnit(time=getConfig(time=True))
@@ -108,6 +112,8 @@ for i in ["pyPBMpegCmd", "CustomDeformers", "animImportExport"]:
 if not pm.shelfLayout("PuTao", exists=True):
     pm.mel.eval("addNewShelfTab \"PuTao\";")
 Entrance(pm.shelfLayout("PuTao", q=True, fpn=True))
+
+barbarian.reloader.doIt()
 
 print u"╔══════════════════════════════════════════════════════════╗"
 print u"╟────────── PUTAOTOOLS INITIALIZATION COMPLETED ───────────╢"

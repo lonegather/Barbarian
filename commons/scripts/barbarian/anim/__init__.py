@@ -150,14 +150,15 @@ class PlayblastOption():
             return
         
         cls.__clearHUD__()
-            
-        mp = os.getenv('BARBARIAN_LOCATION')
-        mp += "../commons/bin/ffmpeg"
-        resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
-        print(resultCmd + "\n")
-        os.system(unicode(resultCmd))
-        os.system(r'explorer "%s"' % os.path.abspath(videoOutPath))
-        os.remove(playblastFile)
+        
+        if playblastFile:    
+            mp = os.getenv('BARBARIAN_LOCATION')
+            mp += "../commons/bin/ffmpeg"
+            resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
+            print(resultCmd + "\n")
+            os.system(unicode(resultCmd))
+            os.system(r'explorer "%s"' % os.path.abspath(videoOutPath))
+            os.remove(playblastFile)
 
         currentTime(startFrame)
         

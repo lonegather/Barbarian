@@ -47,38 +47,17 @@ def getConfig(**kwargs):
     Provide Project Configuration
     --------------------------------------------------------------------------------
     '''
-    def prompt():
-        form = pm.setParent(q=True)
-        pm.formLayout(form, e=True, width=200)
-        txt = pm.text(l=u"请选择当前项目：",height=30)
-        btn = pm.button(l="Confirm",height=30,command=lambda *args: pm.layoutDialog(dismiss=pm.optionMenu(mnu,q=True,v=True)))
-        mnu = pm.optionMenu(height=30)
-        prjs = getProject(all=True)
-        for prj in prjs:
-            pm.menuItem(l=prj, parent=mnu)
-        
-        edge = 10
-        
-        pm.formLayout(form, e=True,
-                      attachForm=[(txt,'top',edge),
-                                  (mnu,'top',edge),
-                                  (txt,'left',edge),
-                                  (mnu,'right',edge),
-                                  (btn,'left',edge),
-                                  (btn,'right',edge),
-                                  (btn,'bottom',edge)])
-    
     if not getProject(all=True):
         pm.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
         raise Exception(u"项目配置异常")
     elif not getProject():
-        setProject(pm.layoutDialog(ui=prompt))
-    else:
-        attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
-        for attr in attrList:
-            if attr in kwargs and kwargs[attr]:
-                for project in __handler__.config:
-                    if project["name"] == getProject(): return project[attr]
+        setProject(pm.layoutDialog(ui=__prompt__))
+    
+    attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
+    for attr in attrList:
+        if attr in kwargs and kwargs[attr]:
+            for project in __handler__.config:
+                if project["name"] == getProject(): return project[attr]
                 
     return None
 
@@ -187,6 +166,26 @@ class ConfigHandler(xml.sax.ContentHandler):
         elif self.current == "facialLibPath":
             self.facialLibPath = content
 
+def __prompt__():
+    form = pm.setParent(q=True)
+    pm.formLayout(form, e=True, width=200)
+    txt = pm.text(l=u"请选择当前项目：",height=30)
+    btn = pm.button(l="Confirm",height=30,command=lambda *args: pm.layoutDialog(dismiss=pm.optionMenu(mnu,q=True,v=True)))
+    mnu = pm.optionMenu(height=30)
+    prjs = getProject(all=True)
+    for prj in prjs:
+        pm.menuItem(l=prj, parent=mnu)
+    
+    edge = 10
+    
+    pm.formLayout(form, e=True,
+                  attachForm=[(txt,'top',edge),
+                              (mnu,'top',edge),
+                              (txt,'left',edge),
+                              (mnu,'right',edge),
+                              (btn,'left',edge),
+                              (btn,'right',edge),
+                              (btn,'bottom',edge)])
 
 def __wireframe__(*args):
     allPanels = pm.getPanel(type='modelPanel')

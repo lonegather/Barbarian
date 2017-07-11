@@ -103,6 +103,7 @@ class AnimRepository(object):
             om.MMessage.removeCallback(msg)
         cls.messages = []
         cls.menuItems = []
+        cls.outCurves = []
     
     @classmethod    
     def getOrigChar(cls, char):
@@ -170,6 +171,7 @@ class AnimRepository(object):
     @classmethod
     def copyToProxy(cls):
         animCurves = []
+        cls.outCurves = []
         for ac in pm.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in pm.ls(type="animCurveTA"): animCurves.append(ac)
         for ac in pm.ls(type="animCurveTU"): animCurves.append(ac)
@@ -179,6 +181,7 @@ class AnimRepository(object):
             if out and len(out[0].split(cls.namespace))==2:
                 cls.outCurves.append(cv)
                 out = out[0]
+                
                 print "%s.output"%cv, "->", "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1])
                 #pm.connectAttr("%s.output"%cv, "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1]))
                 
