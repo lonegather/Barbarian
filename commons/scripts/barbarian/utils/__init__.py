@@ -4,7 +4,6 @@ import os
 import sys
 import xml.sax
 import pymel.core as pm
-import maya.OpenMaya as om
 
 __all__ = ["debug", "kIcon", "kBinary", "kUI",
            "getPath", "getHelp", "getConfig", "getProject", "setProject"]
@@ -94,6 +93,13 @@ def getProject(**kwargs):
         projects.append(project["name"])
     if "all" in kwargs and kwargs["all"]:
         return projects
+    elif "prompt" in kwargs and kwargs["prompt"] and projects:
+        currentPrj = pm.layoutDialog(ui=__prompt__)
+        for project in projects:
+            if project == currentPrj:
+                setProject(currentPrj)
+                return currentPrj
+        return pm.optionVar(q="PutaoTools_Project")
     else:
         currentPrj = pm.optionVar(q="PutaoTools_Project")
         if (not currentPrj) and projects: 
@@ -105,7 +111,7 @@ def getProject(**kwargs):
         else: 
             for project in projects:
                 if project == currentPrj: return project
-            return ""
+        return u""
 
 
 class ConfigHandler(xml.sax.ContentHandler):
@@ -182,6 +188,8 @@ def __prompt__():
     prjs = getProject(all=True)
     for prj in prjs:
         pm.menuItem(l=prj, parent=mnu)
+    if pm.optionVar(q="PutaoTools_Project"):
+        pm.optionMenu(mnu, e=True, v=pm.optionVar(q="PutaoTools_Project"))
     
     edge = 10
     
@@ -229,9 +237,4 @@ if not pm.optionVar(exists="PutaoTools_Project"):
     pm.optionVar(fv=("PutaoTools_Project_PlayblastScale", 0.0))
     pm.optionVar(sv=("PutaoTools_Project_AnimLibPath", ""))
     pm.optionVar(sv=("PutaoTools_Project_FacialLibPath", ""))
-
-om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, __wireframe__)
                  
-
-
-

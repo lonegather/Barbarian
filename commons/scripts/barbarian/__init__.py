@@ -7,6 +7,7 @@ Created on 2017.6.9
 '''
 
 import pymel.core as pm
+import maya.OpenMaya as om
 import barbarian.reloader
 
 def showMain():
@@ -56,6 +57,8 @@ class Entrance(object):
         pm.scriptJob(event=["timeUnitChanged", self.__refreshUI__], parent=self.menu)
         pm.scriptJob(event=["linearUnitChanged", self.__refreshUI__], parent=self.menu)
         pm.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
+        om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, self.__boundingBox__)
+        
         self.__build__()
         self.__refreshUI__()
     
@@ -99,9 +102,13 @@ class Entrance(object):
             if pm.optionMenu(self.menu, q=True, numberOfItems=True): 
                 for mi in pm.optionMenu(self.menu, q=True, itemListLong=True): 
                     pm.deleteUI(mi)
-                pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
+            pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
 
-
+    def __boundingBox__(self):
+        allPanels = pm.getPanel(type='modelPanel')
+        for p in allPanels:
+            pm.modelEditor(p, edit=1, displayAppearance='boundingBox')
+    
 '''
 --------------------------------------------------------------------------------
 Tool Initialization at Maya Startup
