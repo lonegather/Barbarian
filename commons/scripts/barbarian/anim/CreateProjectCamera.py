@@ -10,7 +10,7 @@ class CreateCamera():
     @classmethod
     def CreCam(cls):
 
-        CameraListA = getConfig(camera=True)
+        CameraListA = getConfig("",camera=True)
         CameraListB = getConfig(camResX=True)
         CameraListC = getConfig(camResY=True)
         
@@ -54,5 +54,5 @@ class CreateCamera():
         if projects:
             for project in projects:
                 pm.menuItem(l=project, parent=cls.optionM)
-            pm.optionMenu(cls.optionM, e=True, changeCommand=setProject)
             if not getProject(): setProject(projects[0])
+ 
