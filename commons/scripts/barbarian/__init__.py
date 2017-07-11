@@ -38,10 +38,7 @@ class Entrance(object):
             image=getPath(kIcon, "logo.png"), parent=layout, command=showMain)
         self.menu = pm.optionMenu("opMnu", parent=layout, nbg=True, changeCommand=setProject)
         
-        projects = getProject(all=True)
         currentMode = pm.setMenuMode()
-        
-        for prj in projects: pm.menuItem(l=prj)
         pm.popupMenu(parent=self.layout, allowOptionBoxes=True)
         pm.menuItem(label=u'模型', radioButton=(currentMode == "modelingMenuSet"),
                     command=pm.Callback(pm.setMenuMode, "modelingMenuSet"))
@@ -89,12 +86,20 @@ class Entrance(object):
         from barbarian.utils import getProject, getConfig
         
         if getProject(): 
+            if not pm.optionMenu(self.menu, q=True, numberOfItems=True): 
+                projects = getProject(all=True)
+                for prj in projects: pm.menuItem(l=prj, parent=self.menu)
+            
             pm.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
             pm.currentUnit(time=getConfig(time=True))
             pm.setAttr("%s.width"%pm.ls(renderResolutions=True)[0], getConfig(camResX=True))
             pm.setAttr("%s.height"%pm.ls(renderResolutions=True)[0], getConfig(camResY=True))
         elif getProject(all=True): pm.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
-        else: pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
+        else: 
+            if pm.optionMenu(self.menu, q=True, numberOfItems=True): 
+                for mi in pm.optionMenu(self.menu, q=True, itemListLong=True): 
+                    pm.deleteUI(mi)
+                pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
 
 
 '''
