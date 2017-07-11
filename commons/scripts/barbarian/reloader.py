@@ -7,7 +7,7 @@ Created on 2017.7.10
 import pymel.core as pm
 
 def doIt(rl=False):
-    pm.optionVar(rm="PutaoTools_Project")
+    if rl: pm.optionVar(rm="PutaoTools_Project")
     
     try: 
         import barbarian.utils
