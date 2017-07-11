@@ -11,7 +11,7 @@ import maya.OpenMaya as om
 import barbarian.reloader
 
 def showMain():
-    from barbarian.utils import getPath, kUI
+    from barbarian.utils import getPath, kUI, debug
     
     win = "PuTaoMain"
     opMnu = "PuTaoMainCB"
@@ -19,6 +19,9 @@ def showMain():
     if pm.window(win, exists=True): pm.deleteUI(win)
     pm.loadUI(f=getPath(kUI, "main.ui"))
     pm.showWindow(win)
+    
+    pm.menu(label=u"开发者选项", parent=win)
+    pm.menuItem(label=u"启用调试模式", checkBox=False, command=debug)
 
 class Entrance(object):
     '''

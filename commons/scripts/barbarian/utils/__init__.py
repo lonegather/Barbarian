@@ -13,12 +13,15 @@ kBinary = "../commons/bin/"
 kUI = "../commons/ui/"
 
 
-def debug():
-    path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
-    if path not in sys.path: sys.path.append(path)
-    try: import pydevd
-    except: return
-    else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
+def debug(*args):
+    if args[0]:
+        path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
+        if path not in sys.path: sys.path.append(path)
+        try: import pydevd
+        except: return
+        else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
+    else:
+        pydevd.settrace_forked()
 
 
 def getPath(key="", f=""):
