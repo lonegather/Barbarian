@@ -6,7 +6,7 @@ import xml.sax
 import pymel.core as pm
 
 __all__ = ["debug", "kIcon", "kBinary", "kUI",
-           "getPath", "getHelp", "getConfig", "getProject", "setProject"]
+           "getPath", "getConfig", "getProject", "setProject"]
 
 kIcon = "../commons/icons/"
 kBinary = "../commons/bin/"
@@ -14,14 +14,11 @@ kUI = "../commons/ui/"
 
 
 def debug(*args):
-    if args[0]:
-        path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
-        if path not in sys.path: sys.path.append(path)
-        try: import pydevd
-        except: return
-        else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
-    else:
-        pydevd.settrace_forked()
+    path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
+    if path not in sys.path: sys.path.append(path)
+    try: import pydevd
+    except: return
+    else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
 
 
 def getPath(key="", f=""):
@@ -32,15 +29,6 @@ def getPath(key="", f=""):
     '''
     path = os.getenv("BARBARIAN_LOCATION")
     return path + key + f
-
-
-def getHelp():
-    '''
-    --------------------------------------------------------------------------------
-    Provide Framework Help
-    --------------------------------------------------------------------------------
-    '''
-    pm.webView(url=(getPath("../commons/config/", "help.htm")))
     
 
 def getConfig(**kwargs):

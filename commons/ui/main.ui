@@ -6,38 +6,52 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>188</width>
-    <height>212</height>
+    <width>265</width>
+    <height>194</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>188</width>
+    <width>265</width>
     <height>0</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>欢迎使用</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../icons/logo.png</normaloff>../icons/logo.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="label">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>20</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>葡萄工具架</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>20</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>葡萄工具架</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QPlainTextEdit" name="plainTextEdit">
@@ -69,6 +83,9 @@
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="statusTip">
+       <string>免重启一键更新</string>
+      </property>
       <property name="text">
        <string>重载/更新</string>
       </property>
@@ -79,14 +96,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>188</width>
-     <height>23</height>
+     <width>265</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

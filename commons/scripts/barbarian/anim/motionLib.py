@@ -45,20 +45,6 @@ class AnimRepository(object):
         pm.progressBar(cls.progressBar, e=True, visible=False)
         pm.showWindow(cls.win)
         
-        projects = getProject(all=True)
-        
-        if not projects:
-            pm.control(cls.tab, e=True, enable=False)
-        else: 
-            for project in projects:
-                pm.menuItem(l=project, parent=cls.opMnuProject)
-            pm.optionMenu(cls.opMnuProject, e=True, changeCommand=setProject)
-            pm.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshData)
-            if not getProject(): setProject(projects[0])
-            pm.textField(cls.txtExportStart, e=True, tx=int(pm.playbackOptions(q=1, minTime=1)))
-            pm.textField(cls.txtExportEnd, e=True, tx=int(pm.playbackOptions(q=1, maxTime=1)))
-            pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshCharacters], parent=cls.win)
-        
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterLoadReference, cls.refreshCharacters))
@@ -67,10 +53,38 @@ class AnimRepository(object):
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterNew, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterOpen, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterImport, cls.refreshCharacters))
+            
+        pm.optionMenu(cls.opMnuProject, e=True, changeCommand=setProject)
+        pm.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshData)
+        pm.textField(cls.txtExportStart, e=True, tx=int(pm.playbackOptions(q=1, minTime=1)))
+        pm.textField(cls.txtExportEnd, e=True, tx=int(pm.playbackOptions(q=1, maxTime=1)))
+        pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshCharacters], parent=cls.win)
+        
         cls.refreshCharacters()
     
     @classmethod
     def refreshCharacters(cls, *args):
+        if getProject(): 
+            pm.control(cls.tab, e=True, enable=True)
+            pm.optionMenu(cls.opMnuProject, e=True, l=u"")
+            if not pm.optionMenu(cls.opMnuProject, q=True, numberOfItems=True): 
+                projects = getProject(all=True)
+                for prj in projects: pm.menuItem(l=prj, parent=cls.opMnuProject)
+        elif getProject(all=True): 
+            pm.control(cls.tab, e=True, enable=False)
+            pm.optionMenu(cls.opMnuProject, e=True, l=u"<选择项目>")
+            if not pm.optionMenu(cls.opMnuProject, q=True, numberOfItems=True): 
+                projects = getProject(all=True)
+                for prj in projects: pm.menuItem(l=prj, parent=cls.opMnuProject)
+            return
+        else: 
+            pm.control(cls.tab, e=True, enable=False)
+            pm.optionMenu(cls.opMnuProject, e=True, l=u"<配置异常>")
+            if pm.optionMenu(cls.opMnuProject, q=True, numberOfItems=True): 
+                for mi in pm.optionMenu(cls.opMnuProject, q=True, itemListLong=True): 
+                    pm.deleteUI(mi)
+            return
+        
         pm.namespace(set = ":")
         chars = cls.getCharacters()
         pm.control(cls.tab, e=True, enable=bool(chars))
