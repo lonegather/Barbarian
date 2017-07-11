@@ -37,3 +37,5 @@ def doIt(rl=False):
         import barbarian.fx
         if rl: reload(barbarian.fx)
     except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
+    
+    reload(barbarian.reloader)

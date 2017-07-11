@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>PuTaoMain</class>
+ <widget class="QMainWindow" name="PuTaoMain">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>188</width>
-    <height>226</height>
+    <height>227</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -27,6 +27,8 @@
        <font>
         <family>微软雅黑</family>
         <pointsize>20</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
        </font>
       </property>
       <property name="text">
@@ -44,6 +46,9 @@
         <family>微软雅黑</family>
         <pointsize>10</pointsize>
        </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
       <property name="plainText">
        <string>欢迎使用葡萄工具架！使用过程中有任何意见或建议请联系大圣或胡元亮。</string>
@@ -72,7 +77,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="ComboBox">
+       <widget class="QComboBox" name="PuTaoMainCB">
         <property name="minimumSize">
          <size>
           <width>80</width>
@@ -105,6 +110,9 @@
       </property>
       <property name="text">
        <string>重载/更新</string>
+      </property>
+      <property name="+command" stdset="0">
+       <string>lambda *args: barbarian.reloader.doIt(True)</string>
       </property>
      </widget>
     </item>
