@@ -96,9 +96,16 @@ def getProject(**kwargs):
         return projects
     else:
         currentPrj = pm.optionVar(q="PutaoTools_Project")
-        for project in projects:
-            if project == currentPrj: return project
-        return ""
+        if not currentPrj: 
+            currentPrj = pm.layoutDialog(ui=__prompt__)
+            for project in projects:
+                if project == currentPrj:
+                    setProject(currentPrj)
+                    return currentPrj
+        else: 
+            for project in projects:
+                if project == currentPrj: return project
+            return ""
 
 
 class ConfigHandler(xml.sax.ContentHandler):
