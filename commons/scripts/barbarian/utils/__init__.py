@@ -96,7 +96,7 @@ def getProject(**kwargs):
         return projects
     else:
         currentPrj = pm.optionVar(q="PutaoTools_Project")
-        if not currentPrj: 
+        if (not currentPrj) and projects: 
             currentPrj = pm.layoutDialog(ui=__prompt__)
             for project in projects:
                 if project == currentPrj:

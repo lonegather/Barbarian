@@ -42,6 +42,7 @@ class AnimRepository(object):
         if pm.window(cls.win, exists=True): pm.deleteUI(cls.win)
         pm.loadUI(f=getPath(kUI, "motionLib.ui"))
         pm.window(cls.win, e=True, closeCommand=cls.cleanUp, mxb=False, leftEdge=100, topEdge=100)
+        pm.progressBar(cls.progressBar, e=True, visible=False)
         pm.showWindow(cls.win)
         
         projects = getProject(all=True)
@@ -56,7 +57,6 @@ class AnimRepository(object):
             if not getProject(): setProject(projects[0])
             pm.textField(cls.txtExportStart, e=True, tx=int(pm.playbackOptions(q=1, minTime=1)))
             pm.textField(cls.txtExportEnd, e=True, tx=int(pm.playbackOptions(q=1, maxTime=1)))
-            pm.progressBar(cls.progressBar, e=True, visible=False)
             pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshCharacters], parent=cls.win)
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
