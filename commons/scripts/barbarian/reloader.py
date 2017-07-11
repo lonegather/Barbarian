@@ -7,7 +7,10 @@ Created on 2017.7.10
 import pymel.core as pm
 
 def doIt(rl=False):
-    if rl: pm.optionVar(rm="PutaoTools_Project")
+    if rl: 
+        pm.optionVar(rm="PutaoTools_Project")
+        currentMode = pm.setMenuMode()
+        pm.setMenuMode(currentMode)
     
     try: 
         import barbarian.utils
