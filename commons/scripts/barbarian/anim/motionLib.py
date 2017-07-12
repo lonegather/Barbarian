@@ -9,7 +9,7 @@ import os
 import maya.OpenMaya as om
 
 from maya import cmds
-from barbarian.utils import getPath, kUI, getProject, setProject, getConfig
+from barbarian.utils import getPath, kUI, getProject, setProject, getConfig, getQtWindow
 
 class AnimRepository(object):
     '''
@@ -39,8 +39,10 @@ class AnimRepository(object):
     @classmethod
     def UI(cls):
         if cmds.window(cls.win, exists=True): cmds.deleteUI(cls.win)
-        cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
-        cmds.showWindow(cls.win)
+        #cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
+        #cmds.showWindow(cls.win)
+        cls.win = getQtWindow("motionLib.ui", "motionLibCentralwidget", u"动作库")
+        cmds.window(cls.win, e=True, closeCommand=cls.cleanUp)
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))

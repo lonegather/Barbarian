@@ -100,7 +100,11 @@ class Entrance(object):
             cmds.currentUnit(time=getConfig(time=True))
             cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig(camResX=True))
             cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig(camResY=True))
-        elif getProject(all=True): cmds.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
+        elif getProject(all=True): 
+            cmds.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
+            if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
+                projects = getProject(all=True)
+                for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
         else: 
             if cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
                 for mi in cmds.optionMenu(self.menu, q=True, itemListLong=True): 

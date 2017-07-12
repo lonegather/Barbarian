@@ -21,6 +21,15 @@ def debug(*args):
     else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
 
 
+def getQtWindow(ui, centralWidget, title=u"PuTao"):
+    win = cmds.window(resizeToFitChildren=True, title=title)
+    frame = cmds.frameLayout(parent=win, label='')
+    cmds.loadUI(f=getPath(kUI, ui))
+    cmds.control(centralWidget, e=True, parent=frame)
+    cmds.showWindow(win)
+    return win
+
+
 def getPath(key="", f=""):
     '''
     --------------------------------------------------------------------------------
