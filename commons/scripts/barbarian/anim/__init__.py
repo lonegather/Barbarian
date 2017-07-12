@@ -117,7 +117,7 @@ class PlayblastOption():
             setAttr(cam+".displayGateMaskColor", [0.0,0.0,0.0])
             setAttr(cam+".displaySafeAction", 1)
             setAttr(cam+".overscan", 1)
-            setAttr(cam+".filmFit", 1)
+            setAttr(cam+".filmFit", 2)
             
             select(clear=True)
         
