@@ -3,7 +3,7 @@
 import os
 import sys
 import xml.sax
-import pymel.core as pm
+from maya import cmds
 
 __all__ = ["debug", "kIcon", "kBinary", "kUI",
            "getPath", "getConfig", "getProject", "setProject"]
@@ -38,10 +38,10 @@ def getConfig(**kwargs):
     --------------------------------------------------------------------------------
     '''
     if not getProject(all=True):
-        pm.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
+        cmds.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
         raise Exception(u"项目配置异常")
     elif not getProject():
-        setProject(pm.layoutDialog(ui=__prompt__))
+        setProject(cmds.layoutDialog(ui=__prompt__))
     
     attrList = ["time", "linear", "camera", "camResX", "camResY", "camFilmFit", "playblastScale", "animLibPath", "facialLibPath"]
     for attr in attrList:
@@ -60,18 +60,18 @@ def setProject(name):
     '''
     for project in __handler__.config:
         if project["name"] == name:
-            pm.optionVar(sv=("PutaoTools_Project", name))
-            pm.optionVar(sv=("PutaoTools_Project_Time", project["time"]))
-            pm.optionVar(sv=("PutaoTools_Project_Linear", project["linear"]))
-            pm.optionVar(sv=("PutaoTools_Project_Camera", project["camera"]))
-            pm.optionVar(iv=("PutaoTools_Project_CamResX", project["camResX"]))
-            pm.optionVar(iv=("PutaoTools_Project_CamResY", project["camResY"]))
-            pm.optionVar(iv=("PutaoTools_Project_CamFilmFit", project["camFilmFit"]))
-            pm.optionVar(fv=("PutaoTools_Project_PlayblastScale", project["playblastScale"]))
-            pm.optionVar(sv=("PutaoTools_Project_AnimLibPath", project["animLibPath"]))
-            pm.optionVar(sv=("PutaoTools_Project_FacialLibPath", project["facialLibPath"]))
+            cmds.optionVar(sv=("PutaoTools_Project", name))
+            cmds.optionVar(sv=("PutaoTools_Project_Time", project["time"]))
+            cmds.optionVar(sv=("PutaoTools_Project_Linear", project["linear"]))
+            cmds.optionVar(sv=("PutaoTools_Project_Camera", project["camera"]))
+            cmds.optionVar(iv=("PutaoTools_Project_CamResX", project["camResX"]))
+            cmds.optionVar(iv=("PutaoTools_Project_CamResY", project["camResY"]))
+            cmds.optionVar(iv=("PutaoTools_Project_CamFilmFit", project["camFilmFit"]))
+            cmds.optionVar(fv=("PutaoTools_Project_PlayblastScale", project["playblastScale"]))
+            cmds.optionVar(sv=("PutaoTools_Project_AnimLibPath", project["animLibPath"]))
+            cmds.optionVar(sv=("PutaoTools_Project_FacialLibPath", project["facialLibPath"]))
             
-            pm.condition("ProjectChanged", e=True, state=not pm.condition("ProjectChanged", q=True, state=True))
+            cmds.condition("ProjectChanged", e=True, state=not cmds.condition("ProjectChanged", q=True, state=True))
 
 
 def getProject(**kwargs):
@@ -86,16 +86,16 @@ def getProject(**kwargs):
     if "all" in kwargs and kwargs["all"]:
         return projects
     elif "prompt" in kwargs and kwargs["prompt"] and projects:
-        currentPrj = pm.layoutDialog(ui=__prompt__)
+        currentPrj = cmds.layoutDialog(ui=__prompt__)
         for project in projects:
             if project == currentPrj:
                 setProject(currentPrj)
                 return currentPrj
-        return pm.optionVar(q="PutaoTools_Project")
+        return cmds.optionVar(q="PutaoTools_Project")
     else:
-        currentPrj = pm.optionVar(q="PutaoTools_Project")
+        currentPrj = cmds.optionVar(q="PutaoTools_Project")
         if (not currentPrj) and projects: 
-            currentPrj = pm.layoutDialog(ui=__prompt__)
+            currentPrj = cmds.layoutDialog(ui=__prompt__)
             for project in projects:
                 if project == currentPrj:
                     setProject(currentPrj)
@@ -177,41 +177,41 @@ class ConfigHandler(xml.sax.ContentHandler):
             self.facialLibPath = content
 
 def __prompt__():
-    form = pm.setParent(q=True)
-    pm.formLayout(form, e=True, width=200)
-    txt = pm.text(l=u"请选择当前项目：",height=30)
-    btn = pm.button(l="Confirm",height=30,command=lambda *args: pm.layoutDialog(dismiss=pm.optionMenu(mnu,q=True,v=True)))
-    mnu = pm.optionMenu(height=30)
+    form = cmds.setParent(q=True)
+    cmds.formLayout(form, e=True, width=200)
+    txt = cmds.text(l=u"请选择当前项目：",height=30)
+    btn = cmds.button(l="Confirm",height=30,command=lambda *args: cmds.layoutDialog(dismiss=cmds.optionMenu(mnu,q=True,v=True)))
+    mnu = cmds.optionMenu(height=30)
     prjs = getProject(all=True)
     for prj in prjs:
-        pm.menuItem(l=prj, parent=mnu)
-    if pm.optionVar(q="PutaoTools_Project"):
-        pm.optionMenu(mnu, e=True, v=pm.optionVar(q="PutaoTools_Project"))
+        cmds.menuItem(l=prj, parent=mnu)
+    if cmds.optionVar(q="PutaoTools_Project"):
+        cmds.optionMenu(mnu, e=True, v=cmds.optionVar(q="PutaoTools_Project"))
     
     edge = 10
     
-    pm.formLayout(form, e=True,
-                  attachForm=[(txt,'top',edge),
-                              (mnu,'top',edge),
-                              (txt,'left',edge),
-                              (mnu,'right',edge),
-                              (btn,'left',edge),
-                              (btn,'right',edge),
-                              (btn,'bottom',edge)])
+    cmds.formLayout(form, e=True,
+                    attachForm=[(txt,'top',edge),
+                                (mnu,'top',edge),
+                                (txt,'left',edge),
+                                (mnu,'right',edge),
+                                (btn,'left',edge),
+                                (btn,'right',edge),
+                                (btn,'bottom',edge)])
 
 def __wireframe__(*args):
-    allPanels = pm.getPanel(type='modelPanel')
+    allPanels = cmds.getPanel(type='modelPanel')
     for p in allPanels:
-        pm.modelEditor(p, edit=1, displayAppearance='boundingBox')
+        cmds.modelEditor(p, edit=1, displayAppearance='boundingBox')
 
 '''
 --------------------------------------------------------------------------------
 Configuration Setup at Maya Startup
 --------------------------------------------------------------------------------
 '''
-try: pm.condition("ProjectChanged", delete=True)
+try: cmds.condition("ProjectChanged", delete=True)
 except: pass
-pm.condition("ProjectChanged", state=True)
+cmds.condition("ProjectChanged", state=True)
 
 __handler__ = ConfigHandler()
 __parser__ = xml.sax.make_parser()
@@ -221,18 +221,18 @@ __parser__.setContentHandler(__handler__)
 try:
     __parser__.parse(getPath("../commons/config/", "config.xml"))
 except Exception, e:
-    pm.confirmDialog(message=u"加载配置出现问题，无法读取项目列表", title=u"PuTao", icon="warning")
-    pm.optionVar(rm="PutaoTools_Project")
+    cmds.confirmDialog(message=u"加载配置出现问题，无法读取项目列表", title=u"PuTao", icon="warning")
+    cmds.optionVar(rm="PutaoTools_Project")
 
-if not pm.optionVar(exists="PutaoTools_Project"):
-    pm.optionVar(sv=("PutaoTools_Project", ""))
-    pm.optionVar(iv=("PutaoTools_Project_Time", 0))
-    pm.optionVar(sv=("PutaoTools_Project_Linear", ""))
-    pm.optionVar(sv=("PutaoTools_Project_Camera", ""))
-    pm.optionVar(iv=("PutaoTools_Project_CamResX", 0))
-    pm.optionVar(iv=("PutaoTools_Project_CamResY", 0))
-    pm.optionVar(iv=("PutaoTools_Project_CamFilmFit", 0))
-    pm.optionVar(fv=("PutaoTools_Project_PlayblastScale", 0.0))
-    pm.optionVar(sv=("PutaoTools_Project_AnimLibPath", ""))
-    pm.optionVar(sv=("PutaoTools_Project_FacialLibPath", ""))
+if not cmds.optionVar(exists="PutaoTools_Project"):
+    cmds.optionVar(sv=("PutaoTools_Project", ""))
+    cmds.optionVar(iv=("PutaoTools_Project_Time", 0))
+    cmds.optionVar(sv=("PutaoTools_Project_Linear", ""))
+    cmds.optionVar(sv=("PutaoTools_Project_Camera", ""))
+    cmds.optionVar(iv=("PutaoTools_Project_CamResX", 0))
+    cmds.optionVar(iv=("PutaoTools_Project_CamResY", 0))
+    cmds.optionVar(iv=("PutaoTools_Project_CamFilmFit", 0))
+    cmds.optionVar(fv=("PutaoTools_Project_PlayblastScale", 0.0))
+    cmds.optionVar(sv=("PutaoTools_Project_AnimLibPath", ""))
+    cmds.optionVar(sv=("PutaoTools_Project_FacialLibPath", ""))
                  

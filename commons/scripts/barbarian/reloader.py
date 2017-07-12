@@ -4,13 +4,13 @@ Created on 2017.7.10
 @author: Sam
 '''
 
-import pymel.core as pm
+from maya import cmds
 
 def doIt(rl=False):
     if rl: 
-        pm.optionVar(rm="PutaoTools_Project")
-        currentMode = pm.setMenuMode()
-        pm.setMenuMode(currentMode)
+        cmds.optionVar(rm="PutaoTools_Project")
+        currentMode = cmds.setMenuMode()
+        cmds.setMenuMode(currentMode)
     
     try: 
         import barbarian.utils
@@ -49,6 +49,6 @@ def doIt(rl=False):
         import barbarian.fx
         if rl: reload(barbarian.fx)
         
-    except Exception, e: pm.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
+    except Exception, e: cmds.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
     
     if rl: reload(barbarian.reloader)

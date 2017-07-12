@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from pymel.core import *
+from maya.cmds import *
+from maya import mel
 from barbarian.utils import getPath, getConfig, kUI
 from pymel.internal.pmcmds import file
 import os, sys
@@ -114,7 +115,7 @@ class PlayblastOption():
             setAttr(cam+".displayResolution", 1)
             setAttr(cam+".displayGateMask", 1)
             setAttr(cam+".displayGateMaskOpacity", 1.0)
-            setAttr(cam+".displayGateMaskColor", [0.0,0.0,0.0])
+            setAttr(cam+".displayGateMaskColor",0.0,0.0,0.0,type='double3')
             setAttr(cam+".displaySafeAction", 1)
             setAttr(cam+".overscan", 1)
             setAttr(cam+".filmFit", 1)

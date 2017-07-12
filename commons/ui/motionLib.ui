@@ -23,6 +23,15 @@
    <iconset>
     <normaloff>../icons/logo.png</normaloff>../icons/logo.png</iconset>
   </property>
+  <property name="+closeCommand" stdset="0">
+   <string>lambda *args: barbarian.anim.motionLib.AnimRepository.cleanUp()</string>
+  </property>
+  <property name="+leftEdge" stdset="0">
+   <string>200</string>
+  </property>
+  <property name="+topEdge" stdset="0">
+   <string>200</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0,0">
     <item>
