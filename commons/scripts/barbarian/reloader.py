@@ -43,6 +43,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.render.selectObjectType)
         import barbarian.render.AttributeSetter
         if rl: reload(barbarian.render.AttributeSetter)
+        import barbarian.render.RenderSetting
+        if rl: reload(barbarian.render.RenderSetting)
         
         import barbarian.fx
         if rl: reload(barbarian.fx)
