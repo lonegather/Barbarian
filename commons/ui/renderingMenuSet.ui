@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>724</width>
+    <width>820</width>
     <height>51</height>
    </rect>
   </property>
@@ -257,6 +257,39 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QPushButton" name="modelMSBtn_9">
+     <property name="minimumSize">
+      <size>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ 后台批渲 ≡</string>
+     </property>
+     <property name="-bgc" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.UI()</string>
+     </property>
+    </widget>
+   </item>
   </layout>
   <zorder>modelMSBtn_2</zorder>
   <zorder>modelMSBtn_3</zorder>
@@ -265,6 +298,7 @@
   <zorder>modelMSBtn_6</zorder>
   <zorder>modelMSBtn_7</zorder>
   <zorder>modelMSBtn_8</zorder>
+  <zorder>modelMSBtn_9</zorder>
  </widget>
  <resources/>
  <connections/>
