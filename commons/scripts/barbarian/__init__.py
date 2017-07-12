@@ -106,7 +106,7 @@ class Entrance(object):
                     pm.deleteUI(mi)
             pm.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
 
-    def __boundingBox__(self):
+    def __boundingBox__(self, *args):
         allPanels = pm.getPanel(type='modelPanel')
         for p in allPanels:
             pm.modelEditor(p, edit=1, displayAppearance='boundingBox')
