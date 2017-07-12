@@ -10,7 +10,7 @@ class CreateCamera():
     @classmethod
     def CreCam(cls):
 
-        CameraListA = getConfig("",camera=True)
+        CameraListA = getConfig(camera=True)
         CameraListB = getConfig(camResX=True)
         CameraListC = getConfig(camResY=True)
         
