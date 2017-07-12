@@ -41,8 +41,6 @@ class AnimRepository(object):
     def UI(cls):
         if pm.window(cls.win, exists=True): pm.deleteUI(cls.win)
         pm.loadUI(f=getPath(kUI, "motionLib.ui"))
-        pm.window(cls.win, e=True, closeCommand=cls.cleanUp, mxb=False, leftEdge=100, topEdge=100)
-        pm.progressBar(cls.progressBar, e=True, visible=False)
         pm.showWindow(cls.win)
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
@@ -61,6 +59,14 @@ class AnimRepository(object):
         pm.scriptJob(conditionChange=["ProjectChanged", cls.refreshCharacters], parent=cls.win)
         
         cls.refreshCharacters()
+        
+        from maya import utils
+        utils.executeDeferred(cls.closeCmd)
+        
+    @classmethod
+    def closeCmd(cls):
+        pm.window(cls.win, e=True, closeCommand=cls.cleanUp, mxb=False, leftEdge=100, topEdge=100)
+        
     
     @classmethod
     def refreshCharacters(cls, *args):

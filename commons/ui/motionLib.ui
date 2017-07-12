@@ -490,6 +490,9 @@
       <property name="value">
        <number>24</number>
       </property>
+      <property name="+visible" stdset="0">
+       <string>False</string>
+      </property>
      </widget>
     </item>
    </layout>

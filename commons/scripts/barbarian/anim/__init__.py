@@ -121,7 +121,6 @@ class PlayblastOption():
             
             select(clear=True)
         
-        
         setAttr("%s.width"%ls(renderResolutions=True)[0], getConfig(camResX=True))
         setAttr("%s.height"%ls(renderResolutions=True)[0], getConfig(camResY=True))
         ha = getAttr(cam+".verticalFilmAperture")
