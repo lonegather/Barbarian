@@ -1,7 +1,6 @@
-﻿import maya.cmds as cmds
-import os
-from pprint import pprint
-from barbarian.utils import *
+﻿import os
+from maya import cmds
+from barbarian.utils import getPath, kUI
 
 
 class RenderSetting():
@@ -56,3 +55,4 @@ class RenderSetting():
                     
         os.system(cmd1)
         os.system(cmd2)
+

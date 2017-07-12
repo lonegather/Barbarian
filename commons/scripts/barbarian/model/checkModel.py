@@ -1,5 +1,5 @@
-﻿import pymel.core as pm
-import maya.mel as mm
+﻿from maya import cmds
+from maya import mel
 from barbarian.utils import checkingBoxBase
 
 '''
@@ -37,12 +37,12 @@ class checking1(checkingBoxBase.checkingBoxCmd):
         return 1
     def showInfo(self):
         checkingBoxBase.checkingBoxCmd.showInfo(self)
-        pm.text(al='left',l='other info')
+        cmds.text(al='left',l='other info')
 class clearLightLinkers(checkingBoxBase.checkingBoxCmd):
     label = u'清理灯光链接'
     def cmd(self):
         try:
-            mm.eval("jrLightLinksCleanUp")
+            mel.eval("jrLightLinksCleanUp")
             self.cont = u'清理完成。'
             return 1
         except:
@@ -53,7 +53,7 @@ class zeroMeshPoints(checkingBoxBase.checkingBoxCmd):
     label = u'顶点归零'
     def cmd(self):
         try:
-            # mm.eval('zeroMeshPoints(1)')
+            # mel.eval('zeroMeshPoints(1)')
             from barbarian.utils import zeroMeshPoints
             zeroMeshPoints.run()
             self.cont = u'完成归零。'
@@ -95,10 +95,10 @@ class checkSameObjs(checkingBoxBase.checkingBoxCmd):
 class checkNormals(checkingBoxBase.checkingBoxCmd):
     label = u'检查法线'
     def cmd(self):
-        mm.eval('setNamedPanelLayout "Single Perspective View"')
-        pm.modelEditor('modelPanel4',e=1,twoSidedLighting=0,udm=1)
-        pm.setFocus('modelPanel4')
-        mm.eval('DisplayShaded')
+        mel.eval('setNamedPanelLayout "Single Perspective View"')
+        cmds.modelEditor('modelPanel4',e=1,twoSidedLighting=0,udm=1)
+        cmds.setFocus('modelPanel4')
+        mel.eval('DisplayShaded')
         self.cont = u'单视图显示\n'
         self.cont += u'单个默认灯光\n'
         self.cont += u'使用默认材质显示\n'
@@ -117,15 +117,15 @@ class checkUVSets(checkingBoxBase.checkingBoxCmd):
     label = u'检查UV'
     def cmd(self):
         cont = u''
-        objs = pm.ls(type='mesh')
+        objs = cmds.ls(type='mesh')
         for obj in objs:
-            auv = pm.polyUVSet(obj, q=1, auv=1)
+            auv = cmds.polyUVSet(obj, q=1, auv=1)
             if len(auv)>1:
                 cont += u'%s存在多个UVSet:\n'%obj
                 for uv in auv:
                     cont += '%s,'%uv
                 cont += '\n'
-                cuv = pm.polyUVSet(obj,q=1, cuv=1)
+                cuv = cmds.polyUVSet(obj,q=1, cuv=1)
                 if cuv!= 'map1':
                     cont += u'当前UV：%s\n'%cuv
         if cont != '':
@@ -139,12 +139,12 @@ class cleanup(checkingBoxBase.checkingBoxCmd):
     label = u'cleanup检查模型错误'
     def cmd(self):
         cmd = r'polyCleanupArgList 3 { "0","2","1","0","1","0","1","0","0","1e-005","0","1e-005","0","1e-005","0","1","1" }'
-        objs = pm.ls(type='mesh')
+        objs = cmds.ls(type='mesh')
         if objs==[]:
             self.cont = 'No mesh...'
             return 1
-        pm.select(objs,r=1)
-        result = mm.eval(cmd)
+        cmds.select(objs,r=1)
+        result = mel.eval(cmd)
         if result==[]:
             self.cont = 'No items found to cleanup.'
             return 1
@@ -158,11 +158,11 @@ class clearUnusedNodes(checkingBoxBase.checkingBoxCmd):
     def cmd(self):
         self.cont = ''
         # Get nodes
-        cams = mm.eval('listTransforms -cameras')
-        lits = mm.eval('listTransforms -lights')
-        nodes = pm.ls(type=['displayLayer','renderLayer'])
+        cams = mel.eval('listTransforms -cameras')
+        lits = mel.eval('listTransforms -lights')
+        nodes = cmds.ls(type=['displayLayer','renderLayer'])
         try:
-            nodes.extend(pm.ls(type='mentalraySubdivApprox'))  # For mental ray
+            nodes.extend(cmds.ls(type='mentalraySubdivApprox'))  # For mental ray
         except:
             pass
         # Del nodes
@@ -170,7 +170,7 @@ class clearUnusedNodes(checkingBoxBase.checkingBoxCmd):
         self.cont += self.delNodes(lits)    # del lights
         self.cont += self.delNodes(nodes)   # del other nodes
         try:
-            mm.eval('MLdeleteUnused')       # del shaders
+            mel.eval('MLdeleteUnused')       # del shaders
         except:
             self.cont += 'Unused Shader Node\n'
         # Result
@@ -189,7 +189,7 @@ class clearUnusedNodes(checkingBoxBase.checkingBoxCmd):
         for node in nodes:
             if node not in defaultNodes:
                 try:
-                    pm.delete( node )
+                    cmds.delete( node )
                 except:
                     act = node + '\n'
         return act
@@ -200,16 +200,16 @@ class nameShapes(checkingBoxBase.checkingBoxCmd):
         self.cont = ''
         do = ''
         notdo = ''
-        nodes = pm.ls(type='transform')
+        nodes = cmds.ls(type='transform')
         for node in nodes:
-            shapes = pm.listRelatives(node,s=1,f=1,type=('mesh','nurbsSurface'))
-            if len(shapes):
+            shapes = cmds.listRelatives(node,s=1,f=1,type=('mesh','nurbsSurface'))
+            if shapes and len(shapes):
                 print shapes
                 shape = shapes[0]
                 name = node.rsplit('|',1)[-1] + 'Shape'
                 if not shape.endswith(name):
                     try:
-                        pm.rename(shape,name)
+                        cmds.rename(shape,name)
                         do += '%s       %s\n'%(shape,name)
                     except:
                         notdo += '%s\n'%shape
@@ -230,12 +230,12 @@ class clearRedundantShapes(checkingBoxBase.checkingBoxCmd):
     label = u'清除多余的shape节点'
     def cmd(self):
         count = 0
-        nodes = pm.ls(type='transform')
+        nodes = cmds.ls(type='transform')
         for node in nodes:
-            shapes = pm.listRelatives(node,s=1,f=1,ni=1)
+            shapes = cmds.listRelatives(node,s=1,f=1,ni=1)
             if shapes!=None and len(shapes)>1:
                 shapes.pop(0)
-                pm.delete(shapes)
+                cmds.delete(shapes)
                 count += 1
         self.cont = u'处理多余的shape节点： %s\n\n'%count
         self.cont += u'注：\n不处理中介节点'
@@ -252,23 +252,23 @@ class delHistory(checkingBoxBase.checkingBoxCmd):
         return 1
     def delHistory(self):
         cont = ''
-        nodes = pm.ls(type=('mesh','nurbsSurface'))
+        nodes = cmds.ls(type=('mesh','nurbsSurface'))
         if nodes!=[]:
-            pm.delete(nodes,ch=1)
+            cmds.delete(nodes,ch=1)
             cont = u'删除历史：%s\n'%len(nodes)
         return cont
     def unlockNormal(self):
         cont = ''
-        nodes = pm.ls(type=('mesh','nurbsSurface'))
+        nodes = cmds.ls(type=('mesh','nurbsSurface'))
         if nodes!=[]:
-            pm.polyNormalPerVertex(nodes, ufn=1)
+            cmds.polyNormalPerVertex(nodes, ufn=1)
             cont = u'Unlock Normal 节点： %s\n'%len(nodes)
         return cont
     def zeroSmooth(self):
         cont = ''
-        nodes = pm.ls(type='polySmoothFace')
+        nodes = cmds.ls(type='polySmoothFace')
         for node in nodes:
-            pm.setAttr((node+'.divisions'),0)
+            cmds.setAttr((node+'.divisions'),0)
         if nodes!=[]:
             cont = u'处理smooth节点： %s\n'%len(nodes)
         return cont
@@ -277,12 +277,12 @@ class checkAxis(checkingBoxBase.checkingBoxCmd):
     label = u'轴心点回物体中心，位移旋转缩放属性设为默认值'
     def cmd(self):
         error = ''
-        objs = pm.ls(type=('mesh','nurbsSurface'))
+        objs = cmds.ls(type=('mesh','nurbsSurface'))
         for obj in objs:
-            p = pm.listRelatives(obj,p=1,f=1)[0]
-            pm.xform(p,cp=1)
+            p = cmds.listRelatives(obj,p=1,f=1)[0]
+            cmds.xform(p,cp=1)
             try:
-                pm.makeIdentity(p,a=1,t=1,r=1,s=1,n=0)
+                cmds.makeIdentity(p,a=1,t=1,r=1,s=1,n=0)
             except:
                 error += '%s\n'%p
         if error!='':
@@ -299,13 +299,13 @@ class checkScale(checkingBoxBase.checkingBoxCmd):
     def cmd(self):
         Max = None
         Min = None
-        objs = pm.ls(ni=1,type=['mesh','nurbsSurface'])    #as=1
+        objs = cmds.ls(ni=1,type=['mesh','nurbsSurface'])    #as=1
         for obj in objs:
             #print obj;print Max;print Min
-            vis = pm.getAttr((obj+'.v'))
+            vis = cmds.getAttr((obj+'.v'))
             if vis:
-                bbMax = pm.getAttr((obj+'.boundingBoxMax'))[0]
-                bbMin = pm.getAttr((obj+'.boundingBoxMin'))[0]
+                bbMax = cmds.getAttr((obj+'.boundingBoxMax'))[0]
+                bbMin = cmds.getAttr((obj+'.boundingBoxMin'))[0]
                 if Max==None: Max = [bbMax[0],bbMax[1],bbMax[2]]
                 else:
                     if bbMax[0]>Max[0]: Max[0] = bbMax[0]
@@ -320,7 +320,7 @@ class checkScale(checkingBoxBase.checkingBoxCmd):
             self.cont = u'场景中没有物体存在。'
         else:
             size = (Max[0]-Min[0],Max[1]-Min[1],Max[2]-Min[2])
-            unit = pm.currentUnit(q=1,l=1)
+            unit = cmds.currentUnit(q=1,l=1)
             self.cont = u'场景当前长度单位为：%s\n\n'%unit
             self.cont += u'模型尺寸为：\n'
             scale = 0.1

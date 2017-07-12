@@ -2,19 +2,8 @@
 
 from maya.cmds import *
 from maya import mel
-from barbarian.utils import getPath, getConfig, kUI
-from pymel.internal.pmcmds import file
+from barbarian.utils import getPath, getConfig, kUI, kBinary
 import os, sys
-
-
-def cmdCameraOperation(option):
-    if option == "create":
-        pass
-    elif option == "lock":
-        pass
-    elif option == "delete":
-        pass
-
 
 class PlayblastOption():
     
@@ -157,10 +146,8 @@ class PlayblastOption():
         setAttr(cam+".filmFit", getConfig(camFilmFit=True))
         
         if playblastFile:    
-            mp = os.getenv('BARBARIAN_LOCATION')
-            mp += "../commons/bin/ffmpeg"
+            mp = getPath(kBinary, "ffmpeg")
             resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
-            print(resultCmd + "\n")
             os.system(unicode(resultCmd))
             os.system(r'explorer "%s"' % os.path.abspath(videoOutPath))
             os.remove(playblastFile)

@@ -1,5 +1,5 @@
-﻿import pymel.core as pm
-from barbarian.utils import *
+﻿from maya import cmds
+from barbarian.utils import getPath, kUI
 
 
 class Renamer(object):
@@ -17,11 +17,11 @@ class Renamer(object):
     prefixOptionMenu = "prefixCmb"
     
     def __init__(self):
-        if pm.window(Renamer.win, exists=True):
-            pm.deleteUI(Renamer.win)
+        if cmds.window(Renamer.win, exists=True):
+            cmds.deleteUI(Renamer.win)
         
-        pm.loadUI(f=getPath(kUI, "renamer.ui"))
-        pm.showWindow(Renamer.win)
+        cmds.loadUI(f=getPath(kUI, "renamer.ui"))
+        cmds.showWindow(Renamer.win)
     
     @classmethod
     def rename(cls):
@@ -59,16 +59,16 @@ class Renamer(object):
                        "blinn": "Bli",
                        "surfaceShader": "Sfs", }
     
-        sels = pm.ls(sl=True)
+        sels = cmds.ls(sl=True)
         
-        name = pm.textField(cls.renameTextField, q=True, tx=True)
-        options = pm.optionMenu(cls.prefixOptionMenu, q=True, v=True)
+        name = cmds.textField(cls.renameTextField, q=True, tx=True)
+        options = cmds.optionMenu(cls.prefixOptionMenu, q=True, v=True)
     
         for sel in sels:
     
-            pick_walk = pm.pickWalk(sel, d="down")
-            pm.select(sel)
-            obj_type = pm.objectType(pick_walk)
+            pick_walk = cmds.pickWalk(sel, d="down")
+            cmds.select(sel)
+            obj_type = cmds.objectType(pick_walk)
     
             num = 1
             new_name = ""
@@ -88,44 +88,44 @@ class Renamer(object):
             
             new_name = prefix + name + suffix
     
-            while pm.objExists(new_name) and new_name != sel:
+            while cmds.objExists(new_name) and new_name != sel:
                 num = num + 1
                 num_str = "%02d" % num
                 new_name = prefix + name + "_" + \
                     num_str + "_" + tmp_dic[obj_type]
     
-            pm.rename(sel, new_name)
+            cmds.rename(sel, new_name)
         
     @classmethod
     def addPrefix(cls):
-        sels = pm.ls(sl=True)
-        name = pm.textField(cls.prefixTextField, q=True, tx=True)
+        sels = cmds.ls(sl=True)
+        name = cmds.textField(cls.prefixTextField, q=True, tx=True)
         
         for sel in sels:
-            pm.rename(sel, name+"_"+sel)
+            cmds.rename(sel, name+"_"+sel)
         
     @classmethod
     def addSuffix(cls):
-        sels = pm.ls(sl=True)
-        name = pm.textField(cls.suffixTextField, q=True, tx=True)
+        sels = cmds.ls(sl=True)
+        name = cmds.textField(cls.suffixTextField, q=True, tx=True)
         
         for sel in sels:
-            pm.rename(sel, sel+"_"+name)
+            cmds.rename(sel, sel+"_"+name)
             
     @classmethod
     def search(cls):
-        find_string = pm.textField(cls.searchTextField, q=True, text=True)
-        matches = pm.ls("*" + find_string + "*", type="transform")
-        pm.select(matches, r=True)
+        find_string = cmds.textField(cls.searchTextField, q=True, text=True)
+        matches = cmds.ls("*" + find_string + "*", type="transform")
+        cmds.select(matches, r=True)
     
     @classmethod
     def replace(cls):
-        find_string = pm.textField(cls.searchTextField, q=True, text=True)
-        replace_string = pm.textField(cls.replaceTextField, q=True, text=True)
-        matches = pm.ls(sl=True)
+        find_string = cmds.textField(cls.searchTextField, q=True, text=True)
+        replace_string = cmds.textField(cls.replaceTextField, q=True, text=True)
+        matches = cmds.ls(sl=True)
         
         for match in matches:
             new_name = match.split("|")[-1].replace(find_string, replace_string)
-            pm.rename(match, new_name)
+            cmds.rename(match, new_name)
 
 

@@ -1,4 +1,4 @@
-﻿import pymel.core as pm
+﻿from maya import cmds
 
 class CheckNamespace():
 	def __init__(self, state = 0):
@@ -7,9 +7,9 @@ class CheckNamespace():
 
 	def listNamespaces(self):
 
-		pm.namespace(set = ':')
+		cmds.namespace(set = ':')
 
-		nameSpaces = pm.namespaceInfo(lon = True)
+		nameSpaces = cmds.namespaceInfo(lon = True)
 
 		[nameSpaces.remove(name) for name in ['UI', 'shared']]
 
