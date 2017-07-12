@@ -125,6 +125,7 @@ class PlayblastOption():
         setAttr("%s.height"%ls(renderResolutions=True)[0], getConfig(camResY=True))
         ha = getAttr(cam+".verticalFilmAperture")
         ar = float(getConfig(camResX=True))/float(getConfig(camResY=True))
+        setAttr(cam+".horizontalFilmAperture", lock=False)
         setAttr(cam+".horizontalFilmAperture", ha*ar)
         setAttr("%s.deviceAspectRatio"%ls(renderResolutions=True)[0], ar)
         
