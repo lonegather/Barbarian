@@ -43,7 +43,7 @@ def getConfig(**kwargs):
     elif not getProject():
         setProject(pm.layoutDialog(ui=__prompt__))
     
-    attrList = ["time", "linear", "camera", "camResX", "camResY", "playblastScale", "animLibPath", "facialLibPath"]
+    attrList = ["time", "linear", "camera", "camResX", "camResY", "camFilmFit", "playblastScale", "animLibPath", "facialLibPath"]
     for attr in attrList:
         if attr in kwargs and kwargs[attr]:
             for project in __handler__.config:
@@ -66,6 +66,7 @@ def setProject(name):
             pm.optionVar(sv=("PutaoTools_Project_Camera", project["camera"]))
             pm.optionVar(iv=("PutaoTools_Project_CamResX", project["camResX"]))
             pm.optionVar(iv=("PutaoTools_Project_CamResY", project["camResY"]))
+            pm.optionVar(iv=("PutaoTools_Project_CamFilmFit", project["camFilmFit"]))
             pm.optionVar(fv=("PutaoTools_Project_PlayblastScale", project["playblastScale"]))
             pm.optionVar(sv=("PutaoTools_Project_AnimLibPath", project["animLibPath"]))
             pm.optionVar(sv=("PutaoTools_Project_FacialLibPath", project["facialLibPath"]))
@@ -121,6 +122,7 @@ class ConfigHandler(xml.sax.ContentHandler):
         self.camera = ""
         self.camResX = ""
         self.camResY = ""
+        self.camFilmFit = ""
         self.playblastScale = ""
         self.animLibPath = ""
         self.facialLibPath = ""
@@ -143,6 +145,8 @@ class ConfigHandler(xml.sax.ContentHandler):
             self.config[len(self.config)-1]["camResX"] = self.camResX
         elif self.current == "camResY":
             self.config[len(self.config)-1]["camResY"] = self.camResY
+        elif self.current == "camFilmFit":
+            self.config[len(self.config)-1]["camFilmFit"] = self.camFilmFit
         elif self.current == "playblastScale":
             self.config[len(self.config)-1]["playblastScale"] = self.playblastScale
         elif self.current == "animLibPath":
@@ -163,6 +167,8 @@ class ConfigHandler(xml.sax.ContentHandler):
             self.camResX = int(content)
         elif self.current == "camResY":
             self.camResY = int(content)
+        elif self.current == "camFilmFit":
+            self.camFilmFit = int(content)
         elif self.current == "playblastScale":
             self.playblastScale = int(content)
         elif self.current == "animLibPath":
@@ -225,6 +231,7 @@ if not pm.optionVar(exists="PutaoTools_Project"):
     pm.optionVar(sv=("PutaoTools_Project_Camera", ""))
     pm.optionVar(iv=("PutaoTools_Project_CamResX", 0))
     pm.optionVar(iv=("PutaoTools_Project_CamResY", 0))
+    pm.optionVar(iv=("PutaoTools_Project_CamFilmFit", 0))
     pm.optionVar(fv=("PutaoTools_Project_PlayblastScale", 0.0))
     pm.optionVar(sv=("PutaoTools_Project_AnimLibPath", ""))
     pm.optionVar(sv=("PutaoTools_Project_FacialLibPath", ""))

@@ -104,12 +104,12 @@ class PlayblastOption():
         
         panel = playblast(activeEditor=True).split("|")[-1]
         currentCam = modelPanel(panel, q=True, camera=True)
+        cam = listRelatives(currentCam)[0]
         
         padding = 0
         if (not optionVar(exists="PutaoTools_HUD_Padding")) or optionVar(q="PutaoTools_HUD_Padding"):
             optionVar(iv=("PutaoTools_HUD_Padding", 120))
             padding = optionVar(q="PutaoTools_HUD_Padding")
-            cam = listRelatives(currentCam)[0]
             setAttr(cam+".displayFilmGate", 0)
             setAttr(cam+".displayResolution", 1)
             setAttr(cam+".displayGateMask", 1)
@@ -117,12 +117,17 @@ class PlayblastOption():
             setAttr(cam+".displayGateMaskColor", [0.0,0.0,0.0])
             setAttr(cam+".displaySafeAction", 1)
             setAttr(cam+".overscan", 1)
-            setAttr(cam+".filmFit", 3)
+            setAttr(cam+".filmFit", 1)
             
             select(clear=True)
         
+        
         setAttr("%s.width"%ls(renderResolutions=True)[0], getConfig(camResX=True))
         setAttr("%s.height"%ls(renderResolutions=True)[0], getConfig(camResY=True))
+        ha = getAttr(cam+".verticalFilmAperture")
+        ar = float(getConfig(camResX=True))/float(getConfig(camResY=True))
+        setAttr(cam+".horizontalFilmAperture", ha*ar)
+        setAttr("%s.deviceAspectRatio"%ls(renderResolutions=True)[0], ar)
         
         cls.__makeHUD__()
         
@@ -144,9 +149,11 @@ class PlayblastOption():
                                           clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
         except: 
             cls.__clearHUD__()
+            setAttr(cam+".filmFit", getConfig(camFilmFit=True))
             return
         
         cls.__clearHUD__()
+        setAttr(cam+".filmFit", getConfig(camFilmFit=True))
         
         if playblastFile:    
             mp = os.getenv('BARBARIAN_LOCATION')
