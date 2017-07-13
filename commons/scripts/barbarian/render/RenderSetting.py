@@ -7,6 +7,7 @@ class RenderSetting():
     
     renderWin = "BeathRender"
     textWin = "BeathRenderLabel"
+    cameraMenuItem = "BeathRenderOptionMenu"
     minText = "BeathRenderMin"
     maxText = "BeathRenderMax"
     
@@ -41,11 +42,15 @@ class RenderSetting():
         cmds.loadUI(f=getPath(kUI, "RenderSetting.ui"))
         cmds.window(cls.renderWin, e=True, mxb=False, leftEdge=100, topEdge=100)
         cmds.showWindow(cls.renderWin)
-        
-        
+
         cmds.textField(cls.textWin, edit=True, tx=cls.Work_Path)
         cmds.textField(cls.minText, edit=True, )
         cmds.textField(cls.maxText, edit=True, )
+        
+        cameraName = cmds.listCameras(orthographic=True, perspective=True)
+        for item in cameraName:
+            cmds.menuItem(l=item, parent=cls.cameraMenuItem)
+        
 
     @classmethod
     def renderCmd(cls, Type):
@@ -53,10 +58,12 @@ class RenderSetting():
         Tfc = cmds.textField(cls.maxText, q=True, tx=True)
         cls.Tmp = cmds.textField(cls.textWin, q=True, tx=True)
         
+        cameraId =  cmds.optionMenu(cls.cameraMenuItem, q=True, v=True)
+        
         cmd0 = "cd \"" + cls.Bin_Path + "\""
         cmd1 = "\"" + cls.Bin_Path + "Render.exe\""
-        cmd2 = 'Render -s ' + Tfb + ' -e ' + Tfc + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
-        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
+        cmd2 = 'Render -cam ' + cameraId + ' -s ' + Tfb + ' -e ' + Tfc + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
+        cmd3 = ' -cam ' + cameraId + ' -s ' + Tfb + ' -e ' + Tfc + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
         
         if Type == 0:
                     
@@ -74,6 +81,7 @@ class RenderSetting():
         import datetime
         now = datetime.datetime.now()
         return now.strftime('%Y-%m-%d')
-            
+
+
 
 
