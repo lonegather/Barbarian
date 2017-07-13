@@ -171,7 +171,7 @@
        <string>开始批渲</string>
       </property>
       <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.renderCmd()</string>
+       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.renderCmd(0)</string>
       </property>
      </widget>
     </item>
@@ -201,7 +201,7 @@
        <string>生成Bat文件</string>
       </property>
       <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.renderCmd()</string>
+       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.renderCmd(1)</string>
       </property>
      </widget>
     </item>
