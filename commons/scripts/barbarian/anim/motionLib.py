@@ -11,10 +11,23 @@ import maya.OpenMaya as om
 from maya import cmds
 from barbarian.utils import getPath, kUI, getProject, setProject, getConfig, getQtWindow
 
+
+def UI(*_):
+    pass
+
+
+def animImport(*_):
+    pass
+
+
+def animExport(*_):
+    pass
+
+
 class AnimRepository(object):
-    '''
-    classdocs
-    '''
+    
+    use = None
+    
     win = ""
     tab = "motionLibTab"
     opMnuProject = "motionLibCBProject"
