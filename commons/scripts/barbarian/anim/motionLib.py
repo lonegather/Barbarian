@@ -42,7 +42,12 @@ class AnimRepository(object):
         #cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
         #cmds.showWindow(cls.win)
         cls.win = getQtWindow("motionLib.ui", "motionLibCentralwidget", u"动作库")
-        cmds.window(cls.win, e=True, closeCommand=cls.cleanUp)
+        
+        for msg in cls.messages:
+            om.MMessage.removeCallback(msg)
+        cls.messages = []
+        cls.menuItems = []
+        cls.outCurves = []
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
