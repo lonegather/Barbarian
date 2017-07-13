@@ -13,7 +13,7 @@ kBinary = "../commons/bin/"
 kUI = "../commons/ui/"
 
 
-def debug(*args):
+def debug(*_):
     path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
     if path not in sys.path: sys.path.append(path)
     try: import pydevd
@@ -189,7 +189,7 @@ def __prompt__():
     form = cmds.setParent(q=True)
     cmds.formLayout(form, e=True, width=200)
     txt = cmds.text(l=u"请选择当前项目：",height=30)
-    btn = cmds.button(l="Confirm",height=30,command=lambda *args: cmds.layoutDialog(dismiss=cmds.optionMenu(mnu,q=True,v=True)))
+    btn = cmds.button(l="Confirm",height=30,command=lambda *_: cmds.layoutDialog(dismiss=cmds.optionMenu(mnu,q=True,v=True)))
     mnu = cmds.optionMenu(height=30)
     prjs = getProject(all=True)
     for prj in prjs:
@@ -207,11 +207,6 @@ def __prompt__():
                                 (btn,'left',edge),
                                 (btn,'right',edge),
                                 (btn,'bottom',edge)])
-
-def __wireframe__(*args):
-    allPanels = cmds.getPanel(type='modelPanel')
-    for p in allPanels:
-        cmds.modelEditor(p, edit=1, displayAppearance='boundingBox')
 
 '''
 --------------------------------------------------------------------------------

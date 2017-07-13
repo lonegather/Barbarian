@@ -15,7 +15,7 @@ class AnimRepository(object):
     '''
     classdocs
     '''
-    win = "motionLibOption"
+    win = ""
     tab = "motionLibTab"
     opMnuProject = "motionLibCBProject"
     opMnuCharactor = "motionLibCBCharactor"
@@ -38,16 +38,10 @@ class AnimRepository(object):
     
     @classmethod
     def UI(cls):
-        if cmds.window(cls.win, exists=True): cmds.deleteUI(cls.win)
+        cls.cleanUp()
         #cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
         #cmds.showWindow(cls.win)
         cls.win = getQtWindow("motionLib.ui", "motionLibCentralwidget", u"动作库")
-        
-        for msg in cls.messages:
-            om.MMessage.removeCallback(msg)
-        cls.messages = []
-        cls.menuItems = []
-        cls.outCurves = []
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
@@ -67,7 +61,7 @@ class AnimRepository(object):
         cls.refreshCharacters()
     
     @classmethod
-    def refreshCharacters(cls, *args):
+    def refreshCharacters(cls, *_):
         if getProject(): 
             cmds.control(cls.tab, e=True, enable=True)
             cmds.optionMenu(cls.opMnuProject, e=True, l=u"")
@@ -101,7 +95,7 @@ class AnimRepository(object):
         cls.refreshData()
     
     @classmethod
-    def refreshData(cls, *args):
+    def refreshData(cls, *_):
         cmds.namespace(set = ":")
         cmds.optionMenu(cls.opMnuProject, e=True, v=getProject())
         cmds.textScrollList(cls.tslImport, e=True, removeAll=True)
@@ -116,7 +110,9 @@ class AnimRepository(object):
         cmds.pickWalk(d="down")
     
     @classmethod
-    def cleanUp(cls, *args):
+    def cleanUp(cls, *_):
+        if cmds.window(cls.win, exists=True): 
+            cmds.deleteUI(cls.win)
         for msg in cls.messages:
             om.MMessage.removeCallback(msg)
         cls.messages = []

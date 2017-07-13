@@ -111,7 +111,7 @@ class Entrance(object):
                     cmds.deleteUI(mi)
             cmds.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
 
-    def __boundingBox__(self, *args):
+    def __boundingBox__(self, *_):
         allPanels = cmds.getPanel(type='modelPanel')
         for p in allPanels:
             cmds.modelEditor(p, edit=1, displayAppearance='boundingBox')
