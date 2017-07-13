@@ -32,7 +32,7 @@
   <property name="+topEdge" stdset="0">
    <string>200</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="motionLibCentralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0,0">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
