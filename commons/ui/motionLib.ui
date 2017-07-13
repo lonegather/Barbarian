@@ -23,9 +23,6 @@
    <iconset>
     <normaloff>../icons/logo.png</normaloff>../icons/logo.png</iconset>
   </property>
-  <property name="+closeCommand" stdset="0">
-   <string>lambda *args: barbarian.anim.motionLib.AnimRepository.cleanUp()</string>
-  </property>
   <property name="+leftEdge" stdset="0">
    <string>200</string>
   </property>

@@ -39,9 +39,9 @@ class AnimRepository(object):
     @classmethod
     def UI(cls):
         cls.cleanUp()
-        #cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
-        #cmds.showWindow(cls.win)
-        cls.win = getQtWindow("motionLib.ui", "motionLibCentralwidget", u"动作库")
+        cls.win = cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
+        cmds.showWindow(cls.win)
+        #cls.win = getQtWindow("motionLib.ui", "motionLibCentralwidget", u"动作库")
         
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
         cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
@@ -135,6 +135,7 @@ class AnimRepository(object):
         fileList = cls.getDirectoryList(getConfig(animLibPath=True))
         newNS = []
         for ref in refs:
+            if not cmds.referenceQuery(ref, isLoaded=True): continue
             ref = ref.split("/")[-1]
             for f in fileList:
                 if not ref.find(f) == -1:
