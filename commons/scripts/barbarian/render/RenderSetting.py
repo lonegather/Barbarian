@@ -15,13 +15,13 @@ def UI(*_):
                   maxText = "BeathRenderMax")
 
 def doRender(*_):
-    RenderSetting.getWindow("RenderSetting").renderCmd(0)
+    RenderSetting.getInstance().renderCmd(0)
     
 def makeBat(*_):
-    RenderSetting.getWindow("RenderSetting").renderCmd(1)
+    RenderSetting.getInstance().renderCmd(1)
     
 def browse(*_):
-    RenderSetting.getWindow("RenderSetting").BrowseWin()
+    RenderSetting.getInstance().BrowseWin()
 
 
 class RenderSetting(ui.QtWindow):

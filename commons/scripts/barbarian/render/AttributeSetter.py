@@ -18,7 +18,7 @@ def UI(*_):
                     txtVal2="LEValue2")
     
 def execute(*_):
-    AttributeSetter.getWindow("attributeSetter").execute()
+    AttributeSetter.getInstance().execute()
 
 class AttributeSetter(ui.QtWindow):
     def setup(self):

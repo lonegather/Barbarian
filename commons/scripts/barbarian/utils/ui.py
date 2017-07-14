@@ -16,14 +16,14 @@ class QtWindow(object):
     __windows = {}
     
     @classmethod
-    def getWindow(cls, key):
-        return cls.__windows[key]
+    def getInstance(cls):
+        return cls.__windows[cls]
     
     def __init__(self, ui, **info):
-        try: cmds.deleteUI(self.__windows[ui].window)
+        try: cmds.deleteUI(self.__windows[self.__class__].window)
         except: pass
         self.window = cmds.loadUI(f=getPath(kUI, "%s.ui"%ui))
-        self.__windows.update({ui:self})
+        self.__windows.update({self.__class__:self})
         
         for item in info:
             self.__setattr__(item, info[item])
