@@ -10,8 +10,14 @@
     <height>48</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>属性设置</string>
   </property>
   <property name="windowIcon">
    <iconset>
