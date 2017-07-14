@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+#!/usr/local/bin/python2.7
+# encoding: utf-8
 
 from maya.cmds import *
 from maya import mel

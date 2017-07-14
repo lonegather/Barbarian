@@ -1,4 +1,7 @@
-﻿from maya import cmds
+﻿#!/usr/local/bin/python2.7
+# encoding: utf-8
+
+from maya import cmds
 from barbarian.utils import getConfig
 
 def doIt():

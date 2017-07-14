@@ -1,4 +1,5 @@
-﻿# -*- coding: utf-8 -*-
+#!/usr/local/bin/python2.7
+# encoding: utf-8
 '''
 Created on 2017.7.5
 
@@ -9,7 +10,7 @@ import os
 import maya.OpenMaya as om
 
 from maya import cmds
-from barbarian.utils import getPath, kUI, getProject, setProject, getConfig, getQtWindow
+from barbarian.utils import getPath, kUI, getProject, setProject, getConfig
 
 
 def UI(*_):

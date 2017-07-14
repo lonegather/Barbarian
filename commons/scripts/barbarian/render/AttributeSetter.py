@@ -1,3 +1,5 @@
+#!/usr/local/bin/python2.7
+# encoding: utf-8
 '''
 Created on 2017.7.12
 

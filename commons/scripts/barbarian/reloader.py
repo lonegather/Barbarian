@@ -1,4 +1,6 @@
-﻿'''
+﻿#!/usr/local/bin/python2.7
+# encoding: utf-8
+'''
 Created on 2017.7.10
 
 @author: Sam
@@ -15,6 +17,8 @@ def doIt(rl=False):
     try: 
         import barbarian.utils
         if rl: reload(barbarian.utils)
+        import barbarian.utils.ui
+        if rl: reload(barbarian.utils.ui)
         
         import barbarian.model
         if rl: reload(barbarian.model)
