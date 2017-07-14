@@ -8,36 +8,22 @@ Created on 2017.7.12
 
 import re
 from maya import cmds
-from barbarian.utils import getPath, kUI
+from barbarian.utils import ui
 
 def UI(*_):
-    AttributeSetter.new()
+    AttributeSetter("attributeSetter",
+                    txtObj="LEObject",
+                    txtAttr="LEAttribute",
+                    txtVal1="LEValue1",
+                    txtVal2="LEValue2")
     
 def execute(*_):
-    AttributeSetter.use.execute()
+    AttributeSetter.getWindow("attributeSetter").execute()
 
-class AttributeSetter(object):
+class AttributeSetter(ui.QtWindow):
+    def setup(self):
+        print ("setup:", self)
     
-    use = None
-    
-    @classmethod
-    def new(cls):
-        if cls.use and cmds.window(cls.use.win, exists=True):
-            cmds.deleteUI(cls.use.win)
-        cls.use = AttributeSetter(cmds.loadUI(f=getPath(kUI, "attributeSetter.ui")))
-    
-    def __init__(self, win):
-        self.win = win
-        self.txtObj = win + "|layout|LEObject"
-        self.txtAttr = win + "|layout|LEAttribute"
-        self.txtVal1 = win + "|layout|LEValue1"
-        self.txtVal2 = win + "|layout|LEValue2"
-        
-        if cmds.windowPref(win, exists=True):
-            cmds.windowPref(win, e=True, topLeftCorner=[300,693], width=534, height=48)
-            
-        cmds.showWindow(win)
-        
     def execute(self):
         obj = cmds.textField(self.txtObj, q=True, tx=True)
         attr = cmds.textField(self.txtAttr, q=True, tx=True)
