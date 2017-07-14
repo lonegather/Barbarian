@@ -203,7 +203,7 @@
        <string>开始批渲</string>
       </property>
       <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.renderCmd(0)</string>
+       <string>barbarian.render.RenderSetting.doRender</string>
       </property>
      </widget>
     </item>
@@ -233,7 +233,7 @@
        <string>生成Bat文件</string>
       </property>
       <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.renderCmd(1)</string>
+       <string>barbarian.render.RenderSetting.makeBat</string>
       </property>
      </widget>
     </item>
@@ -340,7 +340,7 @@
        <string>选择路径</string>
       </property>
       <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.BrowseWin()</string>
+       <string>barbarian.render.RenderSetting.browse</string>
       </property>
      </widget>
     </item>

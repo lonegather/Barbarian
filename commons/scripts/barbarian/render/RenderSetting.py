@@ -1,81 +1,66 @@
-﻿import os
-import shutil
+﻿#!/usr/local/bin/python2.7
+# encoding: utf-8
+
+import os
 from maya import cmds
-from barbarian.utils import getPath, kUI, ui
+from barbarian.utils import ui
 
 
-class RenderSetting():
+def UI(*_):
+    RenderSetting("RenderSetting",
+                  textWin = "BeathRenderLabel",
+                  cameraMenuItem = "BeathRenderOptionMenu",
+                  renderLayerMenu = "BeathRenderOptionMenu_2",
+                  minText = "BeathRenderMin",
+                  maxText = "BeathRenderMax")
+
+def doRender(*_):
+    RenderSetting.getWindow("RenderSetting").renderCmd(0)
     
-    renderWin = "BeathRender"
-    textWin = "BeathRenderLabel"
-    cameraMenuItem = "BeathRenderOptionMenu"
-    renderLayerMenu = "BeathRenderOptionMenu_2"
-    minText = "BeathRenderMin"
-    maxText = "BeathRenderMax"
+def makeBat(*_):
+    RenderSetting.getWindow("RenderSetting").renderCmd(1)
     
-    Loc_Path = ""
-    Bin_Path = ""
-    Work_Path = ""
-    Project_Path = ""
-    Tmp = ""
-    Adm = ""
-    desktop = ""
-    ReadLine = ""
-    
-    @classmethod
-    def setPath(cls):
-        cls.Loc_Path = os.getenv('MAYA_LOCATION')
-        cls.Bin_Path = cls.Loc_Path + '/bin/'
-        cls.Work_Path = cmds.workspace(q=True, fullName=True)
-        cls.Project_Path = cmds.file(q=1, exn=1)
-        cls.Adm = os.getenv('USERPROFILE')
-        cls.desktop = cls.Adm  + '\\Desktop\\'
+def browse(*_):
+    RenderSetting.getWindow("RenderSetting").BrowseWin()
 
-    @classmethod
-    def BrowseWin(cls):
-        cls.Tmp = cmds.fileDialog2(dialogStyle=2, fileMode=3, caption=u'输出路径', okCaption=u'选择路径', cancelCaption=u'取消')
-        if cls.Tmp:
-            cls.Tmp = cls.Tmp[0]
-            cmds.textField(cls.textWin, edit=True, tx=cls.Tmp)
 
-    @classmethod
-    def UI(cls):
-        cls.setPath()
-        if cmds.window(cls.renderWin, exists=True): cmds.deleteUI(cls.renderWin)
-        cmds.loadUI(f=getPath(kUI, "RenderSetting.ui"))
-        cmds.window(cls.renderWin, e=True, mxb=False, leftEdge=100, topEdge=100)
-        cmds.showWindow(cls.renderWin)
+class RenderSetting(ui.QtWindow):
+    def setup(self):
+        self.Bin_Path = os.getenv('MAYA_LOCATION') + '/bin/'
+        self.Work_Path = cmds.workspace(q=True, fullName=True)
+        self.Project_Path = cmds.file(q=1, exn=1)
+        self.desktop = os.getenv('USERPROFILE')  + '\\Desktop\\'
 
-        cmds.textField(cls.textWin, edit=True, tx=cls.Work_Path)
-        cmds.textField(cls.minText, edit=True, )
-        cmds.textField(cls.maxText, edit=True, )
+        cmds.textField(self.textWin, edit=True, tx=self.Work_Path)
+        cmds.textField(self.minText, edit=True, )
+        cmds.textField(self.maxText, edit=True, )
         
         cameraName = cmds.listCameras(orthographic=True, perspective=True)
         for item in cameraName:
-            cmds.menuItem(l=item, parent=cls.cameraMenuItem)
+            cmds.menuItem(l=item, parent=self.cameraMenuItem)
             
         Render_Layer = cmds.ls(type = 'renderLayer' )
         for layer in Render_Layer:
-            cmds.menuItem(l=layer, parent=cls.renderLayerMenu)
+            cmds.menuItem(l=layer, parent=self.renderLayerMenu)
 
+    def BrowseWin(self):
+        tmp = cmds.fileDialog2(dialogStyle=2, fileMode=3, caption=u'输出路径', okCaption=u'选择路径', cancelCaption=u'取消')
+        if tmp: cmds.textField(self.textWin, edit=True, tx=tmp)
+
+    def renderCmd(self, Type):
+        Tfb = cmds.textField(self.minText, q=True, tx=True)
+        Tfc = cmds.textField(self.maxText, q=True, tx=True)
+        self.Tmp = cmds.textField(self.textWin, q=True, tx=True)
         
-
-    @classmethod
-    def renderCmd(cls, Type):
-        Tfb = cmds.textField(cls.minText, q=True, tx=True)
-        Tfc = cmds.textField(cls.maxText, q=True, tx=True)
-        cls.Tmp = cmds.textField(cls.textWin, q=True, tx=True)
-        
-        cameraId =  cmds.optionMenu(cls.cameraMenuItem, q=True, v=True)
-        renderLayerId =  cmds.optionMenu(cls.renderLayerMenu, q=True, v=True)
-
+        cameraId =  cmds.optionMenu(self.cameraMenuItem, q=True, v=True)
+        renderLayerId =  cmds.optionMenu(self.renderLayerMenu, q=True, v=True)
       
-        cmd0 = "cd \"" + cls.Bin_Path + "\""
-        cmd1 = "\"" + cls.Bin_Path + "Render.exe\""
-        cmd2 = 'Render' + ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId +' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
-        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"\n'
+        cmd0 = "cd \"" + self.Bin_Path + "\""
+        cmd1 = "\"" + self.Bin_Path + "Render.exe\""
+        cmd2 = 'Render' + ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId +' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"'
+        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\n'
         
-        oldFile = os.popen("type %s"%(cls.desktop + cls.__time__() + ".bat")).read()
+        oldFile = os.popen("type %s"%(self.desktop + self.__time__() + ".bat")).read()
         
         if oldFile == '':
             shutdown = 'shutdown -s -f -t 1'
@@ -83,19 +68,14 @@ class RenderSetting():
             shutdown = ''
         
         if Type == 0:
-                    
             os.system(cmd0)
             os.system(cmd2)
-            
         else:
-            
-            ct = open(cls.desktop + cls.__time__() + ".bat","w")
+            ct = open(self.desktop + self.__time__() + ".bat","w")
             ct.write(cmd1 + cmd3 + oldFile + shutdown)
             ct.flush()
 
-            
-    @classmethod
-    def __time__(cls):
+    def __time__(self):
         import datetime
         now = datetime.datetime.now()
         return now.strftime('%Y-%m-%d')

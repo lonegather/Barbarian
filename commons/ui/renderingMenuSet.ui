@@ -286,7 +286,7 @@
       <string>0.25 0.25 0.25</string>
      </property>
      <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.render.RenderSetting.RenderSetting.UI()</string>
+      <string>barbarian.render.RenderSetting.UI</string>
      </property>
     </widget>
    </item>
