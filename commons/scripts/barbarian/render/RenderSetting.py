@@ -1,7 +1,7 @@
 ﻿import os
 import shutil
 from maya import cmds
-from barbarian.utils import getPath, kUI
+from barbarian.utils import getPath, kUI, ui
 
 
 class RenderSetting():
@@ -20,7 +20,7 @@ class RenderSetting():
     Tmp = ""
     Adm = ""
     desktop = ""
-    HuanHang = '\n'
+    ReadLine = ""
     
     @classmethod
     def setPath(cls):
@@ -69,11 +69,18 @@ class RenderSetting():
         cameraId =  cmds.optionMenu(cls.cameraMenuItem, q=True, v=True)
         renderLayerId =  cmds.optionMenu(cls.renderLayerMenu, q=True, v=True)
 
-        
+      
         cmd0 = "cd \"" + cls.Bin_Path + "\""
         cmd1 = "\"" + cls.Bin_Path + "Render.exe\""
         cmd2 = 'Render' + ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId +' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
-        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
+        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"\n'
+        
+        oldFile = os.popen("type %s"%(cls.desktop + cls.__time__() + ".bat")).read()
+        
+        if oldFile == '':
+            shutdown = 'shutdown -s -f -t 1'
+        else:
+            shutdown = ''
         
         if Type == 0:
                     
@@ -82,16 +89,20 @@ class RenderSetting():
             
         else:
             
-            ct = open(cls.desktop + cls.__time__() + ".bat","a")
-            ct.write(cls.HuanHang + cmd1 + cmd3)
+            ct = open(cls.desktop + cls.__time__() + ".bat","w")
+            ct.write(cmd1 + cmd3 + oldFile + shutdown)
             ct.flush()
+
             
     @classmethod
     def __time__(cls):
         import datetime
         now = datetime.datetime.now()
         return now.strftime('%Y-%m-%d')
+    
 
-
-
-
+        
+        
+        
+        
+        
