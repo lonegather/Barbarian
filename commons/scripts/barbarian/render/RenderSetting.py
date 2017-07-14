@@ -1,4 +1,5 @@
 ﻿import os
+import shutil
 from maya import cmds
 from barbarian.utils import getPath, kUI
 
@@ -8,6 +9,7 @@ class RenderSetting():
     renderWin = "BeathRender"
     textWin = "BeathRenderLabel"
     cameraMenuItem = "BeathRenderOptionMenu"
+    renderLayerMenu = "BeathRenderOptionMenu_2"
     minText = "BeathRenderMin"
     maxText = "BeathRenderMax"
     
@@ -18,6 +20,7 @@ class RenderSetting():
     Tmp = ""
     Adm = ""
     desktop = ""
+    HuanHang = '\n'
     
     @classmethod
     def setPath(cls):
@@ -50,6 +53,11 @@ class RenderSetting():
         cameraName = cmds.listCameras(orthographic=True, perspective=True)
         for item in cameraName:
             cmds.menuItem(l=item, parent=cls.cameraMenuItem)
+            
+        Render_Layer = cmds.ls(type = 'renderLayer' )
+        for layer in Render_Layer:
+            cmds.menuItem(l=layer, parent=cls.renderLayerMenu)
+
         
 
     @classmethod
@@ -59,11 +67,13 @@ class RenderSetting():
         cls.Tmp = cmds.textField(cls.textWin, q=True, tx=True)
         
         cameraId =  cmds.optionMenu(cls.cameraMenuItem, q=True, v=True)
+        renderLayerId =  cmds.optionMenu(cls.renderLayerMenu, q=True, v=True)
+
         
         cmd0 = "cd \"" + cls.Bin_Path + "\""
         cmd1 = "\"" + cls.Bin_Path + "Render.exe\""
-        cmd2 = 'Render -cam ' + cameraId + ' -s ' + Tfb + ' -e ' + Tfc + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
-        cmd3 = ' -cam ' + cameraId + ' -s ' + Tfb + ' -e ' + Tfc + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
+        cmd2 = 'Render' + ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId +' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
+        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + cls.Tmp + '\" \"' + cls.Project_Path + '\"'
         
         if Type == 0:
                     
@@ -72,8 +82,8 @@ class RenderSetting():
             
         else:
             
-            ct = open(cls.desktop + cls.__time__() + ".bat","w")
-            ct.write(cmd1 + cmd3)
+            ct = open(cls.desktop + cls.__time__() + ".bat","a")
+            ct.write(cls.HuanHang + cmd1 + cmd3)
             ct.flush()
             
     @classmethod
