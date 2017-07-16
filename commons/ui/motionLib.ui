@@ -164,7 +164,16 @@
         <property name="spacing">
          <number>5</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
          <number>5</number>
         </property>
         <item>
@@ -294,7 +303,7 @@
            <string>导入</string>
           </property>
           <property name="+command" stdset="0">
-           <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animImport()</string>
+           <string>lambda *_:cmds.motionImport(barbarian.anim.motionLib.AnimRepository.UI().selection, **barbarian.anim.motionLib.AnimRepository.UI().configuration)</string>
           </property>
          </widget>
         </item>
@@ -308,7 +317,16 @@
         <property name="spacing">
          <number>5</number>
         </property>
-        <property name="margin">
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>5</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
          <number>5</number>
         </property>
         <item>
@@ -406,7 +424,16 @@
              <property name="spacing">
               <number>2</number>
              </property>
-             <property name="margin">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
               <number>0</number>
              </property>
              <item>
@@ -466,7 +493,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="motionLibBtnExport">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -481,9 +508,6 @@
           </property>
           <property name="text">
            <string>导出</string>
-          </property>
-          <property name="+command" stdset="0">
-           <string>lambda *args: barbarian.anim.motionLib.AnimRepository.animExport()</string>
           </property>
          </widget>
         </item>

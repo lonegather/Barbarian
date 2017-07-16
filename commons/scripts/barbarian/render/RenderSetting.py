@@ -15,17 +15,19 @@ def UI(*_):
                   maxText = "BeathRenderMax")
 
 def doRender(*_):
-    RenderSetting.getInstance().renderCmd(0)
+    RenderSetting.UI().renderCmd(0)
     
 def makeBat(*_):
-    RenderSetting.getInstance().renderCmd(1)
+    RenderSetting.UI().renderCmd(1)
     
 def browse(*_):
-    RenderSetting.getInstance().BrowseWin()
+    RenderSetting.UI().BrowseWin()
 
 
-class RenderSetting(ui.QtWindow):
-    def setup(self):
+class RenderSetting(ui.QtUI):
+    def __init__(self, uiFile, **info):
+        ui.QtUI.__init__(self, uiFile, **info)
+        
         self.Bin_Path = os.getenv('MAYA_LOCATION') + '/bin/'
         self.Work_Path = cmds.workspace(q=True, fullName=True)
         self.Project_Path = cmds.file(q=1, exn=1)

@@ -105,7 +105,7 @@
          <string>使用系统默认</string>
         </property>
         <property name="+changeCommand" stdset="0">
-         <string>lambda *args: barbarian.anim.PlayblastOption.refreshUI()</string>
+         <string>lambda *args: barbarian.anim.PlayblastOption.UI().refreshUI()</string>
         </property>
        </widget>
       </item>
@@ -220,7 +220,7 @@
           <string>拍屏</string>
          </property>
          <property name="+command" stdset="0">
-          <string>lambda *args: barbarian.anim.PlayblastOption.changeHUD(True)</string>
+          <string>lambda *args: barbarian.anim.PlayblastOption.UI().changeHUD(True)</string>
          </property>
         </widget>
        </item>
@@ -248,7 +248,7 @@
           <string>应用</string>
          </property>
          <property name="+command" stdset="0">
-          <string>lambda *args: barbarian.anim.PlayblastOption.changeHUD()</string>
+          <string>lambda *args: barbarian.anim.PlayblastOption.UI().changeHUD()</string>
          </property>
         </widget>
        </item>

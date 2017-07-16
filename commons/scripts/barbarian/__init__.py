@@ -3,25 +3,23 @@
 '''
 Created on 2017.6.9
 
-@author: Sam
+@author: Serious Sam
 '''
 
 from maya import cmds
 from maya import mel
+from utils import ui, debug
 import maya.OpenMaya as om
-import barbarian.reloader
+import reloader
+    
+    
+class Main(ui.QtUI):
+    def __init__(self, uiFile, **info):
+        ui.QtUI.__init__(self, uiFile, **info)
+        
+        cmds.menu(label=u"开发者选项", parent=self.window)
+        cmds.menuItem(label=u"连接调试服务器", command=debug)
 
-def showMain():
-    from barbarian.utils import getPath, kUI, debug
-    
-    win = "PuTaoMain"
-    
-    if cmds.window(win, exists=True): cmds.deleteUI(win)
-    cmds.loadUI(f=getPath(kUI, "main.ui"))
-    cmds.showWindow(win)
-    
-    cmds.menu(label=u"开发者选项", parent=win)
-    cmds.menuItem(label=u"连接调试服务器", command=debug)
 
 class Entrance(object):
     '''
@@ -39,7 +37,7 @@ class Entrance(object):
         self.layout = layout
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2,0.2,0.2], spacing=3)
         self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33, 
-            image=getPath(kIcon, "logo.png"), parent=layout, command=showMain)
+            image=getPath(kIcon, "logo.png"), parent=layout, command=lambda *_: Main("main"))
         self.menu = cmds.optionMenu("opMnu", parent=layout, nbg=True, changeCommand=setProject)
         
         currentMode = cmds.setMenuMode()
@@ -121,18 +119,12 @@ class Entrance(object):
 Tool Initialization at Maya Startup
 --------------------------------------------------------------------------------
 '''
-
-#initialize plugins
-for i in ["pyPBMpegCmd", "CustomDeformers", "animImportExport"]:
-    try: cmds.loadPlugin(i)
-    except: pass
-
 #initialize entrance
 if not cmds.shelfLayout("PuTao", exists=True):
     mel.eval("addNewShelfTab \"PuTao\";")
 Entrance(cmds.shelfLayout("PuTao", q=True, fpn=True))
 
-barbarian.reloader.doIt()
+reloader.doIt()
 
 print u"╔══════════════════════════════════════════════════════════╗"
 print u"╟────────── PUTAOTOOLS INITIALIZATION COMPLETED ───────────╢"

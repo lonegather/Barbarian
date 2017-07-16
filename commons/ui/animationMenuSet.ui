@@ -238,7 +238,7 @@
        <string>.3 .3 .3</string>
       </property>
       <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.anim.PlayblastOption.UI()</string>
+       <string>lambda *args: barbarian.anim.UI()</string>
       </property>
      </widget>
     </widget>
@@ -502,7 +502,7 @@
       <string>≡ 动作库 ≡</string>
      </property>
      <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.anim.motionLib.AnimRepository.UI()</string>
+      <string>lambda *args: barbarian.anim.motionLib.UI()</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>

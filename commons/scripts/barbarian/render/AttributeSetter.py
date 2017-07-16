@@ -18,11 +18,11 @@ def UI(*_):
                     txtVal2="LEValue2")
     
 def execute(*_):
-    AttributeSetter.getInstance().execute()
+    AttributeSetter.UI().execute()
 
-class AttributeSetter(ui.QtWindow):
-    def setup(self):
-        print ("setup:", self)
+class AttributeSetter(ui.QtUI):
+    def __init__(self, uiFile, **info):
+        ui.QtUI.__init__(self, uiFile, **info)
     
     def execute(self):
         obj = cmds.textField(self.txtObj, q=True, tx=True)

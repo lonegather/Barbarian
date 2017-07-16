@@ -3,138 +3,131 @@
 '''
 Created on 2017.7.5
 
-@author: Sam
+@author: Serious Sam
 '''
 
 import os
 import maya.OpenMaya as om
 
 from maya import cmds
-from barbarian.utils import getPath, kUI, getProject, setProject, getConfig
+from barbarian.utils import ui, getProject, setProject, getConfig
 
 
 def UI(*_):
-    pass
+    AnimRepository("motionLib",
+                   tab = "motionLibTab",
+                   opMnuProject = "motionLibCBProject",
+                   opMnuCharactor = "motionLibCBCharactor",
+                   btnImport = "motionLibBtnImport",
+                   btnExport = "motionLibBtnExport",
+                   tslImport = "motionLibLVImport",
+                   isImport = "motionLibHSCopies",
+                   lblWarning = "motionLibLWarning",
+                   txtExportStart = "motionLibLEExportStart",
+                   txtExportEnd = "motionLibLEExportEnd",
+                   txtExportFile = "motionLibLEExportFile",
+                   progressBar = "motionLibPB")
 
 
-def animImport(*_):
-    pass
-
-
-def animExport(*_):
-    pass
-
-
-class AnimRepository(object):
-    
-    use = None
-    
-    win = ""
-    tab = "motionLibTab"
-    opMnuProject = "motionLibCBProject"
-    opMnuCharactor = "motionLibCBCharactor"
-    btnImport = "motionLibBtnImport"
-    tslImport = "motionLibLVImport"
-    isImport = "motionLibHSCopies"
-    lblWarning = "motionLibLWarning"
-    txtExportStart = "motionLibLEExportStart"
-    txtExportEnd = "motionLibLEExportEnd"
-    txtExportFile = "motionLibLEExportFile"
-    progressBar = "motionLibPB"
-    
-    charsDic = {}
-    menuItems = []
-    messages = []
-    outCurves = []
-    
-    path = ""
-    namespace = ""
-    
-    @classmethod
-    def UI(cls):
-        cls.cleanUp()
-        cls.win = cmds.loadUI(f=getPath(kUI, "motionLib.ui"))
-        cmds.showWindow(cls.win)
-        #cls.win = getQtWindow("motionLib.ui", "motionLibCentralwidget", u"动作库")
+class AnimRepository(ui.QtUI):
+    def __init__(self, uiFile, **info):
+        ui.QtUI.__init__(self, uiFile, **info)
         
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterCreateReference, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterRemoveReference, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterLoadReference, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterUnloadReference, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterImportReference, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterNew, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterOpen, cls.refreshCharacters))
-        cls.messages.append(om.MSceneMessage.addCallback(om.MSceneMessage.kAfterImport, cls.refreshCharacters))
+        self.addSceneCallback(om.MSceneMessage.kAfterCreateReference, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterRemoveReference, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterLoadReference, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterUnloadReference, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterImportReference, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
+        self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
             
-        cmds.optionMenu(cls.opMnuProject, e=True, changeCommand=setProject)
-        cmds.optionMenu(cls.opMnuCharactor, e=True, changeCommand=cls.refreshData)
-        cmds.textField(cls.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
-        cmds.textField(cls.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
-        cmds.scriptJob(conditionChange=["ProjectChanged", cls.refreshCharacters], parent=cls.win)
+        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
+        cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
+        #cmds.button(self.btnImport, e=True, command=self.animImport)
+        cmds.button(self.btnExport, e=True, command=self.animExport)
+        cmds.textScrollList(self.tslImport, e=True, selectCommand=self.refreshConfig)
+        cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
+        cmds.textField(self.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
+        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
         
-        cls.refreshCharacters()
+        self.refreshCharacters()
     
-    @classmethod
-    def refreshCharacters(cls, *_):
+    def refreshCharacters(self, *_):
         if getProject(): 
-            cmds.control(cls.tab, e=True, enable=True)
-            cmds.optionMenu(cls.opMnuProject, e=True, l=u"")
-            if not cmds.optionMenu(cls.opMnuProject, q=True, numberOfItems=True): 
+            cmds.control(self.tab, e=True, enable=True)
+            cmds.optionMenu(self.opMnuProject, e=True, l=u"")
+            if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
                 projects = getProject(all=True)
-                for prj in projects: cmds.menuItem(l=prj, parent=cls.opMnuProject)
+                for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
         elif getProject(all=True): 
-            cmds.control(cls.tab, e=True, enable=False)
-            cmds.optionMenu(cls.opMnuProject, e=True, l=u"<选择项目>")
-            if not cmds.optionMenu(cls.opMnuProject, q=True, numberOfItems=True): 
+            cmds.control(self.tab, e=True, enable=False)
+            cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
+            if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
                 projects = getProject(all=True)
-                for prj in projects: cmds.menuItem(l=prj, parent=cls.opMnuProject)
+                for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
             return
         else: 
-            cmds.control(cls.tab, e=True, enable=False)
-            cmds.optionMenu(cls.opMnuProject, e=True, l=u"<配置异常>")
-            if cmds.optionMenu(cls.opMnuProject, q=True, numberOfItems=True): 
-                for mi in cmds.optionMenu(cls.opMnuProject, q=True, itemListLong=True): 
+            cmds.control(self.tab, e=True, enable=False)
+            cmds.optionMenu(self.opMnuProject, e=True, l=u"<配置异常>")
+            if cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
+                for mi in cmds.optionMenu(self.opMnuProject, q=True, itemListLong=True): 
                     cmds.deleteUI(mi)
             return
         
         cmds.namespace(set = ":")
-        chars = cls.getCharacters()
-        cmds.control(cls.tab, e=True, enable=bool(chars))
-        for mi in cls.menuItems: cmds.deleteUI(mi)
-        cls.menuItems = []
-        cls.charsDic = {}
+        chars = self.getCharacters()
+        if getattr(self, 'chars', None) and self.chars == chars: return
+        self.chars = chars
+        print "---------------------------------------"
+        print "%s refreshing..." % self.window
+        print "---------------------------------------"
+        cmds.control(self.tab, e=True, enable=bool(chars))
+        items = cmds.optionMenu(self.opMnuCharactor, q=True, itemListLong=True)
+        if items: 
+            for mi in items: cmds.deleteUI(mi)
+        charsDic = {}
         for char in chars:
-            cls.charsDic[char] = "%s <%s>"%(cls.getOrigChar(char.split(":")[-1]).split("C_")[-1], char)
-            cls.menuItems.append(cmds.menuItem(l=cls.charsDic[char], parent=cls.opMnuCharactor))
-        cls.refreshData()
+            charsDic[char] = "%s <%s>"%(self.getOrigChar(char.split(":")[-1]).split("C_")[-1], char)
+            cmds.menuItem(l=charsDic[char], parent=self.opMnuCharactor)
+        try: cmds.optionMenu(self.opMnuCharactor, e=True, v=charsDic[self.namespace])
+        except: pass
+        else: return
+        self.refreshData()
     
-    @classmethod
-    def refreshData(cls, *_):
+    def refreshData(self, *_):
         cmds.namespace(set = ":")
-        cmds.optionMenu(cls.opMnuProject, e=True, v=getProject())
-        cmds.textScrollList(cls.tslImport, e=True, removeAll=True)
-        cls.namespace = ""
-        cls.path = ""
-        if not cmds.optionMenu(cls.opMnuCharactor, q=True, numberOfItems=True): return
-        cls.namespace = cmds.optionMenu(cls.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
-        cls.path = getConfig(animLibPath=True) + cls.getOrigChar(cls.namespace.split(":")[-1])
-        cmds.textScrollList(cls.tslImport, e=True, append=cls.getFileList(cls.path))
+        cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
+        cmds.textScrollList(self.tslImport, e=True, removeAll=True)
+        self.namespace = ""
+        self.path = ""
+        if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
+        self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
+        self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
+        cmds.textScrollList(self.tslImport, e=True, append=self.getFileList(self.path))
         
-        cmds.select("%s:Group"%cls.namespace, r=True)
+        cmds.select("%s:Group"%self.namespace, r=True)
         cmds.pickWalk(d="down")
+        self.__select = cmds.ls(sl=True)[0]
+        
+    def refreshConfig(self, *_):
+        cmds.namespace(set = ":")
+        time = int(cmds.currentTime(q=True))
+        copy = cmds.intSlider(self.isImport, q=True, value=True)
+        filePath = getConfig(animLibPath=True) + \
+                   self.getOrigChar(self.namespace.split(":")[-1]) + "\\" + \
+                   cmds.textScrollList(self.tslImport, q=True, selectItem=True)[0] + ".anim"
+        self.__config = {"copy":copy, "file":filePath, "time":time}
+        
+    @property
+    def configuration(self):
+        return self.__config
     
-    @classmethod
-    def cleanUp(cls, *_):
-        if cmds.window(cls.win, exists=True): 
-            cmds.deleteUI(cls.win)
-        for msg in cls.messages:
-            om.MMessage.removeCallback(msg)
-        cls.messages = []
-        cls.menuItems = []
-        cls.outCurves = []
+    @property
+    def selection(self):
+        return self.__select
     
-    @classmethod    
-    def getOrigChar(cls, char):
+    def getOrigChar(self, char):
         cmds.namespace(set = ":")
         files = cmds.file(q=True, reference=True)
         for rf in files:
@@ -142,11 +135,10 @@ class AnimRepository(object):
                 char = rf.split("/")[-1].split(".")[0]
         return char
     
-    @classmethod
-    def getCharacters(cls):
+    def getCharacters(self):
         cmds.namespace(set = ":")
         refs = cmds.file(q=True, reference=True)
-        fileList = cls.getDirectoryList(getConfig(animLibPath=True))
+        fileList = self.getDirectoryList(getConfig(animLibPath=True))
         newNS = []
         for ref in refs:
             if not cmds.referenceQuery(ref, isLoaded=True): continue
@@ -157,8 +149,7 @@ class AnimRepository(object):
                     break
         return newNS
     
-    @classmethod
-    def getFileList(cls, path):
+    def getFileList(self, path):
         p = os.popen("dir \"%s\" *.anim /b" % path)
         fileList = p.read().split("\n")
         p.close()
@@ -167,109 +158,99 @@ class AnimRepository(object):
             fileList[i] = fileList[i].split(".anim")[0]
         return fileList
     
-    @classmethod
-    def getDirectoryList(cls, path):
+    def getDirectoryList(self, path):
         p = os.popen("dir \"%s\" d /b" % path)
         fileList = p.read().split("\n")
         p.close()
         del fileList[-1]
         return fileList
     
-    @classmethod
-    def constructProxy(cls):
+    def constructProxy(self):
         cmds.namespace(set = ":")
-        cmds.select("%s:Group"%cls.namespace, r=True)
+        self.destructProxy()
+        cmds.select("%s:Group"%self.namespace, r=True)
         cmds.select(cmds.pickWalk(d="down"), r=True, hi=True)
         dags = cmds.ls(sl=True)
-        cmds.group(name="%s:Proxy"%cls.namespace, empty=True)
+        self.grp = cmds.group(name="%s:Proxy"%self.namespace, empty=True)
+        cmds.hide(self.grp)
+        
         for dag in dags:
             shape = cmds.listRelatives(dag, s=True)
             if shape and cmds.objectType(shape[0]) == "nurbsCurve":
+                attrs = cmds.listAttr(dag, keyable=True)
                 loc = cmds.spaceLocator(name=dag+"___Proxy")
-                cmds.parent(loc, "%s:Proxy"%cls.namespace)
+                for attr in attrs:
+                    if attr in [u'visibility', u'translateX', u'translateY', u'translateZ', 
+                                u'rotateX', u'rotateY', u'rotateZ', 
+                                u'scaleX', u'scaleY', u'scaleZ']: continue
+                    attrType = cmds.getAttr("%s.%s"%(dag, attr), type=True)
+                    try: cmds.addAttr(loc, ln=attr, keyable=True, attributeType=attrType)
+                    except: continue
+                cmds.parent(loc, self.grp)
     
-    @classmethod
-    def copyFromProxy(cls):
+    def copyFromProxy(self):
         animCurves = []
-        for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
-        for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
-        for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
-        
-        cls.destructProxy()
-        
-    @classmethod
-    def copyToProxy(cls):
-        animCurves = []
-        cls.outCurves = []
         for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
         
         for cv in animCurves:
             out = cmds.connectionInfo("%s.output"%cv, destinationFromSource=True)
-            if out and len(out[0].split(cls.namespace))==2:
-                cls.outCurves.append(cv)
+            if out and len(out[0].split(self.namespace))==2:
                 out = out[0]
+                attr = out.split(".")[-1]
+                target = out.split("___")[0]
                 
-                print "%s.output"%cv, "->", "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1])
-                #cmds.connectAttr("%s.output"%cv, "%s:Proxy|%s___Proxy.%s"%(cls.namespace, out.split(".")[0], out.split(".")[1]))
+                cmds.copyKey(cv)
+                cmds.pasteKey(target, attribute=attr)
+        
+        self.destructProxy()
+        
+    def copyToProxy(self):
+        animCurves = []
+        for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
+        for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
+        for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
+        
+        for cv in animCurves:
+            out = cmds.connectionInfo("%s.output"%cv, destinationFromSource=True)
+            if out and len(out[0].split(self.namespace))==2:
+                out = out[0]
+                loc = "%s|%s___Proxy"%(self.grp, out.split(".")[0])
+                attr = out.split(".")[-1]
+                print "%s.output"%cv, "-> %s.%s"%(loc, attr)
                 
+                cmds.copyKey(cv)
+                cmds.pasteKey(loc, attribute=attr)
         
-    @classmethod
-    def destructProxy(cls):
-        cmds.delete("%s:Proxy"%cls.namespace)
+    def destructProxy(self):
+        try: cmds.delete("%s:Proxy"%self.namespace)
+        except: pass
         
-    
-    @classmethod
-    def animImport(cls):
+    def animExport(self, *_):
         cmds.namespace(set = ":")
-        time = int(cmds.currentTime(q=True))
-        copies = cmds.intSlider(cls.isImport, q=True, value=True)
-        sel = cmds.textScrollList(cls.tslImport, q=True, selectItem=True)
-        if not sel: return
-        
-        #cls.constructProxy()
-        
-        filePath = cls.path + "\\" + sel[0] + ".anim"
-        opt = "targetTime=3;option=insert;pictures=0;connect=0;"
-        opt = opt + "time=%d;" % time
-        opt = opt + "copies=%d;" % copies
-        
-        cmds.select("%s:Group"%cls.namespace, r=True)
-        cmds.pickWalk(d="down")
-        
-        cmds.file(filePath, type="animImport", ns=sel[0], options=opt, 
-             i=True, iv=True, ra=True, mnc=False, pr=True)
-        
-        #import pymel.mayautils
-        #pymel.mayautils.executeDeferred(cls.copyFromProxy)
-        
-    @classmethod
-    def animExport(cls):
-        cmds.namespace(set = ":")
-        try: startTime = int(cmds.textField(cls.txtExportStart, q=True, tx=True))
+        try: startTime = int(cmds.textField(self.txtExportStart, q=True, tx=True))
         except: 
             cmds.confirmDialog(message=u"无效数值", icon="information")
             return
-        try: endTime = int(cmds.textField(cls.txtExportEnd, q=True, tx=True))
+        try: endTime = int(cmds.textField(self.txtExportEnd, q=True, tx=True))
         except: 
             cmds.confirmDialog(message=u"无效数值", icon="information")
             return
-        outFile = cmds.textField(cls.txtExportFile, q=True, tx=True)
+        outFile = cmds.textField(self.txtExportFile, q=True, tx=True)
         if not outFile: return
-        filePath = cls.path + "\\" + outFile + ".anim"
+        filePath = self.path + "\\" + outFile + ".anim"
         opt = "precision=8;intValue=17;nodeNames=1;verboseUnits=0;whichRange=2;"
-        opt = opt + "range=%d:%d;" % (startTime, endTime)
-        opt = opt + "options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=0;useChannelBox=0;"
-        opt = opt + "copyKeyCmd=-animation objects "
-        opt = opt + "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
-        opt = opt + "-option curve -hierarchy below -controlPoints 0 -shape 0 "
+        opt += "range=%d:%d;" % (startTime, endTime)
+        opt += "options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=0;useChannelBox=0;"
+        opt += "copyKeyCmd=-animation objects "
+        opt += "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
+        opt += "-option curve -hierarchy below -controlPoints 0 -shape 0 "
         
-        #for testing
-        #cls.destructProxy()
-        #cls.constructProxy()
-        #cls.copyToProxy()
-        cmds.select("%s:Group"%cls.namespace, r=True)
+        #self.constructProxy()
+        #self.copyToProxy()
+        #cmds.select(self.grp)
+        cmds.select("%s:Group"%self.namespace, r=True)
         cmds.pickWalk(d="down")
         
         try:
@@ -277,10 +258,10 @@ class AnimRepository(object):
                  force=True, es=True, pr=True)
         except:
             cmds.confirmDialog(message=u"无法创建文件", icon="warning")
-            cls.destructProxy()
+            self.destructProxy()
             raise
             return
         
-        #cls.destructProxy()
+        #self.destructProxy()
         cmds.pause(sec=1)
-        cls.refreshData()
+        self.refreshData()

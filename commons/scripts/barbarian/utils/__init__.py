@@ -1,5 +1,10 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
+'''
+Created on 2017.6.9
+
+@author: Serious Sam
+'''
 
 import os
 import sys
@@ -214,6 +219,11 @@ def __prompt__():
 Configuration Setup at Maya Startup
 --------------------------------------------------------------------------------
 '''
+#initialize plugins
+for plugin in ["CustomDeformers", "animImportExport", "MLIECmd"]:
+    try: cmds.loadPlugin(plugin, quiet=True)
+    except: pass
+
 try: cmds.condition("ProjectChanged", delete=True)
 except: pass
 cmds.condition("ProjectChanged", state=True)

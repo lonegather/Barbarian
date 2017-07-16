@@ -286,7 +286,7 @@
       <string>0.25 0.25 0.25</string>
      </property>
      <property name="+command" stdset="0">
-      <string>barbarian.render.RenderSetting.UI</string>
+      <string>lambda *_: barbarian.render.RenderSetting.UI()</string>
      </property>
     </widget>
    </item>
@@ -314,7 +314,7 @@
       <string>≡ 属性设置 ≡</string>
      </property>
      <property name="+command" stdset="0">
-      <string>barbarian.render.AttributeSetter.UI</string>
+      <string>lambda *_: barbarian.render.AttributeSetter.UI()</string>
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
