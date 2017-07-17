@@ -208,7 +208,7 @@ class PlayblastOption(ui.QtUI):
         
     @classmethod
     def __file__(cls):
-        return file(q=1, sn=1, shn=1).split(".")[0]
+        return cmds.file(q=1, sn=1, shn=1).split(".")[0]
     
     @classmethod
     def __camera__(cls):
