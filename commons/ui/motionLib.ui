@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>242</width>
-    <height>382</height>
+    <height>311</height>
    </rect>
   </property>
   <property name="font">
@@ -30,7 +30,7 @@
    <string>200</string>
   </property>
   <widget class="QWidget" name="motionLibCentralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
       <property name="horizontalSpacing">
@@ -160,7 +160,7 @@
        <attribute name="title">
         <string>导入</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0">
         <property name="spacing">
          <number>5</number>
         </property>
@@ -255,19 +255,6 @@
            </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="motionLibLWarning">
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>导入操作无法撤消，建议先保存文件</string>
-          </property>
-         </widget>
         </item>
         <item>
          <widget class="Line" name="line">
@@ -483,16 +470,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QProgressBar" name="motionLibPB">
-      <property name="value">
-       <number>24</number>
-      </property>
-      <property name="+visible" stdset="0">
-       <string>False</string>
-      </property>
      </widget>
     </item>
    </layout>

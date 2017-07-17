@@ -22,11 +22,9 @@ def UI(*_):
                    btnExport = "motionLibBtnExport",
                    tslImport = "motionLibLVImport",
                    isImport = "motionLibHSCopies",
-                   lblWarning = "motionLibLWarning",
                    txtExportStart = "motionLibLEExportStart",
                    txtExportEnd = "motionLibLEExportEnd",
-                   txtExportFile = "motionLibLEExportFile",
-                   progressBar = "motionLibPB")
+                   txtExportFile = "motionLibLEExportFile")
 
 
 class AnimRepository(ui.QtUI):
@@ -175,7 +173,11 @@ class AnimRepository(ui.QtUI):
         self.grp = cmds.group(name="%s:Proxy"%self.namespace, empty=True)
         cmds.hide(self.grp)
         
+        cmds.progressWindow(title=u"创建代理", status=u"处理中...")
+        cmds.progressWindow(e=True, progress=0, max=len(dags))
+        
         for dag in dags:
+            cmds.progressWindow(e=True, step=1)
             shape = cmds.listRelatives(dag, s=True)
             if not shape: continue
             shapeType = cmds.objectType(shape[0])
@@ -191,6 +193,8 @@ class AnimRepository(ui.QtUI):
                     try: cmds.addAttr(loc, ln=attr, keyable=True, attributeType=attrType)
                     except: continue
                 cmds.parent(loc, self.grp)
+        
+        cmds.progressWindow(endProgress=1)
     
     def copyFromProxy(self):
         print '----------copyFromProxy----------'
@@ -199,16 +203,25 @@ class AnimRepository(ui.QtUI):
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
         
+        cmds.progressWindow(title=u"拷贝动画", status=u"处理中...")
+        cmds.progressWindow(e=True, progress=0, max=len(animCurves))
+        
         for cv in animCurves:
+            cmds.progressWindow(e=True, step=1)
             if cmds.referenceQuery(cv, isNodeReferenced=True): continue
             out = cmds.connectionInfo("%s.output"%cv, destinationFromSource=True)
-            if out and len((':%s'%out[0]).split(self.namespace))==2:
-                out = out[0]
-                attr = out.split(".")[-1]
-                target = out.split("___")[0]
-                
-                cmds.copyKey(cv)
-                cmds.pasteKey(target, attribute=attr)
+            if not out: continue
+            out = out[0]
+            if out.find('___Proxy') == -1: continue
+            if not len((':%s'%out).split(self.namespace))==2: continue
+            
+            attr = out.split(".")[-1]
+            target = out.split("___")[0]
+            
+            cmds.copyKey(cv)
+            cmds.pasteKey(target, attribute=attr)
+            
+        cmds.progressWindow(endProgress=1)
         
         self.destructProxy()
         
