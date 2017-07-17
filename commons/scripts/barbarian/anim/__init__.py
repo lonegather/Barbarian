@@ -53,8 +53,8 @@ class PlayblastOption(ui.QtUI):
     @classmethod
     def playblast(cls):
         
-        fullPath = file(q=1, exn=1)
-        fileName = file(q=1, sn=1, shn=1)
+        fullPath = cmds.file(q=1, exn=1)
+        fileName = cmds.file(q=1, sn=1, shn=1)
         
         try: fullPath.decode("utf-8")
         except:
