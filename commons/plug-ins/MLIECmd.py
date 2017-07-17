@@ -146,7 +146,7 @@ class MotionLibExport(om.MPxCommand):
     def creator():
         return MotionLibExport()
     
-    def doIt(self, *args, **kwargs):
+    def doIt(self, argList):
         print "MotionLibExport: doIt()"
         pass
 

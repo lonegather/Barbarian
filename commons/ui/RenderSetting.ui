@@ -177,36 +177,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="3" colspan="2">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="minimumSize">
-       <size>
-        <width>120</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>120</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>14</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>开始批渲</string>
-      </property>
-      <property name="+command" stdset="0">
-       <string>barbarian.render.RenderSetting.doRender</string>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="5">
      <widget class="QPushButton" name="pushButton_3">
       <property name="minimumSize">
@@ -341,6 +311,33 @@
       </property>
       <property name="+command" stdset="0">
        <string>barbarian.render.RenderSetting.browse</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3" colspan="2">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="minimumSize">
+       <size>
+        <width>120</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>120</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>14</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>开始批渲</string>
       </property>
      </widget>
     </item>

@@ -79,9 +79,6 @@ class AnimRepository(ui.QtUI):
         chars = self.getCharacters()
         if getattr(self, 'chars', None) and self.chars == chars: return
         self.chars = chars
-        print "---------------------------------------"
-        print "%s refreshing..." % self.window
-        print "---------------------------------------"
         cmds.control(self.tab, e=True, enable=bool(chars))
         items = cmds.optionMenu(self.opMnuCharactor, q=True, itemListLong=True)
         if items: 
@@ -147,7 +144,6 @@ class AnimRepository(ui.QtUI):
                 if not name.find(f) == -1:
                     newNS.append(cmds.referenceQuery(ref, namespace=True))
                     break
-        print newNS
         return newNS
     
     def getFileList(self, path):
@@ -165,7 +161,7 @@ class AnimRepository(ui.QtUI):
         p.close()
         del fileList[-1]
         return fileList
-    
+    '''
     def constructProxy(self):
         cmds.namespace(set = ":")
         self.destructProxy()
@@ -227,7 +223,7 @@ class AnimRepository(ui.QtUI):
     def destructProxy(self):
         try: cmds.delete("%s:Proxy"%self.namespace)
         except: pass
-        
+    '''    
     def animExport(self, *_):
         cmds.namespace(set = ":")
         try: startTime = int(cmds.textField(self.txtExportStart, q=True, tx=True))

@@ -14,11 +14,8 @@ def UI(*_):
                   minText = "BeathRenderMin",
                   maxText = "BeathRenderMax")
 
-def doRender(*_):
-    RenderSetting.UI().renderCmd(0)
-    
 def makeBat(*_):
-    RenderSetting.UI().renderCmd(1)
+    RenderSetting.UI().renderCmd()
     
 def browse(*_):
     RenderSetting.UI().BrowseWin()
@@ -47,9 +44,9 @@ class RenderSetting(ui.QtUI):
 
     def BrowseWin(self):
         tmp = cmds.fileDialog2(dialogStyle=2, fileMode=3, caption=u'输出路径', okCaption=u'选择路径', cancelCaption=u'取消')
-        if tmp: cmds.textField(self.textWin, edit=True, tx=tmp)
+        if tmp: cmds.textField(self.textWin, edit=True, tx=tmp[0])
 
-    def renderCmd(self, Type):
+    def renderCmd(self):
         Tfb = cmds.textField(self.minText, q=True, tx=True)
         Tfc = cmds.textField(self.maxText, q=True, tx=True)
         self.Tmp = cmds.textField(self.textWin, q=True, tx=True)
@@ -57,10 +54,8 @@ class RenderSetting(ui.QtUI):
         cameraId =  cmds.optionMenu(self.cameraMenuItem, q=True, v=True)
         renderLayerId =  cmds.optionMenu(self.renderLayerMenu, q=True, v=True)
       
-        cmd0 = "cd \"" + self.Bin_Path + "\""
         cmd1 = "\"" + self.Bin_Path + "Render.exe\""
-        cmd2 = 'Render' + ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId +' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"'
-        cmd3 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\n'
+        cmd2 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\n'
         
         oldFile = os.popen("type %s"%(self.desktop + self.__time__() + ".bat")).read()
         
@@ -69,13 +64,9 @@ class RenderSetting(ui.QtUI):
         else:
             shutdown = ''
         
-        if Type == 0:
-            os.system(cmd0)
-            os.system(cmd2)
-        else:
-            ct = open(self.desktop + self.__time__() + ".bat","w")
-            ct.write(cmd1 + cmd3 + oldFile + shutdown)
-            ct.flush()
+        ct = open(self.desktop + self.__time__() + ".bat","w")
+        ct.write(cmd1 + cmd2 + oldFile + shutdown)
+        ct.flush()
 
     def __time__(self):
         import datetime
