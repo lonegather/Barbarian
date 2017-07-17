@@ -112,6 +112,6 @@ class QtUI(object):
         --------------------------------------------------------------------------------
         '''
         if not cmds.window(self.window, exists=True): return True
-        if not isinstance(self.__class__, QtUI): return True
+        if not isinstance(self, QtUI): return True
         return not cmds.window(self.window, q=True, visible=True)
 

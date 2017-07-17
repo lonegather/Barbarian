@@ -106,8 +106,7 @@ class AnimRepository(ui.QtUI):
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
         cmds.textScrollList(self.tslImport, e=True, append=self.getFileList(self.path))
         
-        cmds.select("%s:Group"%self.namespace, r=True)
-        cmds.pickWalk(d="down")
+        cmds.select("%s:Main"%self.namespace, r=True)
         self.__select = cmds.ls(sl=True)[0]
         self.__config = None
         
@@ -171,16 +170,18 @@ class AnimRepository(ui.QtUI):
         print '----------constructProxy----------'
         cmds.namespace(set = ":")
         self.destructProxy()
-        cmds.select("%s:Group"%self.namespace, r=True)
-        cmds.select(cmds.pickWalk(d="down"), r=True, hi=True)
+        cmds.select("%s:Main"%self.namespace, r=True, hi=True)
         dags = cmds.ls(sl=True)
         self.grp = cmds.group(name="%s:Proxy"%self.namespace, empty=True)
         cmds.hide(self.grp)
         
         for dag in dags:
             shape = cmds.listRelatives(dag, s=True)
-            if shape and cmds.objectType(shape[0]) == "nurbsCurve":
+            if not shape: continue
+            shapeType = cmds.objectType(shape[0])
+            if shapeType == "nurbsCurve" or shapeType == "nurbsSurface":
                 attrs = cmds.listAttr(dag, keyable=True)
+                if not attrs: continue
                 loc = cmds.spaceLocator(name=dag+"___Proxy")
                 for attr in attrs:
                     if attr in [u'visibility', u'translateX', u'translateY', u'translateZ', 
@@ -218,8 +219,9 @@ class AnimRepository(ui.QtUI):
         for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
         
         for cv in animCurves:
+            if cmds.referenceQuery(cv, isNodeReferenced=True): continue
             out = cmds.connectionInfo("%s.output"%cv, destinationFromSource=True)
-            if out and len(out[0].split(self.namespace))==2:
+            if out and len((':%s'%out[0]).split(self.namespace))==2:
                 out = out[0]
                 loc = "%s|%s___Proxy"%(self.grp, out.split(".")[0])
                 attr = out.split(".")[-1]
@@ -242,8 +244,7 @@ class AnimRepository(ui.QtUI):
         opt = opt + "copies=%d;" % self.__config["copy"]
         fns = filePath.split("\\")[-1].split(".")[0]
         
-        #cmds.select("%s:Group"%self.namespace, r=True)
-        #cmds.pickWalk(d="down")
+        #cmds.select("%s:Main"%self.namespace, r=True)
         self.constructProxy()
         cmds.select(self.grp)
         
@@ -275,15 +276,14 @@ class AnimRepository(ui.QtUI):
         self.constructProxy()
         self.copyToProxy()
         cmds.select(self.grp)
-        #cmds.select("%s:Group"%self.namespace, r=True)
-        #cmds.pickWalk(d="down")
+        #cmds.select("%s:Main"%self.namespace, r=True)
         
         try:
             cmds.file(filePath, type="animExport", options=opt, 
                  force=True, es=True, pr=True)
         except:
             cmds.confirmDialog(message=u"无法创建文件", icon="warning")
-            self.destructProxy()
+            #self.destructProxy()
             raise
             return
         
