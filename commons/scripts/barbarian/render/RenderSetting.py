@@ -12,7 +12,9 @@ def UI(*_):
                   cameraMenuItem = "BeathRenderOptionMenu",
                   renderLayerMenu = "BeathRenderOptionMenu_2",
                   minText = "BeathRenderMin",
-                  maxText = "BeathRenderMax")
+                  maxText = "BeathRenderMax",
+                  checkbox = "BeathRenderCheckBox")
+                
 
 def makeBat(*_):
     RenderSetting.UI().renderCmd()
@@ -33,6 +35,8 @@ class RenderSetting(ui.QtUI):
         cmds.textField(self.textWin, edit=True, tx=self.Work_Path)
         cmds.textField(self.minText, edit=True, )
         cmds.textField(self.maxText, edit=True, )
+        cmds.checkBox(self.checkbox, edit=True, )
+
         
         cameraName = cmds.listCameras(orthographic=True, perspective=True)
         for item in cameraName:
@@ -55,11 +59,11 @@ class RenderSetting(ui.QtUI):
         renderLayerId =  cmds.optionMenu(self.renderLayerMenu, q=True, v=True)
       
         cmd1 = "\"" + self.Bin_Path + "Render.exe\""
-        cmd2 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\n'
+        cmd2 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\r\n'
         
-        oldFile = os.popen("type %s"%(self.desktop + self.__time__() + ".bat")).read()
+        oldFile = os.popen("type %s"%(self.desktop + self.__time__() + ".bat")).read().replace('\n', '\r\n')
         
-        if oldFile == '':
+        if oldFile.find('shutdown')==-1 and cmds.checkBox(self.checkbox, q=True, v=True):
             shutdown = 'shutdown -s -f -t 1'
         else:
             shutdown = ''
