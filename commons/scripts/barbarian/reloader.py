@@ -19,6 +19,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.utils)
         import barbarian.utils.ui
         if rl: reload(barbarian.utils.ui)
+        import barbarian.utils.config
+        if rl: reload(barbarian.utils.config)
         
         import barbarian.model
         if rl: reload(barbarian.model)

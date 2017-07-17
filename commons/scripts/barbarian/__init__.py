@@ -8,18 +8,9 @@ Created on 2017.6.9
 
 from maya import cmds
 from maya import mel
-from utils import ui, debug
+from utils import config
 import maya.OpenMaya as om
 import reloader
-    
-    
-class Main(ui.QtUI):
-    def __init__(self, uiFile, **info):
-        ui.QtUI.__init__(self, uiFile, **info)
-        
-        cmds.menu(label=u"开发者选项", parent=self.window)
-        cmds.menuItem(label=u"连接调试服务器", command=debug)
-
 
 class Entrance(object):
     '''
@@ -37,7 +28,7 @@ class Entrance(object):
         self.layout = layout
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2,0.2,0.2], spacing=3)
         self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33, 
-            image=getPath(kIcon, "logo.png"), parent=layout, command=lambda *_: Main("main"))
+            image=getPath(kIcon, "logo.png"), parent=layout, command=lambda *_: config.Main("main"))
         self.menu = cmds.optionMenu("opMnu", parent=layout, nbg=True, changeCommand=setProject)
         
         currentMode = cmds.setMenuMode()

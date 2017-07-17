@@ -119,7 +119,7 @@ def getProject(**kwargs):
             for project in projects:
                 if project == currentPrj: return project
         return u""
-
+    
 
 class ConfigHandler(xml.sax.ContentHandler):
     '''
