@@ -200,6 +200,7 @@ class AnimRepository(ui.QtUI):
         for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
         
         for cv in animCurves:
+            if cmds.referenceQuery(cv, isNodeReferenced=True): continue
             out = cmds.connectionInfo("%s.output"%cv, destinationFromSource=True)
             if out and len((':%s'%out[0]).split(self.namespace))==2:
                 out = out[0]
