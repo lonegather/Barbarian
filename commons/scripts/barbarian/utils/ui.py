@@ -11,6 +11,7 @@ import maya.OpenMaya as om
 from maya import cmds
 from barbarian.utils import getPath, kUI
 
+
 class QtUI(object):
     u'''
     --------------------------------------------------------------------------------
@@ -115,3 +116,10 @@ class QtUI(object):
         if not isinstance(self, QtUI): return True
         return not cmds.window(self.window, q=True, visible=True)
 
+
+class Control(object):
+    def __init__(self, name):
+        self.name = name
+        
+    def __str__(self):
+        return self.name

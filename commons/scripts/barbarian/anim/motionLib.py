@@ -55,20 +55,20 @@ class AnimRepository(ui.QtUI):
         print '----------refreshCharacters----------'
         self.__select = None
         if getProject(): 
-            cmds.control(self.tab, e=True, enable=True)
+            cmds.control(self.tab, e=True, visible=True)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
                 projects = getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
         elif getProject(all=True): 
-            cmds.control(self.tab, e=True, enable=False)
+            cmds.control(self.tab, e=True, visible=False)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
                 projects = getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
             return
         else: 
-            cmds.control(self.tab, e=True, enable=False)
+            cmds.control(self.tab, e=True, visible=False)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"<配置异常>")
             if cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
                 for mi in cmds.optionMenu(self.opMnuProject, q=True, itemListLong=True): 
@@ -79,7 +79,7 @@ class AnimRepository(ui.QtUI):
         chars = self.getCharacters()
         if getattr(self, 'chars', None) and self.chars == chars: return
         self.chars = chars
-        cmds.control(self.tab, e=True, enable=bool(chars))
+        cmds.control(self.tab, e=True, visible=bool(chars))
         items = cmds.optionMenu(self.opMnuCharactor, q=True, itemListLong=True)
         if items: 
             for mi in items: cmds.deleteUI(mi)
@@ -295,10 +295,9 @@ class AnimRepository(ui.QtUI):
         try:
             cmds.file(filePath, type="animExport", options=opt, 
                  force=True, es=True, pr=True)
-        except:
-            cmds.confirmDialog(message=u"无法创建文件", icon="warning")
-            #self.destructProxy()
-            raise
+        except Exception, e:
+            cmds.confirmDialog(message=u"导出文件时出现问题：%s"%e, icon="warning")
+            self.destructProxy()
             return
         
         self.destructProxy()
