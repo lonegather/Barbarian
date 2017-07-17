@@ -164,16 +164,7 @@
         <property name="spacing">
          <number>5</number>
         </property>
-        <property name="leftMargin">
-         <number>5</number>
-        </property>
-        <property name="topMargin">
-         <number>5</number>
-        </property>
-        <property name="rightMargin">
-         <number>5</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>5</number>
         </property>
         <item>
@@ -302,9 +293,6 @@
           <property name="text">
            <string>导入</string>
           </property>
-          <property name="+command" stdset="0">
-           <string>lambda *_:cmds.motionImport(barbarian.anim.motionLib.AnimRepository.UI().selection, **barbarian.anim.motionLib.AnimRepository.UI().configuration)</string>
-          </property>
          </widget>
         </item>
        </layout>
@@ -317,16 +305,7 @@
         <property name="spacing">
          <number>5</number>
         </property>
-        <property name="leftMargin">
-         <number>5</number>
-        </property>
-        <property name="topMargin">
-         <number>5</number>
-        </property>
-        <property name="rightMargin">
-         <number>5</number>
-        </property>
-        <property name="bottomMargin">
+        <property name="margin">
          <number>5</number>
         </property>
         <item>
@@ -424,16 +403,7 @@
              <property name="spacing">
               <number>2</number>
              </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
+             <property name="margin">
               <number>0</number>
              </property>
              <item>

@@ -44,7 +44,7 @@ class AnimRepository(ui.QtUI):
             
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
-        #cmds.button(self.btnImport, e=True, command=self.animImport)
+        cmds.button(self.btnImport, e=True, command=self.animImport)
         cmds.button(self.btnExport, e=True, command=self.animExport)
         cmds.textScrollList(self.tslImport, e=True, selectCommand=self.refreshConfig)
         cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
@@ -54,6 +54,8 @@ class AnimRepository(ui.QtUI):
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
+        print '----------refreshCharacters----------'
+        self.__select = None
         if getProject(): 
             cmds.control(self.tab, e=True, enable=True)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
@@ -93,6 +95,7 @@ class AnimRepository(ui.QtUI):
         self.refreshData()
     
     def refreshData(self, *_):
+        print '----------refreshData----------'
         cmds.namespace(set = ":")
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
         cmds.textScrollList(self.tslImport, e=True, removeAll=True)
@@ -106,6 +109,7 @@ class AnimRepository(ui.QtUI):
         cmds.select("%s:Group"%self.namespace, r=True)
         cmds.pickWalk(d="down")
         self.__select = cmds.ls(sl=True)[0]
+        self.__config = None
         
     def refreshConfig(self, *_):
         cmds.namespace(set = ":")
@@ -115,6 +119,7 @@ class AnimRepository(ui.QtUI):
                    self.getOrigChar(self.namespace.split(":")[-1]) + "\\" + \
                    cmds.textScrollList(self.tslImport, q=True, selectItem=True)[0] + ".anim"
         self.__config = {"copy":copy, "file":filePath, "time":time}
+        print '-----%s-----'%self.__config
         
     @property
     def configuration(self):
@@ -161,8 +166,9 @@ class AnimRepository(ui.QtUI):
         p.close()
         del fileList[-1]
         return fileList
-    '''
+    
     def constructProxy(self):
+        print '----------constructProxy----------'
         cmds.namespace(set = ":")
         self.destructProxy()
         cmds.select("%s:Group"%self.namespace, r=True)
@@ -186,6 +192,7 @@ class AnimRepository(ui.QtUI):
                 cmds.parent(loc, self.grp)
     
     def copyFromProxy(self):
+        print '----------copyFromProxy----------'
         animCurves = []
         for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
@@ -193,7 +200,7 @@ class AnimRepository(ui.QtUI):
         
         for cv in animCurves:
             out = cmds.connectionInfo("%s.output"%cv, destinationFromSource=True)
-            if out and len(out[0].split(self.namespace))==2:
+            if out and len((':%s'%out[0]).split(self.namespace))==2:
                 out = out[0]
                 attr = out.split(".")[-1]
                 target = out.split("___")[0]
@@ -204,6 +211,7 @@ class AnimRepository(ui.QtUI):
         self.destructProxy()
         
     def copyToProxy(self):
+        print '----------copyToProxy----------'
         animCurves = []
         for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
@@ -221,9 +229,29 @@ class AnimRepository(ui.QtUI):
                 cmds.pasteKey(loc, attribute=attr)
         
     def destructProxy(self):
+        print '----------destructProxy----------'
         try: cmds.delete("%s:Proxy"%self.namespace)
         except: pass
-    '''    
+    
+    def animImport(self, *_):
+        if not self.__config: return
+        
+        filePath = self.__config["file"]
+        opt = "targetTime=3;option=insert;pictures=0;connect=0;"
+        opt = opt + "time=%d;" % self.__config["time"]
+        opt = opt + "copies=%d;" % self.__config["copy"]
+        fns = filePath.split("\\")[-1].split(".")[0]
+        
+        #cmds.select("%s:Group"%self.namespace, r=True)
+        #cmds.pickWalk(d="down")
+        self.constructProxy()
+        cmds.select(self.grp)
+        
+        cmds.file(filePath, type="animImport", ns=fns, options=opt, 
+             i=True, iv=True, ra=True, mnc=False, pr=True)
+        
+        self.copyFromProxy()
+    
     def animExport(self, *_):
         cmds.namespace(set = ":")
         try: startTime = int(cmds.textField(self.txtExportStart, q=True, tx=True))
@@ -244,11 +272,11 @@ class AnimRepository(ui.QtUI):
         opt += "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
         opt += "-option curve -hierarchy below -controlPoints 0 -shape 0 "
         
-        #self.constructProxy()
-        #self.copyToProxy()
-        #cmds.select(self.grp)
-        cmds.select("%s:Group"%self.namespace, r=True)
-        cmds.pickWalk(d="down")
+        self.constructProxy()
+        self.copyToProxy()
+        cmds.select(self.grp)
+        #cmds.select("%s:Group"%self.namespace, r=True)
+        #cmds.pickWalk(d="down")
         
         try:
             cmds.file(filePath, type="animExport", options=opt, 
@@ -259,6 +287,6 @@ class AnimRepository(ui.QtUI):
             raise
             return
         
-        #self.destructProxy()
+        self.destructProxy()
         cmds.pause(sec=1)
         self.refreshData()
