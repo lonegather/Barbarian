@@ -142,11 +142,12 @@ class AnimRepository(ui.QtUI):
         newNS = []
         for ref in refs:
             if not cmds.referenceQuery(ref, isLoaded=True): continue
-            ref = ref.split("/")[-1]
+            name = ref.split("/")[-1]
             for f in fileList:
-                if not ref.find(f) == -1:
-                    newNS.append(cmds.file(ref, q=True, namespace=True))
+                if not name.find(f) == -1:
+                    newNS.append(cmds.referenceQuery(ref, namespace=True))
                     break
+        print newNS
         return newNS
     
     def getFileList(self, path):
