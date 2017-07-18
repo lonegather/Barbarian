@@ -108,8 +108,8 @@ class QtUI(object):
     def isObsolete(self):
         u'''
         --------------------------------------------------------------------------------
-        本属性用于判断当前实例是否处于废弃状态（等待被系统回收），亦即当前窗口是否已被关闭
-        Check if this instance is obsolete and waiting for gc.
+        本属性用于判断当前实例是否处于废弃状态（等待被系统回收），亦即当前窗口是否已被关闭或重载
+        Check if this instance is obsolete (closed or reloaded) and waiting for GC.
         --------------------------------------------------------------------------------
         '''
         if not cmds.window(self.window, exists=True): return True

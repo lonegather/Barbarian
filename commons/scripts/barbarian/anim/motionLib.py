@@ -223,7 +223,7 @@ class AnimRepository(ui.QtUI):
                 cmds.copyKey(cv)
                 cmds.pasteKey(target, attribute=attr)
             except Exception, e:
-                print e
+                print "!!!!!%s!!!!!"%e
             
         cmds.progressWindow(endProgress=1)
         
@@ -249,7 +249,7 @@ class AnimRepository(ui.QtUI):
                     cmds.copyKey(cv)
                     cmds.pasteKey(loc, attribute=attr)
                 except Exception, e:
-                    print e
+                    print "!!!!!%s!!!!!"%e
                     
     def destructProxy(self):
         print '----------destructProxy----------'

@@ -10,7 +10,6 @@ def UI(*_):
     RenderSetting("RenderSetting",
                   textWin = "BeathRenderLabel",
                   cameraMenuItem = "BeathRenderOptionMenu",
-                  renderLayerMenu = "BeathRenderOptionMenu_2",
                   minText = "BeathRenderMin",
                   maxText = "BeathRenderMax",
                   checkbox = "BeathRenderCheckBox")
@@ -42,9 +41,6 @@ class RenderSetting(ui.QtUI):
         for item in cameraName:
             cmds.menuItem(l=item, parent=self.cameraMenuItem)
             
-        Render_Layer = cmds.ls(type = 'renderLayer' )
-        for layer in Render_Layer:
-            cmds.menuItem(l=layer, parent=self.renderLayerMenu)
 
     def BrowseWin(self):
         tmp = cmds.fileDialog2(dialogStyle=2, fileMode=3, caption=u'输出路径', okCaption=u'选择路径', cancelCaption=u'取消')
@@ -56,10 +52,9 @@ class RenderSetting(ui.QtUI):
         self.Tmp = cmds.textField(self.textWin, q=True, tx=True)
         
         cameraId =  cmds.optionMenu(self.cameraMenuItem, q=True, v=True)
-        renderLayerId =  cmds.optionMenu(self.renderLayerMenu, q=True, v=True)
       
         cmd1 = "\"" + self.Bin_Path + "Render.exe\""
-        cmd2 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rl ' + renderLayerId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\r\n'
+        cmd2 = ' -s ' + Tfb + ' -e ' + Tfc + ' -cam ' + cameraId + ' -rd \"' + self.Tmp + '\" \"' + self.Project_Path + '\"\r\n'
         
         oldFile = os.popen("type %s"%(self.desktop + self.__time__() + ".bat")).read().replace('\n', '\r\n')
         
