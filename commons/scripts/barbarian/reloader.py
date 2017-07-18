@@ -42,6 +42,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.anim.motionLib)
         import barbarian.anim.CreateProjectCamera
         if rl: reload(barbarian.anim.CreateProjectCamera)
+        import barbarian.anim.poseLibModule
+        if rl: reload(barbarian.anim.poseLibModule)
         
         import barbarian.render
         if rl: reload(barbarian.render)

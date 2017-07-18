@@ -469,7 +469,7 @@
       <string>≡ 表情库 ≡</string>
      </property>
      <property name="-command" stdset="0">
-      <string>&quot;source \&quot;P:/PT/Doc/06_Maya_Plugin/库插件/poseLib6.6/poseLib.mel\&quot;;&quot;</string>
+      <string>&quot;source \&quot;barbarian/anim/poseLib.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
