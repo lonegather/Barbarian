@@ -39,7 +39,7 @@ class AnimRepository(ui.QtUI):
         self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
-            
+        
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
         cmds.button(self.btnImport, e=True, command=self.animImport)
@@ -178,6 +178,7 @@ class AnimRepository(ui.QtUI):
         
         for dag in dags:
             cmds.progressWindow(e=True, step=1)
+            if not dag.find("%s:Main"%self.namespace) == -1: continue
             shape = cmds.listRelatives(dag, s=True)
             if not shape: continue
             shapeType = cmds.objectType(shape[0])
@@ -218,8 +219,11 @@ class AnimRepository(ui.QtUI):
             attr = out.split(".")[-1]
             target = out.split("___")[0]
             
-            cmds.copyKey(cv)
-            cmds.pasteKey(target, attribute=attr)
+            try:
+                cmds.copyKey(cv)
+                cmds.pasteKey(target, attribute=attr)
+            except Exception, e:
+                print e
             
         cmds.progressWindow(endProgress=1)
         
@@ -241,9 +245,12 @@ class AnimRepository(ui.QtUI):
                 attr = out.split(".")[-1]
                 print "%s.output"%cv, "-> %s.%s"%(loc, attr)
                 
-                cmds.copyKey(cv)
-                cmds.pasteKey(loc, attribute=attr)
-        
+                try:
+                    cmds.copyKey(cv)
+                    cmds.pasteKey(loc, attribute=attr)
+                except Exception, e:
+                    print e
+                    
     def destructProxy(self):
         print '----------destructProxy----------'
         try: cmds.delete("%s:Proxy"%self.namespace)
