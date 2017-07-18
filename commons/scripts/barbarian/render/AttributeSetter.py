@@ -31,8 +31,6 @@ class AttributeSetter(ui.QtUI):
         val1 = cmds.textField(self.txtVal1, q=True, tx=True)
         val2 = cmds.textField(self.txtVal2, q=True, tx=True)
         
-        print obj + '.' + attr, val1, val2
-        
         try:
             val1 = float(val1)
             val2 = float(val2)
