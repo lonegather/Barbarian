@@ -6,8 +6,9 @@ Created on 2017.7.12
 @author: Sam
 '''
 
-import re
+import random
 from maya import cmds
+from maya import mel
 from barbarian.utils import ui
 
 def UI(*_):
@@ -36,13 +37,19 @@ class AttributeSetter(ui.QtUI):
             val1 = float(val1)
             val2 = float(val2)
             if not obj or not attr: return
-        except: return
+        except: cmds.confirmDialog(message=u'无效输入', icon='information', title=u'PuTao')
         
-        regExp = re.compile(obj)
         objs = cmds.ls()
         
         for o in objs:
-            if regExp.search(o):
-                print o
+            if self.__match__(o, obj):
+                rand = random.uniform(val1, val2)
+                try: cmds.setAttr("%s.%s"%(o, attr), rand)
+                except Exception, e:
+                    cmds.confirmDialog(message=u'%s'%e, icon='warning', title=u'PuTao')
+        
+    def __match__(self, obj, exp):
+        return mel.eval("gmatch \"%s\" \"%s\";"%(obj, exp))
+        
         
         
