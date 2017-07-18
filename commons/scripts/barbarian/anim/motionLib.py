@@ -96,8 +96,6 @@ class AnimRepository(ui.QtUI):
         cmds.namespace(set = ":")
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
         cmds.textScrollList(self.tslImport, e=True, removeAll=True)
-        self.namespace = ""
-        self.path = ""
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
@@ -146,7 +144,7 @@ class AnimRepository(ui.QtUI):
         return newNS
     
     def getFileList(self, path):
-        p = os.popen("dir \"%s\" *.anim /b" % path)
+        p = os.popen("dir \"%s\"\\*.anim /b" % path)
         fileList = p.read().split("\n")
         p.close()
         del fileList[-1]
@@ -165,8 +163,7 @@ class AnimRepository(ui.QtUI):
         print '----------constructProxy----------'
         cmds.namespace(set = ":")
         self.destructProxy()
-        cmds.select("%s:Main"%self.namespace, r=True, hi=True)
-        dags = cmds.ls(sl=True)
+        dags = cmds.ls(sl=True, dag=True, ap=True)
         self.grp = cmds.group(name="%s:Proxy"%self.namespace, empty=True)
         cmds.hide(self.grp)
         
@@ -176,9 +173,9 @@ class AnimRepository(ui.QtUI):
         for dag in dags:
             cmds.progressWindow(e=True, step=1)
             if not dag.find("%s:Main"%self.namespace) == -1: continue
-            shape = cmds.listRelatives(dag, s=True)
+            shape = cmds.listRelatives(dag, shapes=True, fullPath=True)
             if not shape: continue
-            shapeType = cmds.objectType(shape[0])
+            shapeType = cmds.nodeType(shape[0])
             if shapeType == "nurbsCurve" or shapeType == "nurbsSurface":
                 attrs = cmds.listAttr(dag, keyable=True)
                 if not attrs: continue
