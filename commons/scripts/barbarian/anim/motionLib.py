@@ -87,7 +87,6 @@ class AnimRepository(ui.QtUI):
             cmds.menuItem(l=charsDic[char], parent=self.opMnuCharactor)
         try: cmds.optionMenu(self.opMnuCharactor, e=True, v=charsDic[self.namespace])
         except: pass
-        else: return
         self.refreshData()
     
     def refreshData(self, *_):
