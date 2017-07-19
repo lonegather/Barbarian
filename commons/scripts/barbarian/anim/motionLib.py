@@ -52,7 +52,6 @@ class AnimRepository(ui.QtUI):
     
     def refreshCharacters(self, *_):
         print '----------refreshCharacters----------'
-        self.__select = None
         if getProject(): 
             cmds.control(self.tab, e=True, visible=True)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
@@ -93,6 +92,7 @@ class AnimRepository(ui.QtUI):
     
     def refreshData(self, *_):
         print '----------refreshData----------'
+        self.__select = []
         cmds.namespace(set = ":")
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
         cmds.textScrollList(self.tslImport, e=True, removeAll=True)
@@ -101,9 +101,13 @@ class AnimRepository(ui.QtUI):
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
         cmds.textScrollList(self.tslImport, e=True, append=self.getFileList(self.path))
         
-        cmds.select("%s:Main"%self.namespace, r=True)
-        self.__select = cmds.ls(sl=True)[0]
-        self.__config = None   
+        sels = os.popen("type \"%s\"\\__config__" % self.path).read()
+        for sel in sels.split('&'):
+            if not sel: continue
+            self.__select.append("%s:%s"%(self.namespace, sel))
+        if not self.__select: self.__select.append("%s:Main"%self.namespace)
+        cmds.select(self.__select, r=True)
+        self.__config = None
         
     @property
     def configuration(self):
@@ -163,7 +167,7 @@ class AnimRepository(ui.QtUI):
         print '----------constructProxy----------'
         cmds.namespace(set = ":")
         self.destructProxy()
-        dags = cmds.ls(sl=True, dag=True, ap=True)
+        dags = cmds.ls(self.__select, dag=True, ap=True)
         self.grp = cmds.group(name="%s:Proxy"%self.namespace, empty=True)
         cmds.hide(self.grp)
         
