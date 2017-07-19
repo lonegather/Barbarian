@@ -35,7 +35,9 @@ class AttributeSetter(ui.QtUI):
             val1 = float(val1)
             val2 = float(val2)
             if not obj or not attr: return
-        except: cmds.confirmDialog(message=u'无效输入', icon='information', title=u'PuTao')
+        except: 
+            cmds.confirmDialog(message=u'无效输入', icon='information', title=u'PuTao')
+            return
         
         objs = cmds.ls()
         

@@ -119,7 +119,22 @@ class QtUI(object):
 
 class Control(object):
     def __init__(self, name):
-        self.name = name
+        self.__name = name
         
     def __str__(self):
-        return self.name
+        return self.__name
+    
+    @property
+    def name(self):
+        return self.__name
+    
+    @property
+    def annotation(self):
+        try: return self.__annotation
+        except: self.__annotation = ""
+        return self.__annotation
+    
+    @annotation.setter
+    def annotation(self, ann):
+        print "%s.annotation = %s"%(self.__name, ann)
+        self.__annotation = ann
