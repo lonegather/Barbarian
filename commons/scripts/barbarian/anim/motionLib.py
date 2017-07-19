@@ -221,7 +221,7 @@ class AnimRepository(ui.QtUI):
             
         cmds.progressWindow(endProgress=1)
         
-        #self.destructProxy()
+        self.destructProxy()
         
     def copyToProxy(self):
         print '----------copyToProxy----------'
