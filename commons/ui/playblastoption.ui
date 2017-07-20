@@ -338,7 +338,7 @@ QPushButton:pressed{
         <number>0</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButtonOK">
+        <widget class="QPushButton" name="pushButton_3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -361,7 +361,7 @@ QPushButton:pressed{
           <string>拍屏</string>
          </property>
          <property name="+command" stdset="0">
-          <string>lambda *args: barbarian.anim.PlayblastOption.UI().changeHUD(True)</string>
+          <string>lambda *_: barbarian.anim.PlayblastOption.UI().changeHUD(True)</string>
          </property>
         </widget>
        </item>
@@ -389,7 +389,7 @@ QPushButton:pressed{
           <string>应用</string>
          </property>
          <property name="+command" stdset="0">
-          <string>lambda *args: barbarian.anim.PlayblastOption.UI().changeHUD()</string>
+          <string>lambda *_: barbarian.anim.PlayblastOption.UI().changeHUD()</string>
          </property>
         </widget>
        </item>
@@ -426,22 +426,6 @@ QPushButton:pressed{
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>pushButtonOK</sender>
-   <signal>clicked()</signal>
-   <receiver>playblastOptionDialog</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>67</x>
-     <y>135</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>80</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>

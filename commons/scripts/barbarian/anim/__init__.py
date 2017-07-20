@@ -42,7 +42,9 @@ class PlayblastOption(ui.QtUI):
         else:
             cmds.optionVar(iv=("PutaoTools_HUD_Padding", 0))
             
-        if pb: self.playblast()
+        if pb: 
+            self.playblast()
+            self.close()
         
     def refreshUI(self):
         if cmds.checkBox(self.defaultCB, q=True, value=True): 

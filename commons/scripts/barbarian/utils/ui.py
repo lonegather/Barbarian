@@ -103,6 +103,19 @@ class QtUI(object):
         if not self.__class__ in self.__messages:
             self.__messages.update({self.__class__:[]})
         self.__messages[self.__class__].append(msg)
+        
+    def close(self):
+        if self.__class__ in self.__messages:
+            try: 
+                for msg in self.__messages[self.__class__]:
+                    om.MMessage.removeCallback(msg)
+            except: pass
+            self.__messages.update({self.__class__:[]})
+        
+        try: 
+            self.__UI.update({self.__class__:None})
+            cmds.deleteUI(self.window)
+        except: pass
     
     @property
     def isObsolete(self):
