@@ -105,6 +105,12 @@ class QtUI(object):
         self.__messages[self.__class__].append(msg)
         
     def close(self):
+        u'''
+        --------------------------------------------------------------------------------
+        关闭当前窗口
+        Close the window.
+        --------------------------------------------------------------------------------
+        '''
         if self.__class__ in self.__messages:
             try: 
                 for msg in self.__messages[self.__class__]:
