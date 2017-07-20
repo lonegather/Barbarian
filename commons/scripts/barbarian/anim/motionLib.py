@@ -44,14 +44,13 @@ class AnimRepository(ui.QtUI):
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
         cmds.button(self.btnImport, e=True, command=self.animImport)
         cmds.button(self.btnExport, e=True, command=self.animExport)
-        cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
-        cmds.textField(self.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
+        cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
         
+        self.refreshTF()
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
-        print '----------refreshCharacters----------'
         if getProject(): 
             cmds.control(self.tab, e=True, visible=True)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
@@ -90,7 +89,6 @@ class AnimRepository(ui.QtUI):
         self.refreshData()
     
     def refreshData(self, *_):
-        print '----------refreshData----------'
         self.__select = []
         cmds.namespace(set = ":")
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
@@ -108,6 +106,10 @@ class AnimRepository(ui.QtUI):
         cmds.select(self.__select, r=True)
         self.__config = None
         
+    def refreshTF(self, *_):
+        cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
+        cmds.textField(self.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
+        
     @property
     def configuration(self):
         sel = cmds.textScrollList(self.tslImport, q=True, selectItem=True)
@@ -117,7 +119,6 @@ class AnimRepository(ui.QtUI):
         copy = cmds.intSlider(self.isImport, q=True, value=True)
         filePath = "%s%s\\%s.anim"%(getConfig(animLibPath=True), self.getOrigChar(self.namespace.split(":")[-1]), sel[0])
         cfg = {"copy":copy, "file":filePath, "time":time}
-        print '-----%s-----'%cfg
         return cfg
     
     @property
@@ -163,7 +164,6 @@ class AnimRepository(ui.QtUI):
         return fileList
     
     def constructProxy(self):
-        print '----------constructProxy----------'
         cmds.namespace(set = ":")
         self.destructProxy()
         dags = cmds.ls(self.__select, dag=True, ap=True)
@@ -195,7 +195,6 @@ class AnimRepository(ui.QtUI):
         cmds.progressWindow(endProgress=1)
     
     def copyFromProxy(self):
-        print '----------copyFromProxy----------'
         animCurves = []
         for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
@@ -220,14 +219,13 @@ class AnimRepository(ui.QtUI):
                 cmds.copyKey(cv)
                 cmds.pasteKey(target, attribute=attr)
             except Exception, e:
-                print "!!!!!%s!!!!!"%e
+                print "%s"%e
             
         cmds.progressWindow(endProgress=1)
         
         self.destructProxy()
         
     def copyToProxy(self):
-        print '----------copyToProxy----------'
         animCurves = []
         for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
@@ -250,12 +248,11 @@ class AnimRepository(ui.QtUI):
                     cmds.copyKey(cv)
                     cmds.pasteKey(loc, attribute=attr)
                 except Exception, e:
-                    print "!!!!!%s!!!!!"%e
+                    print "%s"%e
                     
         cmds.progressWindow(endProgress=1)
                     
     def destructProxy(self):
-        print '----------destructProxy----------'
         try: cmds.delete("%s:Proxy"%self.namespace)
         except: pass
     
@@ -268,7 +265,6 @@ class AnimRepository(ui.QtUI):
         opt = opt + "copies=%d;" % cfg["copy"]
         fns = cfg["file"].split("\\")[-1].split(".")[0]
         
-        #cmds.select("%s:Main"%self.namespace, r=True)
         self.constructProxy()
         cmds.select(self.grp)
         
@@ -300,7 +296,6 @@ class AnimRepository(ui.QtUI):
         self.constructProxy()
         self.copyToProxy()
         cmds.select(self.grp)
-        #cmds.select("%s:Main"%self.namespace, r=True)
         
         try:
             cmds.file(filePath, type="animExport", options=opt, 

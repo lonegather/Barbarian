@@ -9,7 +9,7 @@ Created on 2017.7.17
 import sys
 import xml.dom.minidom
 from maya import cmds
-from barbarian.utils import ui
+from barbarian.utils import ui, getPath
 
 
 class Main(ui.QtUI):
@@ -32,11 +32,91 @@ class Config(object):
     __instance = None
     
     @classmethod
-    def instance(cls):
-        return cls.__instance
+    def root(cls):
+        if not cls.__instance:
+            cls.__instance = cls(getPath("../commons/config/", "config.xml"))
+        return cls.__instance.root
+    
+    @classmethod
+    def getProject(cls, **kwargs):
+        root = cls.root()
+        projects = []
+        for node in root.childNodes:
+            if node.nodeType == root.ELEMENT_NODE:
+                projects.append({"name":node.getAttribute('name')})
+                
+        if "all" in kwargs and kwargs["all"]:
+            return projects
+        elif "prompt" in kwargs and kwargs["prompt"] and projects:
+            currentPrj = cmds.layoutDialog(ui=cls.__prompt__)
+            for project in projects:
+                if project == currentPrj:
+                    cls.setProject(currentPrj)
+                    return currentPrj
+            return cmds.optionVar(q="PutaoTools_Project")
+        else:
+            currentPrj = cmds.optionVar(q="PutaoTools_Project")
+            if (not currentPrj) and projects: 
+                currentPrj = cmds.layoutDialog(ui=cls.__prompt__)
+                for project in projects:
+                    if project == currentPrj:
+                        cls.setProject(currentPrj)
+                        return currentPrj
+            else: 
+                for project in projects:
+                    if project == currentPrj: return project
+            return u""
+    
+    @classmethod
+    def setProject(cls, name):
+        root = cls.root()
+        projects = []
+        for node in root.childNodes:
+            if node.nodeType == root.ELEMENT_NODE:
+                projects.append({"name":node.getAttribute('name')})
+        '''
+        for project in __handler__.config:
+            if project["name"] == name:
+                cmds.optionVar(sv=("PutaoTools_Project", name))
+                cmds.optionVar(sv=("PutaoTools_Project_Time", project["time"]))
+                cmds.optionVar(sv=("PutaoTools_Project_Linear", project["linear"]))
+                cmds.optionVar(sv=("PutaoTools_Project_Camera", project["camera"]))
+                cmds.optionVar(iv=("PutaoTools_Project_CamResX", project["camResX"]))
+                cmds.optionVar(iv=("PutaoTools_Project_CamResY", project["camResY"]))
+                cmds.optionVar(iv=("PutaoTools_Project_CamFilmFit", project["camFilmFit"]))
+                cmds.optionVar(fv=("PutaoTools_Project_PlayblastScale", project["playblastScale"]))
+                cmds.optionVar(sv=("PutaoTools_Project_AnimLibPath", project["animLibPath"]))
+                cmds.optionVar(sv=("PutaoTools_Project_FacialLibPath", project["facialLibPath"]))
+                
+                cmds.condition("ProjectChanged", e=True, state=not cmds.condition("ProjectChanged", q=True, state=True))
+        '''
+    
+    @classmethod
+    def __prompt__(cls):
+        form = cmds.setParent(q=True)
+        cmds.formLayout(form, e=True, width=200)
+        txt = cmds.text(l=u"请选择当前项目：",height=30)
+        btn = cmds.button(l="Confirm",height=30,command=lambda *_: cmds.layoutDialog(dismiss=cmds.optionMenu(mnu,q=True,v=True)))
+        mnu = cmds.optionMenu(height=30)
+        prjs = cls.getProject(all=True)
+        for prj in prjs:
+            cmds.menuItem(l=prj, parent=mnu)
+        if cmds.optionVar(q="PutaoTools_Project"):
+            cmds.optionMenu(mnu, e=True, v=cmds.optionVar(q="PutaoTools_Project"))
+        
+        edge = 10
+        
+        cmds.formLayout(form, e=True,
+                        attachForm=[(txt,'top',edge),
+                                    (mnu,'top',edge),
+                                    (txt,'left',edge),
+                                    (mnu,'right',edge),
+                                    (btn,'left',edge),
+                                    (btn,'right',edge),
+                                    (btn,'bottom',edge)])
     
     def __init__(self, filePath):
-        self.__instance = self
         dom = xml.dom.minidom.parse(filePath)
         self.root = dom.documentElement
+        
     
