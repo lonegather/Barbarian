@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>534</width>
+    <width>535</width>
     <height>48</height>
    </rect>
   </property>
@@ -22,6 +22,156 @@
   <property name="windowIcon">
    <iconset>
     <normaloff>../icons/logo.png</normaloff>../icons/logo.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(20, 20, 20, 255), 
+                                      stop:0.1 rgba(60, 60, 60, 255), 
+                                      stop:0.9 rgba(60, 60, 60, 255), 
+                                      stop:1 rgba(40, 40, 40, 255));
+	
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 1px solid gray;
+	position: absolute;
+	top: -0.1em;
+}
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.3 rgba(50, 50, 50, 255), 
+                                stop:1 rgba(80, 80, 80, 255));
+    border: 1px solid gray;
+    border-bottom-color: grey; /* same as the pane color */
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+	padding: 0px 20px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.3 rgba(60, 60, 60, 255), 
+                                stop:1 rgba(100, 100, 100, 255));
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid #999999;
+	border-style: inset;
+    height: 10px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.3 rgba(80, 80, 80, 255), 
+                                stop:1 rgba(100, 100, 100, 255));
+    border: 1px solid gray;
+	border-style: outset;
+    width: 15px;
+    margin: -10px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    border-radius: 6px;
+}
+
+QListWidget {
+    border: 1px solid gray;
+    border-radius: 6px;
+	border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    selection-background-color: black;
+}
+
+QLineEdit {
+    border: 1px solid gray;
+    border-radius: 6px;
+	border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    selection-background-color: black;
+}
+
+QComboBox{
+	border: 1px solid gray;
+	border-style: outset;
+    border-radius: 6px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(140, 140, 140, 255), 
+                                      stop:0.3 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(80, 80, 80, 255));
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox:!editable:on, QComboBox::drop-down:editable:on{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid grap;
+    selection-background-color: black;
+}
+
+QPushButton{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(140, 140, 140, 255), 
+                                      stop:0.3 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(70, 70, 70, 255));
+	border-style: outset;
+	border-width: 1px;
+	border-radius: 6px;
+	border-color: gray;
+	padding: 6px;
+}
+
+QPushButton:hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(140, 140, 140, 255), 
+                                      stop:0.3 rgba(60, 60, 60, 255), 
+                                      stop:1 rgba(100, 100, 100, 255));
+}
+
+QPushButton:pressed{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(40, 40, 40, 255), 
+                                      stop:0.3 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(70, 70, 70, 255));
+	border-style: inset;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="layout">
