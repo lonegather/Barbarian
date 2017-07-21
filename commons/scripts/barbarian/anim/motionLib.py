@@ -263,13 +263,16 @@ class AnimRepository(ui.QtUI):
         opt = "targetTime=3;option=insert;pictures=0;connect=0;"
         opt = opt + "time=%d;" % cfg["time"]
         opt = opt + "copies=%d;" % cfg["copy"]
-        fns = cfg["file"].split("\\")[-1].split(".")[0]
+        #fns = cfg["file"].split("\\")[-1].split(".")[0]
         
         self.constructProxy()
         cmds.select(self.grp)
         
-        cmds.file(cfg["file"], type="animImport", ns=fns, options=opt, 
-             i=True, iv=True, ra=True, mnc=False, pr=True)
+        motionImport = getattr(cmds, "motionImport")
+        motionImport(**cfg)
+        
+        #cmds.file(cfg["file"], type="animImport", ns=fns, options=opt, 
+        #     i=True, iv=True, ra=True, mnc=False, pr=True)
         
         self.copyFromProxy()
     

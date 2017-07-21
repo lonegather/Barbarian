@@ -77,6 +77,8 @@ class QtUI(object):
                     self.__setattr__(item, "%s|%s"%(self.window, '|'.join(pathList[1:])))
                     print "Found %s: <%s|%s>"%(target, self.window, '|'.join(pathList[1:]))
                     break
+            
+            
             if not found:
                 try: 
                     widget = '|'.join(cmds.control(info[item], q=True, fpn=True).split("|")[1:])

@@ -115,23 +115,24 @@ class MotionLibImport(om.MPxCommand):
         print self.selection, self.copy, self.file, self.time, self.mode
         
         self.option = "targetTime=3;pictures=0;connect=0;option=insert;"
-        self.option += "time=%d;" % self.time
-        self.option += "copies=%d;" % self.copy
+        self.option += "time=%d;copies=%d;" % (self.time, self.copy)
         self.namespace = self.file.split("\\")[-1].split(".")[0]
         print "<<<MotionLibImport: doIt() complete>>>"
         self.redoIt()
     
     def redoIt(self):
         print "<<<MotionLibImport: redoIt() start>>>"
-        cmds.select(self.selection[0], r=True)
+        #cmds.select(self.selection[0], r=True)
         
         cmds.file(self.file, type="animImport", ns=self.namespace, options=self.option, 
-             i=True, iv=True, ra=True, mnc=False, pr=True)
+                  i=True, iv=True, ra=True, mnc=False, pr=True)
+        
         print "<<<MotionLibImport: redoIt() complete>>>"
     
     def undoIt(self):
         print "<<<MotionLibImport: undoIt() start>>>"
-        
+        if cmds.objExists(self.selection[0]):
+            cmds.delete(self.selection[0])
         print "<<<MotionLibImport: undoIt() complete>>>"
     
     def isUndoable(self, *args, **kwargs):
