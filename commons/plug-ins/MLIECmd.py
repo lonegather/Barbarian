@@ -78,7 +78,6 @@ class MotionLibImport(om.MPxCommand):
         om.MPxCommand.__init__(self)
         
     def doIt(self, argList):
-        print "<<<MotionLibImport: doIt() start>>>"
         try: argData = om.MArgDatabase(self.syntax(), argList)
         except RuntimeError: om.MGlobal.displayError('Error while parsing arguments:\n#\t#');raise
         
@@ -117,23 +116,15 @@ class MotionLibImport(om.MPxCommand):
         self.option = "targetTime=3;pictures=0;connect=0;option=insert;"
         self.option += "time=%d;copies=%d;" % (self.time, self.copy)
         self.namespace = self.file.split("\\")[-1].split(".")[0]
-        print "<<<MotionLibImport: doIt() complete>>>"
         self.redoIt()
     
     def redoIt(self):
-        print "<<<MotionLibImport: redoIt() start>>>"
-        #cmds.select(self.selection[0], r=True)
-        
         cmds.file(self.file, type="animImport", ns=self.namespace, options=self.option, 
                   i=True, iv=True, ra=True, mnc=False, pr=True)
-        
-        print "<<<MotionLibImport: redoIt() complete>>>"
     
     def undoIt(self):
-        print "<<<MotionLibImport: undoIt() start>>>"
         if cmds.objExists(self.selection[0]):
             cmds.delete(self.selection[0])
-        print "<<<MotionLibImport: undoIt() complete>>>"
     
     def isUndoable(self, *args, **kwargs):
         return True

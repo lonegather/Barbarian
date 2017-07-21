@@ -7,6 +7,7 @@ Created on 2017.7.5
 '''
 
 import maya.OpenMaya as om
+import maya.OpenMayaUI as omui
 
 from maya import cmds
 from barbarian.utils import getPath, kUI
@@ -91,6 +92,8 @@ class QtUI(object):
                     om.MMessage.removeCallback(msg)
             except: pass
             self.__messages.update({self.__class__:[]})
+            
+        self.uiMessage = omui.MUiMessage.addUiDeletedCallback(self.window, self.close)
         
         cmds.showWindow(self.window)
     
@@ -106,13 +109,15 @@ class QtUI(object):
             self.__messages.update({self.__class__:[]})
         self.__messages[self.__class__].append(msg)
         
-    def close(self):
+    def close(self, *_):
         u'''
         --------------------------------------------------------------------------------
         关闭当前窗口
         Close the window.
         --------------------------------------------------------------------------------
         '''
+        om.MMessage.removeCallback(self.uiMessage)
+        
         if self.__class__ in self.__messages:
             try: 
                 for msg in self.__messages[self.__class__]:
