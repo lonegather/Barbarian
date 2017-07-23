@@ -36,15 +36,14 @@ class QtUI(object):
         if cls in cls.__UI:
             if not cls.__UI[cls].isObsolete:
                 return cls.__UI[cls]
-        return None       
+        return None
+    
+    @classmethod
+    def cleanUp(cls):
+        for ui in cls.__UI: 
+            if cls.__UI[ui]: cls.__UI[ui].close()
     
     def __init__(self, uiFile, **info):
-        u'''
-        --------------------------------------------------------------------------------
-        本方法用于.ui文件加载完毕后界面的初始化操作，在派生类中重写此方法
-        Implement this method in derived class for UI setup when the .ui file was loaded.
-        --------------------------------------------------------------------------------
-        '''
         if self.__class__ == QtUI:
             raise RuntimeError(u"%s 是抽象类，不能被实例化"%QtUI)
             
@@ -96,6 +95,16 @@ class QtUI(object):
         self.uiMessage = omui.MUiMessage.addUiDeletedCallback(self.window, self.close)
         
         cmds.showWindow(self.window)
+        self.setup()
+        
+    def setup(self):
+        u'''
+        --------------------------------------------------------------------------------
+        本方法用于.ui文件加载完毕后界面的初始化操作，在派生类中重写此方法
+        Implement this method in derived class for UI setup when the .ui file was loaded.
+        --------------------------------------------------------------------------------
+        '''
+        pass
     
     def addSceneCallback(self, message, handler):
         u'''

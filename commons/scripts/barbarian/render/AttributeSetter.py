@@ -22,9 +22,6 @@ def execute(*_):
     AttributeSetter.UI().execute()
 
 class AttributeSetter(ui.QtUI):
-    def __init__(self, uiFile, **info):
-        ui.QtUI.__init__(self, uiFile, **info)
-    
     def execute(self):
         obj = cmds.textField(self.txtObj, q=True, tx=True)
         attr = cmds.textField(self.txtAttr, q=True, tx=True)

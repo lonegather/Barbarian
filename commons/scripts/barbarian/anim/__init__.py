@@ -15,9 +15,7 @@ def UI(*_):
 
 
 class PlayblastOption(ui.QtUI):
-    def __init__(self, uiFile, **info):
-        ui.QtUI.__init__(self, uiFile, **info)
-        
+    def setup(self):
         if not cmds.optionVar(exists="PutaoTools_HUD_Animator"):
             cmds.checkBox(self.defaultCB, e=True, value=True)
             cmds.textField(self.textField, e=True, enable=False)

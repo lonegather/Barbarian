@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>274</width>
-    <height>447</height>
+    <width>229</width>
+    <height>334</height>
    </rect>
   </property>
   <property name="font">
@@ -106,7 +106,7 @@ QListWidget {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QLineEdit {
@@ -117,7 +117,7 @@ QLineEdit {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QComboBox{
@@ -157,7 +157,7 @@ QComboBox:!editable:on, QComboBox::drop-down:editable:on{
 
 QComboBox QAbstractItemView {
     border: 1px solid grap;
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QPushButton{
@@ -193,12 +193,6 @@ QPushButton:pressed{
    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
-      <property name="horizontalSpacing">
-       <number>2</number>
-      </property>
-      <property name="verticalSpacing">
-       <number>2</number>
-      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="Label">
         <property name="minimumSize">
@@ -339,12 +333,6 @@ QPushButton:pressed{
         </property>
         <item>
          <layout class="QFormLayout" name="formLayout">
-          <property name="horizontalSpacing">
-           <number>2</number>
-          </property>
-          <property name="verticalSpacing">
-           <number>2</number>
-          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="minimumSize">
@@ -421,6 +409,52 @@ QPushButton:pressed{
             </item>
            </layout>
           </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QRadioButton" name="motionLibRBInsert">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>插入</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="motionLibRBMerge">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>混合</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
          </layout>
         </item>
         <item>
@@ -483,12 +517,6 @@ QPushButton:pressed{
         </property>
         <item>
          <layout class="QFormLayout" name="formLayout_3">
-          <property name="horizontalSpacing">
-           <number>2</number>
-          </property>
-          <property name="verticalSpacing">
-           <number>2</number>
-          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="minimumSize">
@@ -550,7 +578,7 @@ QPushButton:pressed{
            </widget>
           </item>
           <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,1">
+           <layout class="QHBoxLayout" name="horizontalLayout">
             <property name="spacing">
              <number>0</number>
             </property>

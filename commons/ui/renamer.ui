@@ -124,7 +124,7 @@ QListWidget {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QLineEdit {
@@ -135,7 +135,7 @@ QLineEdit {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QComboBox{
@@ -175,7 +175,7 @@ QComboBox:!editable:on, QComboBox::drop-down:editable:on{
 
 QComboBox QAbstractItemView {
     border: 1px solid grap;
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QPushButton{
@@ -296,7 +296,7 @@ QPushButton:pressed{
            <string>查找</string>
           </property>
           <property name="+command" stdset="0">
-           <string>lambda *args: barbarian.model.Renamer.search()</string>
+           <string>lambda *_: barbarian.model.renamer.Renamer.UI().search()</string>
           </property>
          </widget>
         </item>
@@ -340,7 +340,7 @@ QPushButton:pressed{
            <string>替换</string>
           </property>
           <property name="+command" stdset="0">
-           <string>lambda *args: barbarian.model.Renamer.replace()</string>
+           <string>lambda *_: barbarian.model.renamer.Renamer.UI().replace()</string>
           </property>
          </widget>
         </item>
@@ -430,7 +430,7 @@ QPushButton:pressed{
              <string>加后缀</string>
             </property>
             <property name="+command" stdset="0">
-             <string>lambda *args: barbarian.model.Renamer.addSuffix()</string>
+             <string>lambda *_: barbarian.model.renamer.Renamer.UI().addSuffix()</string>
             </property>
            </widget>
           </item>
@@ -451,7 +451,7 @@ QPushButton:pressed{
             </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
+              <width>88</width>
               <height>30</height>
              </size>
             </property>
@@ -483,6 +483,12 @@ QPushButton:pressed{
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimumSize">
+             <size>
+              <width>88</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <family>微软雅黑</family>
@@ -493,7 +499,7 @@ QPushButton:pressed{
              <string>加前缀</string>
             </property>
             <property name="+command" stdset="0">
-             <string>lambda *args: barbarian.model.Renamer.addPrefix()</string>
+             <string>lambda *_: barbarian.model.renamer.Renamer.UI().addPrefix()</string>
             </property>
            </widget>
           </item>
@@ -563,7 +569,7 @@ QPushButton:pressed{
            <string>重命名</string>
           </property>
           <property name="+command" stdset="0">
-           <string>lambda *args: barbarian.model.Renamer.rename()</string>
+           <string>lambda *_: barbarian.model.renamer.Renamer.UI().rename()</string>
           </property>
          </widget>
         </item>

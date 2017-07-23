@@ -113,7 +113,7 @@ class MotionLibImport(om.MPxCommand):
         
         print self.selection, self.copy, self.file, self.time, self.mode
         
-        self.option = "targetTime=3;pictures=0;connect=0;option=insert;"
+        self.option = "targetTime=3;pictures=0;connect=0;option=%s;"%self.mode
         self.option += "time=%d;copies=%d;" % (self.time, self.copy)
         self.namespace = self.file.split("\\")[-1].split(".")[0]
         self.redoIt()

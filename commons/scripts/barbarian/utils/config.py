@@ -13,12 +13,6 @@ from barbarian.utils import ui, getPath
 
 
 class Main(ui.QtUI):
-    def __init__(self, uiFile, **info):
-        ui.QtUI.__init__(self, uiFile, **info)
-        
-        cmds.menu(label=u"开发者选项", parent=self.window)
-        cmds.menuItem(label=u"连接调试服务器", command=self.debug)
-        
     def debug(self, *_):
         path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
         if path not in sys.path: sys.path.append(path)
@@ -30,21 +24,36 @@ class Main(ui.QtUI):
 class Config(object):
     
     __instance = None
+    __dic = {}
     
     @classmethod
-    def root(cls):
+    def instance(cls):
         if not cls.__instance:
             cls.__instance = cls(getPath("../commons/config/", "config.xml"))
-        return cls.__instance.root
+        return cls.__instance
+    
+    @classmethod
+    def getConfig(cls, **kwargs):
+        if not cls.getProject(all=True):
+            cmds.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
+            raise Exception(u"项目配置异常")
+        elif not cls.getProject():
+            cls.setProject(cmds.layoutDialog(ui=cls.__prompt__))
+        
+        attrList = ["time", "linear", "camera", "camResX", "camResY", "camFilmFit", "playblastScale", "animLibPath", "facialLibPath"]
+        for attr in attrList:
+            if attr in kwargs and kwargs[attr]:
+                for project in cls.instance().data:
+                    if project["name"] == cls.getProject(): return project[attr]
+                    
+        return None
     
     @classmethod
     def getProject(cls, **kwargs):
-        root = cls.root()
         projects = []
-        for node in root.childNodes:
-            if node.nodeType == root.ELEMENT_NODE:
-                projects.append({"name":node.getAttribute('name')})
-                
+        for prj in cls.instance().data:
+            projects.append(prj['name'])
+        
         if "all" in kwargs and kwargs["all"]:
             return projects
         elif "prompt" in kwargs and kwargs["prompt"] and projects:
@@ -69,13 +78,7 @@ class Config(object):
     
     @classmethod
     def setProject(cls, name):
-        root = cls.root()
-        projects = []
-        for node in root.childNodes:
-            if node.nodeType == root.ELEMENT_NODE:
-                projects.append({"name":node.getAttribute('name')})
-        '''
-        for project in __handler__.config:
+        for project in cls.instance().data:
             if project["name"] == name:
                 cmds.optionVar(sv=("PutaoTools_Project", name))
                 cmds.optionVar(sv=("PutaoTools_Project_Time", project["time"]))
@@ -89,7 +92,7 @@ class Config(object):
                 cmds.optionVar(sv=("PutaoTools_Project_FacialLibPath", project["facialLibPath"]))
                 
                 cmds.condition("ProjectChanged", e=True, state=not cmds.condition("ProjectChanged", q=True, state=True))
-        '''
+        
     
     @classmethod
     def __prompt__(cls):
@@ -118,5 +121,22 @@ class Config(object):
     def __init__(self, filePath):
         dom = xml.dom.minidom.parse(filePath)
         self.root = dom.documentElement
+    
+    def __getitem__(self, key):
+        if key in self.__dic:
+            return self.__dic[key]
+        return None
+    
+    def __setitem__(self, key, value):
+        self.__dic[key] = value
+    
+    @property    
+    def data(self):
+        projects = []
+        for node in self.root.childNodes:
+            if node.nodeType == self.root.ELEMENT_NODE:
+                projects.append({"name":node.getAttribute('name')})
+        
+        return projects
         
     

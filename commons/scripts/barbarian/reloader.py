@@ -18,12 +18,16 @@ def doIt(rl=False):
         import barbarian.utils
         if rl: reload(barbarian.utils)
         import barbarian.utils.ui
-        if rl: reload(barbarian.utils.ui)
+        if rl: 
+            barbarian.utils.ui.QtUI.cleanUp()
+            reload(barbarian.utils.ui)
         import barbarian.utils.config
         if rl: reload(barbarian.utils.config)
         
         import barbarian.model
         if rl: reload(barbarian.model)
+        import barbarian.model.renamer
+        if rl: reload(barbarian.model.renamer)
         import barbarian.model.checkModel
         if rl: reload(barbarian.model.checkModel)
         import barbarian.model.RemoveNamespace

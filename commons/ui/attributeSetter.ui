@@ -10,6 +10,18 @@
     <height>48</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>48</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>48</height>
+   </size>
+  </property>
   <property name="font">
    <font>
     <family>微软雅黑</family>
@@ -106,7 +118,7 @@ QListWidget {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QLineEdit {
@@ -117,7 +129,7 @@ QLineEdit {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QComboBox{
@@ -157,7 +169,7 @@ QComboBox:!editable:on, QComboBox::drop-down:editable:on{
 
 QComboBox QAbstractItemView {
     border: 1px solid grap;
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QPushButton{
@@ -188,6 +200,9 @@ QPushButton:pressed{
                                       stop:1 rgba(70, 70, 70, 255));
 	border-style: inset;
 }</string>
+  </property>
+  <property name="+titleBar" stdset="0">
+   <string>False</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="layout">

@@ -2,19 +2,16 @@
 <ui version="4.0">
  <class>PuTaoMain</class>
  <widget class="QMainWindow" name="PuTaoMain">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>265</width>
-    <height>194</height>
+    <width>353</width>
+    <height>309</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>265</width>
-    <height>0</height>
-   </size>
   </property>
   <property name="font">
    <font>
@@ -112,7 +109,7 @@ QListWidget {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QLineEdit {
@@ -123,7 +120,7 @@ QLineEdit {
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QComboBox{
@@ -163,7 +160,7 @@ QComboBox:!editable:on, QComboBox::drop-down:editable:on{
 
 QComboBox QAbstractItemView {
     border: 1px solid grap;
-    selection-background-color: black;
+    selection-background-color: purple;
 }
 
 QPushButton{
@@ -201,6 +198,12 @@ QPushButton:pressed{
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>333</width>
+          <height>129</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -209,8 +212,16 @@ QPushButton:pressed{
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	background-color: white
+}</string>
+        </property>
         <property name="text">
-         <string>葡萄工具架</string>
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap>../icons/logoBig.png</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -236,29 +247,46 @@ QPushButton:pressed{
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="statusTip">
-       <string>免重启一键更新</string>
-      </property>
-      <property name="text">
-       <string>重载/更新</string>
-      </property>
-      <property name="+command" stdset="0">
-       <string>lambda *args: barbarian.reloader.doIt(True)</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="statusTip">
+         <string>免重启一键更新</string>
+        </property>
+        <property name="text">
+         <string>重载/更新</string>
+        </property>
+        <property name="+command" stdset="0">
+         <string>lambda *args: barbarian.reloader.doIt(True)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="+visible" stdset="0">
+         <string>False</string>
+        </property>
+        <property name="+command" stdset="0">
+         <string>lambda *_: barbarian.utils.config.Main.UI().debug()</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -267,12 +295,57 @@ QPushButton:pressed{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>265</width>
-     <height>23</height>
+     <width>353</width>
+     <height>25</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <widget class="QMenu" name="mainMenu">
+    <property name="title">
+     <string>开发者选项</string>
+    </property>
+    <addaction name="actionDebug"/>
+   </widget>
+   <addaction name="mainMenu"/>
   </widget>
+  <action name="actionDebug">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/debug.png</normaloff>../icons/debug.png</iconset>
+   </property>
+   <property name="text">
+    <string>连接调试服务器</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionDebug</sender>
+   <signal>triggered()</signal>
+   <receiver>pushButton_3</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>176</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

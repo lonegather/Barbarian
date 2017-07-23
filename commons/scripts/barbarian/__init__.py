@@ -65,17 +65,17 @@ class Entrance(object):
                 cmds.deleteUI(widget)
         
         try: cmds.loadUI(f=getPath(kUI, "%s.ui" % cmds.setMenuMode()))
-        except: pass
-        else:
-            cmds.shelfLayout(self.layout, e=True, position=(self.button, 1))
-            cmds.shelfLayout(self.layout, e=True, position=(self.menu, 2))
-            widgets = cmds.layout("menuSetLayout", q=True, ca=True)
-            position = 3
-            for widget in widgets:
-                width = cmds.control(widget, q=True, width=True)
-                cmds.control(widget, e=True, parent=self.layout, width=width)
-                cmds.shelfLayout(self.layout, e=True, position=(widget, position))
-                position = position + 1
+        except: return
+
+        cmds.shelfLayout(self.layout, e=True, position=(self.button, 1))
+        cmds.shelfLayout(self.layout, e=True, position=(self.menu, 2))
+        widgets = cmds.layout("menuSetLayout", q=True, ca=True)
+        position = 3
+        for widget in widgets:
+            width = cmds.control(widget, q=True, width=True)
+            cmds.control(widget, e=True, parent=self.layout, width=width)
+            cmds.shelfLayout(self.layout, e=True, position=(widget, position))
+            position += 1
 
     def __refreshUI__(self):
         from barbarian.utils import getProject, getConfig

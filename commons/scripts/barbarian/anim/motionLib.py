@@ -22,15 +22,15 @@ def UI(*_):
                    btnExport = "motionLibBtnExport",
                    tslImport = "motionLibLVImport",
                    isImport = "motionLibHSCopies",
+                   rbInsert = "motionLibRBInsert",
+                   rbMerge = "motionLibRBMerge",
                    txtExportStart = "motionLibLEExportStart",
                    txtExportEnd = "motionLibLEExportEnd",
                    txtExportFile = "motionLibLEExportFile")
 
 
 class AnimRepository(ui.QtUI):
-    def __init__(self, uiFile, **info):
-        ui.QtUI.__init__(self, uiFile, **info)
-        
+    def setup(self):
         self.addSceneCallback(om.MSceneMessage.kAfterCreateReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterRemoveReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterLoadReference, self.refreshCharacters)
@@ -118,7 +118,9 @@ class AnimRepository(ui.QtUI):
         time = int(cmds.currentTime(q=True))
         copy = cmds.intSlider(self.isImport, q=True, value=True)
         filePath = "%s%s\\%s.anim"%(getConfig(animLibPath=True), self.getOrigChar(self.namespace.split(":")[-1]), sel[0])
-        cfg = {"copy":copy, "file":filePath, "time":time}
+        mode = "insert"
+        if cmds.radioButton(self.rbMerge, q=True, select = True): mode = "merge"
+        cfg = {"copy":copy, "file":filePath, "time":time, "mode":mode}
         return cfg
     
     @property
@@ -217,7 +219,7 @@ class AnimRepository(ui.QtUI):
             
             try:
                 cmds.copyKey(cv)
-                cmds.pasteKey(target, attribute=attr)
+                cmds.pasteKey(target, attribute=attr, option = self.configuration['mode'])
             except Exception, e:
                 print "%s"%e
             
