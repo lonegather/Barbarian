@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>229</width>
-    <height>370</height>
+    <width>206</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="font">
@@ -54,7 +54,7 @@ QTabBar::tab {
     border-bottom-color: grey; /* same as the pane color */
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-	padding: 0px 20px;
+	padding: 0px 15px;
 }
 
 QTabBar::tab:selected, QTabBar::tab:hover {
@@ -356,11 +356,14 @@ QPushButton:pressed{
         </property>
         <item>
          <layout class="QFormLayout" name="formLayout">
+          <property name="labelAlignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="minimumSize">
              <size>
-              <width>45</width>
+              <width>0</width>
               <height>30</height>
              </size>
             </property>
@@ -436,6 +439,12 @@ QPushButton:pressed{
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QRadioButton" name="motionLibRBInsert">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>微软雅黑</family>
@@ -452,6 +461,12 @@ QPushButton:pressed{
             </item>
             <item>
              <widget class="QRadioButton" name="motionLibRBMerge">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>微软雅黑</family>
@@ -477,6 +492,25 @@ QPushButton:pressed{
              </spacer>
             </item>
            </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>模式：</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -544,7 +578,7 @@ QPushButton:pressed{
            <widget class="QLabel" name="label_3">
             <property name="minimumSize">
              <size>
-              <width>75</width>
+              <width>0</width>
               <height>30</height>
              </size>
             </property>
@@ -566,7 +600,7 @@ QPushButton:pressed{
            <widget class="QLabel" name="label_5">
             <property name="minimumSize">
              <size>
-              <width>75</width>
+              <width>0</width>
               <height>30</height>
              </size>
             </property>
