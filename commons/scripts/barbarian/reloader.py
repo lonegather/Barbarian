@@ -24,6 +24,9 @@ def doIt(rl=False):
         import barbarian.utils.config
         if rl: reload(barbarian.utils.config)
         
+        import barbarian.cgtw
+        if rl: reload(barbarian.cgtw)
+        
         import barbarian.model
         if rl: reload(barbarian.model)
         import barbarian.model.renamer

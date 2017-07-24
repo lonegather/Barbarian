@@ -15,18 +15,19 @@ from barbarian.utils import ui, getProject, setProject, getConfig
 
 def UI(*_):
     AnimRepository("motionLib",
-                   tab = "motionLibTab",
-                   opMnuProject = "motionLibCBProject",
+                   tab            = "motionLibTab",
+                   opMnuProject   = "motionLibCBProject",
                    opMnuCharactor = "motionLibCBCharactor",
-                   btnImport = "motionLibBtnImport",
-                   btnExport = "motionLibBtnExport",
-                   tslImport = "motionLibLVImport",
-                   isImport = "motionLibHSCopies",
-                   rbInsert = "motionLibRBInsert",
-                   rbMerge = "motionLibRBMerge",
+                   txtFilter      = "motionLibLEFilter",
+                   btnImport      = "motionLibBtnImport",
+                   btnExport      = "motionLibBtnExport",
+                   tslImport      = "motionLibLVImport",
+                   isImport       = "motionLibHSCopies",
+                   rbInsert       = "motionLibRBInsert",
+                   rbMerge        = "motionLibRBMerge",
                    txtExportStart = "motionLibLEExportStart",
-                   txtExportEnd = "motionLibLEExportEnd",
-                   txtExportFile = "motionLibLEExportFile")
+                   txtExportEnd   = "motionLibLEExportEnd",
+                   txtExportFile  = "motionLibLEExportFile")
 
 
 class AnimRepository(ui.QtUI):
@@ -42,6 +43,7 @@ class AnimRepository(ui.QtUI):
         
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
+        cmds.textField(self.txtFilter, e=True, textChangedCommand=self.refreshData)
         cmds.button(self.btnImport, e=True, command=self.animImport)
         cmds.button(self.btnExport, e=True, command=self.animExport)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
@@ -96,7 +98,14 @@ class AnimRepository(ui.QtUI):
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
-        cmds.textScrollList(self.tslImport, e=True, append=self.getFileList(self.path))
+        
+        fileList = self.getFileList(self.path)
+        exp = cmds.textField(self.txtFilter, q=True, tx=True)
+        for f in fileList:
+            if not self.__match__(f, exp):
+                fileList.remove(f)
+        
+        cmds.textScrollList(self.tslImport, e=True, append=fileList)
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
         for sel in sels.split('&'):
@@ -109,6 +118,10 @@ class AnimRepository(ui.QtUI):
     def refreshTF(self, *_):
         cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
         cmds.textField(self.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
+        
+    def __match__(self, obj, exp):
+        #return mel.eval("gmatch \"%s\" \"%s\";"%(obj, exp))
+        return obj.find(exp) > -1
         
     @property
     def configuration(self):

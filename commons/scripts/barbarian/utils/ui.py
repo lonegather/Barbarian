@@ -52,12 +52,11 @@ class QtUI(object):
         self.window = cmds.loadUI(f=getPath(kUI, "%s.ui"%uiFile))
         self.__UI.update({self.__class__:self})
         
-        if cmds.windowPref(self.window, exists=True):
-            width = cmds.windowPref(self.window, q=True, width=True)
-            height = cmds.windowPref(self.window, q=True, height=True)
-            left = (1920 - width) / 2
-            top = (1080 - height) / 2
-            cmds.windowPref(self.window, e=True, topLeftCorner=[top, left])
+        width = cmds.window(self.window, q=True, width=True)
+        height = cmds.window(self.window, q=True, height=True)
+        left = (1920 - width) / 2
+        top = (1080 - height) / 2
+        cmds.windowPref(self.window, topLeftCorner=[top, left], width=width, height=height)
         
         detector = {"button":cmds.button,
                     "checkBox":cmds.checkBox,
@@ -77,7 +76,6 @@ class QtUI(object):
                     self.__setattr__(item, "%s|%s"%(self.window, '|'.join(pathList[1:])))
                     print "Found %s: <%s|%s>"%(target, self.window, '|'.join(pathList[1:]))
                     break
-            
             
             if not found:
                 try: 

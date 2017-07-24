@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>229</width>
-    <height>334</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="font">
@@ -193,14 +193,11 @@ QPushButton:pressed{
    <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1,0">
     <item>
      <layout class="QFormLayout" name="formLayout_2">
+      <property name="labelAlignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="Label">
-        <property name="minimumSize">
-         <size>
-          <width>55</width>
-          <height>30</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -239,12 +236,6 @@ QPushButton:pressed{
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="Label_2">
-        <property name="minimumSize">
-         <size>
-          <width>55</width>
-          <height>30</height>
-         </size>
-        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -272,6 +263,38 @@ QPushButton:pressed{
           <width>0</width>
           <height>30</height>
          </size>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="motionLibLEFilter">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>筛选：</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
