@@ -2,7 +2,6 @@
 # encoding: utf-8
 '''
 Created on 2017.7.23
-
 @author: Serious Sam
 '''
 
@@ -125,5 +124,3 @@ class Renamer(ui.QtUI):
         for match in matches:
             new_name = match.split("|")[-1].replace(find_string, replace_string)
             cmds.rename(match, new_name)
-
-
