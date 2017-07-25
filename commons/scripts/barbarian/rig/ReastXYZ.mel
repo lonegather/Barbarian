@@ -1,0 +1,31 @@
+global proc ReastXYZ(){
+    
+//把对象的通道盒未隐藏未锁定的属性设为初始状态
+string $att[]={"X", "Y", "Z"};
+string $objName[]=`ls -sl`;
+for ($sel in $objName){
+    for ($i=0;$i<size($att);$i++){
+        if (`getAttr -l ($sel+".translate"+$att[$i])`){
+        }else{
+            if (`getAttr -k ($sel+".translate"+$att[$i])`){
+                setAttr ($sel+".translate"+$att[$i]) 0;
+            }
+        }
+        if (`getAttr -l ($sel+".rotate"+$att[$i])`){ 
+        }else{
+            if (`getAttr -k ($sel+".rotate"+$att[$i])`){
+                setAttr ($sel+".rotate"+$att[$i]) 0;
+            }
+        }        
+        if (`getAttr -l ($sel+".scale"+$att[$i])`){ 
+        }else{
+            if (`getAttr -k ($sel+".scale"+$att[$i])`){
+                setAttr ($sel+".scale"+$att[$i]) 1;
+            }
+        }         
+    }
+}
+    
+}
+
+ReastXYZ;
