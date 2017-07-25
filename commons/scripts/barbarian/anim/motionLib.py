@@ -15,13 +15,14 @@ from barbarian.utils import ui, getProject, setProject, getConfig
 
 def UI(*_):
     AnimRepository("motionLib",
+                   container      = "motionLibMayaControlLocator",
                    tab            = "motionLibTab",
                    opMnuProject   = "motionLibCBProject",
                    opMnuCharactor = "motionLibCBCharactor",
                    txtFilter      = "motionLibLEFilter",
                    btnImport      = "motionLibBtnImport",
                    btnExport      = "motionLibBtnExport",
-                   tslImport      = "motionLibLVImport",
+                   #tslImport      = "motionLibLVImport",
                    isImport       = "motionLibHSCopies",
                    rbInsert       = "motionLibRBInsert",
                    rbMerge        = "motionLibRBMerge",
@@ -48,6 +49,9 @@ class AnimRepository(ui.QtUI):
         cmds.button(self.btnExport, e=True, command=self.animExport)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
         cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
+        
+        self.shelf = cmds.shelfLayout(parent=self.container)
+        self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
         
         self.refreshTF()
         self.refreshCharacters()
@@ -94,7 +98,7 @@ class AnimRepository(ui.QtUI):
         self.__select = []
         cmds.namespace(set = ":")
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
-        cmds.textScrollList(self.tslImport, e=True, removeAll=True)
+        #cmds.textScrollList(self.tslImport, e=True, removeAll=True)
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
@@ -104,8 +108,16 @@ class AnimRepository(ui.QtUI):
         for f in fileList:
             if not self.__match__(f, exp):
                 fileList.remove(f)
+        #cmds.textScrollList(self.tslImport, e=True, append=fileList)
         
-        cmds.textScrollList(self.tslImport, e=True, append=fileList)
+        try:
+            for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True):
+                if cmds.iconTextRadioCollection(ctrl, exists=True): continue
+                cmds.deleteUI(ctrl)
+        except: pass
+        for f in fileList:
+            cmds.iconTextRadioButton(label=f, parent=self.shelf, width=160, style='iconAndTextHorizontal',
+                                image="mayaHIK/humanIK_CharCtrl.png", font="fixedWidthFont")
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
         for sel in sels.split('&'):
@@ -125,12 +137,19 @@ class AnimRepository(ui.QtUI):
         
     @property
     def configuration(self):
-        sel = cmds.textScrollList(self.tslImport, q=True, selectItem=True)
+        itrbs = cmds.shelfLayout(self.shelf, q=True, ca=True)
+        if not itrbs:return None
+        sel = ""
+        for rb in itrbs:
+            if cmds.iconTextRadioButton(rb, q=True, select=True):
+                sel = cmds.iconTextRadioButton(rb, q=True, label=True)
+                break
+        #sel = cmds.textScrollList(self.tslImport, q=True, selectItem=True)
         if not sel: return None
         cmds.namespace(set = ":")
         time = int(cmds.currentTime(q=True))
         copy = cmds.intSlider(self.isImport, q=True, value=True)
-        filePath = "%s%s\\%s.anim"%(getConfig(animLibPath=True), self.getOrigChar(self.namespace.split(":")[-1]), sel[0])
+        filePath = "%s%s\\%s.anim"%(getConfig(animLibPath=True), self.getOrigChar(self.namespace.split(":")[-1]), sel)
         mode = "insert"
         if cmds.radioButton(self.rbMerge, q=True, select = True): mode = "merge"
         cfg = {"copy":copy, "file":filePath, "time":time, "mode":mode}
@@ -172,7 +191,7 @@ class AnimRepository(ui.QtUI):
         return fileList
     
     def getDirectoryList(self, path):
-        p = os.popen("dir \"%s\" d /b" % path)
+        p = os.popen("dir \"%s\" /a:d /b" % path)
         fileList = p.read().split("\n")
         p.close()
         del fileList[-1]

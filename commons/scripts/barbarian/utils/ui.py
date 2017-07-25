@@ -78,10 +78,16 @@ class QtUI(object):
                     break
             
             if not found:
-                try: 
-                    widget = '|'.join(cmds.control(info[item], q=True, fpn=True).split("|")[1:])
-                    self.__setattr__(item, "%s|%s"%(self.window, widget))
-                except: cmds.confirmDialog(message=u'未找到控件：'+info[item], icon='warning', title=u'PuTao')
+                if cmds.layout(info[item], exists=True):
+                    children = cmds.layout(info[item], q=True, fpn=True, ca=True)
+                    for child in children:
+                        cmds.deleteUI(child)
+                    self.__setattr__(item, info[item])
+                else:
+                    try: 
+                        widget = '|'.join(cmds.control(info[item], q=True, fpn=True).split("|")[1:])
+                        self.__setattr__(item, "%s|%s"%(self.window, widget))
+                    except: cmds.confirmDialog(message=u'未找到控件：'+info[item], icon='warning', title=u'PuTao')
         
         if self.__class__ in self.__messages:
             try: 
