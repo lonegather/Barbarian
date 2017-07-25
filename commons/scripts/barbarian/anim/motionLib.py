@@ -22,7 +22,6 @@ def UI(*_):
                    txtFilter      = "motionLibLEFilter",
                    btnImport      = "motionLibBtnImport",
                    btnExport      = "motionLibBtnExport",
-                   #tslImport      = "motionLibLVImport",
                    isImport       = "motionLibHSCopies",
                    rbInsert       = "motionLibRBInsert",
                    rbMerge        = "motionLibRBMerge",
@@ -50,7 +49,7 @@ class AnimRepository(ui.QtUI):
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
         cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
         
-        self.shelf = cmds.shelfLayout(parent=self.container)
+        self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
         self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
         
         self.refreshTF()
@@ -98,7 +97,11 @@ class AnimRepository(ui.QtUI):
         self.__select = []
         cmds.namespace(set = ":")
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
-        #cmds.textScrollList(self.tslImport, e=True, removeAll=True)
+        try:
+            for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True):
+                if cmds.iconTextRadioCollection(ctrl, exists=True): continue
+                cmds.deleteUI(ctrl)
+        except: pass
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
@@ -108,16 +111,11 @@ class AnimRepository(ui.QtUI):
         for f in fileList:
             if not self.__match__(f, exp):
                 fileList.remove(f)
-        #cmds.textScrollList(self.tslImport, e=True, append=fileList)
         
-        try:
-            for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True):
-                if cmds.iconTextRadioCollection(ctrl, exists=True): continue
-                cmds.deleteUI(ctrl)
-        except: pass
         for f in fileList:
-            cmds.iconTextRadioButton(label=f, parent=self.shelf, width=160, style='iconAndTextHorizontal',
-                                image="mayaHIK/humanIK_CharCtrl.png", font="fixedWidthFont")
+            cmds.iconTextRadioButton(label=f, parent=self.shelf, style='iconAndTextVertical',
+                                     image="mayaHIK/humanIK_CharCtrl_200.png", font="smallFixedWidthFont",
+                                     onCommand=self.__getLabel__)
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
         for sel in sels.split('&'):
@@ -134,9 +132,8 @@ class AnimRepository(ui.QtUI):
     def __match__(self, obj, exp):
         #return mel.eval("gmatch \"%s\" \"%s\";"%(obj, exp))
         return obj.find(exp) > -1
-        
-    @property
-    def configuration(self):
+    
+    def __getLabel__(self, *_):
         itrbs = cmds.shelfLayout(self.shelf, q=True, ca=True)
         if not itrbs:return None
         sel = ""
@@ -144,7 +141,12 @@ class AnimRepository(ui.QtUI):
             if cmds.iconTextRadioButton(rb, q=True, select=True):
                 sel = cmds.iconTextRadioButton(rb, q=True, label=True)
                 break
-        #sel = cmds.textScrollList(self.tslImport, q=True, selectItem=True)
+        if _: cmds.textField(self.txtExportFile, e=True, tx=sel)
+        return sel
+        
+    @property
+    def configuration(self):
+        sel = self.__getLabel__()
         if not sel: return None
         cmds.namespace(set = ":")
         time = int(cmds.currentTime(q=True))

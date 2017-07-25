@@ -4,8 +4,11 @@
 import sys, os
 sys.path.append(r"C:\cgteamwork\bin\base")
 from maya import cmds
-from cgtw import *
 from barbarian.utils import ui
+
+try:
+    from cgtw import *
+except: pass
 
 
 def UI(*_):
