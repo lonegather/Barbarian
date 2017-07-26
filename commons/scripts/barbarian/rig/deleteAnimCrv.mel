@@ -1,0 +1,39 @@
+global proc DeleteAnimCrv(){
+
+
+
+string $animTA[] = `ls -type "animCurveTA"`;
+string $animTL[] = `ls -type "animCurveTL"`;
+string $animTU[] = `ls -type "animCurveTU"`;
+
+string $dele = `delete $animTA $animTL $animTU`;
+
+int $amount = 0;
+progressWindow
+     -title "Working"
+     -progress $amount
+     -status "Progression: 0%"
+     -isInterruptable true;
+     
+while (true) {
+     if ( `progressWindow -query -isCancelled` ) break;
+     
+     if ( `progressWindow -query -progress` >= 100 ) break;
+
+    $amount += 5;
+    
+    progressWindow -edit
+         -progress $amount
+         -status ("Progression: "+$amount+"%");
+
+     }
+
+progressWindow -endProgress;
+
+confirmDialog -title "进程" -message "关键帧已清除"
+    -button "确认"  -defaultButton "Yes"
+    -cancelButton "No" -dismissString "No";
+
+}
+
+DeleteAnimCrv;
