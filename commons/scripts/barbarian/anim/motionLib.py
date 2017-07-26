@@ -118,7 +118,7 @@ class AnimRepository(ui.QtUI):
         for f in fileList:
             if cellHeight > 50:
                 cmds.iconTextRadioButton(label=f, parent=self.shelf, style='iconAndTextVertical',
-                                         image="mayaHIK/humanIK_CharCtrl_200.png", font="smallFixedWidthFont",
+                                         image="motion.png", font="smallFixedWidthFont",
                                          onCommand=self.__getLabel__)
             else:
                 cmds.iconTextRadioButton(label=f, parent=self.shelf, style='textOnly',
