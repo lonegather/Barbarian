@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2660</width>
+    <width>2675</width>
     <height>51</height>
    </rect>
   </property>
@@ -62,13 +62,13 @@
     <widget class="QPushButton" name="modelBtn_3">
      <property name="minimumSize">
       <size>
-       <width>65</width>
+       <width>80</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>65</width>
+       <width>80</width>
        <height>16777215</height>
       </size>
      </property>
@@ -86,6 +86,39 @@
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/rig/HierarchyLevel.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="modelBtn_24">
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>110</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>控制器数值归零</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/ReastXYZ.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
@@ -677,39 +710,6 @@
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/rig/恢复显示属性.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="modelBtn_24">
-     <property name="minimumSize">
-      <size>
-       <width>110</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>110</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>控制器数值归零</string>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/ReastXYZ.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
