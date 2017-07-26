@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>450</height>
+    <width>345</width>
+    <height>410</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>500</width>
-    <height>450</height>
+    <width>345</width>
+    <height>410</height>
    </size>
   </property>
   <property name="font">
@@ -104,32 +104,34 @@ QTabBar::tab:!selected {
 }
 
 QSlider::groove:horizontal {
-    border: 1px solid #999999;
+	border: 1px solid gray;
 	border-style: inset;
-    height: 10px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+	border-radius: 6px;
+    height: 28px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
                                 stop:0 rgba(20, 20, 20, 255), 
                                 stop:0.3 rgba(40, 40, 40, 255), 
                                 stop:1 rgba(50, 50, 50, 255));
-    margin: 2px 0;
 }
 
 QSlider::handle:horizontal {
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
                                 stop:0 rgba(140, 140, 140, 255), 
-                                stop:0.3 rgba(80, 80, 80, 255), 
+                                stop:0.2 rgba(60, 60, 60, 255),
+                                stop:0.8 rgba(60, 60, 60, 255), 
                                 stop:1 rgba(100, 100, 100, 255));
     border: 1px solid gray;
 	border-style: outset;
-    width: 15px;
-    margin: -10px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
-    border-radius: 6px;
+    width: 26px;
+    margin: 2px 2px; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    border-radius: 4px;
 }
 
 QSlider::handle:horizontal:hover {
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
-                                stop:0 rgba(160, 160, 160, 255), 
-                                stop:0.3 rgba(100, 100, 100, 255), 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.2 rgba(80, 80, 80, 255), 
+                                stop:0.8 rgba(80, 80, 80, 255), 
                                 stop:1 rgba(120, 120, 120, 255));
 }
 
@@ -299,21 +301,11 @@ QPushButton#motionLibBtnImport:pressed, QPushButton#motionLibBtnExport:pressed{
           <height>30</height>
          </size>
         </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="motionLibLEFilter">
-        <property name="minimumSize">
+        <property name="maximumSize">
          <size>
-          <width>0</width>
-          <height>30</height>
+          <width>282</width>
+          <height>16777215</height>
          </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>10</pointsize>
-         </font>
         </property>
        </widget>
       </item>
@@ -332,6 +324,79 @@ QPushButton#motionLibBtnImport:pressed, QPushButton#motionLibBtnExport:pressed{
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="motionLibLEFilter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>226</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QSlider" name="motionLibHSView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>1</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -353,25 +418,19 @@ QPushButton#motionLibBtnImport:pressed, QPushButton#motionLibBtnExport:pressed{
        <number>1</number>
       </property>
       <layout class="QGridLayout" name="motionLibMayaControlLocator">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <property name="spacing">
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="Line" name="line_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Maya Control</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>

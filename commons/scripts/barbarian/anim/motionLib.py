@@ -23,6 +23,7 @@ def UI(*_):
                    btnImport      = "motionLibBtnImport",
                    btnExport      = "motionLibBtnExport",
                    isImport       = "motionLibHSCopies",
+                   isView         = "motionLibHSView",
                    rbInsert       = "motionLibRBInsert",
                    rbMerge        = "motionLibRBMerge",
                    txtExportStart = "motionLibLEExportStart",
@@ -44,6 +45,7 @@ class AnimRepository(ui.QtUI):
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
         cmds.textField(self.txtFilter, e=True, textChangedCommand=self.refreshData)
+        cmds.intSlider(self.isView, e=True, changeCommand=self.refreshView)
         cmds.button(self.btnImport, e=True, command=self.animImport)
         cmds.button(self.btnExport, e=True, command=self.animExport)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
@@ -112,10 +114,15 @@ class AnimRepository(ui.QtUI):
             if not self.__match__(f, exp):
                 fileList.remove(f)
         
+        cellHeight = cmds.shelfLayout(self.shelf, q=True, cellHeight=True)
         for f in fileList:
-            cmds.iconTextRadioButton(label=f, parent=self.shelf, style='iconAndTextVertical',
-                                     image="mayaHIK/humanIK_CharCtrl_200.png", font="smallFixedWidthFont",
-                                     onCommand=self.__getLabel__)
+            if cellHeight > 50:
+                cmds.iconTextRadioButton(label=f, parent=self.shelf, style='iconAndTextVertical',
+                                         image="mayaHIK/humanIK_CharCtrl_200.png", font="smallFixedWidthFont",
+                                         onCommand=self.__getLabel__)
+            else:
+                cmds.iconTextRadioButton(label=f, parent=self.shelf, style='textOnly',
+                                         font="smallFixedWidthFont", onCommand=self.__getLabel__)
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
         for sel in sels.split('&'):
@@ -129,18 +136,20 @@ class AnimRepository(ui.QtUI):
         cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
         cmds.textField(self.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
         
+    def refreshView(self, *_):
+        height = 100 - cmds.intSlider(self.isView, q=True, value=True) * 70
+        cmds.shelfLayout(self.shelf, e=True, cellHeight=height)
+        self.refreshData()
+        
+        
     def __match__(self, obj, exp):
         #return mel.eval("gmatch \"%s\" \"%s\";"%(obj, exp))
         return obj.find(exp) > -1
     
     def __getLabel__(self, *_):
-        itrbs = cmds.shelfLayout(self.shelf, q=True, ca=True)
-        if not itrbs:return None
-        sel = ""
-        for rb in itrbs:
-            if cmds.iconTextRadioButton(rb, q=True, select=True):
-                sel = cmds.iconTextRadioButton(rb, q=True, label=True)
-                break
+        rb = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
+        if not rb: return ""
+        sel = cmds.iconTextRadioButton(rb, q=True, label=True)
         if _: cmds.textField(self.txtExportFile, e=True, tx=sel)
         return sel
         
