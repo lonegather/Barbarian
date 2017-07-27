@@ -6,13 +6,23 @@ Created on 2017.7.17
 @author: Serious Sam
 '''
 
-import sys
+import sys, os
 import xml.dom.minidom
 from maya import cmds
 from barbarian.utils import ui, getPath
 
 
 class Main(ui.QtUI):
+    def setup(self):
+        self.scrollField = cmds.scrollField("PuTaoMainTE", q=True, fpn=True)
+        
+    def getEnv(self, env):
+        cmds.scrollField("PuTaoMainTE", e=True, clear=True)
+        cmds.scrollField("PuTaoMainTE", e=True, tx="%s:\n"%env)
+        paths = os.getenv(env).split(';')
+        for p in paths:
+            cmds.scrollField("PuTaoMainTE", e=True, ip=0, it="%s\n"%p)
+    
     def debug(self, *_):
         path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
         if path not in sys.path: sys.path.append(path)
