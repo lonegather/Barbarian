@@ -45,9 +45,10 @@ class AnimRepository(ui.QtUI):
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
         cmds.textField(self.txtFilter, e=True, textChangedCommand=self.refreshData)
+        cmds.textField(self.txtExportFile, e=True, textChangedCommand=self.refreshBtn)
         cmds.intSlider(self.isView, e=True, changeCommand=self.refreshView)
         cmds.button(self.btnImport, e=True, command=self.animImport)
-        cmds.button(self.btnExport, e=True, command=self.animExport)
+        cmds.button(self.btnExport, e=True, enable=False, command=self.animExport)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
         cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
         
@@ -98,6 +99,7 @@ class AnimRepository(ui.QtUI):
     def refreshData(self, *_):
         self.__select = []
         cmds.namespace(set = ":")
+        cmds.button(self.btnImport, e=True, enable=False)
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
         try:
             for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True):
@@ -141,6 +143,9 @@ class AnimRepository(ui.QtUI):
         cmds.shelfLayout(self.shelf, e=True, cellHeight=height)
         self.refreshData()
         
+    def refreshBtn(self, *_):
+        txt = cmds.textField(self.txtExportFile, q=True, tx=True)
+        cmds.button(self.btnExport, e=True, enable=bool(txt))
         
     def __match__(self, obj, exp):
         #return mel.eval("gmatch \"%s\" \"%s\";"%(obj, exp))
@@ -150,7 +155,9 @@ class AnimRepository(ui.QtUI):
         rb = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
         if not rb: return ""
         sel = cmds.iconTextRadioButton(rb, q=True, label=True)
-        if _: cmds.textField(self.txtExportFile, e=True, tx=sel)
+        if _: 
+            cmds.textField(self.txtExportFile, e=True, tx=sel)
+            cmds.button(self.btnImport, e=True, enable=True)
         return sel
         
     @property
