@@ -6,6 +6,7 @@ Created on 2017.7.5
 @author: Serious Sam
 '''
 
+import abc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 
@@ -22,6 +23,7 @@ class QtUI(object):
     NOTE: DO NOT instantiate this class, use derived class instead.
     --------------------------------------------------------------------------------
     '''
+    __metaclass__ = abc.ABCMeta
     __UI = {}
     __messages = {}
     
@@ -44,9 +46,6 @@ class QtUI(object):
             if cls.__UI[ui]: cls.__UI[ui].close()
     
     def __init__(self, uiFile, **info):
-        if self.__class__ == QtUI:
-            raise RuntimeError(u"%s 是抽象类，不能被实例化"%QtUI)
-            
         try: cmds.deleteUI(self.__UI[self.__class__].window)
         except: pass
         self.window = cmds.loadUI(f=getPath(kUI, "%s.ui"%uiFile))
@@ -101,6 +100,7 @@ class QtUI(object):
         cmds.showWindow(self.window)
         self.setup()
         
+    @abc.abstractmethod
     def setup(self):
         u'''
         --------------------------------------------------------------------------------

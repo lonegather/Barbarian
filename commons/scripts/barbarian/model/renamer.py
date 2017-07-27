@@ -25,6 +25,9 @@ class Renamer(ui.QtUI):
     Class Representing the Rename Tool
     --------------------------------------------------------------------------------
     '''
+    def setup(self):
+        pass
+    
     def rename(self, *_):
 
         prefix_dic = {"Middle": "M", "Left": "L", "Right": "R", "Up": "U",
