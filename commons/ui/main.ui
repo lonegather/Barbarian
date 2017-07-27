@@ -481,6 +481,12 @@ p, li { white-space: pre-wrap; }
      <string>开发者选项</string>
     </property>
     <widget class="QMenu" name="menu">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>环境变量</string>
      </property>
@@ -517,40 +523,88 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>PYTHONPATH</string>
    </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionMAYA_SCRIPT_PATH">
    <property name="text">
     <string>MAYA_SCRIPT_PATH</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionMAYA_MODULE_PATH">
    <property name="text">
     <string>MAYA_MODULE_PATH</string>
    </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionMAYA_APP_DIR">
    <property name="text">
     <string>MAYA_APP_DIR</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionMAYA_LOCATION">
    <property name="text">
     <string>MAYA_LOCATION</string>
    </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionMAYA_PLUG_IN_PATH">
    <property name="text">
     <string>MAYA_PLUG_IN_PATH</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionXBMLANGPATH">
    <property name="text">
     <string>XBMLANGPATH</string>
    </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionBARBARIAN_LOCATION">
    <property name="text">
     <string>BARBARIAN_LOCATION</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
    </property>
   </action>
  </widget>
