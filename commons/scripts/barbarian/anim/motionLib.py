@@ -155,7 +155,7 @@ class AnimRepository(ui.QtUI):
         rb = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
         if not rb: return ""
         sel = cmds.iconTextRadioButton(rb, q=True, label=True)
-        if _: 
+        if _ and _[0]: 
             cmds.textField(self.txtExportFile, e=True, tx=sel)
             cmds.button(self.btnImport, e=True, enable=True)
         return sel
