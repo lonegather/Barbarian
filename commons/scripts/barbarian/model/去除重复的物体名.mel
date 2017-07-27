@@ -209,7 +209,7 @@ global proc string rejiggerName_pro(string $allName[],string $nameType,int $amou
 global proc detectionOfTheSameNameMain()
 {
     timer -s;
-    string $scripName = "检测全部重名节点\@zj_v14";
+    string $scripName = "检查结束";
     int $amount = 0;
     progressWindow
         -title $scripName
@@ -244,7 +244,7 @@ global proc detectionOfTheSameNameMain()
         $temp_name = "程序已经被终止运行.";
 
     if($temp_name=="\n\n")
-        $temp_name = "GOOD!,场景内没有找到任何重名的物体和节点.";
+        $temp_name = "场景内没有找到任何重名的物体和节点.";
 
     progressWindow -endProgress;
     print("此次运行时间为:"+`timer -e`+"秒.\n");

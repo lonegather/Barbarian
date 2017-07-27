@@ -12,7 +12,7 @@ int $amount = 0;
 progressWindow
      -title "Working"
      -progress $amount
-     -status "Progression: 0%"
+     -status "删除中: 0%"
      -isInterruptable true;
      
 while (true) {
@@ -20,17 +20,17 @@ while (true) {
      
      if ( `progressWindow -query -progress` >= 100 ) break;
 
-    $amount += 5;
+    $amount += 1;
     
     progressWindow -edit
          -progress $amount
-         -status ("Progression: "+$amount+"%");
+         -status ("删除中: "+$amount+"%");
 
      }
 
 progressWindow -endProgress;
 
-confirmDialog -title "进程" -message "关键帧已清除"
+confirmDialog -title "进程" -message "关键帧已删除"
     -button "确认"  -defaultButton "Yes"
     -cancelButton "No" -dismissString "No";
 
