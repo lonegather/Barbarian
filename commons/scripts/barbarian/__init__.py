@@ -32,7 +32,7 @@ class Entrance(object):
         
         cmds.loadUI(f=getPath(kUI, "entrance.ui"))
         self.menu = cmds.layout("entranceLayout", q=True, ca=True)[0]
-        cmds.optionMenu(self.menu, e=True, parent=layout, changeCommand=setProject)
+        cmds.optionMenu(self.menu, e=True, parent=layout, width=60, changeCommand=setProject)
         cmds.deleteUI("entranceForm")
         
         currentMode = cmds.setMenuMode()
@@ -89,12 +89,12 @@ class Entrance(object):
                 projects = getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
             
-            cmds.optionMenu(self.menu, e=True, l="", width=60, v=getProject())
+            cmds.optionMenu(self.menu, e=True, l="", v=getProject())
             cmds.currentUnit(time=getConfig(time=True))
             cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig(camResX=True))
             cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig(camResY=True))
         elif getProject(all=True): 
-            cmds.optionMenu(self.menu, e=True, width=85, l=u"<选择项目>")
+            cmds.optionMenu(self.menu, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
                 projects = getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
@@ -102,7 +102,7 @@ class Entrance(object):
             if cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
                 for mi in cmds.optionMenu(self.menu, q=True, itemListLong=True): 
                     cmds.deleteUI(mi)
-            cmds.optionMenu(self.menu, e=True, width=85, l=u"<配置异常>")
+            cmds.optionMenu(self.menu, e=True, l=u"<配置异常>")
 
     def __boundingBox__(self, *_):
         allPanels = cmds.getPanel(type='modelPanel')
