@@ -19,7 +19,7 @@ class Entrance(object):
     --------------------------------------------------------------------------------
     '''
     def __init__(self, layout):
-        from barbarian.utils import getPath, getProject, setProject, kIcon
+        from barbarian.utils import getPath, getProject, setProject, kIcon, kUI
         
         if cmds.control("itBtn", exists=True):
             cmds.deleteUI("itBtn")
@@ -29,7 +29,11 @@ class Entrance(object):
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2,0.2,0.2], spacing=3)
         self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33, 
             image=getPath(kIcon, "logo.png"), parent=layout, command=lambda *_: config.Main("main"))
-        self.menu = cmds.optionMenu("opMnu", parent=layout, nbg=True, changeCommand=setProject)
+        
+        cmds.loadUI(f=getPath(kUI, "entrance.ui"))
+        self.menu = cmds.layout("entranceLayout", q=True, ca=True)[0]
+        cmds.optionMenu(self.menu, e=True, parent=layout, changeCommand=setProject)
+        cmds.deleteUI("entranceForm")
         
         currentMode = cmds.setMenuMode()
         cmds.popupMenu(parent=self.layout, allowOptionBoxes=True)
@@ -61,7 +65,7 @@ class Entrance(object):
         widgets = cmds.layout(self.layout, q=True, ca=True)
         for widget in widgets:
             isShelfButton = cmds.shelfButton(widget, exists=True)
-            if (not isShelfButton) and widget != "itBtn" and widget != "opMnu":
+            if (not isShelfButton) and widget.find("itBtn")==-1 and widget != self.menu:
                 cmds.deleteUI(widget)
         
         try: cmds.loadUI(f=getPath(kUI, "%s.ui" % cmds.setMenuMode()))
@@ -85,7 +89,7 @@ class Entrance(object):
                 projects = getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
             
-            cmds.optionMenu(self.menu, e=True, l="", width=50, v=getProject())
+            cmds.optionMenu(self.menu, e=True, l="", width=60, v=getProject())
             cmds.currentUnit(time=getConfig(time=True))
             cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig(camResX=True))
             cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig(camResY=True))

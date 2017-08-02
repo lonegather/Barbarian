@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>entranceForm</class>
+ <widget class="QWidget" name="entranceForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>103</width>
+    <height>51</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="entranceLayout">
+   <item>
+    <widget class="QComboBox" name="entranceCBProject">
+     <property name="minimumSize">
+      <size>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>85</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox{
+	border: 0px solid gray;
+	border-style: outset;
+    border-radius: 3px;
+	padding: 1px 10px 1px 10px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, 
+                                      stop:0 #222222,  
+                                      stop:1 #333333);
+}
+
+QComboBox:!editable:hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, 
+                                      stop:0 #404040,  
+                                      stop:1 #333333);
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top left;
+	width: 0px;
+    border-left-width: 0px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox:!editable:on, QComboBox::drop-down:editable:on{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid grap;
+    selection-background-color: purple;
+}</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
