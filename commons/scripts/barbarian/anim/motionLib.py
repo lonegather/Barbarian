@@ -277,7 +277,7 @@ class AnimRepository(ui.QtUI):
         
         self.destructProxy()
         
-    def copyToProxy(self):
+    def copyToProxy(self, startTime, endTime):
         animCurves = []
         for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
         for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
@@ -299,9 +299,10 @@ class AnimRepository(ui.QtUI):
                 try:
                     cmds.copyKey(cv)
                     cmds.pasteKey(loc, attribute=attr)
+                    cmds.setKeyframe(loc, time=[startTime, endTime])
                 except Exception, e:
                     print "%s"%e
-                    
+        
         cmds.progressWindow(endProgress=1)
                     
     def destructProxy(self):
@@ -341,7 +342,7 @@ class AnimRepository(ui.QtUI):
         opt += "-option curve -hierarchy below -controlPoints 0 -shape 0 "
         
         self.constructProxy()
-        self.copyToProxy()
+        self.copyToProxy(startTime, endTime)
         cmds.select(self.grp)
         
         try:
