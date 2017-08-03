@@ -294,14 +294,14 @@ class AnimRepository(ui.QtUI):
                 out = out[0]
                 loc = "%s|%s___Proxy"%(self.grp, out.split(".")[0])
                 attr = out.split(".")[-1]
-                print "%s.output"%cv, "-> %s.%s"%(loc, attr)
+                #print "%s.output"%cv, "-> %s.%s"%(loc, attr)
                 
                 try:
                     cmds.copyKey(cv)
                     cmds.pasteKey(loc, attribute=attr)
                     cmds.setKeyframe(loc, time=[startTime, endTime])
                 except Exception, e:
-                    print "%s"%e
+                    print u"%s"%e
         
         cmds.progressWindow(endProgress=1)
                     
