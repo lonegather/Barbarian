@@ -125,6 +125,7 @@ class MotionLibImport(om.MPxCommand):
     def undoIt(self):
         if cmds.objExists(self.selection[0]):
             cmds.delete(self.selection[0])
+        cmds.select(clear=True)
         self.redoIt()
     
     def isUndoable(self, *args, **kwargs):

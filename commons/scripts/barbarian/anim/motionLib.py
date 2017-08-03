@@ -53,7 +53,6 @@ class AnimRepository(ui.QtUI):
         cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
         
         self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
-        self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
         
         self.refreshTF()
         self.refreshCharacters()
@@ -102,10 +101,9 @@ class AnimRepository(ui.QtUI):
         cmds.button(self.btnImport, e=True, enable=False)
         cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
         try:
-            for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True):
-                if cmds.iconTextRadioCollection(ctrl, exists=True): continue
-                cmds.deleteUI(ctrl)
+            for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True): cmds.deleteUI(ctrl)
         except: pass
+        self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
         self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
