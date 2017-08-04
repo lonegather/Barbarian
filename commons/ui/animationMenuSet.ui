@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>878</width>
+    <width>964</width>
     <height>51</height>
    </rect>
   </property>
@@ -664,6 +664,39 @@ QPushButton:pressed{
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animMSBtn_9">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ 软选簇 ≡</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *_: SoftClusterEX.launch()</string>
      </property>
     </widget>
    </item>

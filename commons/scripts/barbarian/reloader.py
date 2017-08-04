@@ -64,6 +64,9 @@ def doIt(rl=False):
         import barbarian.fx
         if rl: reload(barbarian.fx)
         
+        import SoftClusterEX
+        if rl: reload(SoftClusterEX)
+        
     except Exception, e: cmds.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
     
     if rl: reload(barbarian.reloader)
