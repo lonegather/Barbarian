@@ -226,6 +226,11 @@ class PlayblastOption(ui.QtUI):
         return now.strftime('%Y-%m-%d')
 
 
+def softClusterLaunch():
+    import SoftClusterEX
+    SoftClusterEX.launch()
+
+
 def cmdKeyframe():
     try: offset = int(cmds.textField("animOffsetInput", q=True, tx=True))
     except:
