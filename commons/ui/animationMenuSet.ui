@@ -263,7 +263,7 @@ QPushButton:pressed{
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
@@ -281,13 +281,13 @@ QPushButton:pressed{
        <widget class="QPushButton" name="animBtn">
         <property name="minimumSize">
          <size>
-          <width>45</width>
+          <width>44</width>
           <height>33</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>45</width>
+          <width>44</width>
           <height>16777215</height>
          </size>
         </property>
