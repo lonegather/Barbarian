@@ -36,6 +36,8 @@ class PlayblastOption(ui.QtUI):
             cmds.checkBox(self.HUDCB, e=True, value=True)
             cmds.optionVar(iv=("PutaoTools_HUD_Padding", 120))
         else: cmds.checkBox(self.HUDCB, e=True, value=False)
+        
+        cmds.checkBox(self.defaultCB, e=True, changeCommand=self.refreshUI)
       
     def changeHUD(self, pb=False):
         name = cmds.textField(self.textField, q=True, tx=True)

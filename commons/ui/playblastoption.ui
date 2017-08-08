@@ -276,9 +276,6 @@ QPushButton:pressed{
         <property name="text">
          <string>使用系统默认</string>
         </property>
-        <property name="+changeCommand" stdset="0">
-         <string>lambda *args: barbarian.anim.PlayblastOption.UI().refreshUI()</string>
-        </property>
        </widget>
       </item>
       <item row="2" column="0" colspan="2">
@@ -392,7 +389,7 @@ QPushButton:pressed{
           <string>拍屏</string>
          </property>
          <property name="+command" stdset="0">
-          <string>lambda *_: barbarian.anim.PlayblastOption.UI().changeHUD(True)</string>
+          <string>lambda *_: barbarian.anim.playblast.PlayblastOption.UI().changeHUD(True)</string>
          </property>
         </widget>
        </item>
@@ -420,7 +417,7 @@ QPushButton:pressed{
           <string>应用</string>
          </property>
          <property name="+command" stdset="0">
-          <string>lambda *_: barbarian.anim.PlayblastOption.UI().changeHUD()</string>
+          <string>lambda *_: barbarian.anim.playblast.PlayblastOption.UI().changeHUD()</string>
          </property>
         </widget>
        </item>

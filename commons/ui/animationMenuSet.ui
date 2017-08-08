@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>964</width>
+    <width>1027</width>
     <height>51</height>
    </rect>
   </property>
@@ -335,6 +335,99 @@ QPushButton:pressed{
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="animMSLine_12">
+     <property name="minimumSize">
+      <size>
+       <width>1</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animMSBtn_10">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>50</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit {
+    border: 1px solid gray;
+    border-radius: 6px;
+	border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    selection-background-color: black;
+}
+
+QPushButton{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(150, 150, 150, 255),
+									  stop:0.48 rgba(80, 80, 80, 255), 
+                                      stop:0.52 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(70, 70, 70, 255));
+	border-style: outset;
+	border-width: 0px;
+	border-radius: 3px;
+	border-color: gray;
+	padding: 6px;
+}
+
+QPushButton:hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(160, 120, 160, 255),
+									  stop:0.48 rgba(90, 60, 90, 255), 
+                                      stop:0.52 rgba(60, 30, 60, 255), 
+                                      stop:1 rgba(100, 50, 100, 255));
+}
+
+QPushButton:pressed{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(40, 40, 40, 255), 
+                                      stop:0.3 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(70, 70, 70, 255));
+	border-style: inset;
+}</string>
+     </property>
+     <property name="text">
+      <string>定脚步</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.anim.snapWorld()</string>
+     </property>
     </widget>
    </item>
    <item>

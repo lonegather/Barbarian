@@ -6,14 +6,26 @@ from maya import mel
 
 
 def snapWorld():
-    sel = cmds.ls(sl=True)
+    sels = cmds.ls(sl=True)
+    if not sels: return
     tc = mel.eval('$tmpVar=$gPlayBackSlider')
-    tcr = cmds.timeControl(tc, q=True, rangeArray=True)
-    tcRange = range(*[int(num) for num in tcr])
+    tcRange = range(*[int(num) for num in cmds.timeControl(tc, q=True, rangeArray=True)])
     if len(tcRange) == 1: tcRange.append(tcRange[0]+1)
-    print sel, tcRange
+    
+    for sel in sels:
+        cmds.currentTime(tcRange[0])
+        tw = cmds.xform(sel, q=True, worldSpace=True, translation=True)
+        rw = cmds.xform(sel, q=True, worldSpace=True, rotation=True)
+        for ct in tcRange[1:]:
+            cmds.currentTime(ct)
+            try: cmds.xform(sel, translation=tw, worldSpace=True)
+            except: pass
+            try: cmds.xform(sel, rotation=rw, worldSpace=True)
+            except: pass
+            cmds.setKeyframe(sel, shape=False)
     
     cmds.currentTime(tcRange[-1])
+    cmds.timeControl(tc, e=True, forceRefresh=True)
 
 
 def softClusterLaunch():
