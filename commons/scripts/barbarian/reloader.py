@@ -45,6 +45,8 @@ def doIt(rl=False):
         
         import barbarian.anim
         if rl: reload(barbarian.anim)
+        import barbarian.anim.playblast
+        if rl: reload(barbarian.anim.playblast)
         import barbarian.anim.motionLib
         if rl: reload(barbarian.anim.motionLib)
         import barbarian.anim.CreateProjectCamera

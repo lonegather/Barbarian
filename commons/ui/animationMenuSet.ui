@@ -306,7 +306,7 @@ QPushButton:pressed{
          <string>拍屏</string>
         </property>
         <property name="+command" stdset="0">
-         <string>lambda *args: barbarian.anim.PlayblastOption.playblast()</string>
+         <string>lambda *args: barbarian.anim.playblast.doIt()</string>
         </property>
        </widget>
       </item>
@@ -330,7 +330,7 @@ QPushButton:pressed{
          <string>≡</string>
         </property>
         <property name="+command" stdset="0">
-         <string>lambda *args: barbarian.anim.UI()</string>
+         <string>lambda *args: barbarian.anim.playblast.UI()</string>
         </property>
        </widget>
       </item>

@@ -332,24 +332,13 @@ class AnimRepository(ui.QtUI):
         outFile = cmds.textField(self.txtExportFile, q=True, tx=True)
         if not outFile: return
         filePath = self.path + "\\" + outFile + ".anim"
-        opt = "precision=8;intValue=17;nodeNames=1;verboseUnits=0;whichRange=2;"
-        opt += "range=%d:%d;" % (startTime, endTime)
-        opt += "options=curve;hierarchy=below;controlPoints=0;shapes=0;helpPictures=0;useChannelBox=0;"
-        opt += "copyKeyCmd=-animation objects "
-        opt += "-time >%d:%d> -float >%d:%d> " % (startTime, endTime, startTime, endTime)
-        opt += "-option curve -hierarchy below -controlPoints 0 -shape 0 "
         
         self.constructProxy()
         self.copyToProxy(startTime, endTime)
         cmds.select(self.grp)
         
-        try:
-            cmds.file(filePath, type="animExport", options=opt, 
-                 force=True, es=True, pr=True)
-        except Exception, e:
-            cmds.confirmDialog(message=u"导出文件时出现问题：%s"%e, icon="warning")
-            self.destructProxy()
-            return
+        motionExport = getattr(cmds, "motionExport")
+        motionExport(f=filePath, st=startTime, et=endTime)
         
         self.destructProxy()
         cmds.pause(sec=1)

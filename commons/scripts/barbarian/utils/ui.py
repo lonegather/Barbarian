@@ -158,22 +158,37 @@ class QtUI(object):
 
 class Control(object):
     def __init__(self, name):
+        if not cmds.control(name, exists=True):
+            cmds.warning("Control '%s' not found."%name)
         self.__name = name
         
     def __str__(self):
         return self.__name
     
     @property
-    def name(self):
-        return self.__name
-    
-    @property
     def annotation(self):
-        try: return self.__annotation
-        except: self.__annotation = ""
-        return self.__annotation
+        try: return cmds.control(self, q=True, annotation=True)
+        except: return None
     
     @annotation.setter
     def annotation(self, ann):
-        print "%s.annotation = %s"%(self.__name, ann)
-        self.__annotation = ann
+        try: cmds.control(self, e=True, annotation=ann)
+        except: return
+    
+    @property
+    def ann(self):
+        return self.annotation
+    
+    @ann.setter
+    def ann(self, ann):
+        self.annotation = ann
+        
+    @property
+    def backgroundColor(self):
+        try: return cmds.control(self, q=True, backgroundColor=True)
+        except: return None
+        
+    @backgroundColor.setter
+    def backgroundColor(self, bgc):
+        try: cmds.control(self, e=True, backgroundColor=bgc)
+        except: return
