@@ -6,8 +6,7 @@ Created on 2017.8.8
 @author: Serious Sam
 '''
 
-from maya import cmds
-from maya import mel
+from maya import cmds, mel
 from barbarian.utils import ui, getPath, getConfig, kBinary
 import os
 

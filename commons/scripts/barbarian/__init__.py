@@ -6,11 +6,11 @@ Created on 2017.6.9
 @author: Serious Sam
 '''
 
-from maya import cmds
-from maya import mel
+from maya import cmds, mel
 from utils import config
 import maya.OpenMaya as om
 import reloader
+
 
 class Entrance(object):
     '''

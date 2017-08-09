@@ -1,8 +1,7 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
 
-from maya import cmds
-from maya import mel
+from maya import cmds, mel
 
 
 def snapWorld():
