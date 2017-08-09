@@ -14,6 +14,7 @@ def snapWorld():
     
     for sel in sels:
         cmds.currentTime(tcRange[0])
+        cmds.setKeyframe(sel, shape=False)
         tw = cmds.xform(sel, q=True, worldSpace=True, translation=True)
         rw = cmds.xform(sel, q=True, worldSpace=True, rotation=True)
         for ct in tcRange[1:]:
