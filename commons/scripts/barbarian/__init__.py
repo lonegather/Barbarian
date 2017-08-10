@@ -90,7 +90,7 @@ class Entrance(object):
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
             
             cmds.optionMenu(self.menu, e=True, l="", v=getProject())
-            cmds.currentUnit(time=getConfig(time=True))
+            cmds.currentUnit(time=getConfig(time=True), updateAnimation=False)
             cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig(camResX=True))
             cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig(camResY=True))
         elif getProject(all=True): 

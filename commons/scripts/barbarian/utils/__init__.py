@@ -203,7 +203,7 @@ Configuration Setup at Maya Startup
 --------------------------------------------------------------------------------
 '''
 #initialize plugins
-for plugin in ["CustomDeformers", "animImportExport", "MLIECmd"]:
+for plugin in ["animImportExport", "MLIECmd"]:
     try: cmds.loadPlugin(plugin, quiet=True)
     except: pass
 
