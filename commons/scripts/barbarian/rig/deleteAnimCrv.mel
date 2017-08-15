@@ -10,27 +10,30 @@ string $dele = `delete $animTA $animTL $animTU`;
 
 int $amount = 0;
 progressWindow
-     -title "Working"
+     -title "进程"
      -progress $amount
-     -status "删除中: 0%"
+     -status "Progression: 0%"
      -isInterruptable true;
      
-while (true) {
+while ($amount<=5) {
      if ( `progressWindow -query -isCancelled` ) break;
      
      if ( `progressWindow -query -progress` >= 100 ) break;
 
-    $amount += 1;
+    $amount += 5;
     
     progressWindow -edit
          -progress $amount
-         -status ("删除中: "+$amount+"%");
+         -status ("清理中: "+$amount+"%");
+         
+	pause -seconds 1;
+
 
      }
 
 progressWindow -endProgress;
 
-confirmDialog -title "进程" -message "关键帧已删除"
+confirmDialog -title "进程" -message "关键帧已清除"
     -button "确认"  -defaultButton "Yes"
     -cancelButton "No" -dismissString "No";
 
