@@ -54,7 +54,7 @@ class PlayblastOption(ui.QtUI):
             self.playblast()
             self.close()
         
-    def refreshUI(self):
+    def refreshUI(self, *_):
         if cmds.checkBox(self.defaultCB, q=True, value=True): 
             cmds.textField(self.textField, e=True, enable=False)
         else: 
