@@ -788,7 +788,7 @@ def readIndexFile(directory=None):
 
 
 def readCfgFile(directory=None):
-    from barbarian.utils import getPath
+    from barbarian.utils.config import getPath
     # Delete me!
     if os.path.exists('F:/maya_scripts/my_scripts/poseLib'):
         directory = 'F:/maya_scripts/my_scripts/poseLib'

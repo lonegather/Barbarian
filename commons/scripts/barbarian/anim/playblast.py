@@ -7,7 +7,8 @@ Created on 2017.8.8
 '''
 
 from maya import cmds, mel
-from barbarian.utils import ui, getPath, getConfig, kBinary
+from barbarian.utils import ui
+from barbarian.utils.config import getConfig, getPath, kBinary
 import os
 
 
@@ -68,13 +69,11 @@ class PlayblastOption(ui.QtUI):
         
         try: fullPath.decode("utf-8")
         except:
-            cmds.confirmDialog(message=u'请勿使用中文路径或文件名',ma="center", 
-                      icon="information", title=u"PuTao")
+            cmds.headsUpMessage(u'请勿使用中文路径或文件名', time=3)
             return
         
         if fileName == '' :
-            cmds.confirmDialog(message=u'文件未保存',ma="center", 
-                      icon="information", title=u"PuTao")
+            cmds.headsUpMessage(u'文件未保存', time=3)
             return
         
         videoNameList = fileName.split(".")
@@ -122,10 +121,10 @@ class PlayblastOption(ui.QtUI):
             
             cmds.select(clear=True)
         
-        cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig(camResX=True))
-        cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig(camResY=True))
+        cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig('camResX'))
+        cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig('camResY'))
         ha = cmds.getAttr(cam+".verticalFilmAperture")
-        ar = float(getConfig(camResX=True))/float(getConfig(camResY=True))
+        ar = float(getConfig('camResX'))/float(getConfig('camResY'))
         cmds.setAttr(cam+".horizontalFilmAperture", lock=False)
         cmds.setAttr(cam+".horizontalFilmAperture", ha*ar)
         cmds.setAttr("%s.deviceAspectRatio"%cmds.ls(renderResolutions=True)[0], ar)
@@ -136,25 +135,25 @@ class PlayblastOption(ui.QtUI):
             if soundObj :
                 playblastFile = cmds.playblast(sound=soundObj, combineSound=True,
                                                st=startFrame, et=endFrame, 
-                                               widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
-                                               percent=getConfig(playblastScale=True), 
+                                               widthHeight=[getConfig('camResX'), getConfig('camResY')+padding], 
+                                               percent=getConfig('playblastScale'), 
                                                filename=videoPath, forceOverwrite=True, 
                                                format='avi', compression='none', quality=100, 
                                                clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
             else :
                 playblastFile = cmds.playblast(st=startFrame, et=endFrame, 
-                                               widthHeight=[getConfig(camResX=True), getConfig(camResY=True)+padding], 
-                                               percent=getConfig(playblastScale=True), 
+                                               widthHeight=[getConfig('camResX'), getConfig('camResY')+padding], 
+                                               percent=getConfig('playblastScale'), 
                                                filename=videoPath, forceOverwrite=True, 
                                                format='avi', compression='none', quality=100, 
                                                clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
         except: 
             cls.__clearHUD__()
-            cmds.setAttr(cam+".filmFit", getConfig(camFilmFit=True))
+            cmds.setAttr(cam+".filmFit", getConfig('camFilmFit'))
             return
         
         cls.__clearHUD__()
-        cmds.setAttr(cam+".filmFit", getConfig(camFilmFit=True))
+        cmds.setAttr(cam+".filmFit", getConfig('camFilmFit'))
         
         if playblastFile:    
             mp = getPath(kBinary, "ffmpeg")
@@ -187,6 +186,11 @@ class PlayblastOption(ui.QtUI):
                             blockSize="large", 
                             command=cls.__animator__, attachToRefresh=True)
         
+        cmds.headsUpDisplay("HUD_Check", section=5, block=0, label=cls.__check__(),
+                            dataFontSize="large", 
+                            labelFontSize="large", 
+                            blockSize="large")
+        
         cmds.headsUpDisplay("HUD_Camera", section=7, block=0, label="Camera:",
                             dataFontSize="large", 
                             labelFontSize="large", 
@@ -211,6 +215,10 @@ class PlayblastOption(ui.QtUI):
         return "%d(%d-%d)"%(cmds.currentTime(q=True), start, end)
     
     @classmethod
+    def __file__(cls):
+        return cmds.file(q=1, sn=1, shn=1).split(".")[0]
+    
+    @classmethod
     def __animator__(cls):
         if cmds.optionVar(exists="PutaoTools_HUD_Animator"):
             return cmds.optionVar(q="PutaoTools_HUD_Animator")
@@ -219,8 +227,22 @@ class PlayblastOption(ui.QtUI):
             return getpass.getuser()
         
     @classmethod
-    def __file__(cls):
-        return cmds.file(q=1, sn=1, shn=1).split(".")[0]
+    def __check__(cls):
+        sf = getConfig("startFrame")
+        mt = int(cmds.playbackOptions(q=1, minTime=1))
+        if sf != mt:
+            cmds.displayColor("headsUpDisplayLabels", 13)
+            cmds.displayColor("headsUpDisplayValues", 16)
+            return u"初始帧不是第%s帧"%sf
+        
+        if len(cmds.ls(type='animLayer'))>1:
+            cmds.displayColor("headsUpDisplayLabels", 13)
+            cmds.displayColor("headsUpDisplayValues", 16)
+            return u"发现动画层信息"
+            
+        cmds.displayColor("headsUpDisplayLabels", 14)
+        cmds.displayColor("headsUpDisplayValues", 16)
+        return ""
     
     @classmethod
     def __camera__(cls):

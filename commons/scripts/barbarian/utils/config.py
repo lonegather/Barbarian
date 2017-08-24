@@ -6,35 +6,60 @@ Created on 2017.7.17
 @author: Serious Sam
 '''
 
-import sys, os
-import xml.dom.minidom
+import os
+from xml.dom import minidom
 from maya import cmds
-from barbarian.utils import ui, getPath
 
 
-class Main(ui.QtUI):
-    def setup(self):
-        self.scrollField = cmds.scrollField("PuTaoMainTE", q=True, fpn=True)
-        
-    def getEnv(self, env):
-        cmds.scrollField("PuTaoMainTE", e=True, clear=True)
-        cmds.scrollField("PuTaoMainTE", e=True, tx="%s:\n"%env)
-        paths = os.getenv(env).split(';')
-        for p in paths:
-            cmds.scrollField("PuTaoMainTE", e=True, ip=0, it="%s\n"%p)
+__all__ = ["getProject", "setProject", "getConfig",
+           "getPath", "kIcon", "kBinary", "kUI"]
+
+
+kIcon = "../commons/icons/"
+kBinary = "../commons/bin/"
+kUI = "../commons/ui/"
+
+
+def getPath(key="", f=""):
+    '''
+    --------------------------------------------------------------------------------
+    Provide Framework Paths
+    --------------------------------------------------------------------------------
+    '''
+    path = os.getenv("BARBARIAN_LOCATION")
+    return path + key + f
+
+
+def getProject(**kwargs):
+    '''
+    --------------------------------------------------------------------------------
+    Get Current Project or List of Projects Available
+    --------------------------------------------------------------------------------
+    '''
+    return Config.getProject(**kwargs)
+
+
+def setProject(prj):
+    '''
+    --------------------------------------------------------------------------------
+    Set Current Project
+    --------------------------------------------------------------------------------
+    '''
+    Config.setProject(prj)
     
-    def debug(self, *_):
-        path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"
-        if path not in sys.path: sys.path.append(path)
-        try: import pydevd
-        except: return
-        else: pydevd.settrace(stdoutToServer=True, stderrToServer=True, suspend=False)
+    
+def getConfig(var):
+    '''
+    --------------------------------------------------------------------------------
+    Provide Project Configuration
+    --------------------------------------------------------------------------------
+    '''
+    return Config.getConfig(var)
 
 
 class Config(object):
     
     __instance = None
-    __dic = {}
     
     @classmethod
     def instance(cls):
@@ -43,16 +68,18 @@ class Config(object):
         return cls.__instance
     
     @classmethod
-    def getConfig(cls, **kwargs):
+    def getConfig(cls, args):
         if not cls.getProject(all=True):
             cmds.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
             raise Exception(u"项目配置异常")
         elif not cls.getProject():
             cls.setProject(cmds.layoutDialog(ui=cls.__prompt__))
         
-        attrList = ["time", "linear", "camera", "camResX", "camResY", "camFilmFit", "playblastScale", "animLibPath", "facialLibPath"]
+        attrList = ["time", "linear", "startFrame", 
+                    "camera", "camResX", "camResY", "camFilmFit", "playblastScale", 
+                    "animLibPath", "facialLibPath"]
         for attr in attrList:
-            if attr in kwargs and kwargs[attr]:
+            if attr == args:
                 for project in cls.instance().data:
                     if project["name"] == cls.getProject(): return project[attr]
                     
@@ -90,17 +117,8 @@ class Config(object):
     def setProject(cls, name):
         for project in cls.instance().data:
             if project["name"] == name:
-                cmds.optionVar(sv=("PutaoTools_Project", name))
-                cmds.optionVar(sv=("PutaoTools_Project_Time", project["time"]))
-                cmds.optionVar(sv=("PutaoTools_Project_Linear", project["linear"]))
-                cmds.optionVar(sv=("PutaoTools_Project_Camera", project["camera"]))
-                cmds.optionVar(iv=("PutaoTools_Project_CamResX", project["camResX"]))
-                cmds.optionVar(iv=("PutaoTools_Project_CamResY", project["camResY"]))
-                cmds.optionVar(iv=("PutaoTools_Project_CamFilmFit", project["camFilmFit"]))
-                cmds.optionVar(fv=("PutaoTools_Project_PlayblastScale", project["playblastScale"]))
-                cmds.optionVar(sv=("PutaoTools_Project_AnimLibPath", project["animLibPath"]))
-                cmds.optionVar(sv=("PutaoTools_Project_FacialLibPath", project["facialLibPath"]))
-                
+                cmds.optionVar(sv=("PutaoTools_Project", project["name"]))
+
                 cmds.condition("ProjectChanged", e=True, state=not cmds.condition("ProjectChanged", q=True, state=True))
         
     
@@ -129,24 +147,31 @@ class Config(object):
                                     (btn,'bottom',edge)])
     
     def __init__(self, filePath):
-        dom = xml.dom.minidom.parse(filePath)
+        try: dom = minidom.parse(filePath)
+        except:
+            cmds.confirmDialog(message=u"加载配置出现问题，无法读取项目列表", title=u"PuTao", icon="warning")
+            cmds.optionVar(rm="PutaoTools_Project")
+            self.root = None
+            return
         self.root = dom.documentElement
-    
-    def __getitem__(self, key):
-        if key in self.__dic:
-            return self.__dic[key]
-        return None
-    
-    def __setitem__(self, key, value):
-        self.__dic[key] = value
     
     @property    
     def data(self):
         projects = []
-        for node in self.root.childNodes:
-            if node.nodeType == self.root.ELEMENT_NODE:
-                projects.append({"name":node.getAttribute('name')})
-        
+        if not self.root: return projects
+        for project in self.root.childNodes:
+            if project.nodeType == self.root.ELEMENT_NODE:
+                projects.append({"name":project.getAttribute('name')})
+                
+                for var in project.childNodes:
+                    if var.nodeType == var.ELEMENT_NODE:
+                        attrType = var.getAttribute('type')
+                        if attrType == 'int':
+                            projects[-1][var.nodeName] = int(var.childNodes[0].nodeValue)
+                        elif attrType == 'float':
+                            projects[-1][var.nodeName] = float(var.childNodes[0].nodeValue)
+                        else: projects[-1][var.nodeName] = var.childNodes[0].nodeValue
+                
         return projects
         
     

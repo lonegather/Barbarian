@@ -10,10 +10,15 @@ import os
 import maya.OpenMaya as om
 
 from maya import cmds
-from barbarian.utils import ui, getProject, setProject, getConfig
+from barbarian.utils import ui
+from barbarian.utils.config import getProject, setProject, getConfig
 
 
 def UI(*_):
+    for plugin in ["animImportExport", "MLIECmd"]:
+        try: cmds.loadPlugin(plugin, quiet=True)
+        except: pass
+    
     AnimRepository("motionLib",
                    container      = "motionLibMayaControlLocator",
                    tab            = "motionLibTab",
@@ -106,7 +111,7 @@ class AnimRepository(ui.QtUI):
         self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
-        self.path = getConfig(animLibPath=True) + self.getOrigChar(self.namespace.split(":")[-1])
+        self.path = getConfig('animLibPath') + self.getOrigChar(self.namespace.split(":")[-1])
         
         fileList = self.getFileList(self.path)
         exp = cmds.textField(self.txtFilter, q=True, tx=True)
@@ -165,7 +170,7 @@ class AnimRepository(ui.QtUI):
         cmds.namespace(set = ":")
         time = int(cmds.currentTime(q=True))
         copy = cmds.intSlider(self.isImport, q=True, value=True)
-        filePath = "%s%s\\%s.anim"%(getConfig(animLibPath=True), self.getOrigChar(self.namespace.split(":")[-1]), sel)
+        filePath = "%s%s\\%s.anim"%(getConfig('animLibPath'), self.getOrigChar(self.namespace.split(":")[-1]), sel)
         mode = "insert"
         if cmds.radioButton(self.rbMerge, q=True, select = True): mode = "merge"
         cfg = {"copy":copy, "file":filePath, "time":time, "mode":mode}
@@ -186,7 +191,7 @@ class AnimRepository(ui.QtUI):
     def getCharacters(self):
         cmds.namespace(set = ":")
         refs = cmds.file(q=True, reference=True)
-        fileList = self.getDirectoryList(getConfig(animLibPath=True))
+        fileList = self.getDirectoryList(getConfig('animLibPath'))
         newNS = []
         for ref in refs:
             if not cmds.referenceQuery(ref, isLoaded=True): continue

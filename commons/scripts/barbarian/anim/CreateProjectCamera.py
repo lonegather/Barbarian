@@ -2,18 +2,18 @@
 # encoding: utf-8
 
 from maya import cmds
-from barbarian.utils import getConfig
+from barbarian.utils.config import getConfig
 
 def doIt():
-    cameraName = getConfig(camera=True)
+    cameraName = getConfig('camera')
     listCam = cmds.listCameras(perspective=True)
     
     if not cameraName in listCam:
         cmds.camera(name=cameraName, displayResolution=True)
         cmds.rename(cameraName)
         
-    cmds.setAttr("defaultResolution.width", getConfig(camResX=True))
-    cmds.setAttr("defaultResolution.height", getConfig(camResY=True))
+    cmds.setAttr("defaultResolution.width", getConfig('camResX'))
+    cmds.setAttr("defaultResolution.height", getConfig('camResY'))
     cmds.select(cameraName, r=True)
       
     try:

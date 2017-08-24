@@ -7,7 +7,8 @@ Created on 2017.6.9
 '''
 
 from maya import cmds, mel
-from utils import config
+from utils import main
+from utils.config import *
 import maya.OpenMaya as om
 import reloader
 
@@ -19,8 +20,6 @@ class Entrance(object):
     --------------------------------------------------------------------------------
     '''
     def __init__(self, layout):
-        from barbarian.utils import getPath, getProject, setProject, kIcon, kUI
-        
         if cmds.control("itBtn", exists=True):
             cmds.deleteUI("itBtn")
             cmds.deleteUI("opMnu")
@@ -28,7 +27,7 @@ class Entrance(object):
         self.layout = layout
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2,0.2,0.2], spacing=3)
         self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33, 
-            image=getPath(kIcon, "logo.png"), parent=layout, command=lambda *_: config.Main("main"))
+            image=getPath(kIcon, "logo.png"), parent=layout, command=main.UI)
         
         cmds.loadUI(f=getPath(kUI, "entrance.ui"))
         self.menu = cmds.layout("entranceLayout", q=True, ca=True)[0]
@@ -48,6 +47,9 @@ class Entrance(object):
         cmds.menuItem(label=u'特效', radioButton=(currentMode == "dynamicsMenuSet"),
                     command=lambda *_: cmds.setMenuMode("dynamicsMenuSet"))
         
+        try: cmds.condition("ProjectChanged", delete=True)
+        except: pass
+        cmds.condition("ProjectChanged", state=True)
         cmds.scriptJob(event=["MenuModeChanged", self.__build__], parent=self.button)
         cmds.scriptJob(event=["NewSceneOpened", self.__refreshUI__], parent=self.menu)
         cmds.scriptJob(event=["timeUnitChanged", self.__refreshUI__], parent=self.menu)
@@ -59,8 +61,6 @@ class Entrance(object):
         self.__refreshUI__()
     
     def __build__(self):
-        from barbarian.utils import getPath, kUI
-        
         while cmds.control("menuSetForm", exists=True): cmds.deleteUI("menuSetForm")
         widgets = cmds.layout(self.layout, q=True, ca=True)
         for widget in widgets:
@@ -82,17 +82,15 @@ class Entrance(object):
             position += 1
 
     def __refreshUI__(self):
-        from barbarian.utils import getProject, getConfig
-        
         if getProject(): 
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
                 projects = getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
             
             cmds.optionMenu(self.menu, e=True, l="", v=getProject())
-            cmds.currentUnit(time=getConfig(time=True), updateAnimation=False)
-            cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig(camResX=True))
-            cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig(camResY=True))
+            cmds.currentUnit(time=getConfig('time'), updateAnimation=False)
+            cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig('camResX'))
+            cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig('camResY'))
         elif getProject(all=True): 
             cmds.optionMenu(self.menu, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
@@ -117,7 +115,7 @@ Tool Initialization at Maya Startup
 #initialize entrance
 if not cmds.shelfLayout("PuTao", exists=True):
     mel.eval("addNewShelfTab \"PuTao\";")
-Entrance(cmds.shelfLayout("PuTao", q=True, fpn=True))
+tool = Entrance(cmds.shelfLayout("PuTao", q=True, fpn=True))
 
 reloader.doIt()
 

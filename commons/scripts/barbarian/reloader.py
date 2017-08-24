@@ -17,12 +17,14 @@ def doIt(rl=False):
     try: 
         import barbarian.utils
         if rl: reload(barbarian.utils)
+        import barbarian.utils.config
+        if rl: reload(barbarian.utils.config)
         import barbarian.utils.ui
         if rl: 
             barbarian.utils.ui.QtUI.cleanUp()
             reload(barbarian.utils.ui)
-        import barbarian.utils.config
-        if rl: reload(barbarian.utils.config)
+        import barbarian.utils.main
+        if rl: reload(barbarian.utils.main)
         
         import barbarian.cgtw
         if rl: reload(barbarian.cgtw)
@@ -71,4 +73,4 @@ def doIt(rl=False):
         
     except Exception, e: cmds.confirmDialog(message=u'加载异常：%s'%e, title=u"PuTao", icon="critical")
     
-    if rl: reload(barbarian.reloader)
+    if rl: barbarian.tool.__refreshUI__()

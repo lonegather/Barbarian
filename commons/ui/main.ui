@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>PuTaoMain</class>
  <widget class="QMainWindow" name="PuTaoMain">
-  <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -262,7 +259,7 @@ p, li { white-space: pre-wrap; }
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButton_11">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvBarbarian">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -275,13 +272,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('BARBARIAN_LOCATION')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvLocation">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -294,13 +288,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('MAYA_LOCATION')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_8">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvScript">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -313,13 +304,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('MAYA_SCRIPT_PATH')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_10">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvIcon">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -332,13 +320,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('XBMLANGPATH')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_9">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvPython">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -351,13 +336,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('PYTHONPATH')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvPlugin">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -370,13 +352,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('MAYA_PLUG_IN_PATH')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_4">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvAppDir">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -389,13 +368,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('MAYA_APP_DIR')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_6">
+       <widget class="QPushButton" name="PutaoMainBtnGetEnvModule">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -408,13 +384,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().getEnv('MAYA_MODULE_PATH')</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="PutaoMainBtnDebug">
         <property name="maximumSize">
          <size>
           <width>10</width>
@@ -427,13 +400,10 @@ p, li { white-space: pre-wrap; }
         <property name="+visible" stdset="0">
          <string>False</string>
         </property>
-        <property name="+command" stdset="0">
-         <string>lambda *_: barbarian.utils.config.Main.UI().debug()</string>
-        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="PutaoMainBtnReload">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -451,9 +421,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>重载/更新</string>
-        </property>
-        <property name="+command" stdset="0">
-         <string>lambda *args: barbarian.reloader.doIt(True)</string>
         </property>
        </widget>
       </item>
@@ -613,7 +580,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionDebug</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_3</receiver>
+   <receiver>PutaoMainBtnDebug</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -629,7 +596,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionBARBARIAN_LOCATION</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_11</receiver>
+   <receiver>PutaoMainBtnGetEnvBarbarian</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -645,7 +612,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionMAYA_APP_DIR</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_4</receiver>
+   <receiver>PutaoMainBtnGetEnvAppDir</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -661,7 +628,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionMAYA_LOCATION</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_5</receiver>
+   <receiver>PutaoMainBtnGetEnvLocation</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -677,7 +644,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionMAYA_MODULE_PATH</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_6</receiver>
+   <receiver>PutaoMainBtnGetEnvModule</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -693,7 +660,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionMAYA_PLUG_IN_PATH</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_7</receiver>
+   <receiver>PutaoMainBtnGetEnvPlugin</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -709,7 +676,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionMAYA_SCRIPT_PATH</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_8</receiver>
+   <receiver>PutaoMainBtnGetEnvScript</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -725,7 +692,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionPYTHONPATH</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_9</receiver>
+   <receiver>PutaoMainBtnGetEnvPython</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -741,7 +708,7 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>actionXBMLANGPATH</sender>
    <signal>triggered()</signal>
-   <receiver>pushButton_10</receiver>
+   <receiver>PutaoMainBtnGetEnvIcon</receiver>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">

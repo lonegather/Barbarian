@@ -11,7 +11,6 @@ import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 
 from maya import cmds
-from barbarian.utils import getPath, kUI
 
 
 class QtUI(object):
@@ -46,6 +45,8 @@ class QtUI(object):
             if cls.__UI[ui]: cls.__UI[ui].close()
     
     def __init__(self, uiFile, **info):
+        from barbarian.utils.config import getPath, kUI
+        
         try: cmds.deleteUI(self.__UI[self.__class__].window)
         except: pass
         self.window = cmds.loadUI(f=getPath(kUI, "%s.ui"%uiFile))
