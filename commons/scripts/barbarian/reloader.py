@@ -7,6 +7,7 @@ Created on 2017.7.10
 '''
 
 from maya import cmds
+from bdb import bar
 
 def doIt(rl=False):
     if rl: 
@@ -51,6 +52,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.anim.playblast)
         import barbarian.anim.motionLib
         if rl: reload(barbarian.anim.motionLib)
+        import barbarian.anim.resourceLib
+        if rl: reload(barbarian.anim.resourceLib)
         import barbarian.anim.CreateProjectCamera
         if rl: reload(barbarian.anim.CreateProjectCamera)
         import barbarian.anim.poseLibModule
