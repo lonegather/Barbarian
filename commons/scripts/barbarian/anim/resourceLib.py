@@ -7,8 +7,7 @@ Created on 2017.8.25
 '''
 
 from maya import cmds
-from barbarian.utils import ui
-from barbarian.utils.config import getProject, setProject
+from barbarian.utils import ui, config
 
 
 def UI(*_):
@@ -23,7 +22,7 @@ def UI(*_):
 
 class ResourceRepository(ui.QtUI):
     def setup(self):
-        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
+        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
         self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshData], parent=self.window)
@@ -31,16 +30,16 @@ class ResourceRepository(ui.QtUI):
         self.refreshData()
     
     def refreshData(self, *_):
-        if getProject(): 
+        if config.getProject(): 
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
-                projects = getProject(all=True)
+                projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
-            cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
-        elif getProject(all=True): 
+            cmds.optionMenu(self.opMnuProject, e=True, v=config.getProject())
+        elif config.getProject(all=True): 
             cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
-                projects = getProject(all=True)
+                projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
             return
         else: 

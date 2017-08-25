@@ -1,4 +1,7 @@
-﻿from maya import cmds
+#!/usr/local/bin/python2.7
+# encoding: utf-8
+
+from maya import cmds
 
 class checkingBoxCmd:
     label = 'checking'

@@ -7,8 +7,7 @@ Created on 2017.6.9
 '''
 
 from maya import cmds, mel
-from utils import main
-from utils.config import *
+from utils import main, config
 import maya.OpenMaya as om
 import reloader
 
@@ -27,11 +26,11 @@ class Entrance(object):
         self.layout = layout
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2,0.2,0.2], spacing=3)
         self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33, 
-            image=getPath(kIcon, "logo.png"), parent=layout, command=main.UI)
+            image=config.getPath(config.kIcon, "logo.png"), parent=layout, command=main.UI)
         
-        cmds.loadUI(f=getPath(kUI, "entrance.ui"))
+        cmds.loadUI(f=config.getPath(config.kUI, "entrance.ui"))
         self.menu = cmds.layout("entranceLayout", q=True, ca=True)[0]
-        cmds.optionMenu(self.menu, e=True, parent=layout, width=60, changeCommand=setProject)
+        cmds.optionMenu(self.menu, e=True, parent=layout, width=60, changeCommand=config.setProject)
         cmds.deleteUI("entranceForm")
         
         currentMode = cmds.setMenuMode()
@@ -68,7 +67,7 @@ class Entrance(object):
             if (not isShelfButton) and widget.find("itBtn")==-1 and widget != self.menu:
                 cmds.deleteUI(widget)
         
-        try: cmds.loadUI(f=getPath(kUI, "%s.ui" % cmds.setMenuMode()))
+        try: cmds.loadUI(f=config.getPath(config.kUI, "%s.ui" % cmds.setMenuMode()))
         except: return
 
         cmds.shelfLayout(self.layout, e=True, position=(self.button, 1))
@@ -82,19 +81,19 @@ class Entrance(object):
             position += 1
 
     def __refreshUI__(self):
-        if getProject(): 
+        if config.getProject(): 
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
-                projects = getProject(all=True)
+                projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
             
-            cmds.optionMenu(self.menu, e=True, l="", v=getProject())
-            cmds.currentUnit(time=getConfig('time'), updateAnimation=False)
-            cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig('camResX'))
-            cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig('camResY'))
-        elif getProject(all=True): 
+            cmds.optionMenu(self.menu, e=True, l="", v=config.getProject())
+            cmds.currentUnit(time=config.getConfig('time'), updateAnimation=False)
+            cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResX'))
+            cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResY'))
+        elif config.getProject(all=True): 
             cmds.optionMenu(self.menu, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
-                projects = getProject(all=True)
+                projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
         else: 
             if cmds.optionMenu(self.menu, q=True, numberOfItems=True): 

@@ -10,8 +10,7 @@ import os
 import maya.OpenMaya as om
 
 from maya import cmds
-from barbarian.utils import ui
-from barbarian.utils.config import getProject, setProject, getConfig
+from barbarian.utils import ui, config
 
 
 def UI(*_):
@@ -47,7 +46,7 @@ class AnimRepository(ui.QtUI):
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
         
-        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=setProject)
+        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
         cmds.textField(self.txtFilter, e=True, textChangedCommand=self.refreshData)
         cmds.textField(self.txtExportFile, e=True, textChangedCommand=self.refreshBtn)
@@ -63,17 +62,17 @@ class AnimRepository(ui.QtUI):
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
-        if getProject(): 
+        if config.getProject(): 
             cmds.control(self.tab, e=True, visible=True)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
-                projects = getProject(all=True)
+                projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
-        elif getProject(all=True): 
+        elif config.getProject(all=True): 
             cmds.control(self.tab, e=True, visible=False)
             cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
-                projects = getProject(all=True)
+                projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
             return
         else: 
@@ -104,14 +103,14 @@ class AnimRepository(ui.QtUI):
         self.__select = []
         cmds.namespace(set = ":")
         cmds.button(self.btnImport, e=True, enable=False)
-        cmds.optionMenu(self.opMnuProject, e=True, v=getProject())
+        cmds.optionMenu(self.opMnuProject, e=True, v=config.getProject())
         try:
             for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True): cmds.deleteUI(ctrl)
         except: pass
         self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
         if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
         self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
-        self.path = getConfig('animLibPath') + self.getOrigChar(self.namespace.split(":")[-1])
+        self.path = config.getConfig('animLibPath') + self.getOrigChar(self.namespace.split(":")[-1])
         
         fileList = self.getFileList(self.path)
         exp = cmds.textField(self.txtFilter, q=True, tx=True)
@@ -170,7 +169,7 @@ class AnimRepository(ui.QtUI):
         cmds.namespace(set = ":")
         time = int(cmds.currentTime(q=True))
         copy = cmds.intSlider(self.isImport, q=True, value=True)
-        filePath = "%s%s\\%s.anim"%(getConfig('animLibPath'), self.getOrigChar(self.namespace.split(":")[-1]), sel)
+        filePath = "%s%s\\%s.anim"%(config.getConfig('animLibPath'), self.getOrigChar(self.namespace.split(":")[-1]), sel)
         mode = "insert"
         if cmds.radioButton(self.rbMerge, q=True, select = True): mode = "merge"
         cfg = {"copy":copy, "file":filePath, "time":time, "mode":mode}
@@ -191,7 +190,7 @@ class AnimRepository(ui.QtUI):
     def getCharacters(self):
         cmds.namespace(set = ":")
         refs = cmds.file(q=True, reference=True)
-        fileList = self.getDirectoryList(getConfig('animLibPath'))
+        fileList = self.getDirectoryList(config.getConfig('animLibPath'))
         newNS = []
         for ref in refs:
             if not cmds.referenceQuery(ref, isLoaded=True): continue

@@ -7,8 +7,7 @@ Created on 2017.8.8
 '''
 
 from maya import cmds, mel
-from barbarian.utils import ui
-from barbarian.utils.config import getConfig, getPath, kBinary
+from barbarian.utils import ui, config
 import os
 
 
@@ -121,10 +120,10 @@ class PlayblastOption(ui.QtUI):
             
             cmds.select(clear=True)
         
-        cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], getConfig('camResX'))
-        cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], getConfig('camResY'))
+        cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResX'))
+        cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResY'))
         ha = cmds.getAttr(cam+".verticalFilmAperture")
-        ar = float(getConfig('camResX'))/float(getConfig('camResY'))
+        ar = float(config.getConfig('camResX'))/float(config.getConfig('camResY'))
         cmds.setAttr(cam+".horizontalFilmAperture", lock=False)
         cmds.setAttr(cam+".horizontalFilmAperture", ha*ar)
         cmds.setAttr("%s.deviceAspectRatio"%cmds.ls(renderResolutions=True)[0], ar)
@@ -135,28 +134,28 @@ class PlayblastOption(ui.QtUI):
             if soundObj :
                 playblastFile = cmds.playblast(sound=soundObj, combineSound=True,
                                                st=startFrame, et=endFrame, 
-                                               widthHeight=[getConfig('camResX'), getConfig('camResY')+padding], 
-                                               percent=getConfig('playblastScale'), 
+                                               widthHeight=[config.getConfig('camResX'), config.getConfig('camResY')+padding], 
+                                               percent=config.getConfig('playblastScale'), 
                                                filename=videoPath, forceOverwrite=True, 
                                                format='avi', compression='none', quality=100, 
                                                clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
             else :
                 playblastFile = cmds.playblast(st=startFrame, et=endFrame, 
-                                               widthHeight=[getConfig('camResX'), getConfig('camResY')+padding], 
-                                               percent=getConfig('playblastScale'), 
+                                               widthHeight=[config.getConfig('camResX'), config.getConfig('camResY')+padding], 
+                                               percent=config.getConfig('playblastScale'), 
                                                filename=videoPath, forceOverwrite=True, 
                                                format='avi', compression='none', quality=100, 
                                                clearCache=True, viewer=False, showOrnaments=True, offScreen=False)
         except: 
             cls.__clearHUD__()
-            cmds.setAttr(cam+".filmFit", getConfig('camFilmFit'))
+            cmds.setAttr(cam+".filmFit", config.getConfig('camFilmFit'))
             return
         
         cls.__clearHUD__()
-        cmds.setAttr(cam+".filmFit", getConfig('camFilmFit'))
+        cmds.setAttr(cam+".filmFit", config.getConfig('camFilmFit'))
         
         if playblastFile:    
-            mp = getPath(kBinary, "ffmpeg")
+            mp = config.getPath(config.kBinary, "ffmpeg")
             resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
             os.system(unicode(resultCmd))
             os.system(r'explorer "%s"' % os.path.abspath(videoOutPath))
@@ -228,7 +227,7 @@ class PlayblastOption(ui.QtUI):
         
     @classmethod
     def __check__(cls):
-        sf = getConfig("startFrame")
+        sf = config.getConfig("startFrame")
         mt = int(cmds.playbackOptions(q=1, minTime=1))
         if sf != mt:
             cmds.displayColor("headsUpDisplayLabels", 13)
