@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>345</width>
+    <width>500</width>
     <height>411</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>345</width>
+    <width>500</width>
     <height>411</height>
    </size>
   </property>
@@ -301,7 +301,16 @@ QPushButton#resourceLibBtnLoad:pressed{
          <property name="spacing">
           <number>10</number>
          </property>
-         <property name="margin">
+         <property name="leftMargin">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>5</number>
+         </property>
+         <property name="rightMargin">
+          <number>5</number>
+         </property>
+         <property name="bottomMargin">
           <number>5</number>
          </property>
          <item>
@@ -382,7 +391,16 @@ QPushButton#resourceLibBtnLoad:pressed{
        <number>1</number>
       </property>
       <layout class="QGridLayout" name="resourceLibMayaControlLocator">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <property name="spacing">

@@ -38,10 +38,10 @@
   <property name="styleSheet">
    <string notr="true">QMainWindow{
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
-                                      stop:0 rgba(20, 20, 20, 255), 
-                                      stop:0.1 rgba(60, 60, 60, 255), 
+                                      stop:0 rgba(50, 50, 50, 255), 
+                                      stop:0.05 rgba(60, 60, 60, 255), 
                                       stop:0.9 rgba(60, 60, 60, 255), 
-                                      stop:1 rgba(40, 40, 40, 255));
+                                      stop:1 rgba(50, 50, 50, 255));
 	
 }
 
@@ -200,9 +200,6 @@ QPushButton:pressed{
                                       stop:1 rgba(70, 70, 70, 255));
 	border-style: inset;
 }</string>
-  </property>
-  <property name="+titleBar" stdset="0">
-   <string>False</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="layout">

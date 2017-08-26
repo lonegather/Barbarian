@@ -6,6 +6,7 @@ Created on 2017.8.25
 @author: Serious Sam
 '''
 
+import os
 from maya import cmds
 from xml.dom import minidom
 from barbarian.utils import ui, config
@@ -84,9 +85,11 @@ class ResourceRepository(ui.QtUI):
                     resName = item.getAttribute('name')
                     resFile = item.getAttribute('file').split('.ma')[0]
                     resPic = item.getAttribute('thumbnail')
-                    img = self.path + resPic if resPic else config.getPath(config.kIcon, "empty_%s.png"%resType)
+                    resPicPath = self.path + resPic  
+                    if not (resPic and os.path.isfile(resPicPath)):
+                        resPicPath = config.getPath(config.kIcon, "empty_%s.png"%resType)
                     cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
-                                             image=img, font="smallFixedWidthFont", onCommand=self.getCurrent)
+                                             image=resPicPath, font="smallFixedWidthFont", onCommand=self.getCurrent)
                 break
         
     def clearData(self):
@@ -104,10 +107,4 @@ class ResourceRepository(ui.QtUI):
         
     def load(self, *_):
         cmds.file("%s%s.ma"%(self.path, self.current), r=True, iv=True, typ='mayaAscii', ns=self.current)
-        
-        
-        
-        
-        
-        
         
