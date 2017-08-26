@@ -12,11 +12,12 @@ from maya import cmds
 
 
 __all__ = ["getProject", "setProject", "getConfig",
-           "getPath", "kIcon", "kBinary", "kUI"]
+           "getPath", "kIcon", "kConfig", "kBinary", "kUI"]
 
 
-kIcon = "../commons/icons/"
 kBinary = "../commons/bin/"
+kConfig = "../commons/config/"
+kIcon = "../commons/icons/"
 kUI = "../commons/ui/"
 
 
@@ -77,7 +78,7 @@ class Config(object):
         
         attrList = ["time", "linear", "startFrame", 
                     "camera", "camResX", "camResY", "camFilmFit", "playblastScale", 
-                    "animLibPath", "facialLibPath"]
+                    "animLibPath", "facialLibPath", "resourceLocator"]
         for attr in attrList:
             if attr == args:
                 for project in cls.instance().data:

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<assets>
+	<asset type="character" path="P:/PT/DB/CH/Season_02/">
+		<item name="候烨" file="C_Houye.ma" thumbnail="C_Houye_thumb.jpg" />
+		<item name="朱志摩" file="C_Fatty.ma" thumbnail="C_Fatty_thumb.jpg" />
+		<item name="莎莎-短发" file="C_Sasha_Cut.ma" thumbnail="C_Sasha_Cut_thumb.jpg" />
+	</asset>
+	<asset type="property" path="P:/PT/DB/Prop/Season_02/">
+		<item name="运输车" file="YunShuChe.ma" thumbnail="YunShuChe_thumb.jpg" />
+		<item name="载人车" file="ZaiRenChe.ma" thumbnail="ZaiRenChe_thumb.jpg" />
+	</asset>
+	<asset type="scene" path="P:/PT/DB/SC/Season_02/">
+		<item name="禁闭室" file="Basement_JinBiShi.ma" thumbnail="Basement_JinBiShi_thumb.jpg" />
+	</asset>
+</assets>

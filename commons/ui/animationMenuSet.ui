@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1027</width>
+    <width>1116</width>
     <height>51</height>
    </rect>
   </property>
@@ -662,16 +662,16 @@ QPushButton:pressed{
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animMSBtn_6">
+    <widget class="QPushButton" name="pushButton_2">
      <property name="minimumSize">
       <size>
-       <width>75</width>
+       <width>80</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>75</width>
+       <width>80</width>
        <height>33</height>
       </size>
      </property>
@@ -684,10 +684,43 @@ QPushButton:pressed{
       </font>
      </property>
      <property name="text">
-      <string>≡ BIPED ≡</string>
+      <string>≡ 资产库 ≡</string>
      </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5Files/Selector/biped.mel\&quot;;&quot;</string>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.anim.resourceLib.UI()</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animMSBtn_8">
+     <property name="minimumSize">
+      <size>
+       <width>80</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>80</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ 动作库 ≡</string>
+     </property>
+     <property name="+command" stdset="0">
+      <string>lambda *args: barbarian.anim.motionLib.UI()</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
@@ -728,16 +761,49 @@ QPushButton:pressed{
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="animMSBtn_8">
+    <widget class="QPushButton" name="animMSBtn_6">
      <property name="minimumSize">
       <size>
-       <width>80</width>
+       <width>75</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>80</width>
+       <width>75</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>10</pointsize>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>≡ BIPED ≡</string>
+     </property>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5Files/Selector/biped.mel\&quot;;&quot;</string>
+     </property>
+     <property name="-backgroundColor" stdset="0">
+      <string>0.25 0.25 0.25</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="animMSBtn_3">
+     <property name="minimumSize">
+      <size>
+       <width>90</width>
+       <height>33</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>90</width>
        <height>16777215</height>
       </size>
      </property>
@@ -750,10 +816,10 @@ QPushButton:pressed{
       </font>
      </property>
      <property name="text">
-      <string>≡ 动作库 ≡</string>
+      <string>≡ 相机震动 ≡</string>
      </property>
-     <property name="+command" stdset="0">
-      <string>lambda *args: barbarian.anim.motionLib.UI()</string>
+     <property name="-command" stdset="0">
+      <string>&quot;source \&quot;barbarian/anim/cameraShaker.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>
@@ -853,39 +919,6 @@ QPushButton:pressed{
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/anim/yygaddnoise.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="animMSBtn_3">
-     <property name="minimumSize">
-      <size>
-       <width>90</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>90</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>≡ 相机震动 ≡</string>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/anim/cameraShaker.mel\&quot;;&quot;</string>
      </property>
      <property name="-backgroundColor" stdset="0">
       <string>0.25 0.25 0.25</string>

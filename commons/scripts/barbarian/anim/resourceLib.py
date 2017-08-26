@@ -7,6 +7,7 @@ Created on 2017.8.25
 '''
 
 from maya import cmds
+from xml.dom import minidom
 from barbarian.utils import ui, config
 
 
@@ -23,13 +24,17 @@ def UI(*_):
 class ResourceRepository(ui.QtUI):
     def setup(self):
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
+        cmds.radioButton(self.rbChar, e=True, onCommand=self.refreshData)
+        cmds.radioButton(self.rbProp, e=True, onCommand=self.refreshData)
+        cmds.radioButton(self.rbScene, e=True, onCommand=self.refreshData)
+        cmds.button(self.btnLoad, e=True, command=self.load)
         self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
         
-        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshData], parent=self.window)
+        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         
-        self.refreshData()
+        self.refreshProject()
     
-    def refreshData(self, *_):
+    def refreshProject(self, *_):
         if config.getProject(): 
             cmds.optionMenu(self.opMnuProject, e=True, l=u"")
             if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
@@ -48,5 +53,61 @@ class ResourceRepository(ui.QtUI):
                 for mi in cmds.optionMenu(self.opMnuProject, q=True, itemListLong=True): 
                     cmds.deleteUI(mi)
             return
+        
+        try: dom = minidom.parse(config.getPath(config.kConfig, config.getConfig("resourceLocator")))
+        except:
+            self.root = None
+            self.clearData()
+            return
+        
+        self.root = dom.documentElement
+        self.refreshData()
+        
+    def refreshData(self, *_):
+        if not self.root: return
+        
+        if cmds.radioButton(self.rbChar, q=True, select=True): resType = 'character'
+        elif cmds.radioButton(self.rbProp, q=True, select=True): resType = 'property'
+        elif cmds.radioButton(self.rbScene, q=True, select=True): resType = 'scene'
+        else: 
+            self.clearData()
+            return
+        
+        self.clearData()
+        
+        for asset in self.root.getElementsByTagName("asset"):
+            if asset.getAttribute('type') == resType:
+                self.path = asset.getAttribute('path')
+                self.items = asset.getElementsByTagName("item")
+                self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
+                for item in self.items:
+                    resName = item.getAttribute('name')
+                    resFile = item.getAttribute('file').split('.ma')[0]
+                    resPic = item.getAttribute('thumbnail')
+                    img = self.path + resPic if resPic else config.getPath(config.kIcon, "empty_%s.png"%resType)
+                    cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
+                                             image=img, font="smallFixedWidthFont", onCommand=self.getCurrent)
+                break
+        
+    def clearData(self):
+        self.current = None
+        self.path = None
+        cmds.button(self.btnLoad, e=True, enable=False)
+        
+        if not cmds.shelfLayout(self.shelf, q=True, childArray=True): return
+        for btn in cmds.shelfLayout(self.shelf, q=True, childArray=True):
+            cmds.deleteUI(btn)
+            
+    def getCurrent(self, *_):
+        cmds.button(self.btnLoad, e=True, enable=True)
+        self.current = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
+        
+    def load(self, *_):
+        cmds.file("%s%s.ma"%(self.path, self.current), r=True, iv=True, typ='mayaAscii', ns=self.current)
+        
+        
+        
+        
+        
         
         
