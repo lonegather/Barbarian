@@ -56,25 +56,19 @@ class ResourceRepository(ui.QtUI):
             return
         
         try: dom = minidom.parse(config.getPath(config.kConfig, config.getConfig("resourceLocator")))
-        except:
-            self.root = None
-            self.clearData()
-            return
+        except: self.root = None
+        else: self.root = dom.documentElement
         
-        self.root = dom.documentElement
         self.refreshData()
         
     def refreshData(self, *_):
+        self.clearData()
         if not self.root: return
         
         if cmds.radioButton(self.rbChar, q=True, select=True): resType = 'character'
         elif cmds.radioButton(self.rbProp, q=True, select=True): resType = 'property'
         elif cmds.radioButton(self.rbScene, q=True, select=True): resType = 'scene'
-        else: 
-            self.clearData()
-            return
-        
-        self.clearData()
+        else: return
         
         for asset in self.root.getElementsByTagName("asset"):
             if asset.getAttribute('type') == resType:
@@ -84,25 +78,24 @@ class ResourceRepository(ui.QtUI):
                 for item in self.items:
                     resName = item.getAttribute('name')
                     resFile = item.getAttribute('file').split('.ma')[0]
-                    resPic = item.getAttribute('thumbnail')
-                    resPicPath = self.path + resPic  
-                    if not (resPic and os.path.isfile(resPicPath)):
-                        resPicPath = config.getPath(config.kIcon, "empty_%s.png"%resType)
+                    resPic = self.path + item.getAttribute('thumbnail') 
+                    if not os.path.isfile(resPic):
+                        resPic = config.getPath(config.kIcon, "empty_%s.png"%resType)
                     cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
-                                             image=resPicPath, font="smallFixedWidthFont", onCommand=self.getCurrent)
+                                             image=resPic, font="smallFixedWidthFont", onCommand=self.getCurrent)
                 break
         
     def clearData(self):
         self.current = None
         self.path = None
-        cmds.button(self.btnLoad, e=True, enable=False)
+        cmds.button(self.btnLoad, e=True, visible=False)
         
         if not cmds.shelfLayout(self.shelf, q=True, childArray=True): return
         for btn in cmds.shelfLayout(self.shelf, q=True, childArray=True):
             cmds.deleteUI(btn)
             
     def getCurrent(self, *_):
-        cmds.button(self.btnLoad, e=True, enable=True)
+        cmds.button(self.btnLoad, e=True, visible=True)
         self.current = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
         
     def load(self, *_):

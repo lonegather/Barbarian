@@ -69,20 +69,17 @@ class Config(object):
         return cls.__instance
     
     @classmethod
-    def getConfig(cls, args):
+    def getConfig(cls, attr):
         if not cls.getProject(all=True):
             cmds.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
             raise Exception(u"项目配置异常")
         elif not cls.getProject():
             cls.setProject(cmds.layoutDialog(ui=cls.__prompt__))
-        
-        attrList = ["time", "linear", "startFrame", 
-                    "camera", "camResX", "camResY", "camFilmFit", "playblastScale", 
-                    "animLibPath", "facialLibPath", "resourceLocator"]
-        for attr in attrList:
-            if attr == args:
-                for project in cls.instance().data:
-                    if project["name"] == cls.getProject(): return project[attr]
+
+        for project in cls.instance().data:
+            if project["name"] == cls.getProject(): 
+                try: return project[attr]
+                except: return None
                     
         return None
     

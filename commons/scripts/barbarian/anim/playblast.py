@@ -228,8 +228,11 @@ class PlayblastOption(ui.QtUI):
     @classmethod
     def __check__(cls):
         sf = config.getConfig("startFrame")
-        mt = int(cmds.playbackOptions(q=1, minTime=1))
-        if sf != mt:
+        ast = int(cmds.playbackOptions(q=1, ast=1))
+        aet = int(cmds.playbackOptions(q=1, aet=1))
+        mint = int(cmds.playbackOptions(q=1, min=1))
+        maxt = int(cmds.playbackOptions(q=1, max=1))
+        if sf != ast:
             cmds.displayColor("headsUpDisplayLabels", 13)
             cmds.displayColor("headsUpDisplayValues", 16)
             return u"初始帧不是第%s帧"%sf
@@ -238,6 +241,11 @@ class PlayblastOption(ui.QtUI):
             cmds.displayColor("headsUpDisplayLabels", 13)
             cmds.displayColor("headsUpDisplayValues", 16)
             return u"发现动画层信息"
+        
+        if ast != mint or aet != maxt:
+            cmds.displayColor("headsUpDisplayLabels", 17)
+            cmds.displayColor("headsUpDisplayValues", 16)
+            return u"时间轴未最大化"
             
         cmds.displayColor("headsUpDisplayLabels", 14)
         cmds.displayColor("headsUpDisplayValues", 16)
