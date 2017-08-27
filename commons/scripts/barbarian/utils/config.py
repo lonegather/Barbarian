@@ -49,13 +49,13 @@ def setProject(prj):
     Config.setProject(prj)
     
     
-def getConfig(var):
+def getConfig(attr, prj=None):
     '''
     --------------------------------------------------------------------------------
     Provide Project Configuration
     --------------------------------------------------------------------------------
     '''
-    return Config.getConfig(var)
+    return Config.getConfig(attr, prj)
 
 
 class Config(object):
@@ -65,19 +65,21 @@ class Config(object):
     @classmethod
     def instance(cls):
         if not cls.__instance:
-            cls.__instance = cls(getPath("../commons/config/", "config.xml"))
+            cls.__instance = cls(getPath(kConfig, "config.xml"))
         return cls.__instance
     
     @classmethod
-    def getConfig(cls, attr):
+    def getConfig(cls, attr, prj=None):
         if not cls.getProject(all=True):
             cmds.confirmDialog(message=u'项目配置异常',ma="center", icon="warning", title=u"PuTao")
             raise Exception(u"项目配置异常")
         elif not cls.getProject():
             cls.setProject(cmds.layoutDialog(ui=cls.__prompt__))
-
+            
+        targetProject = prj if prj in cls.getProject(all=True) else cls.getProject()
+            
         for project in cls.instance().data:
-            if project["name"] == cls.getProject(): 
+            if project["name"] == targetProject: 
                 try: return project[attr]
                 except: return None
                     
