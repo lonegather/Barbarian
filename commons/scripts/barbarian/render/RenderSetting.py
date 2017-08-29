@@ -8,16 +8,17 @@ from barbarian.utils import ui
 
 def UI(*_):
     RenderSetting("RenderSetting",
-                  textWin = "BeathRenderLabel",
-                  cameraMenuItem = "BeathRenderOptionMenu",
-                  minText = "BeathRenderMin",
-                  maxText = "BeathRenderMax",
-                  checkbox = "BeathRenderCheckBox")
+                  textWin =        "RenderSettingLabel",
+                  cameraMenuItem = "RenderSettingOptionMenu",
+                  minText =        "RenderSettingMin",
+                  maxText =        "RenderSettingMax",
+                  checkbox =       "RenderSettingCheckBox")
                 
 
 def makeBat(*_):
     RenderSetting.UI().renderCmd()
-    
+
+
 def browse(*_):
     RenderSetting.UI().BrowseWin()
 

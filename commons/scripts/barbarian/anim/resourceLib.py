@@ -14,12 +14,12 @@ from barbarian.utils import ui, config
 
 def UI(*_):
     ResourceRepository("resourceLib",
-                       opMnuProject="resourceLibCBProject",
-                       rbChar="resourceLibRBChar",
-                       rbProp="resourceLibRBProp",
-                       rbScene="resourceLibRBScene",
-                       container="resourceLibMayaControlLocator",
-                       btnLoad="resourceLibBtnLoad")
+                       opMnuProject = "resourceLibCBProject",
+                       rbChar       = "resourceLibRBChar",
+                       rbProp       = "resourceLibRBProp",
+                       rbScene      = "resourceLibRBScene",
+                       container    = "resourceLibMayaControlLocator",
+                       btnLoad      = "resourceLibBtnLoad")
 
 
 class ResourceRepository(ui.QtUI):
@@ -78,9 +78,10 @@ class ResourceRepository(ui.QtUI):
                 for item in self.items:
                     resName = item.getAttribute('name')
                     resFile = item.getAttribute('file').split('.ma')[0]
-                    resPic = self.path + item.getAttribute('thumbnail') 
-                    if not os.path.isfile(resPic):
-                        resPic = config.getPath(config.kIcon, "empty_%s.png"%resType)
+                    resPic = self.path + item.getAttribute('thumbnail')
+                    if not resFile: continue
+                    if not resName: resName = resFile
+                    if not os.path.isfile(resPic): resPic = config.getPath(config.kIcon, "empty_%s.png"%resType)
                     cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
                                              image=resPic, font="smallFixedWidthFont", onCommand=self.getCurrent)
                 break

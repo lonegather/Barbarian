@@ -12,7 +12,7 @@ import ui
 
 
 def UI(*_):
-    Main('main')
+    Main('PutaoMain')
 
 
 class Main(ui.QtUI):

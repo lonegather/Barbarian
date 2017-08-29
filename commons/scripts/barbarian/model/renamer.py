@@ -11,12 +11,12 @@ from barbarian.utils import ui
 
 def UI(*_):
     Renamer("renamer",
-            searchTextField  = "searchInput",
-            replaceTextField = "replaceInput",
-            renameTextField  = "middleInput",
-            prefixTextField  = "prefixInput",
-            suffixTextField  = "suffixInput",
-            prefixOptionMenu = "prefixCmb")
+            searchTextField  = "renamerLEInput",
+            replaceTextField = "renamerLEReplace",
+            renameTextField  = "renamerLEMiddle",
+            prefixTextField  = "renamerLEPrefix",
+            suffixTextField  = "renamerLESuffix",
+            prefixOptionMenu = "renamerCBPrefix")
 
 
 class Renamer(ui.QtUI):

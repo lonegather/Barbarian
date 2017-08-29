@@ -12,10 +12,10 @@ import os
 
 
 def UI(*_):
-    PlayblastOption("playblastoption",
-                    textField = "playblastNameInput",
-                    defaultCB = "playblastCBDefault",
-                    HUDCB     = "playblastCBHUD")
+    PlayblastOption("playblastOption",
+                    textField = "playblastOptionNameInput",
+                    defaultCB = "playblastOptionCBDefault",
+                    HUDCB     = "playblastOptionCBHUD")
     
     
 def doIt(*_):

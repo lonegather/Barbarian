@@ -12,7 +12,7 @@ except: pass
 
 
 def UI(*_):
-    CGTW("cgtw",
+    CGTW("CGTW",
          txtUsername = "CGTWLEUsername",
          txtPassword = "CGTWLEPassword",
          btnConnect  = "CGTWBtnConnect",

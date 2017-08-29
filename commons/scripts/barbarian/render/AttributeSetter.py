@@ -13,10 +13,10 @@ from barbarian.utils import ui
 
 def UI(*_):
     AttributeSetter("attributeSetter",
-                    txtObj="LEObject",
-                    txtAttr="LEAttribute",
-                    txtVal1="LEValue1",
-                    txtVal2="LEValue2")
+                    txtObj  = "attributeSetterLEObject",
+                    txtAttr = "attributeSetterLEAttribute",
+                    txtVal1 = "attributeSetterLEValue1",
+                    txtVal2 = "attributeSetterLEValue2")
     
 def execute(*_):
     AttributeSetter.UI().execute()

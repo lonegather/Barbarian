@@ -9,8 +9,8 @@ Created on 2017.7.5
 import abc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
-
 from maya import cmds
+from barbarian.utils import config
 
 
 class QtUI(object):
@@ -45,11 +45,9 @@ class QtUI(object):
             if cls.__UI[ui]: cls.__UI[ui].close()
     
     def __init__(self, uiFile, **info):
-        from barbarian.utils.config import getPath, kUI
-        
         try: cmds.deleteUI(self.__UI[self.__class__].window)
         except: pass
-        self.window = cmds.loadUI(f=getPath(kUI, "%s.ui"%uiFile))
+        self.window = cmds.loadUI(f=config.getPath(config.kUI, "%s.ui"%uiFile))
         self.__UI.update({self.__class__:self})
         
         width = cmds.window(self.window, q=True, width=True)

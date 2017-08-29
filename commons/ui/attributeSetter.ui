@@ -204,7 +204,7 @@ QPushButton:pressed{
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="layout">
     <item>
-     <widget class="QLineEdit" name="LEObject">
+     <widget class="QLineEdit" name="attributeSetterLEObject">
       <property name="minimumSize">
        <size>
         <width>100</width>
@@ -236,7 +236,7 @@ QPushButton:pressed{
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="LEAttribute">
+     <widget class="QLineEdit" name="attributeSetterLEAttribute">
       <property name="minimumSize">
        <size>
         <width>100</width>
@@ -262,7 +262,7 @@ QPushButton:pressed{
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="LEValue1">
+     <widget class="QLineEdit" name="attributeSetterLEValue1">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -306,7 +306,7 @@ QPushButton:pressed{
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="LEValue2">
+     <widget class="QLineEdit" name="attributeSetterLEValue2">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -402,7 +402,7 @@ QPushButton:pressed{
    </hints>
   </connection>
   <connection>
-   <sender>LEAttribute</sender>
+   <sender>attributeSetterLEAttribute</sender>
    <signal>returnPressed()</signal>
    <receiver>pushButton</receiver>
    <slot>click()</slot>
@@ -418,7 +418,7 @@ QPushButton:pressed{
    </hints>
   </connection>
   <connection>
-   <sender>LEObject</sender>
+   <sender>attributeSetterLEObject</sender>
    <signal>returnPressed()</signal>
    <receiver>pushButton</receiver>
    <slot>click()</slot>
@@ -434,7 +434,7 @@ QPushButton:pressed{
    </hints>
   </connection>
   <connection>
-   <sender>LEValue1</sender>
+   <sender>attributeSetterLEValue1</sender>
    <signal>returnPressed()</signal>
    <receiver>pushButton</receiver>
    <slot>click()</slot>
@@ -450,7 +450,7 @@ QPushButton:pressed{
    </hints>
   </connection>
   <connection>
-   <sender>LEValue2</sender>
+   <sender>attributeSetterLEValue2</sender>
    <signal>returnPressed()</signal>
    <receiver>pushButton</receiver>
    <slot>click()</slot>

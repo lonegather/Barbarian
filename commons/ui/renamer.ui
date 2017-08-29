@@ -225,16 +225,7 @@ QPushButton:pressed{
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="leftMargin">
-     <number>5</number>
-    </property>
-    <property name="topMargin">
-     <number>5</number>
-    </property>
-    <property name="rightMargin">
-     <number>5</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>5</number>
     </property>
     <item>
@@ -242,22 +233,13 @@ QPushButton:pressed{
       <property name="spacing">
        <number>5</number>
       </property>
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>0</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLineEdit" name="searchInput">
+         <widget class="QLineEdit" name="renamerLESearch">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -301,7 +283,7 @@ QPushButton:pressed{
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="replaceInput">
+         <widget class="QLineEdit" name="renamerLEReplace">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -370,7 +352,7 @@ QPushButton:pressed{
         <item row="0" column="2">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QLineEdit" name="suffixInput">
+           <widget class="QLineEdit" name="renamerLESuffix">
             <property name="enabled">
              <bool>true</bool>
             </property>
@@ -401,7 +383,7 @@ QPushButton:pressed{
             <property name="cursorMoveStyle">
              <enum>Qt::LogicalMoveStyle</enum>
             </property>
-            <property name="clearButtonEnabled">
+            <property name="clearButtonEnabled" stdset="0">
              <bool>false</bool>
             </property>
            </widget>
@@ -439,7 +421,7 @@ QPushButton:pressed{
         <item row="0" column="0">
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QLineEdit" name="prefixInput">
+           <widget class="QLineEdit" name="renamerLEPrefix">
             <property name="enabled">
              <bool>true</bool>
             </property>
@@ -470,7 +452,7 @@ QPushButton:pressed{
             <property name="cursorMoveStyle">
              <enum>Qt::LogicalMoveStyle</enum>
             </property>
-            <property name="clearButtonEnabled">
+            <property name="clearButtonEnabled" stdset="0">
              <bool>false</bool>
             </property>
            </widget>
@@ -506,7 +488,7 @@ QPushButton:pressed{
          </layout>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="middleInput">
+         <widget class="QLineEdit" name="renamerLEMiddle">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -540,7 +522,7 @@ QPushButton:pressed{
           <property name="cursorMoveStyle">
            <enum>Qt::LogicalMoveStyle</enum>
           </property>
-          <property name="clearButtonEnabled">
+          <property name="clearButtonEnabled" stdset="0">
            <bool>false</bool>
           </property>
          </widget>
@@ -574,7 +556,7 @@ QPushButton:pressed{
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QComboBox" name="prefixCmb">
+         <widget class="QComboBox" name="renamerCBPrefix">
           <property name="minimumSize">
            <size>
             <width>0</width>
