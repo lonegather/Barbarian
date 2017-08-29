@@ -222,7 +222,7 @@ QPushButton:pressed{
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="playblastNameInput">
+       <widget class="QLineEdit" name="playblastOptionNameInput">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -248,7 +248,7 @@ QPushButton:pressed{
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QCheckBox" name="playblastCBDefault">
+       <widget class="QCheckBox" name="playblastOptionCBDefault">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -280,7 +280,7 @@ QPushButton:pressed{
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QCheckBox" name="playblastCBHUD">
+       <widget class="QCheckBox" name="playblastOptionCBHUD">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -294,7 +294,7 @@ QPushButton:pressed{
          </font>
         </property>
         <property name="text">
-         <string>使用辨识度更高的HUD</string>
+         <string>提高辨识度</string>
         </property>
        </widget>
       </item>
@@ -347,16 +347,7 @@ QPushButton:pressed{
        <property name="spacing">
         <number>2</number>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <item>
