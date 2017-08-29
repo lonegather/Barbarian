@@ -11,7 +11,7 @@ from barbarian.utils import ui
 
 def UI(*_):
     Renamer("renamer",
-            searchTextField  = "renamerLEInput",
+            searchTextField  = "renamerLESearch",
             replaceTextField = "renamerLEReplace",
             renameTextField  = "renamerLEMiddle",
             prefixTextField  = "renamerLEPrefix",
