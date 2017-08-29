@@ -10,6 +10,7 @@ import abc
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 from maya import cmds
+from xml.dom import minidom
 from barbarian.utils import config
 
 
@@ -56,15 +57,19 @@ class QtUI(object):
         top = (1080 - height) / 2
         cmds.windowPref(self.window, topLeftCorner=[top, left], width=width, height=height)
         
-        detector = {"button":cmds.button,
-                    "checkBox":cmds.checkBox,
-                    "intSlider":cmds.intSlider,
-                    "optionMenu":cmds.optionMenu,
-                    "progressBar":cmds.progressBar,
-                    "radioButton":cmds.radioButton,
-                    "text":cmds.text,
-                    "textField":cmds.textField,
-                    "textScrollList":cmds.textScrollList}
+        dom = minidom.parse(config.getPath(config.kUI, "%s.ui"%uiFile))
+        self.controls, self.layouts = {}, {}
+        self.__analize__(dom.documentElement, uiFile)
+        
+        detector = {"button"         : cmds.button,
+                    "checkBox"       : cmds.checkBox,
+                    "intSlider"      : cmds.intSlider,
+                    "optionMenu"     : cmds.optionMenu,
+                    "progressBar"    : cmds.progressBar,
+                    "radioButton"    : cmds.radioButton,
+                    "text"           : cmds.text,
+                    "textField"      : cmds.textField,
+                    "textScrollList" : cmds.textScrollList}
         for item in info:
             found = False
             for target in detector:
@@ -98,6 +103,18 @@ class QtUI(object):
         
         cmds.showWindow(self.window)
         self.setup()
+        
+    def __analize__(self, ele, key):
+        widgets = ele.getElementsByTagName("widget")
+        print "widgets:"
+        for element in widgets:
+            if element.getAttribute("name").find(key) != -1:
+                print element.getAttribute("name")
+        layouts = ele.getElementsByTagName("layout")
+        print "layouts:"
+        for element in layouts:
+            if element.getAttribute("name").find(key) != -1:
+                print element.getAttribute("name")
         
     @abc.abstractmethod
     def setup(self):
