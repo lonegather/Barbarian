@@ -6,27 +6,20 @@ Created on 2017.8.23
 @author: Serious Sam
 '''
 
-import os, sys
+import os, sys, codecs
+from pysideuic import compileUi
 from maya import cmds
 import ui, config
 
 
 def UI(*_):
     Main('PutaoMain')
-    
-    
-def complieUI(*_):
-    ff = "UI Files (*.ui)"
-    sd = config.getPath(config.kUI)
-    path = cmds.fileDialog2(dialogStyle=2, fileMode=0, 
-                            fileFilter=ff, startingDirectory=sd, 
-                            okCaption=u"编译", cancelCaption=u"取消", 
-                            caption=u"选择要编译的UI文件...")
 
 
 class Main(ui.QtUI):
     def setup(self):
         self.scrollField  = cmds.scrollField("PuTaoMainTE", q=True, fpn=True)
+        cmds.button("PutaoMainBtnCompile", e=True, command=self.complieUI)
         cmds.button("PutaoMainBtnDebug", e=True, command=self.debug)
         cmds.button("PutaoMainBtnGetEnvAppDir", e=True, command=lambda *_: self.getEnv('MAYA_APP_DIR'))
         cmds.button("PutaoMainBtnGetEnvBarbarian", e=True, command=lambda *_: self.getEnv('BARBARIAN_LOCATION'))
@@ -57,4 +50,21 @@ class Main(ui.QtUI):
         reload(reloader)
         
         reloader.doIt(True)
+        
+    def complieUI(self, *_):
+        ff = "UI Files (*.ui)"
+        sd = config.getPath(config.kUI)
+        path = cmds.fileDialog2(dialogStyle=2, fileMode=1, 
+                                fileFilter=ff, startingDirectory=sd, 
+                                okCaption=u"编译", cancelCaption=u"取消", 
+                                caption=u"选择要编译的UI文件...")
+        if not path: return
+        
+        reload(sys)
+        setdefaultencoding = getattr(sys, 'setdefaultencoding')
+        setdefaultencoding('utf-8')
+        output = codecs.open("%s.py"%path[0].split('.ui')[0], 'w', "utf-8")
+        try: compileUi(path[0], output)
+        except: pass
+        output.close()
 

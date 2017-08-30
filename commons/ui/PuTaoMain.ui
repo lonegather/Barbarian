@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PuTaoMain</class>
  <widget class="QMainWindow" name="PuTaoMain">
@@ -403,6 +403,22 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="PutaoMainBtnCompile">
+        <property name="maximumSize">
+         <size>
+          <width>10</width>
+          <height>10</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="+visible" stdset="0">
+         <string>False</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="PutaoMainBtnReload">
         <property name="minimumSize">
          <size>
@@ -467,6 +483,9 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionXBMLANGPATH"/>
     </widget>
     <addaction name="actionDebug"/>
+    <addaction name="separator"/>
+    <addaction name="actionCompile"/>
+    <addaction name="separator"/>
     <addaction name="menu"/>
    </widget>
    <addaction name="mainMenu"/>
@@ -566,6 +585,17 @@ p, li { white-space: pre-wrap; }
   <action name="actionBARBARIAN_LOCATION">
    <property name="text">
     <string>BARBARIAN_LOCATION</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionCompile">
+   <property name="text">
+    <string>编译UI文件...</string>
    </property>
    <property name="font">
     <font>
@@ -718,6 +748,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>176</x>
      <y>422</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCompile</sender>
+   <signal>triggered()</signal>
+   <receiver>PutaoMainBtnCompile</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>273</y>
     </hint>
    </hints>
   </connection>
