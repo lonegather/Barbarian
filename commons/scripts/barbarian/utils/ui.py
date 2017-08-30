@@ -12,6 +12,8 @@ import maya.OpenMayaUI as omui
 from maya import cmds
 from xml.dom import minidom
 from barbarian.utils import config
+from PySide.QtCore import *
+from PySide.QtGui import *
 
 
 class QtUI(object):

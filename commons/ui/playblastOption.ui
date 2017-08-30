@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>playblastOptionDialog</class>
+ <widget class="QMainWindow" name="playblastOptionDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>179</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>拍屏设置</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../icons/logo.png</normaloff>../icons/logo.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(50, 50, 50, 255), 
+                                      stop:0.05 rgba(60, 60, 60, 255), 
+                                      stop:0.9 rgba(60, 60, 60, 255), 
+                                      stop:1 rgba(50, 50, 50, 255));
+	
+}
+
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 1px solid gray;
+	position: absolute;
+	top: -0.1em;
+}
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.3 rgba(50, 50, 50, 255), 
+                                stop:1 rgba(80, 80, 80, 255));
+    border: 1px solid gray;
+    border-bottom-color: grey; /* same as the pane color */
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+	padding: 0px 20px;
+}
+
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.3 rgba(60, 60, 60, 255), 
+                                stop:1 rgba(100, 100, 100, 255));
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid #999999;
+	border-style: inset;
+    height: 10px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(140, 140, 140, 255), 
+                                stop:0.3 rgba(80, 80, 80, 255), 
+                                stop:1 rgba(100, 100, 100, 255));
+    border: 1px solid gray;
+	border-style: outset;
+    width: 15px;
+    margin: -10px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    border-radius: 6px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(160, 160, 160, 255), 
+                                stop:0.3 rgba(100, 100, 100, 255), 
+                                stop:1 rgba(120, 120, 120, 255));
+}
+
+QListWidget {
+    border: 1px solid gray;
+    border-radius: 6px;
+	border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    selection-background-color: purple;
+}
+
+QLineEdit {
+    border: 1px solid gray;
+    border-radius: 6px;
+	border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+    selection-background-color: purple;
+}
+
+QComboBox{
+	border: 1px solid gray;
+	border-style: outset;
+    border-radius: 6px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(140, 140, 140, 255), 
+                                      stop:0.3 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(80, 80, 80, 255));
+}
+
+QComboBox:!editable:hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(150, 150, 150, 255), 
+                                      stop:0.3 rgba(60, 60, 60, 255), 
+                                      stop:1 rgba(100, 100, 100, 255));
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox:!editable:on, QComboBox::drop-down:editable:on{
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0 rgba(20, 20, 20, 255), 
+                                stop:0.3 rgba(40, 40, 40, 255), 
+                                stop:1 rgba(50, 50, 50, 255));
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid grap;
+    selection-background-color: purple;
+}
+
+QPushButton{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(150, 150, 150, 255),
+									  stop:0.48 rgba(80, 80, 80, 255), 
+                                      stop:0.52 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(70, 70, 70, 255));
+	border-style: outset;
+	border-width: 1px;
+	border-radius: 6px;
+	border-color: gray;
+	padding: 6px;
+}
+
+QPushButton:hover{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(150, 150, 150, 255),
+									  stop:0.48 rgba(90, 90, 90, 255), 
+                                      stop:0.52 rgba(60, 60, 60, 255), 
+                                      stop:1 rgba(100, 100, 100, 255));
+}
+
+QPushButton:pressed{
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, 
+                                      stop:0 rgba(40, 40, 40, 255), 
+                                      stop:0.3 rgba(50, 50, 50, 255), 
+                                      stop:1 rgba(70, 70, 70, 255));
+	border-style: inset;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <property name="horizontalSpacing">
+       <number>20</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>动画师名称</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="playblastOptionNameInput">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="maxLength">
+         <number>20</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="playblastOptionCBDefault">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>使用系统默认</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QCheckBox" name="playblastOptionCBHUD">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>提高辨识度</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>70</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>HUD</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="pushButton_3">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>拍屏</string>
+         </property>
+         <property name="+command" stdset="0">
+          <string>lambda *_: barbarian.anim.playblast.PlayblastOption.UI().changeHUD(True)</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>应用</string>
+         </property>
+         <property name="+command" stdset="0">
+          <string>lambda *_: barbarian.anim.playblast.PlayblastOption.UI().changeHUD()</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>关闭</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>playblastOptionDialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>80</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
