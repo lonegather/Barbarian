@@ -8,11 +8,20 @@ Created on 2017.8.23
 
 import os, sys
 from maya import cmds
-import ui
+import ui, config
 
 
 def UI(*_):
     Main('PutaoMain')
+    
+    
+def complieUI(*_):
+    ff = "UI Files (*.ui)"
+    sd = config.getPath(config.kUI)
+    path = cmds.fileDialog2(dialogStyle=2, fileMode=0, 
+                            fileFilter=ff, startingDirectory=sd, 
+                            okCaption=u"编译", cancelCaption=u"取消", 
+                            caption=u"选择要编译的UI文件...")
 
 
 class Main(ui.QtUI):

@@ -11,6 +11,7 @@ import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 from maya import cmds
 from xml.dom import minidom
+from shiboken import wrapInstance
 from barbarian.utils import config
 from PySide.QtCore import *
 from PySide.QtGui import *
@@ -108,15 +109,17 @@ class QtUI(object):
         
     def __analize__(self, ele, key):
         widgets = ele.getElementsByTagName("widget")
-        print "widgets:"
         for element in widgets:
-            if element.getAttribute("name").find(key) != -1:
-                print element.getAttribute("name")
+            attrName = element.getAttribute("name")
+            if attrName.find(key) != -1:
+                controlPtr = omui.MQtUtil.findControl(attrName)
+                self.controls[attrName] = wrapInstance(long(controlPtr), QWidget)
         layouts = ele.getElementsByTagName("layout")
-        print "layouts:"
         for element in layouts:
-            if element.getAttribute("name").find(key) != -1:
-                print element.getAttribute("name")
+            attrName = element.getAttribute("name")
+            if attrName.find(key) != -1:
+                layoutPtr = omui.MQtUtil.findLayout(attrName)
+                self.layouts[attrName] = wrapInstance(long(layoutPtr), QWidget)
         
     @abc.abstractmethod
     def setup(self):
@@ -173,40 +176,3 @@ class QtUI(object):
         if not isinstance(self, QtUI): return True
         return not cmds.window(self.window, q=True, visible=True)
 
-
-class Control(object):
-    def __init__(self, name):
-        if not cmds.control(name, exists=True):
-            cmds.warning("Control '%s' not found."%name)
-        self.__name = name
-        
-    def __str__(self):
-        return self.__name
-    
-    @property
-    def annotation(self):
-        try: return cmds.control(self, q=True, annotation=True)
-        except: return None
-    
-    @annotation.setter
-    def annotation(self, ann):
-        try: cmds.control(self, e=True, annotation=ann)
-        except: return
-    
-    @property
-    def ann(self):
-        return self.annotation
-    
-    @ann.setter
-    def ann(self, ann):
-        self.annotation = ann
-        
-    @property
-    def backgroundColor(self):
-        try: return cmds.control(self, q=True, backgroundColor=True)
-        except: return None
-        
-    @backgroundColor.setter
-    def backgroundColor(self, bgc):
-        try: cmds.control(self, e=True, backgroundColor=bgc)
-        except: return
