@@ -59,12 +59,16 @@ class Main(ui.QtUI):
                                 okCaption=u"编译", cancelCaption=u"取消", 
                                 caption=u"选择要编译的UI文件...")
         if not path: return
+        else: path = path[0]
         
         reload(sys)
         setdefaultencoding = getattr(sys, 'setdefaultencoding')
         setdefaultencoding('utf-8')
-        output = codecs.open("%s.py"%path[0].split('.ui')[0], 'w', "utf-8")
-        try: compileUi(path[0], output)
+        
+        fileName = path.split('/')[-1].split('.')[0]+"UI.py"
+        output = codecs.open(__file__.split('main.py')[0]+fileName, 'w', "utf-8")
+        try: compileUi(path, output, True)
         except: pass
+        os.system(r'explorer "%s"' % os.path.abspath(__file__.split('main.py')[0]))
         output.close()
 
