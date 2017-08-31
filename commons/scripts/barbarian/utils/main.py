@@ -69,6 +69,6 @@ class Main(ui.QtUI):
         output = codecs.open(__file__.split('main.py')[0]+fileName, 'w', "utf-8")
         try: compileUi(path, output, True)
         except: pass
-        os.system(r'explorer "%s"' % os.path.abspath(__file__.split('main.py')[0]))
+        os.startfile(__file__.split('main.py')[0])
         output.close()
 
