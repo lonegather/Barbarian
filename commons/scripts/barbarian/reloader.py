@@ -7,9 +7,14 @@ Created on 2017.7.10
 '''
 
 from maya import cmds
-from bdb import bar
+
 
 def doIt(rl=False):
+    import sys
+    reload(sys)
+    setdefaultencoding = getattr(sys, 'setdefaultencoding')
+    setdefaultencoding('utf-8')
+    
     if rl: 
         cmds.optionVar(rm="PutaoTools_Project")
         currentMode = cmds.setMenuMode()

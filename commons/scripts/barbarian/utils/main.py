@@ -61,10 +61,6 @@ class Main(ui.QtUI):
         if not path: return
         else: path = path[0]
         
-        reload(sys)
-        setdefaultencoding = getattr(sys, 'setdefaultencoding')
-        setdefaultencoding('utf-8')
-        
         fileName = path.split('/')[-1].split('.')[0]+"UI.py"
         output = codecs.open(__file__.split('main.py')[0]+fileName, 'w', "utf-8")
         try: compileUi(path, output, True)

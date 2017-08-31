@@ -66,11 +66,6 @@ class PlayblastOption(ui.QtUI):
         fullPath = cmds.file(q=1, exn=1)
         fileName = cmds.file(q=1, sn=1, shn=1)
         
-        try: fullPath.decode("utf-8")
-        except:
-            cmds.headsUpMessage(u'请勿使用中文路径或文件名', time=3)
-            return
-        
         if fileName == '' :
             cmds.headsUpMessage(u'文件未保存', time=3)
             return
@@ -156,9 +151,12 @@ class PlayblastOption(ui.QtUI):
         
         if playblastFile:    
             mp = config.getPath(config.kBinary, "ffmpeg")
-            resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, os.path.abspath(playblastFile), os.path.abspath(videoOutPath))
-            os.system(unicode(resultCmd))
-            os.system(r'explorer "%s"' % os.path.abspath(videoOutPath))
+            uFile = os.path.abspath(playblastFile.encode('gbk'))
+            uOut = os.path.abspath(videoOutPath.encode('gbk'))
+            
+            resultCmd = r'%s -i "%s" -vcodec "mpeg4" -y -qscale 0 "%s"' % (mp, uFile, uOut)
+            os.system(resultCmd)
+            os.startfile(uOut)
             os.remove(playblastFile)
 
         cmds.currentTime(startFrame)
