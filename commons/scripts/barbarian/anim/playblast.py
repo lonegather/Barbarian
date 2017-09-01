@@ -67,7 +67,7 @@ class PlayblastOption(ui.QtUI):
         fileName = cmds.file(q=1, sn=1, shn=1)
         
         if fileName == '' :
-            cmds.headsUpMessage(u'文件未保存', time=3)
+            cmds.headsUpMessage(u'文件未保存', time=1)
             return
         
         videoNameList = fileName.split(".")
@@ -233,17 +233,22 @@ class PlayblastOption(ui.QtUI):
         if sf != ast:
             cmds.displayColor("headsUpDisplayLabels", 13)
             cmds.displayColor("headsUpDisplayValues", 16)
-            return u"初始帧不是第%s帧"%sf
+            return u"警告：初始帧不是第%s帧"%sf
         
         if len(cmds.ls(type='animLayer'))>1:
             cmds.displayColor("headsUpDisplayLabels", 13)
             cmds.displayColor("headsUpDisplayValues", 16)
-            return u"发现动画层信息"
+            return u"警告：侦测到动画层信息"
+        
+        if len(cmds.ls(type='audio'))>1:
+            cmds.displayColor("headsUpDisplayLabels", 17)
+            cmds.displayColor("headsUpDisplayValues", 16)
+            return u"提示：侦测到多重音轨"
         
         if ast != mint or aet != maxt:
             cmds.displayColor("headsUpDisplayLabels", 17)
             cmds.displayColor("headsUpDisplayValues", 16)
-            return u"时间轴未最大化"
+            return u"提示：侦测到时间轴未最大化"
             
         cmds.displayColor("headsUpDisplayLabels", 14)
         cmds.displayColor("headsUpDisplayValues", 16)
@@ -256,7 +261,7 @@ class PlayblastOption(ui.QtUI):
         cameraShape = cmds.listRelatives(camera, shapes=True)
         if cameraShape: camera = cameraShape[0]
         focalLength = cmds.getAttr(camera+".focalLength")
-        return "%s/%s"%(cmds.modelPanel(panel, q=True, camera=True), focalLength)
+        return "%s/%.1f"%(cmds.modelPanel(panel, q=True, camera=True), focalLength)
     
     @classmethod
     def __time__(cls):

@@ -11,10 +11,9 @@ import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 from maya import cmds
 from xml.dom import minidom
+from PySide import QtCore, QtGui
 from shiboken import wrapInstance
 from barbarian.utils import config
-from PySide.QtCore import *
-from PySide.QtGui import *
 
 
 class QtUI(object):
@@ -78,17 +77,19 @@ class QtUI(object):
             for target in detector:
                 if detector[target](info[item], exists=True):
                     found = True
-                    pathList = detector[target](info[item], q=True, fpn=True).split("|")
+                    pathList = detector[target](info[item], q=True, fpn=True).split('|')
                     self.__setattr__(item, "%s|%s"%(self.window, '|'.join(pathList[1:])))
                     print "Found %s: <%s|%s>"%(target, self.window, '|'.join(pathList[1:]))
                     break
             
             if not found:
                 if cmds.layout(info[item], exists=True):
-                    children = cmds.layout(info[item], q=True, fpn=True, ca=True)
+                    parentList = cmds.layout(info[item], q=True, parent=True).split('|')
+                    self.__setattr__(item, "%s|%s|%s"%(self.window, '|'.join(parentList[1:]), info[item]))
+                    print "Found layout:", "<%s|%s|%s>"%(self.window, '|'.join(parentList[1:]), info[item])
+                    children = cmds.layout(self.__getattribute__(item), q=True, fpn=True, ca=True)
                     for child in children:
                         cmds.deleteUI(child)
-                    self.__setattr__(item, info[item])
                 else:
                     try: 
                         widget = '|'.join(cmds.control(info[item], q=True, fpn=True).split("|")[1:])
@@ -113,13 +114,13 @@ class QtUI(object):
             attrName = element.getAttribute("name")
             if attrName.find(key) != -1:
                 controlPtr = omui.MQtUtil.findControl(attrName)
-                self.controls[attrName] = wrapInstance(long(controlPtr), QWidget)
+                self.controls[attrName] = wrapInstance(long(controlPtr), QtGui.QWidget)
         layouts = ele.getElementsByTagName("layout")
         for element in layouts:
             attrName = element.getAttribute("name")
             if attrName.find(key) != -1:
                 layoutPtr = omui.MQtUtil.findLayout(attrName)
-                self.layouts[attrName] = wrapInstance(long(layoutPtr), QWidget)
+                self.layouts[attrName] = wrapInstance(long(layoutPtr), QtGui.QWidget)
         
     @abc.abstractmethod
     def setup(self):

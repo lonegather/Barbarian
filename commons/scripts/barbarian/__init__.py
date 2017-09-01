@@ -7,7 +7,7 @@ Created on 2017.6.9
 '''
 
 from maya import cmds, mel
-from utils import main, config
+from utils import main, config, applyConfig, displayAppearance
 import maya.OpenMaya as om
 import reloader
 
@@ -54,7 +54,7 @@ class Entrance(object):
         cmds.scriptJob(event=["timeUnitChanged", self.__refreshUI__], parent=self.menu)
         cmds.scriptJob(event=["linearUnitChanged", self.__refreshUI__], parent=self.menu)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.menu)
-        om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, self.__boundingBox__)
+        om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, lambda *_: displayAppearance('boundingBox'))
         
         self.__build__()
         self.__refreshUI__()
@@ -82,15 +82,11 @@ class Entrance(object):
 
     def __refreshUI__(self):
         if config.getProject(): 
+            applyConfig()
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
                 projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
-            
             cmds.optionMenu(self.menu, e=True, l="", v=config.getProject())
-            cmds.currentUnit(time=config.getConfig('time'), updateAnimation=False)
-            cmds.playbackOptions(min=config.getConfig('startFrame'), ast=config.getConfig('startFrame'))
-            cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResX'))
-            cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResY'))
         elif config.getProject(all=True): 
             cmds.optionMenu(self.menu, e=True, l=u"<选择项目>")
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
@@ -102,10 +98,6 @@ class Entrance(object):
                     cmds.deleteUI(mi)
             cmds.optionMenu(self.menu, e=True, l=u"<配置异常>")
 
-    def __boundingBox__(self, *_):
-        allPanels = cmds.getPanel(type='modelPanel')
-        for p in allPanels:
-            cmds.modelEditor(p, edit=1, displayAppearance='boundingBox')
     
 '''
 --------------------------------------------------------------------------------
@@ -113,12 +105,8 @@ Tool Initialization at Maya Startup
 --------------------------------------------------------------------------------
 '''
 #initialize entrance
-if not cmds.shelfLayout("PuTao", exists=True):
-    mel.eval("addNewShelfTab \"PuTao\";")
-tool = Entrance(cmds.shelfLayout("PuTao", q=True, fpn=True))
-
 reloader.doIt()
+if not cmds.shelfLayout("PuTao", exists=True): mel.eval("addNewShelfTab \"PuTao\";")
+tool = Entrance(cmds.shelfLayout("PuTao", q=True, fpn=True))
+cmds.headsUpMessage(u'--- 葡萄工具架已完成加载 ---', time=3, verticalOffset=200)
 
-print u"╔══════════════════════════════════════════════════════════╗"
-print u"╟────────── PUTAOTOOLS INITIALIZATION COMPLETED ───────────╢"
-print u"╚══════════════════════════════════════════════════════════╝"
