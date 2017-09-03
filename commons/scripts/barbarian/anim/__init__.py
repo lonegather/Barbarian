@@ -11,21 +11,42 @@ def snapWorld():
     tcRange = range(*[int(num) for num in cmds.timeControl(tc, q=True, rangeArray=True)])
     if len(tcRange) == 1: tcRange.append(tcRange[0]+1)
     
-    for sel in sels:
-        cmds.currentTime(tcRange[0])
-        cmds.setKeyframe(sel, shape=False)
-        tw = cmds.xform(sel, q=True, worldSpace=True, translation=True)
-        rw = cmds.xform(sel, q=True, worldSpace=True, rotation=True)
+    sel = sels[-1]
+    cmds.currentTime(tcRange[0])
+    cmds.autoKeyframe(state=True)
+    __keyFrameTransform__(sel, False)
+    tw = cmds.xform(sel, q=True, worldSpace=True, translation=True)
+    rw = cmds.xform(sel, q=True, worldSpace=True, rotation=True)
+    
+    if len(sels) == 1:
         for ct in tcRange[1:]:
             cmds.currentTime(ct)
             try: cmds.xform(sel, translation=tw, worldSpace=True)
             except: pass
             try: cmds.xform(sel, rotation=rw, worldSpace=True)
             except: pass
-            cmds.setKeyframe(sel, shape=False)
-    
+            __keyFrameTransform__(sel)
+        __keyFrameTransform__(sel, False)
+    else:
+        try: cmds.parentConstraint(sels, name='snapTargetParentConstraint', maintainOffset=True)
+        except: 
+            cmds.headsUpMessage(u'对象属性被锁定，无法吸附目标', time=1)
+            return
+        for ct in tcRange[1:]:
+            cmds.currentTime(ct)
+            __keyFrameTransform__(sel)
+        __keyFrameTransform__(sel, False)
+        cmds.delete('snapTargetParentConstraint')
+            
     cmds.currentTime(tcRange[-1])
     cmds.timeControl(tc, e=True, forceRefresh=True)
+    
+
+def __keyFrameTransform__(sel, bd=True):
+    for attr in ['translateX','translateY','translateZ','rotateX','rotateY','rotateZ']:
+        try: cmds.setKeyframe(sel, attribute=attr, shape=False, breakdown=bd)
+        except: continue
+    
 
 
 def softClusterLaunch():
