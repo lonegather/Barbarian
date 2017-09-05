@@ -231,24 +231,19 @@ class PlayblastOption(ui.QtUI):
         mint = int(cmds.playbackOptions(q=1, min=1))
         maxt = int(cmds.playbackOptions(q=1, max=1))
         if sf != ast:
-            cmds.displayColor("headsUpDisplayLabels", 13)
+            cmds.displayColor("headsUpDisplayLabels", 17)
             cmds.displayColor("headsUpDisplayValues", 16)
-            return u"警告：初始帧不是第%s帧"%sf
-        
-        if len(cmds.ls(type='animLayer'))>1:
-            cmds.displayColor("headsUpDisplayLabels", 13)
-            cmds.displayColor("headsUpDisplayValues", 16)
-            return u"警告：侦测到动画层信息"
+            return u"初始帧不是第%s帧"%sf
         
         if len(cmds.ls(type='audio'))>1:
             cmds.displayColor("headsUpDisplayLabels", 17)
             cmds.displayColor("headsUpDisplayValues", 16)
-            return u"提示：侦测到多重音轨"
+            return u"存在多重音轨"
         
         if ast != mint or aet != maxt:
             cmds.displayColor("headsUpDisplayLabels", 17)
             cmds.displayColor("headsUpDisplayValues", 16)
-            return u"提示：侦测到时间轴未最大化"
+            return u"时间轴未最大化"
             
         cmds.displayColor("headsUpDisplayLabels", 14)
         cmds.displayColor("headsUpDisplayValues", 16)
