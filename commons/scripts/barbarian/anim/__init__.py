@@ -58,6 +58,7 @@ def cmdKeyframe(val=None):
     try: 
         if val != None: offset = val
         else: offset = int(cmds.textField("animOffsetInput", q=True, tx=True))
+        if not offset: return
     except:
         cmds.headsUpMessage(u'请输入有效数值：负值为向左移动，正值为向右移动', time=3)
         return
