@@ -19,9 +19,9 @@ class checkingBoxUI(checkingBoxBase.checkingBoxUI):
         clearRedundantShapes()
         clearUnusedNodes()
         clearLightLinkers()
-        zeroMeshPoints()
+        ZeroMeshPoints()
         checkAxis()
-        checkNamespace()
+        CheckNamespace()
         checkSameObjs()
         nameShapes()
         delHistory()
@@ -52,7 +52,7 @@ class clearLightLinkers(checkingBoxBase.checkingBoxCmd):
             self.cont = u'清理失败。'
             return 0
 
-class zeroMeshPoints(checkingBoxBase.checkingBoxCmd):
+class ZeroMeshPoints(checkingBoxBase.checkingBoxCmd):
     label = u'顶点归零'
     def cmd(self):
         try:
@@ -65,7 +65,7 @@ class zeroMeshPoints(checkingBoxBase.checkingBoxCmd):
             self.cont = u'归零失败。'
             return 0
 
-class checkNamespace(checkingBoxBase.checkingBoxCmd):
+class CheckNamespace(checkingBoxBase.checkingBoxCmd):
     label = u'检查namespace'
     def cmd(self):
         import checkNamespace
