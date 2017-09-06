@@ -54,8 +54,10 @@ def softClusterLaunch():
     SoftClusterEX.launch()
 
 
-def cmdKeyframe():
-    try: offset = int(cmds.textField("animOffsetInput", q=True, tx=True))
+def cmdKeyframe(val=None):
+    try: 
+        if val != None: offset = val
+        else: offset = int(cmds.textField("animOffsetInput", q=True, tx=True))
     except:
         cmds.headsUpMessage(u'请输入有效数值：负值为向左移动，正值为向右移动', time=3)
         return
@@ -66,7 +68,7 @@ def cmdKeyframe():
     for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
     
     if not len(animCurves): 
-        cmds.headsUpMessage(u'未找到关键帧信息', time=3)
+        if val == None: cmds.headsUpMessage(u'未找到关键帧信息', time=3)
         return
     
     cmds.progressWindow(title=u"进度", status=u"处理中...")

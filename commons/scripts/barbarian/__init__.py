@@ -7,7 +7,7 @@ Created on 2017.6.9
 '''
 
 from maya import cmds, mel
-from utils import main, config, applyConfig, displayAppearance
+from utils import main, config, displayAppearance
 import maya.OpenMaya as om
 import reloader
 
@@ -82,7 +82,9 @@ class Entrance(object):
 
     def __refreshUI__(self):
         if config.getProject(): 
-            applyConfig()
+            import barbarian.utils
+            reload(barbarian.utils)
+            barbarian.utils.applyConfig()
             if not cmds.optionMenu(self.menu, q=True, numberOfItems=True): 
                 projects = config.getProject(all=True)
                 for prj in projects: cmds.menuItem(l=prj, parent=self.menu)
