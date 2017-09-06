@@ -29,7 +29,7 @@ class ResourceRepository(ui.QtUI):
         cmds.radioButton(self.rbProp, e=True, onCommand=self.refreshData)
         cmds.radioButton(self.rbScene, e=True, onCommand=self.refreshData)
         cmds.button(self.btnLoad, e=True, command=self.load)
-        self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
+        self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=170, cellWidth=150, spacing=5)
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         
@@ -78,9 +78,11 @@ class ResourceRepository(ui.QtUI):
                 for item in self.items:
                     resName = item.getAttribute('name')
                     resFile = item.getAttribute('file').split('.ma')[0]
-                    resPic = self.path + item.getAttribute('thumbnail')
+                    resPic = item.getAttribute('thumbnail')
+                        
                     if not resFile: continue
                     if not resName: resName = resFile
+                    if resPic.find(':') == -1: resPic = self.path + resPic
                     if not os.path.isfile(resPic): resPic = config.getPath(config.kIcon, "empty_%s.png"%resType)
                     cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
                                              image=resPic, font="smallFixedWidthFont", onCommand=self.getCurrent)
