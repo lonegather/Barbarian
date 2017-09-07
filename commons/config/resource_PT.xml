@@ -2,32 +2,34 @@
 <assets>
 	<asset type="character" path="P:/PT/DB/CH/Season_02/">
 		<item name="侯磊" file="C_BaBa.ma" />
-		<item name="朱志摩" file="C_Fatty.ma" thumbnail="C_Fatty_thumb.jpg" />
+		<item name="朱志摩" file="C_Fatty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty.jpg" />
 		<item name="朱志摩-脏" file="C_Fatty_Dirty.ma" thumbnail="" />
 		<item name="朱志摩-伤" file="C_Fatty_Hurt.ma" thumbnail="" />
 		<item name="朱志摩-勇者背包" file="C_Fatty_YongZheBeiBao.ma" thumbnail="" />
-		<item name="候烨" file="C_Houye.ma" thumbnail="E:/C_Houye_thumb.jpg" />
+		<item name="候烨" file="C_Houye.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Houye.jpg" />
 		<item name="侯烨-盔甲" file="C_Houye_KuiJia.ma" />
 		<item name="侯烨-天使之拳" file="C_Hoye_KuiJia_S2.ma" />
-		<item name="卡门" file="C_KaMen.ma" />
+		<item name="卡门" file="C_KaMen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KaMen.jpg" />
 		<item name="卡门-变形" file="C_KaMen_BianXing.ma" />
 		<item name="快递员" file="C_KuaiDiYuan.ma" />
-		<item name="M007" file="C_M007.ma" />
-		<item name="侯烨妈妈" file="C_Mum.ma" />
+		<item name="M007" file="C_M007.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_M007.jpg" />
+		<item name="侯烨妈妈" file="C_Mum.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Mum.jpg" />
 		<item name="麻雀" file="C_Niao.ma" />
 		<item name="PaiBot" file="C_PaiBot.ma" />
 		<item name="PaiGo" file="C_PaiGo.ma" />
 		<item name="PaiGo机器人" file="C_Paigo_Robot.ma" />
+		<item name="菲娜" file="C_Phina.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Phina.jpg" />
+		<item name="菲娜-变身" file="C_Phina_BianShen.ma" />
 		<item name="路人01" file="C_QunZhong_01.ma" />
 		<item name="路人02" file="C_QunZhong_02.ma" />
 		<item name="路人03" file="C_QunZhong_03.ma" />
 		<item name="路人04" file="C_QunZhong_04.ma" />
 		<item name="路人05" file="C_QunZhong_05.ma" />
 		<item name="路人06" file="C_QunZhong_06.ma" />
-		<item name="莎莎-短发" file="C_Sasha_Cut.ma" thumbnail="C_Sasha_Cut_thumb.jpg" />
+		<item name="莎莎-短发" file="C_Sasha_Cut.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Sasha_Cut.jpg" />
 		<item name="莎莎" file="C_ShaSha.ma" />
 		<item name="莎莎-脏" file="C_ShaSha_Dirty.ma" />
-		<item name="唐尼" file="C_TangNi.ma" />
+		<item name="唐尼" file="C_TangNi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi.jpg" />
 		<item name="唐尼机器人" file="C_TangNi_Robot.ma" />
 		<item name="唐尼机器人-红" file="C_TangNi_Robot_Hong.ma" />
 		<item name="唐尼机器人-黄" file="C_TangNi_Robot_Huang.ma" />
@@ -37,7 +39,7 @@
 		<item name="唐尼机器人-紫" file="C_TangNi_Robot_Zi.ma" />
 		<item name="淘淘" file="C_TaoTao.ma" />
 		<item name="淘淘-脏" file="C_TaoTao_Dirty.ma" />
-		<item name="塔塔" file="C_TATA.ma" />
+		<item name="塔塔" file="C_TATA.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TATA.jpg" />
 		<item name="塔塔-武装" file="C_TATA_WuZhuang.ma" />
 		<item name="外星仓鼠" file="C_WaiXingCangShu.ma" />
 		<item name="无脸幽灵" file="C_WuLianYouLing.ma" />
@@ -46,7 +48,7 @@
 		<item name="小Q" file="C_XiaoQ_Skin.ma" />
 		<item name="小Q-弹簧" file="C_XiaoQ_TanHuang.ma" />
 		<item name="小Q-坐垫" file="C_XiaoQ_ZuoDian.ma" />
-		<item name="尤拉" file="C_Yora.ma" />
+		<item name="尤拉" file="C_Yora.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Yora.jpg" />
 	</asset>
 	<asset type="property" path="P:/PT/DB/Prop/Season_02/">
 		<item file="3D_DaYinJi.ma" />
@@ -202,12 +204,12 @@
 		<item name="载人车" file="ZaiRenChe.ma" thumbnail="ZaiRenChe_thumb.jpg" />
 	</asset>
 	<asset type="scene" path="P:/PT/DB/SC/Season_02/">
-		<item file="Basement_JianKongShi.ma" />
-		<item name="禁闭室" file="Basement_JinBiShi.ma" thumbnail="Basement_JinBiShi_thumb.jpg" />
+		<item name="监控室" file="Basement_JianKongShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JianKongShi.jpg" />
+		<item name="禁闭室" file="Basement_JinBiShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JinBiShi.jpg" />
 		<item file="Basement_KuaiDiShi.ma" />
 		<item file="Basement_QianZhengShi.ma" />
-		<item file="Basement_ZouLang.ma" />
-		<item file="BEA_B1_JXDT.ma" />
+		<item name="地下室-走廊" file="Basement_ZouLang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_ZouLang.jpg" />
+		<item file="BEA_B1_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B1_JXDT.jpg" />
 		<item file="BEA_B2_EJiJiaoNang.ma" />
 		<item file="BEA_B2_EJiJiaoNang_Duan.ma" />
 		<item file="BEA_B2_EJiJiaoNang_JiaChang.ma" />
@@ -220,7 +222,7 @@
 		<item file="BEA_B2_EJiJiaoNang58.ma" />
 		<item file="BEA_B2_EJiJiaoNang67.ma" />
 		<item file="BEA_B2_EJiJiaoNang99.ma" />
-		<item file="BEA_B2_JXDT.ma" />
+		<item file="BEA_B2_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_JXDT.jpg" />
 		<item file="BEA_B3_JXDT.ma" />
 		<item file="BEA_B3_XiYiFang.ma" />
 		<item file="BEA_DiXiaXunLianChang.ma" />
@@ -229,8 +231,8 @@
 		<item file="City_JieDao.ma" />
 		<item file="City_XiYiFang.ma" />
 		<item file="Fatty_Bedroom.ma" />
-		<item file="Fatty_House.ma" />
-		<item file="HouYe_Bedroom.ma" />
+		<item name="朱志摩家" file="Fatty_House.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Fatty_House.jpg" />
+		<item name="侯烨卧室" file="HouYe_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Bedroom.jpg" />
 		<item file="HouYe_Building.ma" />
 		<item file="HouYe_ChuFang.ma" />
 		<item file="HouYe_ChuFang_Party.ma" />
@@ -243,7 +245,7 @@
 		<item file="HouYe_Mum_Bedroom.ma" />
 		<item file="HouYe_ShuFang.ma" />
 		<item file="HouYe_Toilet.ma" />
-		<item file="MoTianLun.ma" />
+		<item name="摩天轮" file="MoTianLun.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/MoTianLun.jpg" />
 		<item file="MoTianLun_ZhongKongShi.ma" />
 		<item file="TaoTao_Home.ma" />
 		<item file="XiaShuiJing.ma" />
