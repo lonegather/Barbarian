@@ -1,53 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <assets>
 	<asset type="character" path="P:/PT/DB/CH/Season_02/">
-		<item name="侯磊" file="C_BaBa.ma" />
+		<item name="侯磊" file="C_BaBa.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_BaBa.jpg" />
 		<item name="朱志摩" file="C_Fatty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty.jpg" />
-		<item name="朱志摩-脏" file="C_Fatty_Dirty.ma" thumbnail="" />
-		<item name="朱志摩-伤" file="C_Fatty_Hurt.ma" thumbnail="" />
-		<item name="朱志摩-勇者背包" file="C_Fatty_YongZheBeiBao.ma" thumbnail="" />
+		<item name="朱志摩-脏" file="C_Fatty_Dirty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty_Dirty.jpg" />
+		<item name="朱志摩-伤" file="C_Fatty_Hurt.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty_Hurt.jpg" />
+		<item name="朱志摩-勇者背包" file="C_Fatty_YongZheBeiBao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty_YongZheBeiBao.jpg" />
 		<item name="候烨" file="C_Houye.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Houye.jpg" />
-		<item name="侯烨-盔甲" file="C_Houye_KuiJia.ma" />
-		<item name="侯烨-天使之拳" file="C_Hoye_KuiJia_S2.ma" />
+		<item name="侯烨-盔甲" file="C_Houye_KuiJia.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Houye_KuiJia.jpg" />
+		<item name="侯烨-天使之拳" file="C_Hoye_KuiJia_S2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Hoye_KuiJia_S2.jpg" />
 		<item name="卡门" file="C_KaMen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KaMen.jpg" />
-		<item name="卡门-变形" file="C_KaMen_BianXing.ma" />
-		<item name="快递员" file="C_KuaiDiYuan.ma" />
+		<item name="卡门-变形" file="C_KaMen_BianXing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KaMen_BianXing.jpg" />
+		<item name="快递员" file="C_KuaiDiYuan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KuaiDiYuan.jpg" />
 		<item name="M007" file="C_M007.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_M007.jpg" />
 		<item name="侯烨妈妈" file="C_Mum.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Mum.jpg" />
-		<item name="麻雀" file="C_Niao.ma" />
-		<item name="PaiBot" file="C_PaiBot.ma" />
-		<item name="PaiGo" file="C_PaiGo.ma" />
-		<item name="PaiGo机器人" file="C_Paigo_Robot.ma" />
+		<item name="麻雀" file="C_Niao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Niao.jpg" />
+		<item name="PaiBot" file="C_PaiBot.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_PaiBot.jpg" />
+		<item name="PaiGo" file="C_PaiGo.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_PaiGo.jpg" />
+		<item name="PaiGo机器人" file="C_Paigo_Robot.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Paigo_Robot.jpg" />
 		<item name="菲娜" file="C_Phina.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Phina.jpg" />
-		<item name="菲娜-变身" file="C_Phina_BianShen.ma" />
-		<item name="路人01" file="C_QunZhong_01.ma" />
-		<item name="路人02" file="C_QunZhong_02.ma" />
-		<item name="路人03" file="C_QunZhong_03.ma" />
-		<item name="路人04" file="C_QunZhong_04.ma" />
-		<item name="路人05" file="C_QunZhong_05.ma" />
-		<item name="路人06" file="C_QunZhong_06.ma" />
+		<item name="菲娜-变身" file="C_Phina_BianShen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Phina_BianShen.jpg" />
+		<item name="路人01" file="C_QunZhong_01.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_01.jpg" />
+		<item name="路人02" file="C_QunZhong_02.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_02.jpg" />
+		<item name="路人03" file="C_QunZhong_03.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_03.jpg" />
+		<item name="路人04" file="C_QunZhong_04.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_04.jpg" />
+		<item name="路人05" file="C_QunZhong_05.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_05.jpg" />
+		<item name="路人06" file="C_QunZhong_06.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_06.jpg" />
 		<item name="莎莎-短发" file="C_Sasha_Cut.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Sasha_Cut.jpg" />
-		<item name="莎莎" file="C_ShaSha.ma" />
-		<item name="莎莎-脏" file="C_ShaSha_Dirty.ma" />
+		<item name="莎莎" file="C_ShaSha.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_ShaSha.jpg" />
+		<item name="莎莎-脏" file="C_ShaSha_Dirty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_ShaSha_Dirty.jpg" />
 		<item name="唐尼" file="C_TangNi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi.jpg" />
-		<item name="唐尼机器人" file="C_TangNi_Robot.ma" />
-		<item name="唐尼机器人-红" file="C_TangNi_Robot_Hong.ma" />
-		<item name="唐尼机器人-黄" file="C_TangNi_Robot_Huang.ma" />
-		<item name="唐尼机器人-蓝" file="C_TangNi_Robot_Lan.ma" />
-		<item name="唐尼机器人-绿" file="C_TangNi_Robot_Lv.ma" />
-		<item name="唐尼机器人-粉" file="C_TangNi_Robot_Tao.ma" />
-		<item name="唐尼机器人-紫" file="C_TangNi_Robot_Zi.ma" />
-		<item name="淘淘" file="C_TaoTao.ma" />
-		<item name="淘淘-脏" file="C_TaoTao_Dirty.ma" />
+		<item name="唐尼机器人" file="C_TangNi_Robot.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot.jpg" />
+		<item name="唐尼机器人-红" file="C_TangNi_Robot_Hong.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Hong.jpg" />
+		<item name="唐尼机器人-黄" file="C_TangNi_Robot_Huang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Huang.jpg" />
+		<item name="唐尼机器人-蓝" file="C_TangNi_Robot_Lan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Lan.jpg" />
+		<item name="唐尼机器人-绿" file="C_TangNi_Robot_Lv.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Lv.jpg" />
+		<item name="唐尼机器人-粉" file="C_TangNi_Robot_Tao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Tao.jpg" />
+		<item name="唐尼机器人-紫" file="C_TangNi_Robot_Zi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Zi.jpg" />
+		<item name="淘淘" file="C_TaoTao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TaoTao.jpg" />
+		<item name="淘淘-脏" file="C_TaoTao_Dirty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TaoTao_Dirty.jpg" />
 		<item name="塔塔" file="C_TATA.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TATA.jpg" />
-		<item name="塔塔-武装" file="C_TATA_WuZhuang.ma" />
-		<item name="外星仓鼠" file="C_WaiXingCangShu.ma" />
-		<item name="无脸幽灵" file="C_WuLianYouLing.ma" />
-		<item name="小Q-变身" file="C_XiaoQ_BianShen.ma" />
-		<item name="小Q-护盾" file="C_XiaoQ_Dun.ma" />
-		<item name="小Q" file="C_XiaoQ_Skin.ma" />
-		<item name="小Q-弹簧" file="C_XiaoQ_TanHuang.ma" />
-		<item name="小Q-坐垫" file="C_XiaoQ_ZuoDian.ma" />
+		<item name="塔塔-武装" file="C_TATA_WuZhuang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TATA_WuZhuang.jpg" />
+		<item name="外星仓鼠" file="C_WaiXingCangShu.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_WaiXingCangShu.jpg" />
+		<item name="无脸幽灵" file="C_WuLianYouLing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_WuLianYouLing.jpg" />
+		<item name="小Q-变身" file="C_XiaoQ_BianShen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_BianShen.jpg" />
+		<item name="小Q-护盾" file="C_XiaoQ_Dun.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_Dun.jpg" />
+		<item name="小Q" file="C_XiaoQ_Skin.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_Skin.jpg" />
+		<item name="小Q-弹簧" file="C_XiaoQ_TanHuang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_TanHuang.jpg" />
+		<item name="小Q-坐垫" file="C_XiaoQ_ZuoDian.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_ZuoDian.jpg" />
 		<item name="尤拉" file="C_Yora.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Yora.jpg" />
 	</asset>
 	<asset type="property" path="P:/PT/DB/Prop/Season_02/">
@@ -204,64 +204,64 @@
 		<item name="载人车" file="ZaiRenChe.ma" thumbnail="ZaiRenChe_thumb.jpg" />
 	</asset>
 	<asset type="scene" path="P:/PT/DB/SC/Season_02/">
-		<item name="监控室" file="Basement_JianKongShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JianKongShi.jpg" />
-		<item name="禁闭室" file="Basement_JinBiShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JinBiShi.jpg" />
-		<item file="Basement_KuaiDiShi.ma" />
-		<item file="Basement_QianZhengShi.ma" />
+		<item name="地下室-监控室" file="Basement_JianKongShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JianKongShi.jpg" />
+		<item name="地下室-禁闭室" file="Basement_JinBiShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JinBiShi.jpg" />
+		<item name="地下室-快递室" file="Basement_KuaiDiShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_KuaiDiShi.jpg" />
+		<item name="地下室-签证室" file="Basement_QianZhengShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_QianZhengShi.jpg" />
 		<item name="地下室-走廊" file="Basement_ZouLang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_ZouLang.jpg" />
 		<item file="BEA_B1_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B1_JXDT.jpg" />
-		<item file="BEA_B2_EJiJiaoNang.ma" />
-		<item file="BEA_B2_EJiJiaoNang_Duan.ma" />
-		<item file="BEA_B2_EJiJiaoNang_JiaChang.ma" />
-		<item file="BEA_B2_EJiJiaoNang03_Ani.ma" />
-		<item file="BEA_B2_EJiJiaoNang05.ma" />
-		<item file="BEA_B2_EJiJiaoNang11.ma" />
-		<item file="BEA_B2_EJiJiaoNang22.ma" />
-		<item file="BEA_B2_EJiJiaoNang23.ma" />
-		<item file="BEA_B2_EJiJiaoNang45.ma" />
-		<item file="BEA_B2_EJiJiaoNang58.ma" />
-		<item file="BEA_B2_EJiJiaoNang67.ma" />
-		<item file="BEA_B2_EJiJiaoNang99.ma" />
+		<item file="BEA_B2_EJiJiaoNang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang.jpg" />
+		<item file="BEA_B2_EJiJiaoNang_Duan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang_Duan.jpg" />
+		<item file="BEA_B2_EJiJiaoNang_JiaChang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang_JiaChang.jpg" />
+		<item file="BEA_B2_EJiJiaoNang03_Ani.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang03_Ani.jpg" />
+		<item file="BEA_B2_EJiJiaoNang05.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang05.jpg" />
+		<item file="BEA_B2_EJiJiaoNang11.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang11.jpg" />
+		<item file="BEA_B2_EJiJiaoNang22.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang22.jpg" />
+		<item file="BEA_B2_EJiJiaoNang23.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang23.jpg" />
+		<item file="BEA_B2_EJiJiaoNang45.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang45.jpg" />
+		<item file="BEA_B2_EJiJiaoNang58.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang58.jpg" />
+		<item file="BEA_B2_EJiJiaoNang67.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang67.jpg" />
+		<item file="BEA_B2_EJiJiaoNang99.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang99.jpg" />
 		<item file="BEA_B2_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_JXDT.jpg" />
-		<item file="BEA_B3_JXDT.ma" />
-		<item file="BEA_B3_XiYiFang.ma" />
-		<item file="BEA_DiXiaXunLianChang.ma" />
-		<item file="BEA_HuanChenZhan.ma" />
-		<item file="BEA_YunShuJiaoNang.ma" />
-		<item file="City_JieDao.ma" />
-		<item file="City_XiYiFang.ma" />
-		<item file="Fatty_Bedroom.ma" />
+		<item file="BEA_B3_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B3_JXDT.jpg" />
+		<item name="BEA-洗衣房" file="BEA_B3_XiYiFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B3_XiYiFang.jpg" />
+		<item name="BEA-地下训练场" file="BEA_DiXiaXunLianChang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_DiXiaXunLianChang.jpg" />
+		<item name="BEA-换乘站" file="BEA_HuanChenZhan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_HuanChenZhan.jpg" />
+		<item name="BEA-运输胶囊" file="BEA_YunShuJiaoNang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_YunShuJiaoNang.jpg" />
+		<item name="城市街道" file="City_JieDao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/City_JieDao.jpg" />
+		<item name="城市洗衣房" file="City_XiYiFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/City_XiYiFang.jpg" />
+		<item name="朱志摩家-卧室" file="Fatty_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Fatty_Bedroom.jpg" />
 		<item name="朱志摩家" file="Fatty_House.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Fatty_House.jpg" />
-		<item name="侯烨卧室" file="HouYe_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Bedroom.jpg" />
-		<item file="HouYe_Building.ma" />
-		<item file="HouYe_ChuFang.ma" />
-		<item file="HouYe_ChuFang_Party.ma" />
-		<item file="HouYe_Elevator.ma" />
-		<item file="HouYe_HomeBox.ma" />
-		<item file="HouYe_HomeBox_Party.ma" />
-		<item file="HouYe_KeTing.ma" />
-		<item file="HouYe_KeTing_Party.ma" />
-		<item file="HouYe_LouTiRoom.ma" />
-		<item file="HouYe_Mum_Bedroom.ma" />
-		<item file="HouYe_ShuFang.ma" />
-		<item file="HouYe_Toilet.ma" />
+		<item name="侯烨家-卧室" file="HouYe_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Bedroom.jpg" />
+		<item name="侯烨家-外部" file="HouYe_Building.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Building.jpg" />
+		<item name="侯烨家-厨房" file="HouYe_ChuFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_ChuFang.jpg" />
+		<item name="侯烨家-厨房-派对" file="HouYe_ChuFang_Party.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_ChuFang_Party.jpg" />
+		<item name="侯烨家-电梯" file="HouYe_Elevator.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Elevator.jpg" />
+		<item file="HouYe_HomeBox.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_HomeBox.jpg" />
+		<item file="HouYe_HomeBox_Party.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_HomeBox_Party.jpg" />
+		<item name="侯烨家-客厅" file="HouYe_KeTing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_KeTing.jpg" />
+		<item name="侯烨家-客厅-派对" file="HouYe_KeTing_Party.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_KeTing_Party.jpg" />
+		<item file="HouYe_LouTiRoom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_LouTiRoom.jpg" />
+		<item name="侯烨家-妈妈卧室" file="HouYe_Mum_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Mum_Bedroom.jpg" />
+		<item name="侯烨家-书房" file="HouYe_ShuFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_ShuFang.jpg" />
+		<item name="侯烨家-厕所" file="HouYe_Toilet.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Toilet.jpg" />
 		<item name="摩天轮" file="MoTianLun.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/MoTianLun.jpg" />
-		<item file="MoTianLun_ZhongKongShi.ma" />
-		<item file="TaoTao_Home.ma" />
-		<item file="XiaShuiJing.ma" />
-		<item file="XinHuaLu_A1.ma" />
-		<item file="XinHuaLu_A2.ma" />
-		<item file="XinHuaLu_A3.ma" />
-		<item file="XinHuaLu_A4C2.ma" />
-		<item file="XinHuaLu_B1.ma" />
-		<item file="XinHuaLu_B2.ma" />
-		<item file="XinHuaLu_B3.ma" />
-		<item file="XinHuaLu_B4_C1.ma" />
-		<item file="XinHuaLu_B5.ma" />
-		<item file="XinHuaLu_C2.ma" />
-		<item file="XinHuaLu_C3.ma" />
-		<item file="XinHuaLu_D1.ma" />
-		<item file="XinHuaLu_D2_A5.ma" />
-		<item file="XinHuaLu_D3.ma" />
+		<item file="MoTianLun_ZhongKongShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/.jpg" />
+		<item name="淘淘家" file="TaoTao_Home.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/TaoTao_Home.jpg" />
+		<item name="下水井" file="XiaShuiJing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XiaShuiJing.jpg" />
+		<item name="新华路-A1" file="XinHuaLu_A1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A1.jpg" />
+		<item name="新华路-A2" file="XinHuaLu_A2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A2.jpg" />
+		<item name="新华路-A3" file="XinHuaLu_A3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A3.jpg" />
+		<item name="新华路-A4C2" file="XinHuaLu_A4C2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A4C2.jpg" />
+		<item name="新华路-B1" file="XinHuaLu_B1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B1.jpg" />
+		<item name="新华路-B2" file="XinHuaLu_B2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B2.jpg" />
+		<item name="新华路-B3" file="XinHuaLu_B3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B3.jpg" />
+		<item name="新华路-B4C1" file="XinHuaLu_B4_C1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B4_C1.jpg" />
+		<item name="新华路-B5" file="XinHuaLu_B5.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B5.jpg" />
+		<item name="新华路-C2" file="XinHuaLu_C2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_C2.jpg" />
+		<item name="新华路-C3" file="XinHuaLu_C3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_C3.jpg" />
+		<item name="新华路-D1" file="XinHuaLu_D1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D1.jpg" />
+		<item name="新华路-D2A5" file="XinHuaLu_D2_A5.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D2_A5.jpg" />
+		<item name="新华路-D3" file="XinHuaLu_D3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D3.jpg" />
 	</asset>
 </assets>
