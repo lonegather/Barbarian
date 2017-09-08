@@ -11,8 +11,12 @@ import config
 from barbarian.anim import cmdKeyframe
 
 
-def applyConfig():
+def applyConfig(weak=True):
     cmds.currentUnit(time=config.getConfig('time'), updateAnimation=False)
+    cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResX'))
+    cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResY'))
+    
+    if cmds.file(q=1, sn=1, shn=1) and weak: return
     
     ast = int(cmds.playbackOptions(q=1, ast=1))
     aet = int(cmds.playbackOptions(q=1, aet=1))
@@ -23,9 +27,6 @@ def applyConfig():
     cmdKeyframe(offset)
     cmds.currentTime(configAST)
     cmds.playbackOptions(min=mint+offset, max=maxt+offset, ast=ast+offset, aet=aet+offset)
-    
-    cmds.setAttr("%s.width"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResX'))
-    cmds.setAttr("%s.height"%cmds.ls(renderResolutions=True)[0], config.getConfig('camResY'))
     
     
 def displayAppearance(look):

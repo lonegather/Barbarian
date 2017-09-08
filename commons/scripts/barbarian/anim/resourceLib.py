@@ -75,7 +75,13 @@ class ResourceRepository(ui.QtUI):
                 self.path = asset.getAttribute('path')
                 self.items = asset.getElementsByTagName("item")
                 self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
+                
+                cmds.progressWindow(title=u"进度", status=u"读取中...")
+                cmds.progressWindow(e=True, progress=0, max=len(self.items))
+                
                 for item in self.items:
+                    cmds.progressWindow(e=True, step=1)
+                    
                     resName = item.getAttribute('name')
                     resFile = item.getAttribute('file').split('.ma')[0]
                     resPic = item.getAttribute('thumbnail')
@@ -86,6 +92,9 @@ class ResourceRepository(ui.QtUI):
                     if not os.path.isfile(resPic): resPic = config.getPath(config.kIcon, "empty_%s.png"%resType)
                     cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
                                              image=resPic, font="smallFixedWidthFont", onCommand=self.getCurrent)
+                    
+                cmds.progressWindow(endProgress=1)
+                
                 break
         
     def clearData(self):
