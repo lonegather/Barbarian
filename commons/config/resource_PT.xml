@@ -263,5 +263,6 @@
 		<item name="新华路-D1" file="XinHuaLu_D1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D1.jpg" />
 		<item name="新华路-D2A5" file="XinHuaLu_D2_A5.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D2_A5.jpg" />
 		<item name="新华路-D3" file="XinHuaLu_D3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D3.jpg" />
+		<item name="新华路-地面" file="XinHuaLu_DiMian.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_DiMian.jpg" />
 	</asset>
 </assets>
