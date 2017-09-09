@@ -63,14 +63,16 @@ def cmdKeyframe(val=None):
         cmds.headsUpMessage(u'请输入有效数值：负值为向左移动，正值为向右移动', time=3)
         return
     
+    tc = mel.eval("$tmpVar = $gPlayBackSlider;")
+    sound = cmds.timeControl(tc, q=True, sound=True)
+    if sound: cmds.setAttr(sound+".offset", cmds.getAttr(sound+".offset")+offset)
+    
     animCurves = []
     for ac in cmds.ls(type="animCurveTL"): animCurves.append(ac)
     for ac in cmds.ls(type="animCurveTA"): animCurves.append(ac)
     for ac in cmds.ls(type="animCurveTU"): animCurves.append(ac)
     
-    if not len(animCurves): 
-        if val == None: cmds.headsUpMessage(u'未找到关键帧信息', time=3)
-        return
+    if not len(animCurves): return
     
     cmds.progressWindow(title=u"进度", status=u"处理中...")
     cmds.progressWindow(e=True, progress=0, max=len(animCurves))
@@ -82,8 +84,4 @@ def cmdKeyframe(val=None):
         
     cmds.select(clear=True)
     cmds.progressWindow(endProgress=1)
-    
-    tc = mel.eval("$tmpVar = $gPlayBackSlider;")
-    sound = cmds.timeControl(tc, q=True, sound=True)
-    if sound: cmds.setAttr(sound+".offset", cmds.getAttr(sound+".offset")+offset)
 

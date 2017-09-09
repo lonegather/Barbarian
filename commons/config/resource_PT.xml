@@ -1,268 +1,267 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <assets>
-	<asset type="character" path="P:/PT/DB/CH/Season_02/">
-		<item name="侯磊" file="C_BaBa.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_BaBa.jpg" />
-		<item name="朱志摩" file="C_Fatty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty.jpg" />
-		<item name="朱志摩-脏" file="C_Fatty_Dirty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty_Dirty.jpg" />
-		<item name="朱志摩-伤" file="C_Fatty_Hurt.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty_Hurt.jpg" />
-		<item name="朱志摩-勇者背包" file="C_Fatty_YongZheBeiBao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Fatty_YongZheBeiBao.jpg" />
-		<item name="候烨" file="C_Houye.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Houye.jpg" />
-		<item name="侯烨-盔甲" file="C_Houye_KuiJia.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Houye_KuiJia.jpg" />
-		<item name="侯烨-天使之拳" file="C_Hoye_KuiJia_S2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Hoye_KuiJia_S2.jpg" />
-		<item name="卡门" file="C_KaMen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KaMen.jpg" />
-		<item name="卡门-变形" file="C_KaMen_BianXing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KaMen_BianXing.jpg" />
-		<item name="快递员" file="C_KuaiDiYuan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_KuaiDiYuan.jpg" />
-		<item name="M007" file="C_M007.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_M007.jpg" />
-		<item name="侯烨妈妈" file="C_Mum.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Mum.jpg" />
-		<item name="麻雀" file="C_Niao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Niao.jpg" />
-		<item name="PaiBot" file="C_PaiBot.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_PaiBot.jpg" />
-		<item name="PaiGo" file="C_PaiGo.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_PaiGo.jpg" />
-		<item name="PaiGo机器人" file="C_Paigo_Robot.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Paigo_Robot.jpg" />
-		<item name="菲娜" file="C_Phina.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Phina.jpg" />
-		<item name="菲娜-变身" file="C_Phina_BianShen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Phina_BianShen.jpg" />
-		<item name="路人01" file="C_QunZhong_01.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_01.jpg" />
-		<item name="路人02" file="C_QunZhong_02.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_02.jpg" />
-		<item name="路人03" file="C_QunZhong_03.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_03.jpg" />
-		<item name="路人04" file="C_QunZhong_04.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_04.jpg" />
-		<item name="路人05" file="C_QunZhong_05.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_05.jpg" />
-		<item name="路人06" file="C_QunZhong_06.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_QunZhong_06.jpg" />
-		<item name="莎莎-短发" file="C_Sasha_Cut.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Sasha_Cut.jpg" />
-		<item name="莎莎" file="C_ShaSha.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_ShaSha.jpg" />
-		<item name="莎莎-脏" file="C_ShaSha_Dirty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_ShaSha_Dirty.jpg" />
-		<item name="唐尼" file="C_TangNi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi.jpg" />
-		<item name="唐尼机器人" file="C_TangNi_Robot.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot.jpg" />
-		<item name="唐尼机器人-红" file="C_TangNi_Robot_Hong.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Hong.jpg" />
-		<item name="唐尼机器人-黄" file="C_TangNi_Robot_Huang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Huang.jpg" />
-		<item name="唐尼机器人-蓝" file="C_TangNi_Robot_Lan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Lan.jpg" />
-		<item name="唐尼机器人-绿" file="C_TangNi_Robot_Lv.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Lv.jpg" />
-		<item name="唐尼机器人-粉" file="C_TangNi_Robot_Tao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Tao.jpg" />
-		<item name="唐尼机器人-紫" file="C_TangNi_Robot_Zi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TangNi_Robot_Zi.jpg" />
-		<item name="淘淘" file="C_TaoTao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TaoTao.jpg" />
-		<item name="淘淘-脏" file="C_TaoTao_Dirty.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TaoTao_Dirty.jpg" />
-		<item name="塔塔" file="C_TATA.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TATA.jpg" />
-		<item name="塔塔-武装" file="C_TATA_WuZhuang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_TATA_WuZhuang.jpg" />
-		<item name="外星仓鼠" file="C_WaiXingCangShu.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_WaiXingCangShu.jpg" />
-		<item name="无脸幽灵" file="C_WuLianYouLing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_WuLianYouLing.jpg" />
-		<item name="小Q-变身" file="C_XiaoQ_BianShen.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_BianShen.jpg" />
-		<item name="小Q-护盾" file="C_XiaoQ_Dun.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_Dun.jpg" />
-		<item name="小Q" file="C_XiaoQ_Skin.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_Skin.jpg" />
-		<item name="小Q-弹簧" file="C_XiaoQ_TanHuang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_TanHuang.jpg" />
-		<item name="小Q-坐垫" file="C_XiaoQ_ZuoDian.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_XiaoQ_ZuoDian.jpg" />
-		<item name="尤拉" file="C_Yora.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/C_Yora.jpg" />
-	</asset>
-	<asset type="property" path="P:/PT/DB/Prop/Season_02/">
-		<item file="3D_DaYinJi.ma" />
-		<item file="AirShip.ma" />
-		<item file="Bag_Fatty.ma" />
-		<item file="Bag_HouYe.ma" />
-		<item file="BaHaoQiu.ma" />
-		<item file="BaiHeHua.ma" />
-		<item file="BangBangTang.ma" />
-		<item file="Bao.ma" />
-		<item file="BaoZi.ma" />
-		<item file="BeiFengYinDeTanCeQi.ma" />
-		<item file="BengChuang.ma" />
-		<item file="BianBian_CangShu.ma" />
-		<item file="BianZhiKuang.ma" />
-		<item file="BiJiBen.ma" />
-		<item file="BiJiBen_TaoTao.ma" />
-		<item file="BingQiang.ma" />
-		<item file="BingXiangShiCai.ma" />
-		<item file="BoJi.ma" />
-		<item file="BoLiBei.ma" />
-		<item file="CaiDaiPenTong.ma" />
-		<item file="Cake.ma" />
-		<item file="ChaHu.ma" />
-		<item file="ChaJi_DuanLie.ma" />
-		<item file="ChaZi.ma" />
-		<item file="ChengBaoMoXing.ma" />
-		<item file="ChuiZi.ma" />
-		<item file="ChuoJiangXiang.ma" />
-		<item file="DaCheDaWuWan.ma" />
-		<item file="DaHuoJi.ma" />
-		<item file="DanTa.ma" />
-		<item file="DengZi.ma" />
-		<item file="DianZiQin.ma" />
-		<item file="DiQiuYi.ma" />
-		<item file="DunPai.ma" />
-		<item file="EMoShouTao.ma" />
-		<item file="ErTiJiao.ma" />
-		<item file="FangBianMian.ma" />
-		<item file="FaShePao.ma" />
-		<item file="FaSheQi.ma" />
-		<item file="FeiXingQi.ma" />
-		<item file="FengZheng.ma" />
-		<item file="FuBan.ma" />
-		<item file="FuBan_02.ma" />
-		<item file="Glass_Fatty.ma" />
-		<item file="GongJuXiang.ma" />
-		<item file="GuaZi.ma" />
-		<item file="GuaZiRen.ma" />
-		<item file="GunTong.ma" />
-		<item file="HanBao.ma" />
-		<item file="HeZi.ma" />
-		<item file="HuanXingSuo.ma" />
-		<item file="HuaTong.ma" />
-		<item file="HuaZhuangJing.ma" />
-		<item file="HuiZhangMingPai.ma" />
-		<item file="HuoChe.ma" />
-		<item file="HuoTuiChang.ma" />
-		<item file="JianDao.ma" />
-		<item file="JiaoChe_Hong.ma" />
-		<item file="JiaoChe_Huang.ma" />
-		<item file="JiaoChe_Lan.ma" />
-		<item file="JiaoChe_Lv.ma" />
-		<item file="JiaoTaChe_02.ma" />
-		<item file="JiDan.ma" />
-		<item file="JieZhi_M007.ma" />
-		<item file="JiHuaShu.ma" />
-		<item file="JinBeiChe.ma" />
-		<item file="JiTui.ma" />
-		<item file="JIXieDiaoBi.ma" />
-		<item file="JuanZhi.ma" />
-		<item file="KuaiDiXiang.ma" />
-		<item file="KuiJia_HouYe_ChaiFen.ma" />
-		<item file="LaJiTong.ma" />
-		<item file="LianPen.ma" />
-		<item file="LingShi.ma" />
-		<item file="LingShi_02.ma" />
-		<item file="LiZi_All.ma" />
-		<item file="LiZiDai.ma" />
-		<item file="LiZiJiQiRen.ma" />
-		<item file="LiZiKeShan.ma" />
-		<item file="LuoSiDao.ma" />
-		<item file="LuoSiDao_02.ma" />
-		<item file="MaKeBi.ma" />
-		<item file="MaoZi.ma" />
-		<item file="MaTong.ma" />
-		<item file="MaTongSaiZi.ma" />
-		<item file="MianHuaTang.ma" />
-		<item file="MiMaSuo.ma" />
-		<item file="MingPai.ma" />
-		<item file="MoGu.ma" />
-		<item file="MoGu_02.ma" />
-		<item file="MoGuChuan.ma" />
-		<item file="MoTuoChe.ma" />
-		<item file="MoXingChe.ma" />
-		<item file="NengLiangQiu.ma" />
-		<item file="PaoPaoTang.ma" />
-		<item file="PingMu_MoDiCeShi.ma" />
-		<item file="PingMu_ShuZi.ma" />
-		<item file="QianZi.ma" />
-		<item file="Qiu_DuoBiQiu.ma" />
-		<item file="Qiu_FaShePao.ma" />
-		<item file="Qiu_YongZheBeiBao.ma" />
-		<item file="San.ma" />
-		<item file="SaoBa.ma" />
-		<item file="ShaSha_XieZi.ma" />
-		<item file="ShengRiDanGao.ma" />
-		<item file="ShiBingMoXing.ma" />
-		<item file="ShouBiao.ma" />
-		<item file="ShouBiao_2.ma" />
-		<item file="ShouJi.ma" />
-		<item file="Shu.ma" />
-		<item file="Shu_02.ma" />
-		<item file="Shu_03.ma" />
-		<item file="Shu_04.ma" />
-		<item file="ShuPian.ma" />
-		<item file="ShuZi.ma" />
-		<item file="SilkBall.ma" />
-		<item file="SilkStock.ma" />
-		<item file="SuiPian.ma" />
-		<item file="TangShao.ma" />
-		<item file="TanLiQiu.ma" />
-		<item file="Taxi.ma" />
-		<item file="TiXuDao.ma" />
-		<item file="TongZhiShu.ma" />
-		<item file="TouMingJiaoNangZhao.ma" />
-		<item file="TuoBa.ma" />
-		<item file="TuoBa_02.ma" />
-		<item file="TuoBa_Tong.ma" />
-		<item file="TuWeiJia.ma" />
-		<item file="WanNengJie.ma" />
-		<item file="WaZi.ma" />
-		<item file="WeiXiuChe.ma" />
-		<item file="XianChanRaoTianXian.ma" />
-		<item file="XiangShui.ma" />
-		<item file="XiangZi.ma" />
-		<item file="XianShiPing.ma" />
-		<item file="XiaoCaiQi.ma" />
-		<item file="XiHongShi.ma" />
-		<item file="XuanGuaQi.ma" />
-		<item file="YiDaiLiZi.ma" />
-		<item file="YiFu_01.ma" />
-		<item file="YiFu_02.ma" />
-		<item file="YiFu_03.ma" />
-		<item file="YiFu_04.ma" />
-		<item file="YiFu_05.ma" />
-		<item file="YiFu_06.ma" />
-		<item file="YinXiang.ma" />
-		<item file="YiQuanChaoRen.ma" />
-		<item file="YongZheBeiBao_Fatty.ma" />
-		<item file="YouXiShouBing.ma" />
-		<item name="运输车" file="YunShuChe.ma" thumbnail="YunShuChe_thumb.jpg" />
-		<item name="载人车" file="ZaiRenChe.ma" thumbnail="ZaiRenChe_thumb.jpg" />
-	</asset>
-	<asset type="scene" path="P:/PT/DB/SC/Season_02/">
-		<item name="地下室-监控室" file="Basement_JianKongShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JianKongShi.jpg" />
-		<item name="地下室-禁闭室" file="Basement_JinBiShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_JinBiShi.jpg" />
-		<item name="地下室-快递室" file="Basement_KuaiDiShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_KuaiDiShi.jpg" />
-		<item name="地下室-签证室" file="Basement_QianZhengShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_QianZhengShi.jpg" />
-		<item name="地下室-走廊" file="Basement_ZouLang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Basement_ZouLang.jpg" />
-		<item file="BEA_B1_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B1_JXDT.jpg" />
-		<item file="BEA_B2_EJiJiaoNang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang.jpg" />
-		<item file="BEA_B2_EJiJiaoNang_Duan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang_Duan.jpg" />
-		<item file="BEA_B2_EJiJiaoNang_JiaChang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang_JiaChang.jpg" />
-		<item file="BEA_B2_EJiJiaoNang03_Ani.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang03_Ani.jpg" />
-		<item file="BEA_B2_EJiJiaoNang05.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang05.jpg" />
-		<item file="BEA_B2_EJiJiaoNang11.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang11.jpg" />
-		<item file="BEA_B2_EJiJiaoNang22.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang22.jpg" />
-		<item file="BEA_B2_EJiJiaoNang23.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang23.jpg" />
-		<item file="BEA_B2_EJiJiaoNang45.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang45.jpg" />
-		<item file="BEA_B2_EJiJiaoNang58.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang58.jpg" />
-		<item file="BEA_B2_EJiJiaoNang67.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang67.jpg" />
-		<item file="BEA_B2_EJiJiaoNang99.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_EJiJiaoNang99.jpg" />
-		<item file="BEA_B2_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B2_JXDT.jpg" />
-		<item file="BEA_B3_JXDT.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B3_JXDT.jpg" />
-		<item name="BEA-洗衣房" file="BEA_B3_XiYiFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_B3_XiYiFang.jpg" />
-		<item name="BEA-地下训练场" file="BEA_DiXiaXunLianChang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_DiXiaXunLianChang.jpg" />
-		<item name="BEA-换乘站" file="BEA_HuanChenZhan.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_HuanChenZhan.jpg" />
-		<item name="BEA-运输胶囊" file="BEA_YunShuJiaoNang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/BEA_YunShuJiaoNang.jpg" />
-		<item name="城市街道" file="City_JieDao.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/City_JieDao.jpg" />
-		<item name="城市洗衣房" file="City_XiYiFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/City_XiYiFang.jpg" />
-		<item name="朱志摩家-卧室" file="Fatty_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Fatty_Bedroom.jpg" />
-		<item name="朱志摩家" file="Fatty_House.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/Fatty_House.jpg" />
-		<item name="侯烨家-卧室" file="HouYe_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Bedroom.jpg" />
-		<item name="侯烨家-外部" file="HouYe_Building.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Building.jpg" />
-		<item name="侯烨家-厨房" file="HouYe_ChuFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_ChuFang.jpg" />
-		<item name="侯烨家-厨房-派对" file="HouYe_ChuFang_Party.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_ChuFang_Party.jpg" />
-		<item name="侯烨家-电梯" file="HouYe_Elevator.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Elevator.jpg" />
-		<item file="HouYe_HomeBox.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_HomeBox.jpg" />
-		<item file="HouYe_HomeBox_Party.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_HomeBox_Party.jpg" />
-		<item name="侯烨家-客厅" file="HouYe_KeTing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_KeTing.jpg" />
-		<item name="侯烨家-客厅-派对" file="HouYe_KeTing_Party.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_KeTing_Party.jpg" />
-		<item file="HouYe_LouTiRoom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_LouTiRoom.jpg" />
-		<item name="侯烨家-妈妈卧室" file="HouYe_Mum_Bedroom.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Mum_Bedroom.jpg" />
-		<item name="侯烨家-书房" file="HouYe_ShuFang.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_ShuFang.jpg" />
-		<item name="侯烨家-厕所" file="HouYe_Toilet.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/HouYe_Toilet.jpg" />
-		<item name="摩天轮" file="MoTianLun.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/MoTianLun.jpg" />
-		<item file="MoTianLun_ZhongKongShi.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/.jpg" />
-		<item name="淘淘家" file="TaoTao_Home.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/TaoTao_Home.jpg" />
-		<item name="下水井" file="XiaShuiJing.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XiaShuiJing.jpg" />
-		<item name="新华路-A1" file="XinHuaLu_A1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A1.jpg" />
-		<item name="新华路-A2" file="XinHuaLu_A2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A2.jpg" />
-		<item name="新华路-A3" file="XinHuaLu_A3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A3.jpg" />
-		<item name="新华路-A4C2" file="XinHuaLu_A4C2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_A4C2.jpg" />
-		<item name="新华路-B1" file="XinHuaLu_B1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B1.jpg" />
-		<item name="新华路-B2" file="XinHuaLu_B2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B2.jpg" />
-		<item name="新华路-B3" file="XinHuaLu_B3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B3.jpg" />
-		<item name="新华路-B4C1" file="XinHuaLu_B4_C1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B4_C1.jpg" />
-		<item name="新华路-B5" file="XinHuaLu_B5.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_B5.jpg" />
-		<item name="新华路-C2" file="XinHuaLu_C2.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_C2.jpg" />
-		<item name="新华路-C3" file="XinHuaLu_C3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_C3.jpg" />
-		<item name="新华路-D1" file="XinHuaLu_D1.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D1.jpg" />
-		<item name="新华路-D2A5" file="XinHuaLu_D2_A5.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D2_A5.jpg" />
-		<item name="新华路-D3" file="XinHuaLu_D3.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_D3.jpg" />
-		<item name="新华路-地面" file="XinHuaLu_DiMian.ma" thumbnail="P:/PT/Doc/06_Maya_Plugin/thumbnails/XinHuaLu_DiMian.jpg" />
-	</asset>
+	<path name="character_s02">P:/PT/DB/CH/Season_02/</path>
+	<path name="property_s02">P:/PT/DB/Prop/Season_02/</path>
+	<path name="scene_s02">P:/PT/DB/SC/Season_02/</path>
+	<path name="thumbnail_s02">P:/PT/Doc/06_Maya_Plugin/thumbnails/</path>
+	
+	<item tag="character" name="侯磊" file="%character_s02%C_BaBa.ma" thumbnail="%thumbnail_s02%C_BaBa.jpg" />
+	<item tag="character;primary" name="朱志摩" file="%character_s02%C_Fatty.ma" thumbnail="%thumbnail_s02%C_Fatty.jpg" />
+	<item tag="character;primary" name="朱志摩-脏" file="%character_s02%C_Fatty_Dirty.ma" thumbnail="%thumbnail_s02%C_Fatty_Dirty.jpg" />
+	<item tag="character;primary" name="朱志摩-伤" file="%character_s02%C_Fatty_Hurt.ma" thumbnail="%thumbnail_s02%C_Fatty_Hurt.jpg" />
+	<item tag="character;primary" name="朱志摩-勇者背包" file="%character_s02%C_Fatty_YongZheBeiBao.ma" thumbnail="%thumbnail_s02%C_Fatty_YongZheBeiBao.jpg" />
+	<item tag="character;primary" name="候烨" file="%character_s02%C_Houye.ma" thumbnail="%thumbnail_s02%C_Houye.jpg" />
+	<item tag="character;primary" name="侯烨-盔甲" file="%character_s02%C_Houye_KuiJia.ma" thumbnail="%thumbnail_s02%C_Houye_KuiJia.jpg" />
+	<item tag="character;primary" name="侯烨-天使之拳" file="%character_s02%C_Hoye_KuiJia_S2.ma" thumbnail="%thumbnail_s02%C_Hoye_KuiJia_S2.jpg" />
+	<item tag="character;primary" name="卡门" file="%character_s02%C_KaMen.ma" thumbnail="%thumbnail_s02%C_KaMen.jpg" />
+	<item tag="character;primary" name="卡门-变形" file="%character_s02%C_KaMen_BianXing.ma" thumbnail="%thumbnail_s02%C_KaMen_BianXing.jpg" />
+	<item tag="character" name="快递员" file="%character_s02%C_KuaiDiYuan.ma" thumbnail="%thumbnail_s02%C_KuaiDiYuan.jpg" />
+	<item tag="character;primary" name="M007" file="%character_s02%C_M007.ma" thumbnail="%thumbnail_s02%C_M007.jpg" />
+	<item tag="character" name="侯烨妈妈" file="%character_s02%C_Mum.ma" thumbnail="%thumbnail_s02%C_Mum.jpg" />
+	<item tag="character" name="麻雀" file="%character_s02%C_Niao.ma" thumbnail="%thumbnail_s02%C_Niao.jpg" />
+	<item tag="character" name="PaiBot" file="%character_s02%C_PaiBot.ma" thumbnail="%thumbnail_s02%C_PaiBot.jpg" />
+	<item tag="character" name="PaiGo" file="%character_s02%C_PaiGo.ma" thumbnail="%thumbnail_s02%C_PaiGo.jpg" />
+	<item tag="character;primary" name="PaiGo机器人" file="%character_s02%C_Paigo_Robot.ma" thumbnail="%thumbnail_s02%C_Paigo_Robot.jpg" />
+	<item tag="character;primary" name="菲娜" file="%character_s02%C_Phina.ma" thumbnail="%thumbnail_s02%C_Phina.jpg" />
+	<item tag="character;primary" name="菲娜-变身" file="%character_s02%C_Phina_BianShen.ma" thumbnail="%thumbnail_s02%C_Phina_BianShen.jpg" />
+	<item tag="character" name="路人01" file="%character_s02%C_QunZhong_01.ma" thumbnail="%thumbnail_s02%C_QunZhong_01.jpg" />
+	<item tag="character" name="路人02" file="%character_s02%C_QunZhong_02.ma" thumbnail="%thumbnail_s02%C_QunZhong_02.jpg" />
+	<item tag="character" name="路人03" file="%character_s02%C_QunZhong_03.ma" thumbnail="%thumbnail_s02%C_QunZhong_03.jpg" />
+	<item tag="character" name="路人04" file="%character_s02%C_QunZhong_04.ma" thumbnail="%thumbnail_s02%C_QunZhong_04.jpg" />
+	<item tag="character" name="路人05" file="%character_s02%C_QunZhong_05.ma" thumbnail="%thumbnail_s02%C_QunZhong_05.jpg" />
+	<item tag="character" name="路人06" file="%character_s02%C_QunZhong_06.ma" thumbnail="%thumbnail_s02%C_QunZhong_06.jpg" />
+	<item tag="character;primary" name="莎莎-短发" file="%character_s02%C_Sasha_Cut.ma" thumbnail="%thumbnail_s02%C_Sasha_Cut.jpg" />
+	<item tag="character;primary" name="莎莎" file="%character_s02%C_ShaSha.ma" thumbnail="%thumbnail_s02%C_ShaSha.jpg" />
+	<item tag="character;primary" name="莎莎-脏" file="%character_s02%C_ShaSha_Dirty.ma" thumbnail="%thumbnail_s02%C_ShaSha_Dirty.jpg" />
+	<item tag="character;primary" name="唐尼" file="%character_s02%C_TangNi.ma" thumbnail="%thumbnail_s02%C_TangNi.jpg" />
+	<item tag="character" name="唐尼机器人" file="%character_s02%C_TangNi_Robot.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot.jpg" />
+	<item tag="character" name="唐尼机器人-红" file="%character_s02%C_TangNi_Robot_Hong.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot_Hong.jpg" />
+	<item tag="character" name="唐尼机器人-黄" file="%character_s02%C_TangNi_Robot_Huang.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot_Huang.jpg" />
+	<item tag="character" name="唐尼机器人-蓝" file="%character_s02%C_TangNi_Robot_Lan.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot_Lan.jpg" />
+	<item tag="character" name="唐尼机器人-绿" file="%character_s02%C_TangNi_Robot_Lv.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot_Lv.jpg" />
+	<item tag="character" name="唐尼机器人-粉" file="%character_s02%C_TangNi_Robot_Tao.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot_Tao.jpg" />
+	<item tag="character" name="唐尼机器人-紫" file="%character_s02%C_TangNi_Robot_Zi.ma" thumbnail="%thumbnail_s02%C_TangNi_Robot_Zi.jpg" />
+	<item tag="character;primary" name="淘淘" file="%character_s02%C_TaoTao.ma" thumbnail="%thumbnail_s02%C_TaoTao.jpg" />
+	<item tag="character;primary" name="淘淘-脏" file="%character_s02%C_TaoTao_Dirty.ma" thumbnail="%thumbnail_s02%C_TaoTao_Dirty.jpg" />
+	<item tag="character;primary" name="塔塔" file="%character_s02%C_TATA.ma" thumbnail="%thumbnail_s02%C_TATA.jpg" />
+	<item tag="character;primary" name="塔塔-武装" file="%character_s02%C_TATA_WuZhuang.ma" thumbnail="%thumbnail_s02%C_TATA_WuZhuang.jpg" />
+	<item tag="character" name="外星仓鼠" file="%character_s02%C_WaiXingCangShu.ma" thumbnail="%thumbnail_s02%C_WaiXingCangShu.jpg" />
+	<item tag="character" name="无脸幽灵" file="%character_s02%C_WuLianYouLing.ma" thumbnail="%thumbnail_s02%C_WuLianYouLing.jpg" />
+	<item tag="character" name="小Q-变身" file="%character_s02%C_XiaoQ_BianShen.ma" thumbnail="%thumbnail_s02%C_XiaoQ_BianShen.jpg" />
+	<item tag="character" name="小Q-护盾" file="%character_s02%C_XiaoQ_Dun.ma" thumbnail="%thumbnail_s02%C_XiaoQ_Dun.jpg" />
+	<item tag="character;primary" name="小Q" file="%character_s02%C_XiaoQ_Skin.ma" thumbnail="%thumbnail_s02%C_XiaoQ_Skin.jpg" />
+	<item tag="character" name="小Q-弹簧" file="%character_s02%C_XiaoQ_TanHuang.ma" thumbnail="%thumbnail_s02%C_XiaoQ_TanHuang.jpg" />
+	<item tag="character" name="小Q-坐垫" file="%character_s02%C_XiaoQ_ZuoDian.ma" thumbnail="%thumbnail_s02%C_XiaoQ_ZuoDian.jpg" />
+	<item tag="character;primary" name="尤拉" file="%character_s02%C_Yora.ma" thumbnail="%thumbnail_s02%C_Yora.jpg" />
+	<item tag="property" file="%property_s02%3D_DaYinJi.ma" />
+	<item tag="property" file="%property_s02%AirShip.ma" />
+	<item tag="property" file="%property_s02%Bag_Fatty.ma" />
+	<item tag="property" file="%property_s02%Bag_HouYe.ma" />
+	<item tag="property" file="%property_s02%BaHaoQiu.ma" />
+	<item tag="property" file="%property_s02%BaiHeHua.ma" />
+	<item tag="property" file="%property_s02%BangBangTang.ma" />
+	<item tag="property" file="%property_s02%Bao.ma" />
+	<item tag="property" file="%property_s02%BaoZi.ma" />
+	<item tag="property" file="%property_s02%BeiFengYinDeTanCeQi.ma" />
+	<item tag="property" file="%property_s02%BengChuang.ma" />
+	<item tag="property" file="%property_s02%BianBian_CangShu.ma" />
+	<item tag="property" file="%property_s02%BianZhiKuang.ma" />
+	<item tag="property" file="%property_s02%BiJiBen.ma" />
+	<item tag="property" file="%property_s02%BiJiBen_TaoTao.ma" />
+	<item tag="property" file="%property_s02%BingQiang.ma" />
+	<item tag="property" file="%property_s02%BingXiangShiCai.ma" />
+	<item tag="property" file="%property_s02%BoJi.ma" />
+	<item tag="property" file="%property_s02%BoLiBei.ma" />
+	<item tag="property" file="%property_s02%CaiDaiPenTong.ma" />
+	<item tag="property" file="%property_s02%Cake.ma" />
+	<item tag="property" file="%property_s02%ChaHu.ma" />
+	<item tag="property" file="%property_s02%ChaJi_DuanLie.ma" />
+	<item tag="property" file="%property_s02%ChaZi.ma" />
+	<item tag="property" file="%property_s02%ChengBaoMoXing.ma" />
+	<item tag="property" file="%property_s02%ChuiZi.ma" />
+	<item tag="property" file="%property_s02%ChuoJiangXiang.ma" />
+	<item tag="property" file="%property_s02%DaCheDaWuWan.ma" />
+	<item tag="property" file="%property_s02%DaHuoJi.ma" />
+	<item tag="property" file="%property_s02%DanTa.ma" />
+	<item tag="property" file="%property_s02%DengZi.ma" />
+	<item tag="property" file="%property_s02%DianZiQin.ma" />
+	<item tag="property" file="%property_s02%DiQiuYi.ma" />
+	<item tag="property" file="%property_s02%DunPai.ma" />
+	<item tag="property" file="%property_s02%EMoShouTao.ma" />
+	<item tag="property" file="%property_s02%ErTiJiao.ma" />
+	<item tag="property" file="%property_s02%FangBianMian.ma" />
+	<item tag="property" file="%property_s02%FaShePao.ma" />
+	<item tag="property" file="%property_s02%FaSheQi.ma" />
+	<item tag="property" file="%property_s02%FeiXingQi.ma" />
+	<item tag="property" file="%property_s02%FengZheng.ma" />
+	<item tag="property" file="%property_s02%FuBan.ma" />
+	<item tag="property" file="%property_s02%FuBan_02.ma" />
+	<item tag="property" file="%property_s02%Glass_Fatty.ma" />
+	<item tag="property" file="%property_s02%GongJuXiang.ma" />
+	<item tag="property" file="%property_s02%GuaZi.ma" />
+	<item tag="property" file="%property_s02%GuaZiRen.ma" />
+	<item tag="property" file="%property_s02%GunTong.ma" />
+	<item tag="property" file="%property_s02%HanBao.ma" />
+	<item tag="property" file="%property_s02%HeZi.ma" />
+	<item tag="property" file="%property_s02%HuanXingSuo.ma" />
+	<item tag="property" file="%property_s02%HuaTong.ma" />
+	<item tag="property" file="%property_s02%HuaZhuangJing.ma" />
+	<item tag="property" file="%property_s02%HuiZhangMingPai.ma" />
+	<item tag="property" file="%property_s02%HuoChe.ma" />
+	<item tag="property" file="%property_s02%HuoTuiChang.ma" />
+	<item tag="property" file="%property_s02%JianDao.ma" />
+	<item tag="property" file="%property_s02%JiaoChe_Hong.ma" />
+	<item tag="property" file="%property_s02%JiaoChe_Huang.ma" />
+	<item tag="property" file="%property_s02%JiaoChe_Lan.ma" />
+	<item tag="property" file="%property_s02%JiaoChe_Lv.ma" />
+	<item tag="property" file="%property_s02%JiaoTaChe_02.ma" />
+	<item tag="property" file="%property_s02%JiDan.ma" />
+	<item tag="property" file="%property_s02%JieZhi_M007.ma" />
+	<item tag="property" file="%property_s02%JiHuaShu.ma" />
+	<item tag="property" file="%property_s02%JinBeiChe.ma" />
+	<item tag="property" file="%property_s02%JiTui.ma" />
+	<item tag="property" file="%property_s02%JIXieDiaoBi.ma" />
+	<item tag="property" file="%property_s02%JuanZhi.ma" />
+	<item tag="property" file="%property_s02%KuaiDiXiang.ma" />
+	<item tag="property" file="%property_s02%KuiJia_HouYe_ChaiFen.ma" />
+	<item tag="property" file="%property_s02%LaJiTong.ma" />
+	<item tag="property" file="%property_s02%LianPen.ma" />
+	<item tag="property" file="%property_s02%LingShi.ma" />
+	<item tag="property" file="%property_s02%LingShi_02.ma" />
+	<item tag="property" file="%property_s02%LiZi_All.ma" />
+	<item tag="property" file="%property_s02%LiZiDai.ma" />
+	<item tag="property" file="%property_s02%LiZiJiQiRen.ma" />
+	<item tag="property" file="%property_s02%LiZiKeShan.ma" />
+	<item tag="property" file="%property_s02%LuoSiDao.ma" />
+	<item tag="property" file="%property_s02%LuoSiDao_02.ma" />
+	<item tag="property" file="%property_s02%MaKeBi.ma" />
+	<item tag="property" file="%property_s02%MaoZi.ma" />
+	<item tag="property" file="%property_s02%MaTong.ma" />
+	<item tag="property" file="%property_s02%MaTongSaiZi.ma" />
+	<item tag="property" file="%property_s02%MianHuaTang.ma" />
+	<item tag="property" file="%property_s02%MiMaSuo.ma" />
+	<item tag="property" file="%property_s02%MingPai.ma" />
+	<item tag="property" file="%property_s02%MoGu.ma" />
+	<item tag="property" file="%property_s02%MoGu_02.ma" />
+	<item tag="property" file="%property_s02%MoGuChuan.ma" />
+	<item tag="property" file="%property_s02%MoTuoChe.ma" />
+	<item tag="property" file="%property_s02%MoXingChe.ma" />
+	<item tag="property" file="%property_s02%NengLiangQiu.ma" />
+	<item tag="property" file="%property_s02%PaoPaoTang.ma" />
+	<item tag="property" file="%property_s02%PingMu_MoDiCeShi.ma" />
+	<item tag="property" file="%property_s02%PingMu_ShuZi.ma" />
+	<item tag="property" file="%property_s02%QianZi.ma" />
+	<item tag="property" file="%property_s02%Qiu_DuoBiQiu.ma" />
+	<item tag="property" file="%property_s02%Qiu_FaShePao.ma" />
+	<item tag="property" file="%property_s02%Qiu_YongZheBeiBao.ma" />
+	<item tag="property" file="%property_s02%San.ma" />
+	<item tag="property" file="%property_s02%SaoBa.ma" />
+	<item tag="property" file="%property_s02%ShaSha_XieZi.ma" />
+	<item tag="property" file="%property_s02%ShengRiDanGao.ma" />
+	<item tag="property" file="%property_s02%ShiBingMoXing.ma" />
+	<item tag="property" file="%property_s02%ShouBiao.ma" />
+	<item tag="property" file="%property_s02%ShouBiao_2.ma" />
+	<item tag="property" file="%property_s02%ShouJi.ma" />
+	<item tag="property" file="%property_s02%Shu.ma" />
+	<item tag="property" file="%property_s02%Shu_02.ma" />
+	<item tag="property" file="%property_s02%Shu_03.ma" />
+	<item tag="property" file="%property_s02%Shu_04.ma" />
+	<item tag="property" file="%property_s02%ShuPian.ma" />
+	<item tag="property" file="%property_s02%ShuZi.ma" />
+	<item tag="property" file="%property_s02%SilkBall.ma" />
+	<item tag="property" file="%property_s02%SilkStock.ma" />
+	<item tag="property" file="%property_s02%SuiPian.ma" />
+	<item tag="property" file="%property_s02%TangShao.ma" />
+	<item tag="property" file="%property_s02%TanLiQiu.ma" />
+	<item tag="property" file="%property_s02%Taxi.ma" />
+	<item tag="property" file="%property_s02%TiXuDao.ma" />
+	<item tag="property" file="%property_s02%TongZhiShu.ma" />
+	<item tag="property" file="%property_s02%TouMingJiaoNangZhao.ma" />
+	<item tag="property" file="%property_s02%TuoBa.ma" />
+	<item tag="property" file="%property_s02%TuoBa_02.ma" />
+	<item tag="property" file="%property_s02%TuoBa_Tong.ma" />
+	<item tag="property" file="%property_s02%TuWeiJia.ma" />
+	<item tag="property" file="%property_s02%WanNengJie.ma" />
+	<item tag="property" file="%property_s02%WaZi.ma" />
+	<item tag="property" file="%property_s02%WeiXiuChe.ma" />
+	<item tag="property" file="%property_s02%XianChanRaoTianXian.ma" />
+	<item tag="property" file="%property_s02%XiangShui.ma" />
+	<item tag="property" file="%property_s02%XiangZi.ma" />
+	<item tag="property" file="%property_s02%XianShiPing.ma" />
+	<item tag="property" file="%property_s02%XiaoCaiQi.ma" />
+	<item tag="property" file="%property_s02%XiHongShi.ma" />
+	<item tag="property" file="%property_s02%XuanGuaQi.ma" />
+	<item tag="property" file="%property_s02%YiDaiLiZi.ma" />
+	<item tag="property" file="%property_s02%YiFu_01.ma" />
+	<item tag="property" file="%property_s02%YiFu_02.ma" />
+	<item tag="property" file="%property_s02%YiFu_03.ma" />
+	<item tag="property" file="%property_s02%YiFu_04.ma" />
+	<item tag="property" file="%property_s02%YiFu_05.ma" />
+	<item tag="property" file="%property_s02%YiFu_06.ma" />
+	<item tag="property" file="%property_s02%YinXiang.ma" />
+	<item tag="property" file="%property_s02%YiQuanChaoRen.ma" />
+	<item tag="property" file="%property_s02%YongZheBeiBao_Fatty.ma" />
+	<item tag="property" file="%property_s02%YouXiShouBing.ma" />
+	<item tag="scene" name="运输车" file="%scene_s02%YunShuChe.ma" thumbnail="YunShuChe_thumb.jpg" />
+	<item tag="scene" name="载人车" file="%scene_s02%ZaiRenChe.ma" thumbnail="ZaiRenChe_thumb.jpg" />
+	<item tag="scene" name="地下室-监控室" file="%scene_s02%Basement_JianKongShi.ma" thumbnail="%thumbnail_s02%Basement_JianKongShi.jpg" />
+	<item tag="scene" name="地下室-禁闭室" file="%scene_s02%Basement_JinBiShi.ma" thumbnail="%thumbnail_s02%Basement_JinBiShi.jpg" />
+	<item tag="scene" name="地下室-快递室" file="%scene_s02%Basement_KuaiDiShi.ma" thumbnail="%thumbnail_s02%Basement_KuaiDiShi.jpg" />
+	<item tag="scene" name="地下室-签证室" file="%scene_s02%Basement_QianZhengShi.ma" thumbnail="%thumbnail_s02%Basement_QianZhengShi.jpg" />
+	<item tag="scene" name="地下室-走廊" file="%scene_s02%Basement_ZouLang.ma" thumbnail="%thumbnail_s02%Basement_ZouLang.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B1_JXDT.ma" thumbnail="%thumbnail_s02%BEA_B1_JXDT.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang_Duan.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang_Duan.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang_JiaChang.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang_JiaChang.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang03_Ani.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang03_Ani.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang05.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang05.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang11.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang11.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang22.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang22.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang23.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang23.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang45.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang45.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang58.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang58.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang67.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang67.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_EJiJiaoNang99.ma" thumbnail="%thumbnail_s02%BEA_B2_EJiJiaoNang99.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B2_JXDT.ma" thumbnail="%thumbnail_s02%BEA_B2_JXDT.jpg" />
+	<item tag="scene" file="%scene_s02%BEA_B3_JXDT.ma" thumbnail="%thumbnail_s02%BEA_B3_JXDT.jpg" />
+	<item tag="scene" name="BEA-洗衣房" file="%scene_s02%BEA_B3_XiYiFang.ma" thumbnail="%thumbnail_s02%BEA_B3_XiYiFang.jpg" />
+	<item tag="scene" name="BEA-地下训练场" file="%scene_s02%BEA_DiXiaXunLianChang.ma" thumbnail="%thumbnail_s02%BEA_DiXiaXunLianChang.jpg" />
+	<item tag="scene" name="BEA-换乘站" file="%scene_s02%BEA_HuanChenZhan.ma" thumbnail="%thumbnail_s02%BEA_HuanChenZhan.jpg" />
+	<item tag="scene" name="BEA-运输胶囊" file="%scene_s02%BEA_YunShuJiaoNang.ma" thumbnail="%thumbnail_s02%BEA_YunShuJiaoNang.jpg" />
+	<item tag="scene" name="城市街道" file="%scene_s02%City_JieDao.ma" thumbnail="%thumbnail_s02%City_JieDao.jpg" />
+	<item tag="scene" name="城市洗衣房" file="%scene_s02%City_XiYiFang.ma" thumbnail="%thumbnail_s02%City_XiYiFang.jpg" />
+	<item tag="scene" name="朱志摩家-卧室" file="%scene_s02%Fatty_Bedroom.ma" thumbnail="%thumbnail_s02%Fatty_Bedroom.jpg" />
+	<item tag="scene" name="朱志摩家" file="%scene_s02%Fatty_House.ma" thumbnail="%thumbnail_s02%Fatty_House.jpg" />
+	<item tag="scene" name="侯烨家-卧室" file="%scene_s02%HouYe_Bedroom.ma" thumbnail="%thumbnail_s02%HouYe_Bedroom.jpg" />
+	<item tag="scene" name="侯烨家-外部" file="%scene_s02%HouYe_Building.ma" thumbnail="%thumbnail_s02%HouYe_Building.jpg" />
+	<item tag="scene" name="侯烨家-厨房" file="%scene_s02%HouYe_ChuFang.ma" thumbnail="%thumbnail_s02%HouYe_ChuFang.jpg" />
+	<item tag="scene" name="侯烨家-厨房-派对" file="%scene_s02%HouYe_ChuFang_Party.ma" thumbnail="%thumbnail_s02%HouYe_ChuFang_Party.jpg" />
+	<item tag="scene" name="侯烨家-电梯" file="%scene_s02%HouYe_Elevator.ma" thumbnail="%thumbnail_s02%HouYe_Elevator.jpg" />
+	<item tag="scene" file="%scene_s02%HouYe_HomeBox.ma" thumbnail="%thumbnail_s02%HouYe_HomeBox.jpg" />
+	<item tag="scene" file="%scene_s02%HouYe_HomeBox_Party.ma" thumbnail="%thumbnail_s02%HouYe_HomeBox_Party.jpg" />
+	<item tag="scene" name="侯烨家-客厅" file="%scene_s02%HouYe_KeTing.ma" thumbnail="%thumbnail_s02%HouYe_KeTing.jpg" />
+	<item tag="scene" name="侯烨家-客厅-派对" file="%scene_s02%HouYe_KeTing_Party.ma" thumbnail="%thumbnail_s02%HouYe_KeTing_Party.jpg" />
+	<item tag="scene" file="%scene_s02%HouYe_LouTiRoom.ma" thumbnail="%thumbnail_s02%HouYe_LouTiRoom.jpg" />
+	<item tag="scene" name="侯烨家-妈妈卧室" file="%scene_s02%HouYe_Mum_Bedroom.ma" thumbnail="%thumbnail_s02%HouYe_Mum_Bedroom.jpg" />
+	<item tag="scene" name="侯烨家-书房" file="%scene_s02%HouYe_ShuFang.ma" thumbnail="%thumbnail_s02%HouYe_ShuFang.jpg" />
+	<item tag="scene" name="侯烨家-厕所" file="%scene_s02%HouYe_Toilet.ma" thumbnail="%thumbnail_s02%HouYe_Toilet.jpg" />
+	<item tag="scene" name="摩天轮" file="%scene_s02%MoTianLun.ma" thumbnail="%thumbnail_s02%MoTianLun.jpg" />
+	<item tag="scene" file="%scene_s02%MoTianLun_ZhongKongShi.ma" thumbnail="%thumbnail_s02%.jpg" />
+	<item tag="scene" name="淘淘家" file="%scene_s02%TaoTao_Home.ma" thumbnail="%thumbnail_s02%TaoTao_Home.jpg" />
+	<item tag="scene" name="下水井" file="%scene_s02%XiaShuiJing.ma" thumbnail="%thumbnail_s02%XiaShuiJing.jpg" />
+	<item tag="scene" name="新华路-A1" file="%scene_s02%XinHuaLu_A1.ma" thumbnail="%thumbnail_s02%XinHuaLu_A1.jpg" />
+	<item tag="scene" name="新华路-A2" file="%scene_s02%XinHuaLu_A2.ma" thumbnail="%thumbnail_s02%XinHuaLu_A2.jpg" />
+	<item tag="scene" name="新华路-A3" file="%scene_s02%XinHuaLu_A3.ma" thumbnail="%thumbnail_s02%XinHuaLu_A3.jpg" />
+	<item tag="scene" name="新华路-A4C2" file="%scene_s02%XinHuaLu_A4C2.ma" thumbnail="%thumbnail_s02%XinHuaLu_A4C2.jpg" />
+	<item tag="scene" name="新华路-B1" file="%scene_s02%XinHuaLu_B1.ma" thumbnail="%thumbnail_s02%XinHuaLu_B1.jpg" />
+	<item tag="scene" name="新华路-B2" file="%scene_s02%XinHuaLu_B2.ma" thumbnail="%thumbnail_s02%XinHuaLu_B2.jpg" />
+	<item tag="scene" name="新华路-B3" file="%scene_s02%XinHuaLu_B3.ma" thumbnail="%thumbnail_s02%XinHuaLu_B3.jpg" />
+	<item tag="scene" name="新华路-B4C1" file="%scene_s02%XinHuaLu_B4_C1.ma" thumbnail="%thumbnail_s02%XinHuaLu_B4_C1.jpg" />
+	<item tag="scene" name="新华路-B5" file="%scene_s02%XinHuaLu_B5.ma" thumbnail="%thumbnail_s02%XinHuaLu_B5.jpg" />
+	<item tag="scene" name="新华路-C2" file="%scene_s02%XinHuaLu_C2.ma" thumbnail="%thumbnail_s02%XinHuaLu_C2.jpg" />
+	<item tag="scene" name="新华路-C3" file="%scene_s02%XinHuaLu_C3.ma" thumbnail="%thumbnail_s02%XinHuaLu_C3.jpg" />
+	<item tag="scene" name="新华路-D1" file="%scene_s02%XinHuaLu_D1.ma" thumbnail="%thumbnail_s02%XinHuaLu_D1.jpg" />
+	<item tag="scene" name="新华路-D2A5" file="%scene_s02%XinHuaLu_D2_A5.ma" thumbnail="%thumbnail_s02%XinHuaLu_D2_A5.jpg" />
+	<item tag="scene" name="新华路-D3" file="%scene_s02%XinHuaLu_D3.ma" thumbnail="%thumbnail_s02%XinHuaLu_D3.jpg" />
+	<item tag="scene" name="新华路-地面" file="%scene_s02%XinHuaLu_DiMian.ma" thumbnail="%thumbnail_s02%XinHuaLu_DiMian.jpg" />
 </assets>

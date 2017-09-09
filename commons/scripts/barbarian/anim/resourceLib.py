@@ -56,13 +56,37 @@ class ResourceRepository(ui.QtUI):
             return
         
         try: dom = minidom.parse(config.getPath(config.kConfig, config.getConfig("resourceLocator")))
-        except: self.root = None
-        else: self.root = dom.documentElement
+        except: 
+            self.root = None
+            self.clearData()
+        else: 
+            self.clearData()
+            
+            Asset.pathDefine = {}
+            self.assets = []
+            self.root = dom.documentElement
+            for path in self.root.getElementsByTagName("path"):
+                Asset.pathDefine[path.getAttribute("name")] = path.childNodes[0].nodeValue
+            
+            self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
+            
+            items = self.root.getElementsByTagName("item")
+            cmds.progressWindow(title=u"进度", status=u"读取中...")
+            cmds.progressWindow(e=True, progress=0, max=len(items))
+            
+            for item in items:
+                cmds.progressWindow(e=True, step=1)
+                
+                asset = Asset(item)
+                self.assets.append(asset)
+                cmds.iconTextRadioButton(asset, label=asset.label, parent=self.shelf, style='iconAndTextVertical',
+                                         image=asset.image, font="smallFixedWidthFont", onCommand=self.getCurrent)
+            
+            cmds.progressWindow(endProgress=1)
         
         self.refreshData()
         
     def refreshData(self, *_):
-        self.clearData()
         if not self.root: return
         
         if cmds.radioButton(self.rbChar, q=True, select=True): resType = 'character'
@@ -70,36 +94,15 @@ class ResourceRepository(ui.QtUI):
         elif cmds.radioButton(self.rbScene, q=True, select=True): resType = 'scene'
         else: return
         
-        for asset in self.root.getElementsByTagName("asset"):
-            if asset.getAttribute('type') == resType:
-                self.path = asset.getAttribute('path')
-                self.items = asset.getElementsByTagName("item")
-                self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
-                
-                cmds.progressWindow(title=u"进度", status=u"读取中...")
-                cmds.progressWindow(e=True, progress=0, max=len(self.items))
-                
-                for item in self.items:
-                    cmds.progressWindow(e=True, step=1)
-                    
-                    resName = item.getAttribute('name')
-                    resFile = item.getAttribute('file').split('.ma')[0]
-                    resPic = item.getAttribute('thumbnail')
-                        
-                    if not resFile: continue
-                    if not resName: resName = resFile
-                    if resPic.find(':') == -1: resPic = self.path + resPic
-                    if not os.path.isfile(resPic): resPic = config.getPath(config.kIcon, "empty_%s.png"%resType)
-                    cmds.iconTextRadioButton(resFile, label=resName, parent=self.shelf, style='iconAndTextVertical',
-                                             image=resPic, font="smallFixedWidthFont", onCommand=self.getCurrent)
-                    
-                cmds.progressWindow(endProgress=1)
-                
-                break
+        position = 1
+        for asset in self.assets:
+            cmds.iconTextRadioButton(asset, e=True, visible=asset.filter(resType))
+            if asset.filter(resType):
+                cmds.shelfLayout(self.shelf, e=True, position=(asset, position))
+                position += 1
         
     def clearData(self):
         self.current = None
-        self.path = None
         cmds.button(self.btnLoad, e=True, visible=False)
         
         if not cmds.shelfLayout(self.shelf, q=True, childArray=True): return
@@ -111,5 +114,57 @@ class ResourceRepository(ui.QtUI):
         self.current = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
         
     def load(self, *_):
-        cmds.file("%s%s.ma"%(self.path, self.current), r=True, iv=True, typ='mayaAscii', ns=self.current)
+        for asset in self.assets:
+            if str(asset) == self.current:
+                cmds.file(asset.path, r=True, iv=True, typ='mayaAscii', ns=asset.namespace)
+                return
+        
+
+class Asset():
+    
+    pathDefine = {}
+    
+    def __init__(self, item):
+        self.__tag   = item.getAttribute("tag")
+        self.__name  = item.getAttribute("name")
+        self.__file  = item.getAttribute("file")
+        self.__thumb = item.getAttribute("thumbnail")
+        
+        for p in Asset.pathDefine:
+            strList = self.__file.split("%%%s%%"%p)
+            if len(strList) > 1: self.__file = Asset.pathDefine[p] + strList[-1]
+            
+            strList = self.__thumb.split("%%%s%%"%p)
+            if len(strList) > 1: self.__thumb = Asset.pathDefine[p] + strList[-1]
+    
+    def __str__(self):
+        return "%s_%s"%(ResourceRepository.UI().window, self.__file.split('/')[-1].split('.ma')[0])
+        
+    def filter(self, *tags):
+        for tag in tags:
+            if not self.__tag.count(tag):
+                return False
+        return True
+    
+    @property
+    def label(self):
+        if not self.__name:
+            return self.__file.split('/')[-1].split('.ma')[0]
+        return self.__name
+    
+    @property
+    def image(self):
+        if not os.path.isfile(self.__thumb):
+            for tp in ["character", "property", "scene"]:
+                if self.__tag.count(tp): return config.getPath(config.kIcon, "empty_%s.png"%tp)
+            return ""
+        return self.__thumb
+    
+    @property
+    def path(self):
+        return self.__file
+    
+    @property
+    def namespace(self):
+        return self.__file.split('/')[-1].split('.ma')[0]
         
