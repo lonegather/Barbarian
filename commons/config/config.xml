@@ -9,8 +9,8 @@
 		<camFilmFit type="int">2</camFilmFit>
 		<playblastScale type="float">75</playblastScale>
 		<startFrame type="int">1</startFrame>
-		<animLibPath type="string">P:\PT\animLib\</animLibPath>
-		<facialLibPath type="string">P:\PT\DB\</facialLibPath>
+		<animLibPath type="string">P:\PT\Doc\06_Maya_Plugin\animLib\</animLibPath>
+		<facialLibPath type="string"></facialLibPath>
 		<resourceLocator type="string">resource_PT.xml</resourceLocator>
 	</project>
 	<project name="MB">
@@ -22,8 +22,8 @@
 		<camFilmFit type="int">2</camFilmFit>
 		<playblastScale type="float">75</playblastScale>
 		<startFrame type="int">101</startFrame>
-		<animLibPath type="string">P:\MB\animLib\</animLibPath>
-		<facialLibPath type="string">P:\MB\DB\</facialLibPath>
+		<animLibPath type="string">P:\MB\Doc\06_Maya_Plugin\animLib\</animLibPath>
+		<facialLibPath type="string"></facialLibPath>
 		<resourceLocator type="string">resource_MB.xml</resourceLocator>
 	</project>
 </projects>
