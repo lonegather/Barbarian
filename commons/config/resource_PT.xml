@@ -202,8 +202,8 @@
 	<item tag="property" file="%property_s02%YiQuanChaoRen.ma" />
 	<item tag="property" file="%property_s02%YongZheBeiBao_Fatty.ma" />
 	<item tag="property" file="%property_s02%YouXiShouBing.ma" />
-	<item tag="scene" name="运输车" file="%scene_s02%YunShuChe.ma" thumbnail="YunShuChe_thumb.jpg" />
-	<item tag="scene" name="载人车" file="%scene_s02%ZaiRenChe.ma" thumbnail="ZaiRenChe_thumb.jpg" />
+	<item tag="property" name="运输车" file="%property_s02%YunShuChe.ma" thumbnail="%thumbnail_s02%YunShuChe.jpg" />
+	<item tag="property" name="载人车" file="%property_s02%ZaiRenChe.ma" thumbnail="%thumbnail_s02%ZaiRenChe.jpg" />
 	<item tag="scene" name="地下室-监控室" file="%scene_s02%Basement_JianKongShi.ma" thumbnail="%thumbnail_s02%Basement_JianKongShi.jpg" />
 	<item tag="scene" name="地下室-禁闭室" file="%scene_s02%Basement_JinBiShi.ma" thumbnail="%thumbnail_s02%Basement_JinBiShi.jpg" />
 	<item tag="scene" name="地下室-快递室" file="%scene_s02%Basement_KuaiDiShi.ma" thumbnail="%thumbnail_s02%Basement_KuaiDiShi.jpg" />
