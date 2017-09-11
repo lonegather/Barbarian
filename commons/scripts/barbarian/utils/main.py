@@ -62,9 +62,9 @@ class Main(ui.QtUI):
         else: path = path[0]
         
         fileName = path.split('/')[-1].split('.')[0]+"UI.py"
-        output = codecs.open(__file__.split('main.py')[0]+fileName, 'w', "utf-8")
+        output = codecs.open(__file__.split('main.py')[0]+"ui/"+fileName, 'w', "utf-8")
         try: compileUi(path, output, True)
         except: pass
-        os.startfile(__file__.split('main.py')[0])
+        os.startfile(__file__.split('main.py')[0]+"ui/")
         output.close()
 
