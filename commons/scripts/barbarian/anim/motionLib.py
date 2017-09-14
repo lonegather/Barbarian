@@ -36,7 +36,7 @@ def UI(*_):
 
 
 class AnimRepository(ui.QtUI):
-    def setup(self):
+    def setupUi(self):
         self.addSceneCallback(om.MSceneMessage.kAfterCreateReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterRemoveReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterLoadReference, self.refreshCharacters)

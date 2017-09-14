@@ -25,7 +25,7 @@ class Renamer(ui.QtUI):
     Class Representing the Rename Tool
     --------------------------------------------------------------------------------
     '''
-    def setup(self):
+    def setupUi(self):
         pass
     
     def rename(self, *_):

@@ -22,7 +22,7 @@ def execute(*_):
     AttributeSetter.UI().execute()
 
 class AttributeSetter(ui.QtUI):
-    def setup(self):
+    def setupUi(self):
         pass
     
     def execute(self):

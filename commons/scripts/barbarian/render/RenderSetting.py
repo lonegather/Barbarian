@@ -24,7 +24,7 @@ def browse(*_):
 
 
 class RenderSetting(ui.QtUI):
-    def setup(self):
+    def setupUi(self):
         self.Bin_Path = os.getenv('MAYA_LOCATION') + '/bin/'
         self.Work_Path = cmds.workspace(q=True, fullName=True)
         self.Project_Path = cmds.file(q=1, exn=1)

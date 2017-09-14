@@ -6,18 +6,20 @@ Created on 2017.8.23
 @author: Serious Sam
 '''
 
-import os, sys, codecs
+import os, sys, codecs, config
 from pysideuic import compileUi
 from maya import cmds
-import ui, config
+from ui import PuTaoMainUI
 
 
 def UI(*_):
     Main('PutaoMain')
 
 
-class Main(ui.QtUI):
-    def setup(self):
+class Main(PuTaoMainUI.Ui_PuTaoMain):
+    def setupUi(self):
+        super(Main, self).setupUi(self.window)
+        
         self.scrollField  = cmds.scrollField("PuTaoMainTE", q=True, fpn=True)
         cmds.button("PutaoMainBtnCompile", e=True, command=self.complieUI)
         cmds.button("PutaoMainBtnDebug", e=True, command=self.debug)

@@ -23,7 +23,7 @@ class CGTW(ui.QtUI):
     
     ip = "10.1.11.100"
     
-    def setup(self):
+    def setupUi(self):
         cmds.button(self.btnConnect, e=True, command=self.connect)
         self.tw = tw(self.ip)
         self.refreshUI()

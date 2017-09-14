@@ -23,7 +23,7 @@ def UI(*_):
 
 
 class ResourceRepository(ui.QtUI):
-    def setup(self):
+    def setupUi(self):
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
         cmds.radioButton(self.rbChar, e=True, onCommand=self.refreshData)
         cmds.radioButton(self.rbProp, e=True, onCommand=self.refreshData)

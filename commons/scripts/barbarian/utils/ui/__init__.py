@@ -47,54 +47,11 @@ class QtUI(object):
         for ui in cls.__UI: 
             if cls.__UI[ui]: cls.__UI[ui].close()
     
-    def __init__(self, uiFile, **info):
+    def __init__(self, uiFile=None, **info):
         try: cmds.deleteUI(self.__UI[self.__class__].window)
         except: pass
-        self.window = cmds.loadUI(f=config.getPath(config.kUI, "%s.ui"%uiFile))
+        
         self.__UI.update({self.__class__:self})
-        
-        width = cmds.window(self.window, q=True, width=True)
-        height = cmds.window(self.window, q=True, height=True)
-        left = (1920 - width) / 2
-        top = (1080 - height) / 2
-        cmds.windowPref(self.window, topLeftCorner=[top, left], width=width, height=height)
-        
-        dom = minidom.parse(config.getPath(config.kUI, "%s.ui"%uiFile))
-        self.controls, self.layouts = {}, {}
-        self.__analize__(dom.documentElement, uiFile)
-        
-        detector = {"button"         : cmds.button,
-                    "checkBox"       : cmds.checkBox,
-                    "intSlider"      : cmds.intSlider,
-                    "optionMenu"     : cmds.optionMenu,
-                    "progressBar"    : cmds.progressBar,
-                    "radioButton"    : cmds.radioButton,
-                    "text"           : cmds.text,
-                    "textField"      : cmds.textField,
-                    "textScrollList" : cmds.textScrollList}
-        for item in info:
-            found = False
-            for target in detector:
-                if detector[target](info[item], exists=True):
-                    found = True
-                    pathList = detector[target](info[item], q=True, fpn=True).split('|')
-                    self.__setattr__(item, "%s|%s"%(self.window, '|'.join(pathList[1:])))
-                    print "Found %s: <%s|%s>"%(target, self.window, '|'.join(pathList[1:]))
-                    break
-            
-            if not found:
-                if cmds.layout(info[item], exists=True):
-                    parentList = cmds.layout(info[item], q=True, parent=True).split('|')
-                    self.__setattr__(item, "%s|%s|%s"%(self.window, '|'.join(parentList[1:]), info[item]))
-                    print "Found layout:", "<%s|%s|%s>"%(self.window, '|'.join(parentList[1:]), info[item])
-                    children = cmds.layout(self.__getattribute__(item), q=True, fpn=True, ca=True)
-                    for child in children:
-                        cmds.deleteUI(child)
-                else:
-                    try: 
-                        widget = '|'.join(cmds.control(info[item], q=True, fpn=True).split("|")[1:])
-                        self.__setattr__(item, "%s|%s"%(self.window, widget))
-                    except: cmds.confirmDialog(message=u'未找到控件：'+info[item], icon='warning', title=u'PuTao')
         
         if self.__class__ in self.__messages:
             try: 
@@ -102,28 +59,58 @@ class QtUI(object):
                     om.MMessage.removeCallback(msg)
             except: pass
             self.__messages.update({self.__class__:[]})
+        
+        if uiFile:
+            self.window = cmds.loadUI(f=config.getPath(config.kUI, "%s.ui"%uiFile))
+            width = cmds.window(self.window, q=True, width=True)
+            height = cmds.window(self.window, q=True, height=True)
+            left = (1920 - width) / 2
+            top = (1080 - height) / 2
+            cmds.windowPref(self.window, topLeftCorner=[top, left], width=width, height=height)
             
-        self.uiMessage = omui.MUiMessage.addUiDeletedCallback(self.window, self.close)
+            detector = {"button"         : cmds.button,
+                        "checkBox"       : cmds.checkBox,
+                        "intSlider"      : cmds.intSlider,
+                        "optionMenu"     : cmds.optionMenu,
+                        "progressBar"    : cmds.progressBar,
+                        "radioButton"    : cmds.radioButton,
+                        "text"           : cmds.text,
+                        "textField"      : cmds.textField,
+                        "textScrollList" : cmds.textScrollList}
+            for item in info:
+                found = False
+                for target in detector:
+                    if detector[target](info[item], exists=True):
+                        found = True
+                        pathList = detector[target](info[item], q=True, fpn=True).split('|')
+                        self.__setattr__(item, "%s|%s"%(self.window, '|'.join(pathList[1:])))
+                        print "Found %s: <%s|%s>"%(target, self.window, '|'.join(pathList[1:]))
+                        break
+                
+                if not found:
+                    if cmds.layout(info[item], exists=True):
+                        parentList = cmds.layout(info[item], q=True, parent=True).split('|')
+                        self.__setattr__(item, "%s|%s|%s"%(self.window, '|'.join(parentList[1:]), info[item]))
+                        print "Found layout:", "<%s|%s|%s>"%(self.window, '|'.join(parentList[1:]), info[item])
+                        children = cmds.layout(self.__getattribute__(item), q=True, fpn=True, ca=True)
+                        for child in children:
+                            cmds.deleteUI(child)
+                    else:
+                        try: 
+                            widget = '|'.join(cmds.control(info[item], q=True, fpn=True).split("|")[1:])
+                            self.__setattr__(item, "%s|%s"%(self.window, widget))
+                        except: cmds.confirmDialog(message=u'未找到控件：'+info[item], icon='warning', title=u'PuTao')
+                        
+            self.uiMessage = omui.MUiMessage.addUiDeletedCallback(self.window, self.close)
+            cmds.showWindow(self.window)
+            self.setupUi()
         
-        cmds.showWindow(self.window)
-        self.setup()
-        
-    def __analize__(self, ele, key):
-        widgets = ele.getElementsByTagName("widget")
-        for element in widgets:
-            attrName = element.getAttribute("name")
-            if attrName.find(key) != -1:
-                controlPtr = omui.MQtUtil.findControl(attrName)
-                self.controls[attrName] = wrapInstance(long(controlPtr), QtGui.QWidget)
-        layouts = ele.getElementsByTagName("layout")
-        for element in layouts:
-            attrName = element.getAttribute("name")
-            if attrName.find(key) != -1:
-                layoutPtr = omui.MQtUtil.findLayout(attrName)
-                self.layouts[attrName] = wrapInstance(long(layoutPtr), QtGui.QWidget)
+        else:
+            self.window = QtGui.QMainWindow()
+            self.setupUi(self.window)
         
     @abc.abstractmethod
-    def setup(self):
+    def setupUi(self):
         u'''
         --------------------------------------------------------------------------------
         本方法用于.ui文件加载完毕后界面的初始化操作，在派生类中重写此方法

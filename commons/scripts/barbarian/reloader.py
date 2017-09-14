@@ -29,6 +29,8 @@ def doIt(rl=False):
         if rl: 
             barbarian.utils.ui.QtUI.cleanUp()
             reload(barbarian.utils.ui)
+        import barbarian.utils.ui.PuTaoMainUI
+        if rl: reload(barbarian.utils.ui.PuTaoMainUI)
         import barbarian.utils.main
         if rl: reload(barbarian.utils.main)
         
