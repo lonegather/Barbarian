@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/PuTaoMain.ui'
+# Form implementation generated from reading ui file 'D:/workspace_Python/PutaoTools/commons/ui/PuTaoMain.ui'
 #
-# Created: Thu Sep 14 16:40:53 2017
+# Created: Thu Sep 14 21:35:42 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
-from barbarian.utils.ui import QtUI
+from barbarian.utils import ui, config
 
-class Ui_PuTaoMain(QtUI):
+
+class Ui_PuTaoMain(ui.QtUI):
     def setupUi(self, PuTaoMain):
         PuTaoMain.setObjectName("PuTaoMain")
         PuTaoMain.resize(428, 309)
@@ -20,7 +21,7 @@ class Ui_PuTaoMain(QtUI):
         font.setPointSize(10)
         PuTaoMain.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(config.getPath(config.kIcon, "logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         PuTaoMain.setWindowIcon(icon)
         PuTaoMain.setStyleSheet("QMainWindow{\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
@@ -204,7 +205,7 @@ class Ui_PuTaoMain(QtUI):
 "    background-color: white\n"
 "}")
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("../icons/logoBig.png"))
+        self.label.setPixmap(QtGui.QPixmap(config.getPath(config.kIcon, "logoBig.png")))
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
@@ -220,56 +221,6 @@ class Ui_PuTaoMain(QtUI):
         self.verticalLayout.addWidget(self.PuTaoMainTE)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.PutaoMainBtnGetEnvBarbarian = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvBarbarian.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvBarbarian.setText("")
-        self.PutaoMainBtnGetEnvBarbarian.setObjectName("PutaoMainBtnGetEnvBarbarian")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvBarbarian)
-        self.PutaoMainBtnGetEnvLocation = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvLocation.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvLocation.setText("")
-        self.PutaoMainBtnGetEnvLocation.setObjectName("PutaoMainBtnGetEnvLocation")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvLocation)
-        self.PutaoMainBtnGetEnvScript = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvScript.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvScript.setText("")
-        self.PutaoMainBtnGetEnvScript.setObjectName("PutaoMainBtnGetEnvScript")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvScript)
-        self.PutaoMainBtnGetEnvIcon = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvIcon.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvIcon.setText("")
-        self.PutaoMainBtnGetEnvIcon.setObjectName("PutaoMainBtnGetEnvIcon")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvIcon)
-        self.PutaoMainBtnGetEnvPython = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvPython.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvPython.setText("")
-        self.PutaoMainBtnGetEnvPython.setObjectName("PutaoMainBtnGetEnvPython")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvPython)
-        self.PutaoMainBtnGetEnvPlugin = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvPlugin.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvPlugin.setText("")
-        self.PutaoMainBtnGetEnvPlugin.setObjectName("PutaoMainBtnGetEnvPlugin")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvPlugin)
-        self.PutaoMainBtnGetEnvAppDir = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvAppDir.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvAppDir.setText("")
-        self.PutaoMainBtnGetEnvAppDir.setObjectName("PutaoMainBtnGetEnvAppDir")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvAppDir)
-        self.PutaoMainBtnGetEnvModule = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnGetEnvModule.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnGetEnvModule.setText("")
-        self.PutaoMainBtnGetEnvModule.setObjectName("PutaoMainBtnGetEnvModule")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnGetEnvModule)
-        self.PutaoMainBtnDebug = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnDebug.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnDebug.setText("")
-        self.PutaoMainBtnDebug.setObjectName("PutaoMainBtnDebug")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnDebug)
-        self.PutaoMainBtnCompile = QtGui.QPushButton(self.centralwidget)
-        self.PutaoMainBtnCompile.setMaximumSize(QtCore.QSize(10, 10))
-        self.PutaoMainBtnCompile.setText("")
-        self.PutaoMainBtnCompile.setObjectName("PutaoMainBtnCompile")
-        self.horizontalLayout_2.addWidget(self.PutaoMainBtnCompile)
         self.PutaoMainBtnReload = QtGui.QPushButton(self.centralwidget)
         self.PutaoMainBtnReload.setMinimumSize(QtCore.QSize(0, 50))
         font = QtGui.QFont()
@@ -375,16 +326,7 @@ class Ui_PuTaoMain(QtUI):
         self.menuBar.addAction(self.mainMenu.menuAction())
 
         self.retranslateUi(PuTaoMain)
-        QtCore.QObject.connect(self.actionDebug, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnDebug.click)
-        QtCore.QObject.connect(self.actionBARBARIAN_LOCATION, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvBarbarian.click)
-        QtCore.QObject.connect(self.actionMAYA_APP_DIR, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvAppDir.click)
-        QtCore.QObject.connect(self.actionMAYA_LOCATION, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvLocation.click)
-        QtCore.QObject.connect(self.actionMAYA_MODULE_PATH, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvModule.click)
-        QtCore.QObject.connect(self.actionMAYA_PLUG_IN_PATH, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvPlugin.click)
-        QtCore.QObject.connect(self.actionMAYA_SCRIPT_PATH, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvScript.click)
-        QtCore.QObject.connect(self.actionPYTHONPATH, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvPython.click)
-        QtCore.QObject.connect(self.actionXBMLANGPATH, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnGetEnvIcon.click)
-        QtCore.QObject.connect(self.actionCompile, QtCore.SIGNAL("triggered()"), self.PutaoMainBtnCompile.click)
+        
         QtCore.QMetaObject.connectSlotsByName(PuTaoMain)
 
     def retranslateUi(self, PuTaoMain):
@@ -394,16 +336,6 @@ class Ui_PuTaoMain(QtUI):
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'微软雅黑\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:9pt;\">欢迎使用葡萄工具架！使用过程中有任何意见或建议请联系大圣或胡元亮。</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvBarbarian.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvLocation.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvScript.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvIcon.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvPython.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvPlugin.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvAppDir.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnGetEnvModule.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnDebug.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
-        self.PutaoMainBtnCompile.setProperty("+visible", QtGui.QApplication.translate("PuTaoMain", "False", None, QtGui.QApplication.UnicodeUTF8))
         self.PutaoMainBtnReload.setStatusTip(QtGui.QApplication.translate("PuTaoMain", "免重启一键更新", None, QtGui.QApplication.UnicodeUTF8))
         self.PutaoMainBtnReload.setText(QtGui.QApplication.translate("PuTaoMain", "重载/更新", None, QtGui.QApplication.UnicodeUTF8))
         self.mainMenu.setTitle(QtGui.QApplication.translate("PuTaoMain", "开发者选项", None, QtGui.QApplication.UnicodeUTF8))
@@ -418,14 +350,4 @@ class Ui_PuTaoMain(QtUI):
         self.actionXBMLANGPATH.setText(QtGui.QApplication.translate("PuTaoMain", "XBMLANGPATH", None, QtGui.QApplication.UnicodeUTF8))
         self.actionBARBARIAN_LOCATION.setText(QtGui.QApplication.translate("PuTaoMain", "BARBARIAN_LOCATION", None, QtGui.QApplication.UnicodeUTF8))
         self.actionCompile.setText(QtGui.QApplication.translate("PuTaoMain", "编译UI文件...", None, QtGui.QApplication.UnicodeUTF8))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    PuTaoMain = QtGui.QMainWindow()
-    ui = Ui_PuTaoMain()
-    ui.setupUi(PuTaoMain)
-    PuTaoMain.show()
-    sys.exit(app.exec_())
 

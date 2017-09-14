@@ -28,6 +28,7 @@ class QtUI(object):
     __metaclass__ = abc.ABCMeta
     __UI = {}
     __messages = {}
+    __mayaMainWindow = wrapInstance(long(omui.MQtUtil.mainWindow()), QtGui.QWidget)
     
     @classmethod
     def UI(cls):
@@ -106,11 +107,15 @@ class QtUI(object):
             self.setupUi()
         
         else:
+            self.uiMessage = None
             self.window = QtGui.QMainWindow()
+            self.window.setParent(self.__mayaMainWindow)
+            self.window.setWindowFlags(QtCore.Qt.Window)
             self.setupUi(self.window)
+            self.window.show()
         
     @abc.abstractmethod
-    def setupUi(self):
+    def setupUi(self, win=None):
         u'''
         --------------------------------------------------------------------------------
         本方法用于.ui文件加载完毕后界面的初始化操作，在派生类中重写此方法
@@ -138,7 +143,7 @@ class QtUI(object):
         Close the window.
         --------------------------------------------------------------------------------
         '''
-        om.MMessage.removeCallback(self.uiMessage)
+        if self.uiMessage: om.MMessage.removeCallback(self.uiMessage)
         
         if self.__class__ in self.__messages:
             try: 

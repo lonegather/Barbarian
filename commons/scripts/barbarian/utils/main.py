@@ -8,30 +8,29 @@ Created on 2017.8.23
 
 import os, sys, codecs, config
 from pysideuic import compileUi
+from PySide import QtCore
 from maya import cmds
-from ui import PuTaoMainUI
+from ui.PuTaoMainUI import Ui_PuTaoMain
 
 
 def UI(*_):
-    Main('PutaoMain')
+    Main()
 
 
-class Main(PuTaoMainUI.Ui_PuTaoMain):
-    def setupUi(self):
-        super(Main, self).setupUi(self.window)
+class Main(Ui_PuTaoMain):
+    def setupUi(self, win=None):
+        super(Main, self).setupUi(win)
         
-        self.scrollField  = cmds.scrollField("PuTaoMainTE", q=True, fpn=True)
-        cmds.button("PutaoMainBtnCompile", e=True, command=self.complieUI)
-        cmds.button("PutaoMainBtnDebug", e=True, command=self.debug)
-        cmds.button("PutaoMainBtnGetEnvAppDir", e=True, command=lambda *_: self.getEnv('MAYA_APP_DIR'))
-        cmds.button("PutaoMainBtnGetEnvBarbarian", e=True, command=lambda *_: self.getEnv('BARBARIAN_LOCATION'))
-        cmds.button("PutaoMainBtnGetEnvIcon", e=True, command=lambda *_: self.getEnv('XBMLANGPATH'))
-        cmds.button("PutaoMainBtnGetEnvLocation", e=True, command=lambda *_: self.getEnv('MAYA_LOCATION'))
-        cmds.button("PutaoMainBtnGetEnvModule", e=True, command=lambda *_: self.getEnv('MAYA_MODULE_PATH'))
-        cmds.button("PutaoMainBtnGetEnvPlugin", e=True, command=lambda *_: self.getEnv('MAYA_PLUG_IN_PATH'))
-        cmds.button("PutaoMainBtnGetEnvPython", e=True, command=lambda *_: self.getEnv('PYTHONPATH'))
-        cmds.button("PutaoMainBtnGetEnvScript", e=True, command=lambda *_: self.getEnv('MAYA_SCRIPT_PATH'))
-        cmds.button("PutaoMainBtnReload", e=True, command=self.reload)
+        QtCore.QObject.connect(self.actionDebug, QtCore.SIGNAL("triggered()"), self.debug)
+        QtCore.QObject.connect(self.actionCompile, QtCore.SIGNAL("triggered()"), self.complieUI)
+        QtCore.QObject.connect(self.actionMAYA_APP_DIR, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("MAYA_APP_DIR"))
+        QtCore.QObject.connect(self.actionMAYA_LOCATION, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("MAYA_LOCATION"))
+        QtCore.QObject.connect(self.actionMAYA_MODULE_PATH, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("MAYA_MODULE_PATH"))
+        QtCore.QObject.connect(self.actionMAYA_PLUG_IN_PATH, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("MAYA_PLUG_IN_PATH"))
+        QtCore.QObject.connect(self.actionMAYA_SCRIPT_PATH, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("MAYA_SCRIPT_PATH"))
+        QtCore.QObject.connect(self.actionPYTHONPATH, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("PYTHONPATH"))
+        QtCore.QObject.connect(self.actionXBMLANGPATH, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("XBMLANGPATH"))
+        QtCore.QObject.connect(self.actionBARBARIAN_LOCATION, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("BARBARIAN_LOCATION"))
         
     def getEnv(self, env):
         cmds.scrollField("PuTaoMainTE", e=True, clear=True)
@@ -65,7 +64,7 @@ class Main(PuTaoMainUI.Ui_PuTaoMain):
         
         fileName = path.split('/')[-1].split('.')[0]+"UI.py"
         output = codecs.open(__file__.split('main.py')[0]+"ui/"+fileName, 'w', "utf-8")
-        try: compileUi(path, output, True)
+        try: compileUi(path, output, False)
         except: pass
         os.startfile(__file__.split('main.py')[0]+"ui/")
         output.close()
