@@ -8,8 +8,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
+from barbarian.utils import ui, config
 
-class Ui_motionLibOption(object):
+class Ui_motionLibOption(ui.QtUI):
     def setupUi(self, motionLibOption):
         motionLibOption.setObjectName("motionLibOption")
         motionLibOption.resize(345, 411)
@@ -19,7 +20,7 @@ class Ui_motionLibOption(object):
         font.setPointSize(10)
         motionLibOption.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(config.getPath(config.kIcon, "logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         motionLibOption.setWindowIcon(icon)
         motionLibOption.setStyleSheet("QMainWindow{\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
@@ -407,7 +408,7 @@ class Ui_motionLibOption(object):
         self.verticalLayout.addWidget(self.motionLibBtnImport)
         self.verticalLayout.setStretch(0, 1)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../icons/arrowDown.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(config.getPath(config.kIcon, "arrowDown.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.motionLibTab.addTab(self.tab, icon1, "")
         self.tab_2 = QtGui.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -496,7 +497,7 @@ class Ui_motionLibOption(object):
         self.motionLibBtnExport.setObjectName("motionLibBtnExport")
         self.verticalLayout_3.addWidget(self.motionLibBtnExport)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("../icons/arrowUp.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(config.getPath(config.kIcon, "arrowUp.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.motionLibTab.addTab(self.tab_2, icon2, "")
         self.verticalLayout_2.addWidget(self.motionLibTab)
         self.verticalLayout_2.setStretch(1, 1)
@@ -525,14 +526,4 @@ class Ui_motionLibOption(object):
         self.label_4.setText(QtGui.QApplication.translate("motionLibOption", "-", None, QtGui.QApplication.UnicodeUTF8))
         self.motionLibBtnExport.setText(QtGui.QApplication.translate("motionLibOption", "导出", None, QtGui.QApplication.UnicodeUTF8))
         self.motionLibTab.setTabText(self.motionLibTab.indexOf(self.tab_2), QtGui.QApplication.translate("motionLibOption", "导出", None, QtGui.QApplication.UnicodeUTF8))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtGui.QApplication(sys.argv)
-    motionLibOption = QtGui.QMainWindow()
-    ui = Ui_motionLibOption()
-    ui.setupUi(motionLibOption)
-    motionLibOption.show()
-    sys.exit(app.exec_())
 

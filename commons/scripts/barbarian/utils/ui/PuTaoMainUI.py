@@ -194,7 +194,7 @@ class Ui_PuTaoMain(ui.QtUI):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtGui.QLabel(self.centralwidget)
-        self.label.setMinimumSize(QtCore.QSize(333, 129))
+        self.label.setMinimumSize(QtCore.QSize(393, 129))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(20)
@@ -202,7 +202,7 @@ class Ui_PuTaoMain(ui.QtUI):
         font.setBold(True)
         self.label.setFont(font)
         self.label.setStyleSheet("QLabel{\n"
-"    background-color: white\n"
+"    background-color: rgba(237, 237, 237, 255)\n"
 "}")
         self.label.setText("")
         self.label.setPixmap(QtGui.QPixmap(config.getPath(config.kIcon, "logoBig.png")))

@@ -8,7 +8,7 @@ Created on 2017.8.23
 
 import os, sys, codecs, config
 from pysideuic import compileUi
-from PySide import QtCore
+from PySide import QtCore, QtGui
 from maya import cmds
 from ui.PuTaoMainUI import Ui_PuTaoMain
 
@@ -32,12 +32,17 @@ class Main(Ui_PuTaoMain):
         QtCore.QObject.connect(self.actionXBMLANGPATH, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("XBMLANGPATH"))
         QtCore.QObject.connect(self.actionBARBARIAN_LOCATION, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("BARBARIAN_LOCATION"))
         
+        QtCore.QObject.connect(self.PutaoMainBtnReload, QtCore.SIGNAL("clicked()"), self.reload)
+        
+        self.movie = QtGui.QMovie(config.getPath(config.kIcon, "logoBig.gif"))
+        self.label.setMovie(self.movie)
+        self.movie.start()
+        
     def getEnv(self, env):
-        cmds.scrollField("PuTaoMainTE", e=True, clear=True)
-        cmds.scrollField("PuTaoMainTE", e=True, tx="%s:\n"%env)
+        txt = "%s:\n"%env
         paths = os.getenv(env).split(';')
-        for p in paths:
-            cmds.scrollField("PuTaoMainTE", e=True, ip=0, it="%s\n"%p)
+        for p in paths: txt += "%s\n"%p
+        self.PuTaoMainTE.setText(txt)
     
     def debug(self, *_):
         path = "C:/Users/Administrator/.p2/pool/plugins/org.python.pydev_5.8.0.201706061859/pysrc/"

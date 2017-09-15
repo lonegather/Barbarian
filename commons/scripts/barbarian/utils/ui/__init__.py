@@ -52,6 +52,9 @@ class QtUI(object):
         try: cmds.deleteUI(self.__UI[self.__class__].window)
         except: pass
         
+        try: self.__UI[self.__class__].window.close()
+        except: pass
+        
         self.__UI.update({self.__class__:self})
         
         if self.__class__ in self.__messages:
@@ -111,8 +114,8 @@ class QtUI(object):
             self.window = QtGui.QMainWindow()
             self.window.setParent(self.__mayaMainWindow)
             self.window.setWindowFlags(QtCore.Qt.Window)
-            self.setupUi(self.window)
             self.window.show()
+            self.setupUi(self.window)
         
     @abc.abstractmethod
     def setupUi(self, win=None):
@@ -143,8 +146,6 @@ class QtUI(object):
         Close the window.
         --------------------------------------------------------------------------------
         '''
-        if self.uiMessage: om.MMessage.removeCallback(self.uiMessage)
-        
         if self.__class__ in self.__messages:
             try: 
                 for msg in self.__messages[self.__class__]:
@@ -156,6 +157,9 @@ class QtUI(object):
             self.__UI.update({self.__class__:None})
             cmds.deleteUI(self.window)
         except: pass
+        
+        if self.uiMessage: om.MMessage.removeCallback(self.uiMessage)
+        else: self.window.close()
     
     @property
     def isObsolete(self):

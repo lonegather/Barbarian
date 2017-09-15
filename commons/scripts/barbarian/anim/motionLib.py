@@ -18,25 +18,13 @@ def UI(*_):
         try: cmds.loadPlugin(plugin, quiet=True)
         except: pass
     
-    AnimRepository("motionLib",
-                   container      = "motionLibMayaControlLocator",
-                   tab            = "motionLibTab",
-                   opMnuProject   = "motionLibCBProject",
-                   opMnuCharactor = "motionLibCBCharactor",
-                   txtFilter      = "motionLibLEFilter",
-                   btnImport      = "motionLibBtnImport",
-                   btnExport      = "motionLibBtnExport",
-                   isImport       = "motionLibHSCopies",
-                   isView         = "motionLibHSView",
-                   rbInsert       = "motionLibRBInsert",
-                   rbMerge        = "motionLibRBMerge",
-                   txtExportStart = "motionLibLEExportStart",
-                   txtExportEnd   = "motionLibLEExportEnd",
-                   txtExportFile  = "motionLibLEExportFile")
+    AnimRepository()
 
 
-class AnimRepository(ui.QtUI):
-    def setupUi(self):
+class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
+    def setupUi(self, win=None):
+        super(AnimRepository, self).setupUi(win)
+        
         self.addSceneCallback(om.MSceneMessage.kAfterCreateReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterRemoveReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterLoadReference, self.refreshCharacters)
@@ -46,6 +34,7 @@ class AnimRepository(ui.QtUI):
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
         
+        '''
         cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
         cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
         cmds.textField(self.txtFilter, e=True, textChangedCommand=self.refreshData)
@@ -57,52 +46,63 @@ class AnimRepository(ui.QtUI):
         cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
         
         self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
+        '''
         
         self.refreshTF()
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
         if config.getProject(): 
-            cmds.control(self.tab, e=True, visible=True)
-            cmds.optionMenu(self.opMnuProject, e=True, l=u"")
-            if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
+            #cmds.control(self.tab, e=True, visible=True)
+            self.motionLibTab.setVisible(False)
+            #cmds.optionMenu(self.opMnuProject, e=True, l=u"")
+            if not self.motionLibCBProject.count(): 
                 projects = config.getProject(all=True)
-                for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
+                for prj in projects: 
+                    #cmds.menuItem(l=prj, parent=self.opMnuProject)
+                    self.motionLibCBProject.addItem(prj)
         elif config.getProject(all=True): 
-            cmds.control(self.tab, e=True, visible=False)
-            cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
-            if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
+            #cmds.control(self.tab, e=True, visible=False)
+            self.motionLibTab.setVisible(False)
+            #cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
+            if not self.motionLibCBProject.count(): 
                 projects = config.getProject(all=True)
-                for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
+                for prj in projects: 
+                    #cmds.menuItem(l=prj, parent=self.opMnuProject)
+                    self.motionLibCBProject.addItem(prj)
             return
         else: 
-            cmds.control(self.tab, e=True, visible=False)
-            cmds.optionMenu(self.opMnuProject, e=True, l=u"<配置异常>")
-            if cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
-                for mi in cmds.optionMenu(self.opMnuProject, q=True, itemListLong=True): 
-                    cmds.deleteUI(mi)
+            #cmds.control(self.tab, e=True, visible=False)
+            self.motionLibTab.setVisible(False)
+            #cmds.optionMenu(self.opMnuProject, e=True, l=u"<配置异常>")
+            while self.motionLibCBProject.count(): 
+                self.motionLibCBProject.removeItem(1)
             return
         
         cmds.namespace(set = ":")
         chars = self.getCharacters()
         if getattr(self, 'chars', None) and self.chars == chars: return
         self.chars = chars
-        cmds.control(self.tab, e=True, visible=bool(chars))
-        items = cmds.optionMenu(self.opMnuCharactor, q=True, itemListLong=True)
-        if items: 
-            for mi in items: cmds.deleteUI(mi)
+        #cmds.control(self.tab, e=True, visible=bool(chars))
+        self.motionLibTab.setVisible(bool(chars))
+        while self.motionLibCBCharactor.count(): 
+            self.motionLibCBCharactor.removeItem(1)
         charsDic = {}
         for char in chars:
             charsDic[char] = "%s <%s>"%(self.getOrigChar(char.split(":")[-1]).split("C_")[-1], char)
-            cmds.menuItem(l=charsDic[char], parent=self.opMnuCharactor)
-        try: cmds.optionMenu(self.opMnuCharactor, e=True, v=charsDic[self.namespace])
+            #cmds.menuItem(l=charsDic[char], parent=self.opMnuCharactor)
+            self.motionLibCBCharactor.addItem(charsDic[char])
+        try: 
+            #cmds.optionMenu(self.opMnuCharactor, e=True, v=charsDic[self.namespace])
+            
         except: pass
         self.refreshData()
     
     def refreshData(self, *_):
         self.__select = []
         cmds.namespace(set = ":")
-        cmds.button(self.btnImport, e=True, enable=False)
+        #cmds.button(self.btnImport, e=True, enable=False)
+        self.motionLibBtnImport.enable = False
         cmds.optionMenu(self.opMnuProject, e=True, v=config.getProject())
         try:
             for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True): cmds.deleteUI(ctrl)
@@ -137,8 +137,8 @@ class AnimRepository(ui.QtUI):
         self.__config = None
         
     def refreshTF(self, *_):
-        cmds.textField(self.txtExportStart, e=True, tx=int(cmds.playbackOptions(q=1, minTime=1)))
-        cmds.textField(self.txtExportEnd, e=True, tx=int(cmds.playbackOptions(q=1, maxTime=1)))
+        self.motionLibLEExportStart.setText(unicode(int(cmds.playbackOptions(q=1, minTime=1))))
+        self.motionLibLEExportEnd.setText(unicode(int(cmds.playbackOptions(q=1, maxTime=1))))
         
     def refreshView(self, *_):
         height = 100 - cmds.intSlider(self.isView, q=True, value=True) * 70
