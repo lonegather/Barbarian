@@ -6,7 +6,7 @@ Created on 2017.7.5
 @author: Serious Sam
 '''
 
-import abc
+import abc, math
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 from maya import cmds
@@ -169,7 +169,103 @@ class QtUI(object):
         Check if this instance is obsolete (closed or reloaded) and waiting for GC.
         --------------------------------------------------------------------------------
         '''
-        if not cmds.window(self.window, exists=True): return True
         if not isinstance(self, QtUI): return True
+        if not self.uiMessage: return False
+        if not cmds.window(self.window, exists=True): return True
         return not cmds.window(self.window, q=True, visible=True)
+
+
+class QShelfLayout(QtGui.QLayout):
+    def __init__(self, parent):
+        super(QShelfLayout, self).__init__(parent)
+        self.list = []
+        self.cellWidth = 150
+        self.cellHeight = 100
+        self.columnCount = 1
+        
+    def __del__(self):
+        item = self.takeAt(0)
+        while item: del item
+        
+    def count(self):
+        return len(self.list)
+
+    def addItem(self, item):
+        self.list.append(item)
+
+    def itemAt(self, idx):
+        if idx >= 0 and idx < len(self.list):
+            return self.list[idx]
+        return None
+    
+    def takeAt(self, idx):
+        if idx >= 0 and idx < len(self.list):
+            take = self.list[idx]
+            del self.list[idx]
+            return take
+        return None
+
+    def setGeometry(self, rect):
+        super(QShelfLayout, self).setGeometry(rect)
+        if not len(self.list): return
+        
+        self.columnCount = max(math.floor((rect.width() + self.spacing()) / (self.cellWidth + self.spacing())), 1)
+        self.columnSpacing = (rect.width() - self.cellWidth * self.columnCount) / (self.columnCount - 1)
+        
+        for i in range(self.count()):
+            item = self.itemAt(i)
+            column = (i % self.columnCount) * (self.cellWidth + self.columnSpacing)
+            row = math.floor(i / self.columnCount) * (self.cellHeight + self.spacing())
+            item.setGeometry(QtCore.QRect(column, row, self.cellWidth, self.cellHeight))
+    
+    def sizeHint(self):
+        return QtCore.QSize(self.cellWidth * 2 + self.spacing(), self.cellHeight)
+    
+    def minimumSize(self):
+        row = math.floor((self.count() - 1) / self.columnCount) * (self.cellHeight + self.spacing())
+        return QtCore.QSize(self.cellWidth * 2 + self.spacing(), row + self.cellHeight)
+    
+    def cleanUp(self):
+        self.__del__()
+
+
+class QShelfView(QtGui.QWidget):
+    
+    kName = "name"
+    kFile = "file"
+    kPrev = "thumb"
+    
+    def __init__(self, parent=None):
+        super(QShelfView, self).__init__(parent)
+        self.setObjectName("shelfView")
+        
+        self.mainLayout = QtGui.QGridLayout(self)
+        self.mainLayout.setSpacing(0)
+        self.mainLayout.setContentsMargins(0, 0, 0, 0)
+        self.mainLayout.setObjectName("shelfViewMainLayout")
+        
+        self.scrollArea = QtGui.QScrollArea(self)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("shelfViewScrollArea")
+        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents.setObjectName("shelfViewScrollAreaWidgetContents")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.mainLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
+        
+        self.shelfLayout = QShelfLayout(self.scrollAreaWidgetContents)
+        self.shelfLayout.setObjectName("shelfViewShelfLayout")
+        self.scrollAreaWidgetContents.setLayout(self.shelfLayout)
+        self.shelfLayout.setSpacing(10)
+        
+    def setup(self, *itemInfo):
+        self.shelfLayout.cleanUp()
+        for item in itemInfo:
+            btn = QtGui.QPushButton(self.scrollAreaWidgetContents)
+            btn.setText(item[self.kName])
+            sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+            btn.setSizePolicy(sizePolicy)
+            self.shelfLayout.addWidget(btn)
+            
+    def currentItem(self):
+        return
 

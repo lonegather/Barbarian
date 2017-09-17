@@ -8,8 +8,8 @@ Created on 2017.7.5
 
 import os
 import maya.OpenMaya as om
-
 from maya import cmds
+from PySide import QtCore, QtGui
 from barbarian.utils import ui, config
 
 
@@ -44,8 +44,6 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         cmds.button(self.btnExport, e=True, enable=False, command=self.animExport)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
         cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
-        
-        self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=100, cellWidth=150, spacing=5)
         '''
         
         self.refreshTF()
@@ -53,28 +51,20 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
     
     def refreshCharacters(self, *_):
         if config.getProject(): 
-            #cmds.control(self.tab, e=True, visible=True)
             self.motionLibTab.setVisible(False)
-            #cmds.optionMenu(self.opMnuProject, e=True, l=u"")
             if not self.motionLibCBProject.count(): 
                 projects = config.getProject(all=True)
                 for prj in projects: 
-                    #cmds.menuItem(l=prj, parent=self.opMnuProject)
                     self.motionLibCBProject.addItem(prj)
         elif config.getProject(all=True): 
-            #cmds.control(self.tab, e=True, visible=False)
             self.motionLibTab.setVisible(False)
-            #cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
             if not self.motionLibCBProject.count(): 
                 projects = config.getProject(all=True)
                 for prj in projects: 
-                    #cmds.menuItem(l=prj, parent=self.opMnuProject)
                     self.motionLibCBProject.addItem(prj)
             return
         else: 
-            #cmds.control(self.tab, e=True, visible=False)
             self.motionLibTab.setVisible(False)
-            #cmds.optionMenu(self.opMnuProject, e=True, l=u"<配置异常>")
             while self.motionLibCBProject.count(): 
                 self.motionLibCBProject.removeItem(1)
             return
@@ -83,50 +73,36 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         chars = self.getCharacters()
         if getattr(self, 'chars', None) and self.chars == chars: return
         self.chars = chars
-        #cmds.control(self.tab, e=True, visible=bool(chars))
         self.motionLibTab.setVisible(bool(chars))
         while self.motionLibCBCharactor.count(): 
             self.motionLibCBCharactor.removeItem(1)
         charsDic = {}
         for char in chars:
             charsDic[char] = "%s <%s>"%(self.getOrigChar(char.split(":")[-1]).split("C_")[-1], char)
-            #cmds.menuItem(l=charsDic[char], parent=self.opMnuCharactor)
             self.motionLibCBCharactor.addItem(charsDic[char])
         try: 
-            #cmds.optionMenu(self.opMnuCharactor, e=True, v=charsDic[self.namespace])
-            
+            self.motionLibCBCharactor.text = charsDic[self.namespace]
         except: pass
         self.refreshData()
     
     def refreshData(self, *_):
         self.__select = []
         cmds.namespace(set = ":")
-        #cmds.button(self.btnImport, e=True, enable=False)
         self.motionLibBtnImport.enable = False
-        cmds.optionMenu(self.opMnuProject, e=True, v=config.getProject())
-        try:
-            for ctrl in cmds.shelfLayout(self.shelf, q=True, ca=True): cmds.deleteUI(ctrl)
-        except: pass
-        self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
-        if not cmds.optionMenu(self.opMnuCharactor, q=True, numberOfItems=True): return
-        self.namespace = cmds.optionMenu(self.opMnuCharactor, q=True, v=True).split("<")[-1].split(">")[0]
+        self.motionLibCBProject.text = config.getProject()
+        if not self.motionLibCBCharactor.count(): return
+        self.namespace = self.motionLibCBCharactor.currentText().split("<")[-1].split(">")[0]
         self.path = config.getConfig('animLibPath') + self.getOrigChar(self.namespace.split(":")[-1])
         
         fileList = self.getFileList(self.path)
-        exp = cmds.textField(self.txtFilter, q=True, tx=True)
+        exp = self.motionLibLEFilter.text()
         for f in fileList:
             if not self.__match__(f, exp):
                 fileList.remove(f)
         
-        cellHeight = cmds.shelfLayout(self.shelf, q=True, cellHeight=True)
-        for f in fileList:
-            if cellHeight > 50:
-                cmds.iconTextRadioButton(label=f, parent=self.shelf, style='iconAndTextVertical',
-                                         image="motion.png", font="smallFixedWidthFont",
-                                         onCommand=self.__getLabel__)
-            else:
-                cmds.iconTextRadioButton(label=f, parent=self.shelf, style='textOnly',
-                                         font="smallFixedWidthFont", onCommand=self.__getLabel__)
+        itemList = []
+        for f in fileList: itemList.append({ui.QShelfView.kName:f})
+        self.shelf.setup(*itemList)
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
         for sel in sels.split('&'):
@@ -141,25 +117,24 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.motionLibLEExportEnd.setText(unicode(int(cmds.playbackOptions(q=1, maxTime=1))))
         
     def refreshView(self, *_):
-        height = 100 - cmds.intSlider(self.isView, q=True, value=True) * 70
-        cmds.shelfLayout(self.shelf, e=True, cellHeight=height)
+        height = 100 - self.motionLibHSView.value * 70
+        self.shelf.cellHeight = height
         self.refreshData()
         
     def refreshBtn(self, *_):
-        txt = cmds.textField(self.txtExportFile, q=True, tx=True)
-        cmds.button(self.btnExport, e=True, enable=bool(txt))
+        txt = self.motionLibLEExportFile.text()
+        self.motionLibBtnExport.enable = bool(txt)
         
     def __match__(self, obj, exp):
-        #return mel.eval("gmatch \"%s\" \"%s\";"%(obj, exp))
         return obj.find(exp) > -1
     
     def __getLabel__(self, *_):
-        rb = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
+        rb = self.shelf.currentItem()
         if not rb: return ""
         sel = cmds.iconTextRadioButton(rb, q=True, label=True)
         if _ and _[0]: 
-            cmds.textField(self.txtExportFile, e=True, tx=sel)
-            cmds.button(self.btnImport, e=True, enable=True)
+            self.motionLibLEExportFile.setText(sel)
+            self.motionLibBtnImport.enable = True
         return sel
         
     @property
@@ -168,10 +143,10 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         if not sel: return None
         cmds.namespace(set = ":")
         time = int(cmds.currentTime(q=True))
-        copy = cmds.intSlider(self.isImport, q=True, value=True)
+        copy = self.motionLibHSCopies.value
         filePath = "%s%s\\%s.anim"%(config.getConfig('animLibPath'), self.getOrigChar(self.namespace.split(":")[-1]), sel)
         mode = "insert"
-        if cmds.radioButton(self.rbMerge, q=True, select = True): mode = "merge"
+        if self.motionLibRBMerge.isChecked(): mode = "merge"
         cfg = {"copy":copy, "file":filePath, "time":time, "mode":mode}
         return cfg
     
@@ -325,15 +300,15 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
     
     def animExport(self, *_):
         cmds.namespace(set = ":")
-        try: startTime = int(cmds.textField(self.txtExportStart, q=True, tx=True))
+        try: startTime = int(self.motionLibLEExportStart.text())
         except: 
             cmds.confirmDialog(message=u"无效数值", icon="information")
             return
-        try: endTime = int(cmds.textField(self.txtExportEnd, q=True, tx=True))
+        try: endTime = int(self.motionLibLEExportEnd.text())
         except: 
             cmds.confirmDialog(message=u"无效数值", icon="information")
             return
-        outFile = cmds.textField(self.txtExportFile, q=True, tx=True)
+        outFile = self.motionLibLEExportFile.text()
         if not outFile: return
         filePath = self.path + "\\" + outFile + ".anim"
         
