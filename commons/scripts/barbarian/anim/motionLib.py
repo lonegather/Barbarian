@@ -6,7 +6,7 @@ Created on 2017.7.5
 @author: Serious Sam
 '''
 
-import os
+import os, codecs
 import maya.OpenMaya as om
 from maya import cmds
 from PySide import QtCore, QtGui
@@ -25,6 +25,9 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
     def setupUi(self, win=None):
         super(AnimRepository, self).setupUi(win)
         
+        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
+        cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
+        
         self.addSceneCallback(om.MSceneMessage.kAfterCreateReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterRemoveReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterLoadReference, self.refreshCharacters)
@@ -34,24 +37,31 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
         
-        '''
-        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
-        cmds.optionMenu(self.opMnuCharactor, e=True, changeCommand=self.refreshData)
-        cmds.textField(self.txtFilter, e=True, textChangedCommand=self.refreshData)
-        cmds.textField(self.txtExportFile, e=True, textChangedCommand=self.refreshBtn)
-        cmds.intSlider(self.isView, e=True, changeCommand=self.refreshView)
-        cmds.button(self.btnImport, e=True, command=self.animImport)
-        cmds.button(self.btnExport, e=True, enable=False, command=self.animExport)
-        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
-        cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
-        '''
+        QtCore.QObject.connect(self.motionLibCBProject, 
+                               QtCore.SIGNAL("currentIndexChanged(int)"), 
+                               lambda *_: config.setProject(self.motionLibCBProject.currentText()))
+        QtCore.QObject.connect(self.motionLibCBCharactor, 
+                               QtCore.SIGNAL("currentIndexChanged(int)"),
+                               self.refreshData)
+        QtCore.QObject.connect(self.motionLibLEFilter,
+                               QtCore.SIGNAL("returnPressed()"),
+                               self.refreshData)
+        QtCore.QObject.connect(self.motionLibLEExportFile,
+                               QtCore.SIGNAL("textChanged(QString)"),
+                               self.refreshBtn)
+        QtCore.QObject.connect(self.motionLibLEExportFile,
+                               QtCore.SIGNAL("valueChanged(int)"),
+                               self.refreshView)
+        self.motionLibBtnImport.clicked.connect(lambda *_: self.animImport())
+        self.motionLibBtnExport.clicked.connect(lambda *_: self.animExport())
+        self.shelf.itemSelected.connect(self.__getLabel__)
         
         self.refreshTF()
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
         if config.getProject(): 
-            self.motionLibTab.setVisible(False)
+            self.motionLibTab.setVisible(True)
             if not self.motionLibCBProject.count(): 
                 projects = config.getProject(all=True)
                 for prj in projects: 
@@ -66,7 +76,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         else: 
             self.motionLibTab.setVisible(False)
             while self.motionLibCBProject.count(): 
-                self.motionLibCBProject.removeItem(1)
+                self.motionLibCBProject.removeItem(0)
             return
         
         cmds.namespace(set = ":")
@@ -75,33 +85,39 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.chars = chars
         self.motionLibTab.setVisible(bool(chars))
         while self.motionLibCBCharactor.count(): 
-            self.motionLibCBCharactor.removeItem(1)
+            self.motionLibCBCharactor.removeItem(0)
         charsDic = {}
         for char in chars:
             charsDic[char] = "%s <%s>"%(self.getOrigChar(char.split(":")[-1]).split("C_")[-1], char)
             self.motionLibCBCharactor.addItem(charsDic[char])
         try: 
-            self.motionLibCBCharactor.text = charsDic[self.namespace]
+            self.motionLibCBCharactor.setCurrentIndex(self.motionLibCBCharactor.findText(charsDic[self.namespace]))
         except: pass
         self.refreshData()
     
     def refreshData(self, *_):
         self.__select = []
         cmds.namespace(set = ":")
-        self.motionLibBtnImport.enable = False
-        self.motionLibCBProject.text = config.getProject()
+        self.shelf.cleanUp()
+        self.motionLibBtnImport.setEnabled(False)
+        self.motionLibCBProject.setCurrentIndex(self.motionLibCBProject.findText(config.getProject()))
         if not self.motionLibCBCharactor.count(): return
         self.namespace = self.motionLibCBCharactor.currentText().split("<")[-1].split(">")[0]
         self.path = config.getConfig('animLibPath') + self.getOrigChar(self.namespace.split(":")[-1])
         
         fileList = self.getFileList(self.path)
-        exp = self.motionLibLEFilter.text()
-        for f in fileList:
-            if not self.__match__(f, exp):
-                fileList.remove(f)
-        
+        exp = codecs.decode(self.motionLibLEFilter.text(), 'utf-8')
         itemList = []
-        for f in fileList: itemList.append({ui.QShelfView.kName:f})
+        for f in fileList:
+            if self.__match__(f, exp):
+                found = False
+                for ext in ['gif', 'png', 'jpg']:
+                    iconPath = self.path+f+ext
+                    if os.path.isfile(iconPath): 
+                        found = True
+                        break
+                if not found: iconPath = config.getPath(config.kIcon, "motion.png")
+                itemList.append({ui.QShelfView.kName:f, ui.QShelfView.kData:f, ui.QShelfView.kIcon:iconPath})
         self.shelf.setup(*itemList)
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
@@ -117,33 +133,30 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.motionLibLEExportEnd.setText(unicode(int(cmds.playbackOptions(q=1, maxTime=1))))
         
     def refreshView(self, *_):
-        height = 100 - self.motionLibHSView.value * 70
-        self.shelf.cellHeight = height
+        self.shelf.cellHeight = 100 - self.motionLibHSView.value() * 70
         self.refreshData()
         
     def refreshBtn(self, *_):
         txt = self.motionLibLEExportFile.text()
-        self.motionLibBtnExport.enable = bool(txt)
+        self.motionLibBtnExport.setEnabled(bool(txt))
         
     def __match__(self, obj, exp):
         return obj.find(exp) > -1
     
-    def __getLabel__(self, *_):
-        rb = self.shelf.currentItem()
-        if not rb: return ""
-        sel = cmds.iconTextRadioButton(rb, q=True, label=True)
-        if _ and _[0]: 
-            self.motionLibLEExportFile.setText(sel)
-            self.motionLibBtnImport.enable = True
-        return sel
+    @QtCore.Slot(object)
+    def __getLabel__(self, obj):
+        if not obj: return ""
+        
+        self.motionLibLEExportFile.setText(obj)
+        self.motionLibBtnImport.setEnabled(True)
         
     @property
     def configuration(self):
-        sel = self.__getLabel__()
+        sel = self.shelf.data
         if not sel: return None
         cmds.namespace(set = ":")
         time = int(cmds.currentTime(q=True))
-        copy = self.motionLibHSCopies.value
+        copy = self.motionLibHSCopies.value()
         filePath = "%s%s\\%s.anim"%(config.getConfig('animLibPath'), self.getOrigChar(self.namespace.split(":")[-1]), sel)
         mode = "insert"
         if self.motionLibRBMerge.isChecked(): mode = "merge"
@@ -286,6 +299,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         try: cmds.delete("%s:Proxy"%self.namespace)
         except: pass
     
+    @QtCore.Slot()
     def animImport(self, *_):
         cfg = self.configuration
         if not cfg: return
@@ -298,6 +312,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         
         self.copyFromProxy()
     
+    @QtCore.Slot()
     def animExport(self, *_):
         cmds.namespace(set = ":")
         try: startTime = int(self.motionLibLEExportStart.text())

@@ -119,11 +119,14 @@ class MotionLibImport(om.MPxCommand):
         self.redoIt()
     
     def redoIt(self):
+        print "redo...", self.file
         cmds.file(self.file, type="animImport", ns=self.namespace, options=self.option, 
                   i=True, iv=True, ra=True, mnc=False, pr=True)
     
     def undoIt(self):
+        print "undo..."
         if cmds.objExists(self.selection[0]):
+            print self.selection[0]
             cmds.delete(self.selection[0])
         cmds.select(clear=True)
         self.redoIt()

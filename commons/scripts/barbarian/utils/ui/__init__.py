@@ -55,16 +55,16 @@ class QtUI(object):
         try: self.__UI[self.__class__].window.close()
         except: pass
         
+        if self.__class__ in self.__messages:
+            for msg in self.__messages[self.__class__]:
+                try: om.MMessage.removeCallback(msg)
+                except: pass
+            self.__messages.update({self.__class__:[]})
+            
         self.__UI.update({self.__class__:self})
         
-        if self.__class__ in self.__messages:
-            try: 
-                for msg in self.__messages[self.__class__]:
-                    om.MMessage.removeCallback(msg)
-            except: pass
-            self.__messages.update({self.__class__:[]})
-        
         if uiFile:
+            
             self.window = cmds.loadUI(f=config.getPath(config.kUI, "%s.ui"%uiFile))
             width = cmds.window(self.window, q=True, width=True)
             height = cmds.window(self.window, q=True, height=True)
@@ -111,9 +111,10 @@ class QtUI(object):
         
         else:
             self.uiMessage = None
-            self.window = QtGui.QMainWindow()
+            self.window = QMayaWindow()
             self.window.setParent(self.__mayaMainWindow)
             self.window.setWindowFlags(QtCore.Qt.Window)
+            self.window.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
             self.window.show()
             self.setupUi(self.window)
         
@@ -135,9 +136,13 @@ class QtUI(object):
         --------------------------------------------------------------------------------
         '''
         msg = om.MSceneMessage.addCallback(message, lambda *_: self.isObsolete or handler())
-        if not self.__class__ in self.__messages:
-            self.__messages.update({self.__class__:[]})
-        self.__messages[self.__class__].append(msg)
+        
+        if not self.uiMessage:
+            self.window.messages.append(msg)
+        else:
+            if not self.__class__ in self.__messages:
+                self.__messages.update({self.__class__:[]})
+            self.__messages[self.__class__].append(msg)
         
     def close(self, *_):
         u'''
@@ -159,7 +164,9 @@ class QtUI(object):
         except: pass
         
         if self.uiMessage: om.MMessage.removeCallback(self.uiMessage)
-        else: self.window.close()
+        else:
+            try: self.window.close()
+            except: pass
     
     @property
     def isObsolete(self):
@@ -170,9 +177,251 @@ class QtUI(object):
         --------------------------------------------------------------------------------
         '''
         if not isinstance(self, QtUI): return True
-        if not self.uiMessage: return False
         if not cmds.window(self.window, exists=True): return True
         return not cmds.window(self.window, q=True, visible=True)
+
+
+class QMayaWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        super(QMayaWindow, self).__init__(parent)
+        
+        self.messages = []
+        
+        self.setStyleSheet("QMayaWindow {                                                             \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(50, 50, 50, 255),       \n"
+                           "                                      stop:0.05 rgba(60, 60, 60, 255),    \n"
+                           "                                      stop:0.9 rgba(60, 60, 60, 255),     \n"
+                           "                                      stop:1 rgba(50, 50, 50, 255));      \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QPushButton {                                                             \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(150, 150, 150, 255),    \n"
+                           "                                      stop:0.48 rgba(80, 80, 80, 255),    \n"
+                           "                                      stop:0.52 rgba(50, 50, 50, 255),    \n"
+                           "                                      stop:1 rgba(70, 70, 70, 255));      \n"
+                           "    border-style: outset;                                                 \n"
+                           "    border-width: 1px;                                                    \n"
+                           "    border-radius: 6px;                                                   \n"
+                           "    border-color: gray;                                                   \n"
+                           "    padding: 6px;                                                         \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QPushButton:hover {                                                       \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(150, 150, 150, 255),    \n"
+                           "                                      stop:0.48 rgba(90, 90, 90, 255),    \n"
+                           "                                      stop:0.52 rgba(60, 60, 60, 255),    \n"
+                           "                                      stop:1 rgba(100, 100, 100, 255));   \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QPushButton:pressed {                                                     \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(40, 40, 40, 255),       \n"
+                           "                                      stop:0.3 rgba(50, 50, 50, 255),     \n"
+                           "                                      stop:1 rgba(70, 70, 70, 255));      \n"
+                           "    border-style: inset;                                                  \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QTabWidget::pane {                                                        \n"
+                           "    border-top: 1px solid gray;                                           \n"
+                           "    position: absolute;                                                   \n"
+                           "    top: -0.1em;                                                          \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QTabWidget::tab-bar {                                                     \n"
+                           "    alignment: center;                                                    \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QTabBar::tab {                                                            \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(140, 140, 140, 255),          \n"
+                           "                                stop:0.3 rgba(50, 50, 50, 255),           \n"
+                           "                                stop:1 rgba(80, 80, 80, 255));            \n"
+                           "    border: 1px solid gray;                                               \n"
+                           "    border-bottom-color: grey;                                            \n"
+                           "    border-top-left-radius: 6px;                                          \n"
+                           "    border-top-right-radius: 6px;                                         \n"
+                           "    padding: 0px 15px;                                                    \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QTabBar::tab:selected, QTabBar::tab:hover {                               \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(140, 140, 140, 255),          \n"
+                           "                                stop:0.3 rgba(60, 60, 60, 255),           \n"
+                           "                                stop:1 rgba(100, 100, 100, 255));         \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QTabBar::tab:!selected {                                                  \n"
+                           "    margin-top: 2px;                                                      \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QSlider::groove:horizontal {                                              \n"
+                           "    border: 1px solid gray;                                               \n"
+                           "    border-style: inset;                                                  \n"
+                           "    border-radius: 6px;                                                   \n"
+                           "    height: 28px;                                                         \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(20, 20, 20, 255),             \n"
+                           "                                stop:0.3 rgba(40, 40, 40, 255),           \n"
+                           "                                stop:1 rgba(50, 50, 50, 255));            \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QSlider::handle:horizontal {                                              \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(140, 140, 140, 255),          \n"
+                           "                                stop:0.2 rgba(60, 60, 60, 255),           \n"
+                           "                                stop:0.8 rgba(60, 60, 60, 255),           \n"
+                           "                                stop:1 rgba(100, 100, 100, 255));         \n"
+                           "    border: 1px solid gray;                                               \n"
+                           "    border-style: outset;                                                 \n"
+                           "    width: 26px;                                                          \n"
+                           "    margin: 2px 2px;                                                      \n"
+                           "    border-radius: 4px;                                                   \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QSlider::handle:horizontal:hover {                                        \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(140, 140, 140, 255),          \n"
+                           "                                stop:0.2 rgba(80, 80, 80, 255),           \n"
+                           "                                stop:0.8 rgba(80, 80, 80, 255),           \n"
+                           "                                stop:1 rgba(120, 120, 120, 255));         \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QListWidget {                                                             \n"
+                           "    border: 1px solid gray;                                               \n"
+                           "    border-radius: 6px;                                                   \n"
+                           "    border-style: inset;                                                  \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(20, 20, 20, 255),             \n"
+                           "                                stop:0.3 rgba(40, 40, 40, 255),           \n"
+                           "                                stop:1 rgba(50, 50, 50, 255));            \n"
+                           "    selection-background-color: purple;                                   \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QLineEdit {                                                               \n"
+                           "    border: 1px solid gray;                                               \n"
+                           "    border-radius: 6px;                                                   \n"
+                           "    border-style: inset;                                                  \n"
+                           "    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,       \n"
+                           "                                stop:0 rgba(20, 20, 20, 255),             \n"
+                           "                                stop:0.3 rgba(40, 40, 40, 255),           \n"
+                           "                                stop:1 rgba(50, 50, 50, 255));            \n"
+                           "    selection-background-color: purple;                                   \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QComboBox {                                                               \n"
+                           "    border: 1px solid gray;                                               \n"
+                           "    border-style: outset;                                                 \n"
+                           "    border-radius: 6px;                                                   \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(140, 140, 140, 255),    \n"
+                           "                                      stop:0.3 rgba(50, 50, 50, 255),     \n"
+                           "                                      stop:1 rgba(80, 80, 80, 255));      \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QComboBox:!editable:hover {                                               \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(150, 150, 150, 255),    \n"
+                           "                                      stop:0.3 rgba(60, 60, 60, 255),     \n"
+                           "                                      stop:1 rgba(100, 100, 100, 255));   \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QComboBox::drop-down {                                                    \n"
+                           "    subcontrol-origin: padding;                                           \n"
+                           "    subcontrol-position: top right;                                       \n"
+                           "                                                                          \n"
+                           "    border-left-width: 1px;                                               \n"
+                           "    border-left-color: darkgray;                                          \n"
+                           "    border-left-style: solid;                                             \n"
+                           "    border-top-right-radius: 3px;                                         \n"
+                           "    border-bottom-right-radius: 3px;                                      \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QComboBox:!editable:on, QComboBox::drop-down:editable:on {                \n"
+                           "    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,               \n"
+                           "                                stop:0 rgba(20, 20, 20, 255),             \n"
+                           "                                stop:0.3 rgba(40, 40, 40, 255),           \n"
+                           "                                stop:1 rgba(50, 50, 50, 255));            \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QComboBox QAbstractItemView {                                             \n"
+                           "    border: 1px solid grap;                                               \n"
+                           "    selection-background-color: purple;                                   \n"
+                           "}                                                                         \n")
+        
+    def __str__(self):
+        return self.objectName()
+        
+    def closeEvent(self, event):
+        for msg in self.messages:
+            try: om.MMessage.removeCallback(msg)
+            except: continue
+        event.accept()
+
+
+class QShelfButton(QtGui.QToolButton):
+    
+    selected = QtCore.Signal(object)
+    
+    def __init__(self, parent):
+        super(QShelfButton, self).__init__(parent)
+        
+        self.data = None
+        
+        self.setCheckable(True)
+        self.labelLayout = QtGui.QVBoxLayout(self)
+        self.labelLayout.setContentsMargins(5, 5, 5, 5)
+        self.label = QtGui.QLabel(self)
+        self.label.setAlignment(QtCore.Qt.AlignHCenter)
+        
+        self.labelLayout.addStretch()
+        self.labelLayout.addWidget(self.label)
+        
+        self.setStyleSheet("QShelfButton {                                                            \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(120, 120, 120, 255),    \n"
+                           "                                      stop:0.1 rgba(50, 50, 50, 255),     \n"
+                           "                                      stop:0.8 rgba(60, 60, 60, 255),     \n"
+                           "                                      stop:1 rgba(50, 50, 50, 255));      \n"
+                           "    border-style: outset;                                                 \n"
+                           "    border-width: 1px;                                                    \n"
+                           "    border-radius: 6px;                                                   \n"
+                           "    border-color: gray;                                                   \n"
+                           "    padding: 6px;                                                         \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QShelfButton:hover {                                                      \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(120, 120, 120, 255),    \n"
+                           "                                      stop:0.1 rgba(60, 60, 60, 255),     \n"
+                           "                                      stop:0.8 rgba(70, 70, 70, 255),     \n"
+                           "                                      stop:1 rgba(60, 60, 60, 255));      \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
+                           "QShelfButton:checked {                                                    \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(50, 0, 50, 255),        \n"
+                           "                                      stop:0.1 rgba(150, 80, 150, 255),   \n"
+                           "                                      stop:0.5 rgba(100, 20, 100, 255),   \n"
+                           "                                      stop:0.8 rgba(80, 10, 80, 255),     \n"
+                           "                                      stop:1 rgba(100, 20, 100, 255));    \n"
+                           "    border-style: inset;                                                  \n"
+                           "}                                                                         \n")
+        
+        self.clicked.connect(self.emitEvent)
+
+    def setText(self, txt):
+        self.label.setText(txt)
+        
+    def setData(self, data):
+        self.data = data
+    
+    @QtCore.Slot(object)
+    def emitEvent(self):
+        if self.data and self.isChecked(): 
+            self.selected.emit(self.data)
 
 
 class QShelfLayout(QtGui.QLayout):
@@ -180,12 +429,14 @@ class QShelfLayout(QtGui.QLayout):
         super(QShelfLayout, self).__init__(parent)
         self.list = []
         self.cellWidth = 150
-        self.cellHeight = 100
+        self.cellHeight = 170
         self.columnCount = 1
         
     def __del__(self):
         item = self.takeAt(0)
-        while item: del item
+        while item: 
+            del item
+            item = self.takeAt(0)
         
     def count(self):
         return len(self.list)
@@ -224,16 +475,15 @@ class QShelfLayout(QtGui.QLayout):
     def minimumSize(self):
         row = math.floor((self.count() - 1) / self.columnCount) * (self.cellHeight + self.spacing())
         return QtCore.QSize(self.cellWidth * 2 + self.spacing(), row + self.cellHeight)
-    
-    def cleanUp(self):
-        self.__del__()
 
 
 class QShelfView(QtGui.QWidget):
     
     kName = "name"
-    kFile = "file"
-    kPrev = "thumb"
+    kData = "data"
+    kIcon = "icon"
+    
+    itemSelected = QtCore.Signal(object)
     
     def __init__(self, parent=None):
         super(QShelfView, self).__init__(parent)
@@ -255,17 +505,36 @@ class QShelfView(QtGui.QWidget):
         self.shelfLayout = QShelfLayout(self.scrollAreaWidgetContents)
         self.shelfLayout.setObjectName("shelfViewShelfLayout")
         self.scrollAreaWidgetContents.setLayout(self.shelfLayout)
-        self.shelfLayout.setSpacing(10)
+        self.shelfLayout.setSpacing(5)
+        
+        self.buttons = []
+        self.data = None
         
     def setup(self, *itemInfo):
-        self.shelfLayout.cleanUp()
+        self.cleanUp()
         for item in itemInfo:
-            btn = QtGui.QPushButton(self.scrollAreaWidgetContents)
-            btn.setText(item[self.kName])
+            btn = QShelfButton(self.scrollAreaWidgetContents)
             sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
             btn.setSizePolicy(sizePolicy)
+            btn.setText(item[self.kName])
+            btn.setData(item[self.kData])
+            btn.setIcon(QtGui.QIcon(item[self.kIcon]))
+            btn.setIconSize(QtCore.QSize(128, 128))
             self.shelfLayout.addWidget(btn)
+            self.buttons.append(btn)
+            
+            btn.selected.connect(self.emitItem)
+    
+    @QtCore.Slot(object)        
+    def emitItem(self, obj):
+        self.data = obj
+        self.itemSelected.emit(obj)
+    
+    def cleanUp(self):
+        for btn in self.buttons:
+            btn.deleteLater()
+        self.buttons = []
             
     def currentItem(self):
-        return
+        return self.data
 
