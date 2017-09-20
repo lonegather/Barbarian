@@ -49,7 +49,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         QtCore.QObject.connect(self.motionLibLEExportFile,
                                QtCore.SIGNAL("textChanged(QString)"),
                                self.refreshBtn)
-        QtCore.QObject.connect(self.motionLibLEExportFile,
+        QtCore.QObject.connect(self.motionLibHSView,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.refreshView)
         self.motionLibBtnImport.clicked.connect(lambda *_: self.animImport())

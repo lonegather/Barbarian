@@ -361,7 +361,7 @@ class QMayaWindow(QtGui.QMainWindow):
         event.accept()
 
 
-class QShelfButton(QtGui.QToolButton):
+class QShelfButton(QtGui.QRadioButton):
     
     selected = QtCore.Signal(object)
     
@@ -392,6 +392,10 @@ class QShelfButton(QtGui.QToolButton):
                            "    padding: 6px;                                                         \n"
                            "}                                                                         \n"
                            "                                                                          \n"
+                           "QShelfButton::indicator {                                                 \n"
+                           "    width: 0px;                                                           \n"
+                           "    height: 0px;                                                          \n"
+                           "}                                                                         \n"
                            "QShelfButton:hover {                                                      \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
                            "                                      stop:0 rgba(120, 120, 120, 255),    \n"
