@@ -116,7 +116,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
                     if os.path.isfile(iconPath): 
                         found = True
                         break
-                if not found: iconPath = config.getPath(config.kIcon, "motion.png")
+                if not found: iconPath = config.getPath(config.kIcon, "motion.gif")
                 itemList.append({ui.QShelfView.kName:f, ui.QShelfView.kData:f, ui.QShelfView.kIcon:iconPath})
         self.shelf.setup(*itemList)
         

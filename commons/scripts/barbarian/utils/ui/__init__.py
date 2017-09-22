@@ -10,7 +10,6 @@ import abc, math
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 from maya import cmds
-from xml.dom import minidom
 from PySide import QtCore, QtGui
 from shiboken import wrapInstance
 from barbarian.utils import config
@@ -28,7 +27,13 @@ class QtUI(object):
     __metaclass__ = abc.ABCMeta
     __UI = {}
     __messages = {}
-    __mayaMainWindow = wrapInstance(long(omui.MQtUtil.mainWindow()), QtGui.QWidget)
+    
+    @classmethod
+    def showUIList(cls):
+        from pprint import pprint
+        print "-"*20
+        pprint(cls.__UI)
+        print "-"*20
     
     @classmethod
     def UI(cls):
@@ -46,7 +51,9 @@ class QtUI(object):
     @classmethod
     def cleanUp(cls):
         for ui in cls.__UI: 
-            if cls.__UI[ui]: cls.__UI[ui].close()
+            if cls.__UI[ui]: 
+                try: cls.__UI[ui].close()
+                except: pass
     
     def __init__(self, uiFile=None, **info):
         try: cmds.deleteUI(self.__UI[self.__class__].window)
@@ -64,7 +71,6 @@ class QtUI(object):
         self.__UI.update({self.__class__:self})
         
         if uiFile:
-            
             self.window = cmds.loadUI(f=config.getPath(config.kUI, "%s.ui"%uiFile))
             width = cmds.window(self.window, q=True, width=True)
             height = cmds.window(self.window, q=True, height=True)
@@ -81,6 +87,7 @@ class QtUI(object):
                         "text"           : cmds.text,
                         "textField"      : cmds.textField,
                         "textScrollList" : cmds.textScrollList}
+            
             for item in info:
                 found = False
                 for target in detector:
@@ -88,14 +95,12 @@ class QtUI(object):
                         found = True
                         pathList = detector[target](info[item], q=True, fpn=True).split('|')
                         self.__setattr__(item, "%s|%s"%(self.window, '|'.join(pathList[1:])))
-                        print "Found %s: <%s|%s>"%(target, self.window, '|'.join(pathList[1:]))
                         break
                 
                 if not found:
                     if cmds.layout(info[item], exists=True):
                         parentList = cmds.layout(info[item], q=True, parent=True).split('|')
                         self.__setattr__(item, "%s|%s|%s"%(self.window, '|'.join(parentList[1:]), info[item]))
-                        print "Found layout:", "<%s|%s|%s>"%(self.window, '|'.join(parentList[1:]), info[item])
                         children = cmds.layout(self.__getattribute__(item), q=True, fpn=True, ca=True)
                         for child in children:
                             cmds.deleteUI(child)
@@ -112,10 +117,7 @@ class QtUI(object):
         else:
             self.uiMessage = None
             self.window = QMayaWindow()
-            self.window.setParent(self.__mayaMainWindow)
-            self.window.setWindowFlags(QtCore.Qt.Window)
-            self.window.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
-            self.window.show()
+            self.window.closed.connect(lambda *_: self.__UI.update({self.__class__:None}))
             self.setupUi(self.window)
         
     @abc.abstractmethod
@@ -151,22 +153,23 @@ class QtUI(object):
         Close the window.
         --------------------------------------------------------------------------------
         '''
-        if self.__class__ in self.__messages:
-            try: 
-                for msg in self.__messages[self.__class__]:
-                    om.MMessage.removeCallback(msg)
-            except: pass
-            self.__messages.update({self.__class__:[]})
+        print self.window, "closed"
+        self.__UI.update({self.__class__:None})
         
-        try: 
-            self.__UI.update({self.__class__:None})
-            cmds.deleteUI(self.window)
-        except: pass
-        
-        if self.uiMessage: om.MMessage.removeCallback(self.uiMessage)
-        else:
+        if self.uiMessage: 
+            om.MMessage.removeCallback(self.uiMessage)
+        else: 
             try: self.window.close()
             except: pass
+        
+        if self.__class__ in self.__messages:
+            for msg in self.__messages[self.__class__]:
+                try: om.MMessage.removeCallback(msg)
+                except: pass
+            self.__messages.update({self.__class__:[]})
+        
+        try: cmds.deleteUI(self.window)
+        except: pass
     
     @property
     def isObsolete(self):
@@ -182,10 +185,15 @@ class QtUI(object):
 
 
 class QMayaWindow(QtGui.QMainWindow):
-    def __init__(self, parent=None):
-        super(QMayaWindow, self).__init__(parent)
+    
+    __mayaMainWindow = wrapInstance(long(omui.MQtUtil.mainWindow()), QtGui.QWidget)
+    closed = QtCore.Signal()
+    
+    def __init__(self):
+        super(QMayaWindow, self).__init__(self.__mayaMainWindow)
         
-        self.messages = []
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
         
         self.setStyleSheet("QMayaWindow {                                                             \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
@@ -351,6 +359,9 @@ class QMayaWindow(QtGui.QMainWindow):
                            "    selection-background-color: purple;                                   \n"
                            "}                                                                         \n")
         
+        self.messages = []
+        self.show()
+        
     def __str__(self):
         return self.objectName()
         
@@ -358,10 +369,12 @@ class QMayaWindow(QtGui.QMainWindow):
         for msg in self.messages:
             try: om.MMessage.removeCallback(msg)
             except: continue
+        self.setParent(None)
+        self.closed.emit()
         event.accept()
 
 
-class QShelfButton(QtGui.QRadioButton):
+class QShelfButton(QtGui.QPushButton):
     
     selected = QtCore.Signal(object)
     
@@ -371,12 +384,17 @@ class QShelfButton(QtGui.QRadioButton):
         self.data = None
         
         self.setCheckable(True)
+        self.setAutoExclusive(True)
         self.labelLayout = QtGui.QVBoxLayout(self)
-        self.labelLayout.setContentsMargins(5, 5, 5, 5)
+        self.labelLayout.setContentsMargins(10, 10, 10, 10)
+        
+        self.thumb = QtGui.QLabel(self)
+        self.thumb.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
+        self.thumb.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding))
+        self.labelLayout.addWidget(self.thumb)
+        
         self.label = QtGui.QLabel(self)
         self.label.setAlignment(QtCore.Qt.AlignHCenter)
-        
-        self.labelLayout.addStretch()
         self.labelLayout.addWidget(self.label)
         
         self.setStyleSheet("QShelfButton {                                                            \n"
@@ -415,6 +433,29 @@ class QShelfButton(QtGui.QRadioButton):
                            "}                                                                         \n")
         
         self.clicked.connect(self.emitEvent)
+        self.toggled.connect(self.__setGIF__)
+        
+    def __setGIF__(self, checked):
+        if checked: self.movie.start()
+        else: self.movie.stop()
+        
+    def __del__(self):
+        try: self.label.deleteLater()
+        except: pass
+        try: self.thumb.deleteLater()
+        except: pass
+        try: self.movie.deleteLater()
+        except: pass
+        
+    def setIcon(self, icon):
+        if not icon.split('.gif')[-1]:
+            self.movie = QtGui.QMovie(icon)
+            self.thumb.setMovie(self.movie)
+            self.movie.start()
+            self.movie.stop()
+        else:
+            self.setIconSize(QtCore.QSize(128, 128))
+            super(QShelfButton, self).setIcon(QtGui.QIcon(icon))
 
     def setText(self, txt):
         self.label.setText(txt)
@@ -522,8 +563,7 @@ class QShelfView(QtGui.QWidget):
             btn.setSizePolicy(sizePolicy)
             btn.setText(item[self.kName])
             btn.setData(item[self.kData])
-            btn.setIcon(QtGui.QIcon(item[self.kIcon]))
-            btn.setIconSize(QtCore.QSize(128, 128))
+            btn.setIcon(item[self.kIcon])
             self.shelfLayout.addWidget(btn)
             self.buttons.append(btn)
             
@@ -535,6 +575,11 @@ class QShelfView(QtGui.QWidget):
         self.itemSelected.emit(obj)
     
     def cleanUp(self):
+        child = self.shelfLayout.takeAt(0)
+        while child:
+            del child
+            child = self.shelfLayout.takeAt(0)
+            
         for btn in self.buttons:
             btn.deleteLater()
         self.buttons = []
