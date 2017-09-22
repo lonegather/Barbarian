@@ -831,6 +831,7 @@ def creativeTarget(blendShape,target=[]):
 	return listConnect_Name
 
 def InputTargetGroup(blendShapeNode,target):
+	mel.eval('source barbarian/rig/blendShapeMel/gg_BSpiritCorrectiveShape')
 	GetWeightIndex = 'gg_GetWeightIndex '+str(blendShapeNode)+' '+str(target)+' '
 
 	tragetIndexItem  = mel.eval(GetWeightIndex) 
