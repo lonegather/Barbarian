@@ -436,8 +436,10 @@ class QShelfButton(QtGui.QPushButton):
         self.toggled.connect(self.__setGIF__)
         
     def __setGIF__(self, checked):
-        if checked: self.movie.start()
-        else: self.movie.stop()
+        try:
+            if checked: self.movie.start()
+            else: self.movie.stop()
+        except: pass
         
     def __del__(self):
         try: self.label.deleteLater()
@@ -448,20 +450,23 @@ class QShelfButton(QtGui.QPushButton):
         except: pass
         
     def setIcon(self, icon):
-        if not icon.split('.gif')[-1]:
+        print icon
+        try:
             self.movie = QtGui.QMovie(icon)
             self.thumb.setMovie(self.movie)
             self.movie.start()
             self.movie.stop()
-        else:
-            self.setIconSize(QtCore.QSize(128, 128))
-            super(QShelfButton, self).setIcon(QtGui.QIcon(icon))
+        except:
+            self.thumb.setPixmap(QtGui.QPixmap(icon))
 
     def setText(self, txt):
         self.label.setText(txt)
         
     def setData(self, data):
         self.data = data
+        
+    def setType(self, tp):
+        self.type = tp
     
     @QtCore.Slot(object)
     def emitEvent(self):
@@ -527,17 +532,22 @@ class QShelfView(QtGui.QWidget):
     kName = "name"
     kData = "data"
     kIcon = "icon"
+    kType = "type"
     
     itemSelected = QtCore.Signal(object)
+    finished = QtCore.Signal()
     
     def __init__(self, parent=None):
         super(QShelfView, self).__init__(parent)
         self.setObjectName("shelfView")
         
-        self.mainLayout = QtGui.QGridLayout(self)
+        self.mainLayout = QtGui.QStackedLayout(self)
         self.mainLayout.setSpacing(0)
         self.mainLayout.setContentsMargins(0, 0, 0, 0)
         self.mainLayout.setObjectName("shelfViewMainLayout")
+        
+        self.progressBar = QtGui.QProgressBar(self)
+        self.mainLayout.addWidget(self.progressBar)
         
         self.scrollArea = QtGui.QScrollArea(self)
         self.scrollArea.setWidgetResizable(True)
@@ -545,7 +555,7 @@ class QShelfView(QtGui.QWidget):
         self.scrollAreaWidgetContents = QtGui.QWidget()
         self.scrollAreaWidgetContents.setObjectName("shelfViewScrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.mainLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
+        self.mainLayout.addWidget(self.scrollArea)
         
         self.shelfLayout = QShelfLayout(self.scrollAreaWidgetContents)
         self.shelfLayout.setObjectName("shelfViewShelfLayout")
@@ -557,22 +567,57 @@ class QShelfView(QtGui.QWidget):
         
     def setup(self, *itemInfo):
         self.cleanUp()
-        for item in itemInfo:
-            btn = QShelfButton(self.scrollAreaWidgetContents)
-            sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-            btn.setSizePolicy(sizePolicy)
-            btn.setText(item[self.kName])
-            btn.setData(item[self.kData])
-            btn.setIcon(item[self.kIcon])
-            self.shelfLayout.addWidget(btn)
-            self.buttons.append(btn)
-            
-            btn.selected.connect(self.emitItem)
+        
+        self.progressBar.setMinimum(0)
+        self.progressBar.setMaximum(len(itemInfo)-1)
+        
+        self.picLoadThread = PictureLoadThread(*itemInfo)
+        self.picLoadThread.stepped.connect(self.__onPicLoaded__)
+        self.picLoadThread.finished.connect(self.__onLoadFinished__)
+        self.picLoadThread.start()
+        
+    def __onPicLoaded__(self, item):
+        btn = QShelfButton(self.scrollAreaWidgetContents)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        btn.setSizePolicy(sizePolicy)
+        btn.setText(item[self.kName])
+        btn.setData(item[self.kData])
+        btn.setIcon(item[self.kIcon])
+        btn.setType(item[self.kType])
+        btn.selected.connect(self.emitItem)
+        self.shelfLayout.addWidget(btn)
+        self.buttons.append(btn)
+        
+        self.progressBar.setValue(self.progressBar.value()+1)
     
-    @QtCore.Slot(object)        
+    def __onLoadFinished__(self):
+        print "load finished."
+        self.mainLayout.setCurrentWidget(self.scrollArea)
+        self.finished.emit()
+        self.shelfLayout.update()     
+    
+    @QtCore.Slot(object)
     def emitItem(self, obj):
         self.data = obj
         self.itemSelected.emit(obj)
+    
+    def itemFilter(self, *tags):
+        if not tags:
+            for btn in self.buttons:
+                self.shelfLayout.addWidget(btn)
+                btn.show()
+            self.shelfLayout.update()
+            return
+        
+        for btn in self.buttons:
+            self.shelfLayout.removeWidget(btn)
+            btn.hide()
+            for tag in tags:
+                if (not btn.type) or btn.type.count(tag):
+                    self.shelfLayout.addWidget(btn)
+                    btn.show()
+                    break
+        self.shelfLayout.update()
     
     def cleanUp(self):
         child = self.shelfLayout.takeAt(0)
@@ -583,7 +628,35 @@ class QShelfView(QtGui.QWidget):
         for btn in self.buttons:
             btn.deleteLater()
         self.buttons = []
+        
+        self.shelfLayout.update()
             
     def currentItem(self):
         return self.data
+    
+    
+class PictureLoadThread(QtCore.QThread):
+    
+    stepped = QtCore.Signal(object)
+    
+    def __init__(self, *itemInfo):
+        super(PictureLoadThread, self).__init__()
+        
+        self.itemInfo = itemInfo
+        
+    def run(self):
+        for item in self.itemInfo:
+            itemName = item[QShelfView.kName]
+            itemIcon = item[QShelfView.kIcon]
+            itemData = item[QShelfView.kData]
+            try: itemType = item[QShelfView.kType]
+            except: itemType = None
+            
+            self.stepped.emit({QShelfView.kName:itemName, 
+                               QShelfView.kIcon:itemIcon, 
+                               QShelfView.kData:itemData,
+                               QShelfView.kType:itemType})
+        
+        
+        
 

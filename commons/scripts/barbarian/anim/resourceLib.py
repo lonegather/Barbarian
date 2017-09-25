@@ -9,50 +9,54 @@ Created on 2017.8.25
 import os
 from maya import cmds
 from xml.dom import minidom
+from PySide import QtCore, QtGui
 from barbarian.utils import ui, config
 
 
 def UI(*_):
-    ResourceRepository("resourceLib",
-                       opMnuProject = "resourceLibCBProject",
-                       rbChar       = "resourceLibRBChar",
-                       rbProp       = "resourceLibRBProp",
-                       rbScene      = "resourceLibRBScene",
-                       container    = "resourceLibMayaControlLocator",
-                       btnLoad      = "resourceLibBtnLoad")
+    ResourceRepository()
 
 
-class ResourceRepository(ui.QtUI):
-    def setupUi(self):
-        cmds.optionMenu(self.opMnuProject, e=True, changeCommand=config.setProject)
-        cmds.radioButton(self.rbChar, e=True, onCommand=self.refreshData)
-        cmds.radioButton(self.rbProp, e=True, onCommand=self.refreshData)
-        cmds.radioButton(self.rbScene, e=True, onCommand=self.refreshData)
-        cmds.button(self.btnLoad, e=True, command=self.load)
-        self.shelf = cmds.shelfLayout(parent=self.container, cellHeight=170, cellWidth=150, spacing=5)
+class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
+    def setupUi(self, win=None):
+        super(ResourceRepository, self).setupUi(win)
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
+        
+        QtCore.QObject.connect(self.resourceLibCBProject, 
+                               QtCore.SIGNAL("currentIndexChanged(int)"), 
+                               lambda *_: config.setProject(self.resourceLibCBProject.currentText()))
+        QtCore.QObject.connect(self.resourceLibRBChar,
+                               QtCore.SIGNAL("clicked(bool)"),
+                               self.refreshData)
+        QtCore.QObject.connect(self.resourceLibRBProp,
+                               QtCore.SIGNAL("clicked(bool)"),
+                               self.refreshData)
+        QtCore.QObject.connect(self.resourceLibRBScene,
+                               QtCore.SIGNAL("clicked(bool)"),
+                               self.refreshData)
+        QtCore.QObject.connect(self.resourceLibBtnLoad,
+                               QtCore.SIGNAL("clicked()"),
+                               self.load)
+        
+        self.shelf.itemSelected.connect(self.getCurrent)
         
         self.refreshProject()
     
     def refreshProject(self, *_):
         if config.getProject(): 
-            cmds.optionMenu(self.opMnuProject, e=True, l=u"")
-            if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
+            if not self.resourceLibCBProject.count(): 
                 projects = config.getProject(all=True)
-                for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
-            cmds.optionMenu(self.opMnuProject, e=True, v=config.getProject())
+                for prj in projects: self.resourceLibCBProject.addItem(prj)
+            self.resourceLibCBProject.setCurrentIndex(self.resourceLibCBProject.findText(config.getProject()))
         elif config.getProject(all=True): 
-            cmds.optionMenu(self.opMnuProject, e=True, l=u"<选择项目>")
-            if not cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
+            if not self.resourceLibCBProject.count(): 
                 projects = config.getProject(all=True)
-                for prj in projects: cmds.menuItem(l=prj, parent=self.opMnuProject)
+                for prj in projects: self.resourceLibCBProject.addItem(prj)
             return
         else: 
-            cmds.optionMenu(self.opMnuProject, e=True, l=u"<配置异常>")
-            if cmds.optionMenu(self.opMnuProject, q=True, numberOfItems=True): 
-                for mi in cmds.optionMenu(self.opMnuProject, q=True, itemListLong=True): 
-                    cmds.deleteUI(mi)
+            while self.resourceLibCBProject.count(): 
+                self.resourceLibCBProject.removeItem(0)
             return
         
         try: dom = minidom.parse(config.getPath(config.kConfig, config.getConfig("resourceLocator")))
@@ -68,54 +72,36 @@ class ResourceRepository(ui.QtUI):
             for path in self.root.getElementsByTagName("path"):
                 Asset.pathDefine[path.getAttribute("name")] = path.childNodes[0].nodeValue
             
-            self.itrc = cmds.iconTextRadioCollection(parent=self.shelf)
-            
-            items = self.root.getElementsByTagName("item")
-            cmds.progressWindow(title=u"进度", status=u"读取中...")
-            cmds.progressWindow(e=True, progress=0, max=len(items))
-            
-            for item in items:
-                cmds.progressWindow(e=True, step=1)
-                
-                asset = Asset(item)
-                self.assets.append(asset)
-                cmds.iconTextRadioButton(asset, label=asset.label, parent=self.shelf, style='iconAndTextVertical',
-                                         image=asset.image, font="smallFixedWidthFont", onCommand=self.getCurrent)
-            
-            cmds.progressWindow(endProgress=1)
+            for item in self.root.getElementsByTagName("item"):
+                self.assets.append(Asset(item))
+        
+            self.shelf.setup(*self.assets)
         
         self.refreshData()
         
-    def refreshData(self, *_):
+    def refreshData(self, checked=True):
         if not self.root: return
+        if not checked: return
         
-        if cmds.radioButton(self.rbChar, q=True, select=True): resType = 'character'
-        elif cmds.radioButton(self.rbProp, q=True, select=True): resType = 'property'
-        elif cmds.radioButton(self.rbScene, q=True, select=True): resType = 'scene'
+        if self.resourceLibRBChar.isChecked(): resType = 'character'
+        elif self.resourceLibRBProp.isChecked(): resType = 'property'
+        elif self.resourceLibRBScene.isChecked(): resType = 'scene'
         else: return
         
-        position = 1
-        for asset in self.assets:
-            cmds.iconTextRadioButton(asset, e=True, visible=asset.filter(resType))
-            if asset.filter(resType):
-                cmds.shelfLayout(self.shelf, e=True, position=(asset, position))
-                position += 1
+        self.shelf.itemFilter(resType)
         
     def clearData(self):
         self.current = None
-        cmds.button(self.btnLoad, e=True, visible=False)
-        
-        if not cmds.shelfLayout(self.shelf, q=True, childArray=True): return
-        for btn in cmds.shelfLayout(self.shelf, q=True, childArray=True):
-            cmds.deleteUI(btn)
+        self.shelf.cleanUp()
+        self.resourceLibBtnLoad.setEnabled(False)
             
-    def getCurrent(self, *_):
-        cmds.button(self.btnLoad, e=True, visible=True)
-        self.current = cmds.iconTextRadioCollection(self.itrc, q=True, select=True)
+    def getCurrent(self, item):
+        self.resourceLibBtnLoad.setEnabled(True)
+        self.current = item
         
     def load(self, *_):
         for asset in self.assets:
-            if str(asset) == self.current:
+            if asset.path == self.current:
                 cmds.file(asset.path, r=True, iv=True, typ='mayaAscii', ns=asset.namespace)
                 return
         
@@ -129,6 +115,7 @@ class Asset():
         self.__name  = item.getAttribute("name")
         self.__file  = item.getAttribute("file")
         self.__thumb = item.getAttribute("thumbnail")
+        self.__dic   = {}
         
         for p in Asset.pathDefine:
             strList = self.__file.split("%%%s%%"%p)
@@ -136,9 +123,17 @@ class Asset():
             
             strList = self.__thumb.split("%%%s%%"%p)
             if len(strList) > 1: self.__thumb = Asset.pathDefine[p] + strList[-1]
+        
+        self.__dic[ui.QShelfView.kName] = self.label
+        self.__dic[ui.QShelfView.kIcon] = self.image
+        self.__dic[ui.QShelfView.kData] = self.path
+        self.__dic[ui.QShelfView.kType] = self.__tag
     
     def __str__(self):
         return "%s_%s"%(ResourceRepository.UI().window, self.__file.split('/')[-1].split('.ma')[0])
+    
+    def __getitem__(self, key):
+        return self.__dic[key]
         
     def filter(self, *tags):
         for tag in tags:

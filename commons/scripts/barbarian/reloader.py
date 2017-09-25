@@ -33,6 +33,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.utils.ui.PuTaoMainUI)
         import barbarian.utils.ui.motionLibUI
         if rl: reload(barbarian.utils.ui.motionLibUI)
+        import barbarian.utils.ui.resourceLibUI
+        if rl: reload(barbarian.utils.ui.resourceLibUI)
         import barbarian.utils.main
         if rl: reload(barbarian.utils.main)
         
