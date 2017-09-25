@@ -38,7 +38,7 @@ class Ui_motionLibOption(ui.QtUI):
         self.Label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.Label.setObjectName("Label")
         self.formLayout_2.setWidget(0, QtGui.QFormLayout.LabelRole, self.Label)
-        self.motionLibCBProject = QtGui.QComboBox(self.motionLibCentralwidget)
+        self.motionLibCBProject = ui.QOptionMenu(self.motionLibCentralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

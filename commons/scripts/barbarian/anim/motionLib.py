@@ -38,10 +38,10 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
         
         QtCore.QObject.connect(self.motionLibCBProject, 
-                               QtCore.SIGNAL("currentIndexChanged(int)"), 
+                               QtCore.SIGNAL("activated(int)"), 
                                lambda *_: config.setProject(self.motionLibCBProject.currentText()))
         QtCore.QObject.connect(self.motionLibCBCharactor, 
-                               QtCore.SIGNAL("currentIndexChanged(int)"),
+                               QtCore.SIGNAL("activated(int)"),
                                self.refreshData)
         QtCore.QObject.connect(self.motionLibLEFilter,
                                QtCore.SIGNAL("returnPressed()"),
@@ -100,7 +100,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         cmds.namespace(set = ":")
         self.shelf.cleanUp()
         self.motionLibBtnImport.setEnabled(False)
-        self.motionLibCBProject.setCurrentIndex(self.motionLibCBProject.findText(config.getProject()))
+        self.motionLibCBProject.setCurrentText(config.getProject())
         if not self.motionLibCBCharactor.count(): return
         self.namespace = self.motionLibCBCharactor.currentText().split("<")[-1].split(">")[0]
         self.path = config.getConfig('animLibPath') + self.getOrigChar(self.namespace.split(":")[-1])

@@ -24,7 +24,7 @@ class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         
         QtCore.QObject.connect(self.resourceLibCBProject, 
-                               QtCore.SIGNAL("currentIndexChanged(int)"), 
+                               QtCore.SIGNAL("activated(int)"), 
                                lambda *_: config.setProject(self.resourceLibCBProject.currentText()))
         QtCore.QObject.connect(self.resourceLibRBChar,
                                QtCore.SIGNAL("clicked(bool)"),
@@ -42,13 +42,14 @@ class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
         self.shelf.itemSelected.connect(self.getCurrent)
         
         self.refreshProject()
+        #config.setProject(config.getProject())
     
     def refreshProject(self, *_):
         if config.getProject(): 
             if not self.resourceLibCBProject.count(): 
                 projects = config.getProject(all=True)
                 for prj in projects: self.resourceLibCBProject.addItem(prj)
-            self.resourceLibCBProject.setCurrentIndex(self.resourceLibCBProject.findText(config.getProject()))
+            self.resourceLibCBProject.setCurrentText(config.getProject())
         elif config.getProject(all=True): 
             if not self.resourceLibCBProject.count(): 
                 projects = config.getProject(all=True)
@@ -79,9 +80,8 @@ class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
         
         self.refreshData()
         
-    def refreshData(self, checked=True):
+    def refreshData(self, *_):
         if not self.root: return
-        if not checked: return
         
         if self.resourceLibRBChar.isChecked(): resType = 'character'
         elif self.resourceLibRBProp.isChecked(): resType = 'property'

@@ -357,6 +357,13 @@ class QMayaWindow(QtGui.QMainWindow):
                            "QComboBox QAbstractItemView {                                             \n"
                            "    border: 1px solid grap;                                               \n"
                            "    selection-background-color: purple;                                   \n"
+                           "}                                                                         \n"
+                           "QProgressBar::chunk {                                                     \n"
+                           "    background-color: purple;                                             \n"
+                           "}                                                                         \n"
+                           "QProgressBar {                                                            \n"
+                           "    text-align: center;                                                   \n"
+                           "                                                                          \n"
                            "}                                                                         \n")
         
         self.messages = []
@@ -372,6 +379,14 @@ class QMayaWindow(QtGui.QMainWindow):
         self.setParent(None)
         self.closed.emit()
         event.accept()
+
+
+class QOptionMenu(QtGui.QComboBox):
+    def setCurrentText(self, txt):
+        for i in range(self.count()):
+            if self.itemText(i) == txt:
+                self.setCurrentIndex(i)
+                break
 
 
 class QShelfButton(QtGui.QPushButton):
@@ -450,7 +465,6 @@ class QShelfButton(QtGui.QPushButton):
         except: pass
         
     def setIcon(self, icon):
-        print icon
         try:
             self.movie = QtGui.QMovie(icon)
             self.thumb.setMovie(self.movie)
@@ -547,6 +561,7 @@ class QShelfView(QtGui.QWidget):
         self.mainLayout.setObjectName("shelfViewMainLayout")
         
         self.progressBar = QtGui.QProgressBar(self)
+        self.progressBar.setMaximumHeight(50)
         self.mainLayout.addWidget(self.progressBar)
         
         self.scrollArea = QtGui.QScrollArea(self)
@@ -563,13 +578,16 @@ class QShelfView(QtGui.QWidget):
         self.shelfLayout.setSpacing(5)
         
         self.buttons = []
+        self.filter = None
         self.data = None
         
     def setup(self, *itemInfo):
         self.cleanUp()
         
+        self.progressBar.setValue(0)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(len(itemInfo)-1)
+        self.mainLayout.setCurrentWidget(self.progressBar)
         
         self.picLoadThread = PictureLoadThread(*itemInfo)
         self.picLoadThread.stepped.connect(self.__onPicLoaded__)
@@ -587,14 +605,14 @@ class QShelfView(QtGui.QWidget):
         btn.selected.connect(self.emitItem)
         self.shelfLayout.addWidget(btn)
         self.buttons.append(btn)
+        print btn
         
         self.progressBar.setValue(self.progressBar.value()+1)
     
     def __onLoadFinished__(self):
-        print "load finished."
         self.mainLayout.setCurrentWidget(self.scrollArea)
         self.finished.emit()
-        self.shelfLayout.update()     
+        self.itemFilter(*self.filter)
     
     @QtCore.Slot(object)
     def emitItem(self, obj):
@@ -602,6 +620,7 @@ class QShelfView(QtGui.QWidget):
         self.itemSelected.emit(obj)
     
     def itemFilter(self, *tags):
+        self.filter = tags
         if not tags:
             for btn in self.buttons:
                 self.shelfLayout.addWidget(btn)
