@@ -16,7 +16,7 @@ from barbarian.utils import config
 
 
 class QtUI(object):
-    u'''
+    '''
     --------------------------------------------------------------------------------
     本抽象类用于管理所有从.ui文件加载的窗口
     Abstract class for managing windows which loaded from .ui file.
@@ -37,7 +37,7 @@ class QtUI(object):
     
     @classmethod
     def UI(cls):
-        u'''
+        '''
         --------------------------------------------------------------------------------
         获取当前派生类的唯一实例，即当前激活的窗口
         Retrieve the instance of the derived class, which is the currently active window.
@@ -122,7 +122,7 @@ class QtUI(object):
         
     @abc.abstractmethod
     def setupUi(self, win=None):
-        u'''
+        '''
         --------------------------------------------------------------------------------
         本方法用于.ui文件加载完毕后界面的初始化操作，在派生类中重写此方法
         Implement this method in derived class for UI setup when the .ui file was loaded.
@@ -131,7 +131,7 @@ class QtUI(object):
         pass
     
     def addSceneCallback(self, message, handler):
-        u'''
+        '''
         --------------------------------------------------------------------------------
         本方法用于管理 Maya API 中场景事件的回调函数，请使用此方法加载场景相关的回调函数
         Hold callback message IDs, which will be removed when the window is closed.
@@ -147,7 +147,7 @@ class QtUI(object):
             self.__messages[self.__class__].append(msg)
         
     def close(self, *_):
-        u'''
+        '''
         --------------------------------------------------------------------------------
         关闭当前窗口
         Close the window.
@@ -173,7 +173,7 @@ class QtUI(object):
     
     @property
     def isObsolete(self):
-        u'''
+        '''
         --------------------------------------------------------------------------------
         本属性用于判断当前实例是否处于废弃状态（等待被系统回收），亦即当前窗口是否已被关闭或重载
         Check if this instance is obsolete (closed or reloaded) and waiting for GC.
@@ -578,7 +578,7 @@ class QShelfView(QtGui.QWidget):
         self.shelfLayout.setSpacing(5)
         
         self.buttons = []
-        self.filter = None
+        self.filter = ""
         self.data = None
         
     def setup(self, *itemInfo):
@@ -605,7 +605,6 @@ class QShelfView(QtGui.QWidget):
         btn.selected.connect(self.emitItem)
         self.shelfLayout.addWidget(btn)
         self.buttons.append(btn)
-        print btn
         
         self.progressBar.setValue(self.progressBar.value()+1)
     

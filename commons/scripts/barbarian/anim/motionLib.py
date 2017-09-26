@@ -26,7 +26,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         super(AnimRepository, self).setupUi(win)
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshCharacters], parent=self.window)
-        cmds.scriptJob(event=["playbackRangeChanged", self.refreshTF], parent=self.window)
+        cmds.scriptJob(event=["playbackRangeChanged", self.refreshTimeRange], parent=self.window)
         
         self.addSceneCallback(om.MSceneMessage.kAfterCreateReference, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterRemoveReference, self.refreshCharacters)
@@ -44,8 +44,8 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
                                QtCore.SIGNAL("activated(int)"),
                                self.refreshData)
         QtCore.QObject.connect(self.motionLibLEFilter,
-                               QtCore.SIGNAL("returnPressed()"),
-                               self.refreshData)
+                               QtCore.SIGNAL("textChanged(QString)"),
+                               lambda txt: self.shelf.itemFilter(txt))
         QtCore.QObject.connect(self.motionLibLEExportFile,
                                QtCore.SIGNAL("textChanged(QString)"),
                                self.refreshBtn)
@@ -56,7 +56,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.motionLibBtnExport.clicked.connect(lambda *_: self.animExport())
         self.shelf.itemSelected.connect(self.__getLabel__)
         
-        self.refreshTF()
+        self.refreshTimeRange()
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
@@ -117,7 +117,10 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
                         found = True
                         break
                 if not found: iconPath = config.getPath(config.kIcon, "motion.gif")
-                itemList.append({ui.QShelfView.kName:f, ui.QShelfView.kData:f, ui.QShelfView.kIcon:iconPath})
+                itemList.append({ui.QShelfView.kName:f, 
+                                 ui.QShelfView.kData:f,
+                                 ui.QShelfView.kIcon:iconPath,
+                                 ui.QShelfView.kType:f})
         self.shelf.setup(*itemList)
         
         sels = os.popen("type \"%s\"\\__config__" % self.path).read()
@@ -128,7 +131,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         cmds.select(self.__select, r=True)
         self.__config = None
         
-    def refreshTF(self, *_):
+    def refreshTimeRange(self, *_):
         self.motionLibLEExportStart.setText(unicode(int(cmds.playbackOptions(q=1, minTime=1))))
         self.motionLibLEExportEnd.setText(unicode(int(cmds.playbackOptions(q=1, maxTime=1))))
         

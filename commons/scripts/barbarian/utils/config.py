@@ -21,14 +21,15 @@ kIcon = "../commons/icons/"
 kUI = "../commons/ui/"
 
 
-def getPath(key="", f=""):
+def getPath(*args):
     '''
     --------------------------------------------------------------------------------
     Provide Framework Paths
     --------------------------------------------------------------------------------
     '''
     path = os.getenv("BARBARIAN_LOCATION")
-    return path + key + f
+    for arg in args: path += arg
+    return path
 
 
 def getProject(**kwargs):
@@ -115,6 +116,7 @@ class Config(object):
     
     @classmethod
     def setProject(cls, name):
+        if cmds.optionVar(q="PutaoTools_Project") == name: return
         for project in cls.instance().data:
             if project["name"] == name:
                 cmds.optionVar(sv=("PutaoTools_Project", project["name"]))
