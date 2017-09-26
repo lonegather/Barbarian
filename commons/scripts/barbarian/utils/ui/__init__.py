@@ -412,6 +412,11 @@ class QShelfButton(QtGui.QPushButton):
         self.label.setAlignment(QtCore.Qt.AlignHCenter)
         self.labelLayout.addWidget(self.label)
         
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.label.setFont(font)
+        
         self.setStyleSheet("QShelfButton {                                                            \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
                            "                                      stop:0 rgba(120, 120, 120, 255),    \n"

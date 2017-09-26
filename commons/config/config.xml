@@ -22,7 +22,7 @@
 		<camFilmFit type="int">2</camFilmFit>
 		<playblastScale type="float">75</playblastScale>
 		<startFrame type="int">101</startFrame>
-		<animLibPath type="string">P:/MB/Doc/06_Maya_Plugin/animLib/</animLibPath>
+		<animLibPath type="string">P:/MB/Doc/Maya_Plugin/animLib/</animLibPath>
 		<facialLibPath type="string">P:/MB</facialLibPath>
 		<resourceLocator type="string">resource_MB.xml</resourceLocator>
 	</project>
