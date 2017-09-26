@@ -3,7 +3,7 @@
 	<path name="character">P:/MB/DB/CH/</path>
 	<path name="property">P:/MB/DB/Prop/</path>
 	<path name="scene">P:/MB/DB/SC/</path>
-	<path name="thumbnail">P:/MB/Doc/06_Maya_Plugin/thumbnails/</path>
+	<path name="thumbnail">P:/PT/Doc/06_Maya_Plugin/thumbnails_MB/</path>
 	
 	<item tag="character" name="布布" file="%character%C_BoBo/C_BoBo.ma" thumbnail="%thumbnail%C_BoBo.jpg" />
 	<item tag="character" name="鲁鲁" file="%character%C_LuLu/C_LuLu.ma" thumbnail="%thumbnail%C_LuLu.jpg" />
@@ -245,8 +245,11 @@
 	<item tag="scene" name="PaiBoShiJiDi" file="%scene%PaiBoShiJiDi/PaiBoShiJiDi.ma" thumbnail="%thumbnail%PaiBoShiJiDi.jpg" />
 	<item tag="scene" name="PanShanGongLu" file="%scene%PanShanGongLu/PanShanGongLu.ma" thumbnail="%thumbnail%PanShanGongLu.jpg" />
 	<item tag="scene" name="PuLeZhen" file="%scene%PuLeZhen/PuLeZhen.ma" thumbnail="%thumbnail%PuLeZhen.jpg" />
+	<item tag="scene" name="MaLu_WuXian" file="%scene%PuLeZhen/MaLu_WuXian.ma" thumbnail="%thumbnail%MaLu_WuXian.jpg" />
+	<item tag="scene" name="DaoYu" file="%scene%PuLeZhen/DaoYu.ma" thumbnail="%thumbnail%DaoYu.jpg" />
 	<item tag="scene" name="PuLeZhen_MB01_EP08_KaCheXianNiDi" file="%scene%PuLeZhen_MB01_EP08_KaCheXianNiDi/PuLeZhen_MB01_EP08_KaCheXianNiDi.ma" thumbnail="%thumbnail%PuLeZhen_MB01_EP08_KaCheXianNiDi.jpg" />
 	<item tag="scene" name="PuLeZhen_MB01_EP010_DianXianGan" file="%scene%PuLeZhen_MB01_EP010_DianXianGan/PuLeZhen_MB01_EP010_DianXianGan.ma" thumbnail="%thumbnail%PuLeZhen_MB01_EP010_DianXianGan.jpg" />
+	<item tag="scene" name="PuLeZhen_EP01_Nidi" file="%scene%PuLeZhen_Nidi/PuLeZhen_EP01_Nidi.ma" thumbnail="%thumbnail%PuLeZhen_EP01_Nidi.jpg" />
 	<item tag="scene" name="PuLeZhen_Nidi" file="%scene%PuLeZhen_Nidi/PuLeZhen_Nidi.ma" thumbnail="%thumbnail%PuLeZhen_Nidi.jpg" />
 	<item tag="scene" name="Ray_Home" file="%scene%Ray_Home/Ray_Home.ma" thumbnail="%thumbnail%Ray_Home.jpg" />
 	<item tag="scene" name="SaiDao" file="%scene%SaiDao/SaiDao.ma" thumbnail="%thumbnail%SaiDao.jpg" />
