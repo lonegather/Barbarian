@@ -134,7 +134,15 @@
 	<item tag="property" name="JiaoPan" file="%property%JiaoPan/JiaoPan.ma" thumbnail="%thumbnail%JiaoPan.jpg" />
 	<item tag="property" name="JieXianBan_ShaoJiao" file="%property%JieXianBan_ShaoJiao/JieXianBan_ShaoJiao.ma" thumbnail="%thumbnail%JieXianBan_ShaoJiao.jpg" />
 	<item tag="property" name="JiJiuXiang_ShouYi" file="%property%JiJiuXiang_ShouYi/JiJiuXiang_ShouYi.ma" thumbnail="%thumbnail%JiJiuXiang_ShouYi.jpg" />
-	<item tag="property" name="JiMu" file="%property%JiMu/JiMu.ma" thumbnail="%thumbnail%JiMu.jpg" />
+	<item tag="property" name="FeiChuan_JiMu_1" file="%property%JiMu/FeiChuan_JiMu_1.ma" thumbnail="%thumbnail%FeiChuan_JiMu_1.jpg" />
+	<item tag="property" name="FeiChuan_JiMu_2" file="%property%JiMu/FeiChuan_JiMu_2.ma" thumbnail="%thumbnail%FeiChuan_JiMu_2.jpg" />
+	<item tag="property" name="HuShiMao" file="%property%JiMu/HuShiMao.ma" thumbnail="%thumbnail%HuShiMao.jpg" />
+	<item tag="property" name="MaoZi" file="%property%JiMu/MaoZi.ma" thumbnail="%thumbnail%MaoZi.jpg" />
+	<item tag="property" name="PanZi" file="%property%JiMu/PanZi.ma" thumbnail="%thumbnail%PanZi.jpg" />
+	<item tag="property" name="QiQiu" file="%property%JiMu/QiQiu.ma" thumbnail="%thumbnail%QiQiu.jpg" />
+	<item tag="property" name="XiangJi_JiMu" file="%property%JiMu/XiangJi_JiMu.ma" thumbnail="%thumbnail%XiangJi_JiMu.jpg" />
+	<item tag="property" name="YaoWan" file="%property%JiMu/YaoWan.ma" thumbnail="%thumbnail%YaoWan.jpg" />
+	<item tag="property" name="ZhenTong" file="%property%JiMu/ZhenTong.ma" thumbnail="%thumbnail%ZhenTong.jpg" />
 	<item tag="property" name="JingZhiXiYanBiaoZhi" file="%property%JingZhiXiYanBiaoZhi/JingZhiXiYanBiaoZhi.ma" thumbnail="%thumbnail%JingZhiXiYanBiaoZhi.jpg" />
 	<item tag="property" name="JingZi" file="%property%JingZi/JingZi.ma" thumbnail="%thumbnail%JingZi.jpg" />
 	<item tag="property" name="JiuShengQuan" file="%property%JiuShengQuan/JiuShengQuan.ma" thumbnail="%thumbnail%JiuShengQuan.jpg" />
@@ -169,6 +177,8 @@
 	<item tag="property" name="NiaoWo" file="%property%NiaoWo/NiaoWo.ma" thumbnail="%thumbnail%NiaoWo.jpg" />
 	<item tag="property" name="NiaoWu" file="%property%NiaoWu/NiaoWu.ma" thumbnail="%thumbnail%NiaoWu.jpg" />
 	<item tag="property" name="NongChang_FangHuPeng" file="%property%NongChang_FangHuPeng/NongChang_FangHuPeng.ma" thumbnail="%thumbnail%NongChang_FangHuPeng.jpg" />
+	<item tag="property" name="PenZai" file="%property%PuLuJi/PenZai.ma" thumbnail="%thumbnail%PenZai.jpg" />
+	<item tag="property" name="PenZai_Hua" file="%property%PenZai_Hua/PenZai_Hua.ma" thumbnail="%thumbnail%PenZai_Hua.jpg" />
 	<item tag="property" name="PuLuJi" file="%property%PuLuJi/PuLuJi.ma" thumbnail="%thumbnail%PuLuJi.jpg" />
 	<item tag="property" name="QiQiaoBan" file="%property%QiQiaoBan/QiQiaoBan.ma" thumbnail="%thumbnail%QiQiaoBan.jpg" />
 	<item tag="property" name="QiZi" file="%property%QiZi/QiZi.ma" thumbnail="%thumbnail%QiZi.jpg" />
