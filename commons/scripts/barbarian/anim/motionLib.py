@@ -70,8 +70,8 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
             self.motionLibTab.setVisible(False)
             if not self.motionLibCBProject.count(): 
                 projects = config.getProject(all=True)
-                for prj in projects: 
-                    self.motionLibCBProject.addItem(prj)
+                for prj in projects: self.motionLibCBProject.addItem(prj)
+                self.motionLibCBProject.setCurrentIndex(-1)
             return
         else: 
             self.motionLibTab.setVisible(False)

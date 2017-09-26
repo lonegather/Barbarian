@@ -54,6 +54,7 @@ class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
             if not self.resourceLibCBProject.count(): 
                 projects = config.getProject(all=True)
                 for prj in projects: self.resourceLibCBProject.addItem(prj)
+                self.resourceLibCBProject.setCurrentIndex(-1)
             return
         else: 
             while self.resourceLibCBProject.count(): 

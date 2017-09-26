@@ -6,46 +6,48 @@ Created on 2017.8.8
 @author: Serious Sam
 '''
 
+
+import os
 from maya import cmds, mel
 from barbarian.utils import ui, config
-import os
 
 
 def UI(*_):
-    PlayblastOption("playblastOption",
-                    textField = "playblastOptionNameInput",
-                    defaultCB = "playblastOptionCBDefault",
-                    HUDCB     = "playblastOptionCBHUD")
+    PlayblastOption()
     
     
 def doIt(*_):
     PlayblastOption.playblast()
 
 
-class PlayblastOption(ui.QtUI):
-    def setupUi(self):
+class PlayblastOption(ui.playblastOptionUI.Ui_playblastOptionDialog):
+    def setupUi(self, win=None):
+        super(PlayblastOption, self).setupUi(win)
+        
         if not cmds.optionVar(exists="PutaoTools_HUD_Animator"):
-            cmds.checkBox(self.defaultCB, e=True, value=True)
-            cmds.textField(self.textField, e=True, enable=False)
+            self.playblastOptionCBDefault.setChecked(True)
+            self.playblastOptionNameInput.setEnabled(False)
         else:
-            cmds.checkBox(self.defaultCB, e=True, value=False)
-            cmds.textField(self.textField, e=True, tx=cmds.optionVar(q="PutaoTools_HUD_Animator"))
+            self.playblastOptionCBDefault.setChecked(False)
+            self.playblastOptionNameInput.setText(cmds.optionVar(q="PutaoTools_HUD_Animator"))
             
         if (not cmds.optionVar(exists="PutaoTools_HUD_Padding")) or cmds.optionVar(q="PutaoTools_HUD_Padding"):
-            cmds.checkBox(self.HUDCB, e=True, value=True)
+            self.playblastOptionCBHUD.setChecked(True)
             cmds.optionVar(iv=("PutaoTools_HUD_Padding", 120))
-        else: cmds.checkBox(self.HUDCB, e=True, value=False)
+        else: self.playblastOptionCBHUD.setChecked(False)
         
-        cmds.checkBox(self.defaultCB, e=True, changeCommand=self.refreshUI)
+        self.playblastOptionBtnGo.clicked.connect(lambda *_: self.changeHUD(True))
+        self.playblastOptionBtnApply.clicked.connect(lambda *_: self.changeHUD(False))
+        self.playblastOptionCBDefault.toggled.connect(self.refreshUI)
       
     def changeHUD(self, pb=False):
-        name = cmds.textField(self.textField, q=True, tx=True)
-        if cmds.checkBox(self.defaultCB, q=True, value=True):
+        name = self.playblastOptionNameInput.text()
+        if self.playblastOptionCBDefault.isChecked():
             cmds.optionVar(remove="PutaoTools_HUD_Animator")
         else:
             cmds.optionVar(sv=("PutaoTools_HUD_Animator", name))
             
-        if cmds.checkBox(self.HUDCB, q=True, value=True):
+        if self.playblastOptionCBHUD.isChecked():
             cmds.optionVar(iv=("PutaoTools_HUD_Padding", 120))
         else:
             cmds.optionVar(iv=("PutaoTools_HUD_Padding", 0))
@@ -54,11 +56,9 @@ class PlayblastOption(ui.QtUI):
             self.playblast()
             self.close()
         
-    def refreshUI(self, *_):
-        if cmds.checkBox(self.defaultCB, q=True, value=True): 
-            cmds.textField(self.textField, e=True, enable=False)
-        else: 
-            cmds.textField(self.textField, e=True, enable=True)
+    def refreshUI(self, checked):
+        if checked: self.playblastOptionNameInput.setEnabled(False)
+        else: self.playblastOptionNameInput.setEnabled(True)
     
     @classmethod
     def playblast(cls):
