@@ -49,7 +49,7 @@
 	<item tag="character" name="无脸幽灵" file="%character_s02%C_WuLianYouLing.ma" thumbnail="%thumbnail_s02%C_WuLianYouLing.jpg" />
 	<item tag="character" name="小Q-变身" file="%character_s02%C_XiaoQ_BianShen.ma" thumbnail="%thumbnail_s02%C_XiaoQ_BianShen.jpg" />
 	<item tag="character" name="小Q-护盾" file="%character_s02%C_XiaoQ_Dun.ma" thumbnail="%thumbnail_s02%C_XiaoQ_Dun.jpg" />
-	<item tag="character;primary" name="小Q" file="%character_s02%C_XiaoQ_Skin.ma" thumbnail="%thumbnail_s02%C_XiaoQ_Skin.jpg" />
+	<item tag="character;primary" name="小Q" file="%character_s02%C_XiaoQ_Skin.mb" thumbnail="%thumbnail_s02%C_XiaoQ_Skin.jpg" />
 	<item tag="character" name="小Q-弹簧" file="%character_s02%C_XiaoQ_TanHuang.ma" thumbnail="%thumbnail_s02%C_XiaoQ_TanHuang.jpg" />
 	<item tag="character" name="小Q-坐垫" file="%character_s02%C_XiaoQ_ZuoDian.ma" thumbnail="%thumbnail_s02%C_XiaoQ_ZuoDian.jpg" />
 	<item tag="character;primary" name="尤拉" file="%character_s02%C_Yora.ma" thumbnail="%thumbnail_s02%C_Yora.jpg" />
