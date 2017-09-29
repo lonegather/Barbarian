@@ -103,7 +103,10 @@ class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
     def load(self, *_):
         for asset in self.assets:
             if asset.path == self.current:
-                cmds.file(asset.path, r=True, iv=True, typ='mayaAscii', ns=asset.namespace)
+                if asset.path.count('.ma'): typ = "mayaAscii"
+                elif asset.path.count('.mb'): typ = "mayaBinary"
+                else: cmds.error('文件类型错误')
+                cmds.file(asset.path, r=True, iv=True, typ=typ, ns=asset.namespace)
                 return
         
 
@@ -162,5 +165,7 @@ class Asset():
     
     @property
     def namespace(self):
-        return self.__file.split('/')[-1].split('.ma')[0]
+        fileName = self.__file.split('/')[-1]
+        if len(fileName.split('.ma')) > 1: return fileName.split('.ma')[0]
+        else: return fileName.split('.mb')[0]
         
