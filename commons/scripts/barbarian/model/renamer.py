@@ -33,7 +33,8 @@ class Renamer(ui.QtUI):
         prefix_dic = {"Middle": "M", "Left": "L", "Right": "R", "Up": "U",
                      "Down": "D", "Front": "F", "Back": "B"}
     
-        dag_type_dic = {"mesh": "Geo",
+        dag_type_dic = {"group": "Grp",
+                        "mesh": "Geo",
                         "nurbsSurface": "Nbs",
                         "joint": "Jnt",
                         "clusterHandle": "Cus",
@@ -69,10 +70,14 @@ class Renamer(ui.QtUI):
         options = cmds.optionMenu(self.prefixOptionMenu, q=True, v=True)
     
         for sel in sels:
-    
-            pick_walk = cmds.pickWalk(sel, d="down")
-            cmds.select(sel)
-            obj_type = cmds.objectType(pick_walk)
+            
+            if cmds.objectType(sel) == "transform": 
+                if not cmds.listRelatives(sel, shapes=True): obj_type = "group"
+                else:
+                    pick_walk = cmds.pickWalk(sel, d="down")
+                    cmds.select(sel)
+                    obj_type = cmds.objectType(pick_walk)
+            else: obj_type = cmds.objectType(sel)
     
             num = 1
             new_name = ""

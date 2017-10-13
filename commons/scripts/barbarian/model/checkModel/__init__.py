@@ -200,35 +200,17 @@ class clearUnusedNodes(checkingBoxBase.checkingBoxCmd):
 class nameShapes(checkingBoxBase.checkingBoxCmd):
     label = u'shape名称与transform名称一致'
     def cmd(self):
-        self.cont = ''
-        do = ''
-        notdo = ''
-        nodes = cmds.ls(type='transform')
-        for node in nodes:
-            shapes = cmds.listRelatives(node,s=1,f=1,type=('mesh','nurbsSurface'))
-            if shapes and len(shapes):
-                print shapes
-                shape = shapes[0]
-                name = node.rsplit('|',1)[-1] + 'Shape'
-                if not shape.endswith(name):
-                    try:
-                        cmds.rename(shape,name)
-                        do += '%s       %s\n'%(shape,name)
-                    except:
-                        notdo += '%s\n'%shape
-        if not do=='':
-            self.cont += u'重命名物体：\n'
-            self.cont += do
-        if not notdo=='':
-            self.cont += u'重命名失败：\n'
-            self.cont += notdo
-        if self.cont=='':
-            self.cont += u'所有shape名称都与transform名称一致！'
-            return 1
-        elif notdo=='':
-            return 1
-        else:
-            return 0
+        for trans in cmds.ls(type="transform"):
+            shapes = cmds.listRelatives(trans, shapes = True)
+            if not shapes: continue
+            for i in range(len(shapes)):
+                try: cmds.rename(shapes[i], "%s%sShape"%(trans, (i+1) if i else ""))
+                except: pass
+                
+        self.cont = u'名称同步完成'
+        return 1
+    
+
 class clearRedundantShapes(checkingBoxBase.checkingBoxCmd):
     label = u'清除多余的shape节点'
     def cmd(self):
