@@ -1,1 +1,5 @@
 evalDeferred("python(\"import barbarian\")");
+evalDeferred("python(\"import pyblish.api\")");
+evalDeferred("python(\"from pyblish_starter import install, maya\")");
+evalDeferred("python(\"pyblish.api.register_gui('pyblish_lite')\")");
+evalDeferred("python(\"install(maya)\")");
