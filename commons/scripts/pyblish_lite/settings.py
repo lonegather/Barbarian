@@ -1,2 +1,0 @@
-WindowTitle = "Pyblish"
-InitialTab = "artist"
