@@ -39,6 +39,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.utils.ui.resourceLibUI)
         import barbarian.utils.main
         if rl: reload(barbarian.utils.main)
+        import barbarian.utils.ui.CGTWUI
+        if rl: reload(barbarian.utils.ui.CGTWUI)
         
         import barbarian.cgtw
         if rl: reload(barbarian.cgtw)

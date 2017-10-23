@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <projects>
 	<project name="PT">
+		<database type="string">proj_pt</database>
 		<time type="string">pal</time>
 		<linear type="string">centimeter</linear>
 		<camera type="string">MainCam</camera>
@@ -14,6 +15,7 @@
 		<resourceLocator type="string">resource_PT.xml</resourceLocator>
 	</project>
 	<project name="MB">
+		<database type="string">proj_mb</database>
 		<time type="string">pal</time>
 		<linear type="string">centimeter</linear>
 		<camera type="string">MainCam</camera>
