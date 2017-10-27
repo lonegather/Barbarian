@@ -49,11 +49,6 @@ class ExtractStarterModel(pyblish.api.InstancePlugin):
                       # to this particular plug-in.
                       constructionHistory=False)
 
-        # Store reference for integration
-        if "files" not in instance.data:
-            instance.data["files"] = list()
-
-        instance.data["files"].append(filename)
-        instance.data["stagingDir"] = dirname
+        instance.data["filePath"] = path
 
         self.log.info("Extracted {instance} to {path}".format(**locals()))

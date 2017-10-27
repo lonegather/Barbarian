@@ -2,6 +2,7 @@
 BARBARIAN_LOCATION:= 
 PATH+:= ../commons/bin
 PYTHONPATH+:= ../commons/libs
+PYTHONPATH+= C:/cgteamwork/bin/base
 MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts
@@ -11,6 +12,7 @@ icons: ../commons/icons
 BARBARIAN_LOCATION:= 
 PATH+:= ../commons/bin
 PYTHONPATH+:= ../commons/libs
+PYTHONPATH+= C:/cgteamwork/bin/base
 MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts

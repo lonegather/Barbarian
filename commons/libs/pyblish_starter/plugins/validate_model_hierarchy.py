@@ -8,13 +8,13 @@ class ValidateStarterModelHierarchy(pyblish.api.InstancePlugin):
 
     """
 
-    label = "Model Format"
+    label = "Hierarchy"
     order = pyblish.api.ValidatorOrder
     hosts = ["maya"]
-    families = ["starter.model"]
+    families = ["starter.model", "starter.rig"]
 
     def process(self, instance):
         from maya import cmds
 
-        assert cmds.ls(instance, assemblies=True) == ["model_GRP"], (
-            "Model must have a single parent called 'model_GRP'.")
+        assert cmds.ls(instance, assemblies=True) == [instance.data["name"]], (
+            "The asset must have a single parent called '%s'." % instance.data["name"])

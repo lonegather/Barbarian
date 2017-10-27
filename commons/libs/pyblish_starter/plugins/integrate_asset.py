@@ -33,119 +33,45 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         import os
-        import json
-        import errno
         import shutil
-        from pyblish_starter import api
+        from cgtw import tw
+        from maya import cmds
 
         context = instance.context
 
-        # Atomicity
-        #
-        # Guarantee atomic publishes - each asset contains
-        # an identical set of members.
-        #     __
-        #    /     o
-        #   /       \
-        #  |    o    |
-        #   \       /
-        #    o   __/
-        #
         if not all(result["success"] for result in context.data["results"]):
             raise Exception("Atomicity not held, aborting.")
 
-        # Assemble
-        #
-        #       |
-        #       v
-        #  --->   <----
-        #       ^
-        #       |
-        #
-        stagingdir = instance.data.get("stagingDir")
-        assert stagingdir, (
+        filePath = instance.data.get("filePath")
+        assert filePath, (
             "Incomplete instance \"%s\": "
             "Missing reference to staging area."
             % instance
         )
 
-        root = context.data["workspaceDir"]
-        instancedir = os.path.join(root, "shared", instance.data["name"])
+        filePath = filePath.replace("\\", "/")
+        filename = filePath.split('/')[-1]
 
-        try:
-            os.makedirs(instancedir)
-        except OSError as e:
-            if e.errno != errno.EEXIST:  # Already exists
-                self.log.critical("An unexpected error occurred.")
-                raise
+        remotePath = ""
+        for path in instance.data["path"].split(';'):
+            if path.split('=')[0] == "work":
+                remotePath = os.path.join(path.split('=')[1], filename)
 
-        version = api.find_latest_version(os.listdir(instancedir)) + 1
-        versiondir = os.path.join(instancedir, api.format_version(version))
+        assert remotePath, "Missing instance path configuration."
 
-        # Metadata
-        #  _________
-        # |         |.key = value
-        # |         |
-        # |         |
-        # |         |
-        # |         |
-        # |_________|
-        #
-        fname = os.path.join(stagingdir, ".metadata.json")
+        remotePath = remotePath.replace("\\", "/")
+        shutil.copyfile(filePath, remotePath)
 
-        try:
-            with open(fname) as f:
-                metadata = json.load(f)
+        t_tw = tw("10.1.11.100")
+        assert t_tw.sys().get_is_login(), "Teamwork is not logged in."
 
-        except IOError:
-            metadata = {
-                "schema": "pyblish-starter:version-1.0",
-                "version": version,
-                "path": versiondir,
-                "representations": list(),
+        for table in ["asset_task", "shot_task"]:
+            t_module = t_tw.task_module(instance.data["database"], table)
+            t_module.init_with_id(instance.data["taskID"])
+            t_module.submit([remotePath], "")
 
-                # Collected by pyblish-base
-                "time": context.data["date"],
-                "author": context.data["user"],
+        self.log.info("source: %s target: %s" % (filePath, remotePath))
 
-                # Collected by pyblish-maya
-                "source": os.path.join(
-                    "{root}",
-                    os.path.relpath(
-                        context.data["currentFile"],
-                        api.root()
-                    )
-                ),
-            }
+        if "abc" in instance.data:
+            self.log.info("abc: %s" % instance.data["abc"])
 
-        for filename in instance.data.get("files", list()):
-            name, ext = os.path.splitext(filename)
-            metadata["representations"].append(
-                {
-                    "schema": "pyblish-starter:representation-1.0",
-                    "format": ext,
-                    "path": "{dirname}/%s{format}" % name
-                }
-            )
-
-        # Write to disk
-        #          _
-        #         | |
-        #        _| |_
-        #    ____\   /
-        #   |\    \ / \
-        #   \ \    v   \
-        #    \ \________.
-        #     \|________|
-        #
-        with open(fname, "w") as f:
-            json.dump(metadata, f, indent=4)
-
-        # Metadata is written before being validated -
-        # this way, if validation fails, the data can be
-        # inspected by hand from within the user directory.
-        api.schema.validate(metadata, "version")
-        shutil.copytree(stagingdir, versiondir)
-
-        self.log.info("Successfully integrated \"%s\" to \"%s\"" % (
-            instance, versiondir))

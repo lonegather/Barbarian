@@ -54,6 +54,8 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
             raise RuntimeError("pyblish-starter requires pyblish-maya "
                                "to have been setup.")
 
+        assert cmds.file(q=1, sn=1, shn=1), "File not saved."
+
         for objset in cmds.ls("*.id",
                               long=True,            # Produce full names
                               type="objectSet",     # Only consider objectSets

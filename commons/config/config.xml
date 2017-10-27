@@ -11,8 +11,10 @@
 		<playblastScale type="float">75</playblastScale>
 		<startFrame type="int">1</startFrame>
 		<animLibPath type="string">P:/PT/Doc/06_Maya_Plugin/animLib/</animLibPath>
-		<facialLibPath type="string">P:/PT</facialLibPath>
+		<facialLibPath type="string">P:/PT/</facialLibPath>
 		<resourceLocator type="string">resource_PT.xml</resourceLocator>
+		<excludedType type="string">SC</excludedType>
+		<familyMap type="dict">Mod=starter.model;Rig=starter.rig;Animation=starter.animation</familyMap>
 	</project>
 	<project name="MB">
 		<database type="string">proj_mb</database>
@@ -25,7 +27,25 @@
 		<playblastScale type="float">75</playblastScale>
 		<startFrame type="int">101</startFrame>
 		<animLibPath type="string">P:/MB/Doc/Maya_Plugin/animLib/</animLibPath>
-		<facialLibPath type="string">P:/MB</facialLibPath>
+		<facialLibPath type="string">P:/MB/</facialLibPath>
 		<resourceLocator type="string">resource_MB.xml</resourceLocator>
+		<excludedType type="string">SC</excludedType>
+		<familyMap type="dict">Mod=starter.model;Rig=starter.rig;Animation=starter.animation</familyMap>
+	</project>
+	<project name="TEST">
+		<database type="string">proj_test</database>
+		<time type="string">pal</time>
+		<linear type="string">centimeter</linear>
+		<camera type="string">MainCam</camera>
+		<camResX type="int">1280</camResX>
+		<camResY type="int">720</camResY>
+		<camFilmFit type="int">2</camFilmFit>
+		<playblastScale type="float">75</playblastScale>
+		<startFrame type="int">51</startFrame>
+		<animLibPath type="string">Z:/TEST/Doc/Maya_Plugin/animLib/</animLibPath>
+		<facialLibPath type="string">Z:/TEST/</facialLibPath>
+		<resourceLocator type="string">resource_TEST.xml</resourceLocator>
+		<excludedType type="string">Environment</excludedType>
+		<familyMap type="dict">Modeling=starter.model;Rigging=starter.rig;Animation=starter.animation</familyMap>
 	</project>
 </projects>

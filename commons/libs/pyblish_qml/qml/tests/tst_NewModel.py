@@ -16,6 +16,7 @@ class Model(QtCore.QAbstractListModel):
         self.schema = schema
 
     def append(self, item):
+        # type: (object) -> object
         """Append item to end of model"""
         self.beginInsertRows(QtCore.QModelIndex(),
                              self.rowCount(),

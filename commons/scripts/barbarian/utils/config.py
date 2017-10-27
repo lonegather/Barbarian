@@ -172,7 +172,15 @@ class Config(object):
                             projects[-1][var.nodeName] = int(var.childNodes[0].nodeValue)
                         elif attrType == 'float':
                             projects[-1][var.nodeName] = float(var.childNodes[0].nodeValue)
-                        else: projects[-1][var.nodeName] = var.childNodes[0].nodeValue
+                        elif attrType == 'dict':
+                            tmp_dic = {}
+                            for item in var.childNodes[0].nodeValue.split(';'):
+                                tmp_dic[item.split('=')[0]] = item.split('=')[1]
+                            projects[-1][var.nodeName] = tmp_dic
+                        elif attrType == 'list':
+                            projects[-1][var.nodeName] = var.childNodes[0].nodeValue.split(';')
+                        else:
+                            projects[-1][var.nodeName] = var.childNodes[0].nodeValue
                 
         return projects
         

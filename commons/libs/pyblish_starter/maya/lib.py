@@ -25,7 +25,7 @@ def read(node):
     return data
 
 
-def export_alembic(nodes, file, frame_range=None, uv_write=True):
+def export_alembic(root, file, frame_range=None, uv_write=True):
     """Wrap native MEL command with limited set of arguments
 
     Arguments:
@@ -38,10 +38,10 @@ def export_alembic(nodes, file, frame_range=None, uv_write=True):
 
     """
 
-    options = [
-        ("file", file),
-        ("frameRange", "%s %s" % frame_range),
-    ] + [("root", mesh) for mesh in nodes]
+    options = [("file", file),
+               ("worldSpace", ""),
+               ("frameRange", "%s %s" % frame_range),
+               ("root", root)]
 
     if uv_write:
         options.append(("uvWrite", ""))

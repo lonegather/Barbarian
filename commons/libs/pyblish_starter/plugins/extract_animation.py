@@ -20,7 +20,8 @@ class ExtractStarterAnimation(pyblish.api.InstancePlugin):
     def process(self, instance):
         import os
         from maya import cmds
-        from pyblish_starter import api, maya
+        from pyblish_starter import api
+        from pyblish_starter import maya
 
         self.log.debug("Loading plug-in..")
         cmds.loadPlugin("AbcExport.mll", quiet=True)
@@ -29,27 +30,31 @@ class ExtractStarterAnimation(pyblish.api.InstancePlugin):
         dirname = api.format_staging_dir(
             root=instance.context.data["workspaceDir"],
             name=instance.data["name"])
+        filename = "%s.mb" % instance.data["name"]
+        path = os.path.join(dirname, filename)
 
-        try:
-            os.makedirs(dirname)
-        except OSError:
-            pass
+        cmds.file(path,
+                  force=True,
+                  typ="mayaBinary",
+                  exportAll=True,
+                  preserveReferences=True,
+                  constructionHistory=True)
 
-        filename = "{name}.abc".format(**instance.data)
+        if "abc" not in instance.data:
+            instance.data["abc"] = list()
 
-        maya.export_alembic(
-            nodes=instance,
-            file=os.path.join(dirname, filename).replace("\\", "/"),
-            frame_range=(cmds.playbackOptions(query=True, ast=True),
-                         cmds.playbackOptions(query=True, aet=True)),
-            uv_write=True
-        )
+        for asset in instance.data["assetsIn"].split(';'):
+            if not asset: continue
+            filename = os.path.join(dirname, "%s.abc" % asset.split(':')[0]).replace("\\", "/")
+            maya.export_alembic(
+                root=cmds.sets("%s:out_SEL" % asset, q=True)[0],
+                file=filename,
+                frame_range=(cmds.playbackOptions(query=True, ast=True),
+                             cmds.playbackOptions(query=True, aet=True)),
+                uv_write=True
+            )
+            instance.data["abc"].append(filename)
 
-        # Store reference for integration
-        if "files" not in instance.data:
-            instance.data["files"] = list()
-
-        instance.data["files"].append(filename)
-        instance.data["stagingDir"] = dirname
+        instance.data["filePath"] = path
 
         self.log.info("Extracted {instance} to {dirname}".format(**locals()))
