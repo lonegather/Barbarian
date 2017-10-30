@@ -1,13 +1,14 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
 
-import sys
-import pyblish_lite
-import barbarian.utils.config as config
-from barbarian.utils.ui.CGTWUI import Ui_CGTWWin
+import sys, logging
+import pyblish_lite, pyblish
+from barbarian.utils import config
+from barbarian.utils.ui import CGTWUI
 from PySide import QtCore, QtGui
 from maya import cmds
 import maya.OpenMaya as om
+from nt import pipe
 
 try:
     from cgtw import *
@@ -19,7 +20,7 @@ def UI(*_):
     CGTW()
 
 
-class CGTW(Ui_CGTWWin):
+class CGTW(CGTWUI.Ui_CGTWWin):
     ip = "10.1.11.100"
 
     def setupUi(self, win=None):
@@ -28,10 +29,14 @@ class CGTW(Ui_CGTWWin):
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshUI)
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshUI)
+        self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshPyblish)
+        self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshPyblish)
+        self.addSceneCallback(om.MSceneMessage.kBeforeSave, self.refreshPyblish)
 
         QtCore.QObject.connect(self.CGTWCBProject,
                                QtCore.SIGNAL("activated(int)"),
                                lambda *_: config.setProject(self.CGTWCBProject.currentText()))
+        self.treeWidget.itemClicked.connect(self.refreshInfo)
         self.treeWidget.itemDoubleClicked.connect(self.create)
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
@@ -89,6 +94,46 @@ class CGTW(Ui_CGTWWin):
                 item.setText(0, "%s: %s" % (task["stage"], task["name"]))
                 item.setText(1, task["status"])
                 item.setText(2, task["date"])
+                
+        self.refreshInfo()
+                
+    def refreshInfo(self, *_):
+        if not self.treeWidget.currentItem():
+            self.CGTWFrmInfo.setVisible(False)
+            return
+        
+        pipeline = self.treeWidget.currentItem().text(0).split(': ')[0]
+        name = self.treeWidget.currentItem().text(0).split(': ')[1]
+        
+        asset_type = "shot"
+        for pipeline_info in self.getPipeLineInfo("asset_task"):
+            if pipeline == pipeline_info["name"]:
+                asset_type = "asset"
+                break
+            
+        if asset_type == "asset":
+            info_module = self.tw.info_module(self.project, "asset")
+            cn_name = info_module.get_with_filter(["asset.cn_name"], [["asset.asset_name", "=", name]])
+        
+            self.CGTWLBLInfoName.setText(name)
+            self.CGTWLBLInfoType.setText(cn_name[0]["asset.cn_name"])
+            self.CGTWLBLInfoPipeline.setText(pipeline)
+        
+        elif asset_type == "shot":
+            info_module = self.tw.info_module(self.project, "shot")
+            cn_name = info_module.get_with_filter(["eps.eps_name"], [["shot.shot", "=", name]])
+            
+            self.CGTWLBLInfoName.setText(name)
+            self.CGTWLBLInfoType.setText(cn_name[0]["eps.eps_name"])
+            self.CGTWLBLInfoPipeline.setText(pipeline)
+        
+        else: return
+        
+        self.CGTWFrmInfo.setVisible(True)
+                
+    def refreshPyblish(self, *_):
+        win = getattr(pyblish_lite.app, "_window")
+        win.reset()
 
     def assetExists(self, *_):
         for objset in cmds.ls("*.id", long=True, type="objectSet", recursive=True, objectsOnly=True):
@@ -110,14 +155,14 @@ class CGTW(Ui_CGTWWin):
 
         self.refreshUI()
 
-    def create(self, item, column):
+    def create(self, *_):
         import pyblish_starter.api as api
-
-        family = item.text(0).split(': ')[0]
-        name = item.text(0).split(': ')[1]
+        
+        family = self.treeWidget.currentItem().text(0).split(': ')[0]
+        name = self.treeWidget.currentItem().text(0).split(': ')[1]
 
         if family not in config.getConfig("familyMap"):
-            cmds.confirmDialog(message=u'当前任务不能在Maya中执行', ma="center", icon="warning", title=u"PuTao")
+            logging.warning(u'当前任务不能在Maya中执行')
             return
 
         if self.assetExists():
@@ -129,106 +174,22 @@ class CGTW(Ui_CGTWWin):
                     if not cmds.getAttr(objset + ".id") == "pyblish.starter.instance": continue
                     if not cmds.objExists(objset + ".family"): continue
                     cmds.delete(objset)
-                    if config.getConfig("familyMap")[family] == "starter.rig":
-                        try: cmds.delete(["out_SEL", "controls_SEL"])
-                        except: pass
+                    try: cmds.delete(["out_SEL", "controls_SEL"])
+                    except: pass
             else: return
-
+        
+        cmds.select(clear=True)
         api.registered_host().create(name, config.getConfig("familyMap")[family])
-        assetsIn, assetsEx = "", ""
-
-        if config.getConfig("familyMap")[family] == "starter.animation":
-            assetsIncluded = self.getAssetList(config.getConfig("excludedType"), True)
-            assetsExcluded = self.getAssetList(config.getConfig("excludedType"), False)
-            refs = cmds.file(q=True, reference=True)
-            for ref in refs:
-                if not cmds.referenceQuery(ref, isLoaded=True): continue
-                namespace = cmds.referenceQuery(ref, namespace=True).split(':')[-1]
-                orig_namespace = ref.split("/")[-1].split(".")[0]
-                if orig_namespace in assetsIncluded:
-                    assetsIn += "%s;" % namespace
-                elif orig_namespace in assetsExcluded:
-                    assetsEx += "%s;" % namespace
-            for asset in assetsIn.split(';'):
-                if not asset: continue
-                cmds.select("%s:out_SEL" % asset, r=True)
-                cmds.sets(e=True, include=str("%s_SEL" % name))
-
-        elif config.getConfig("familyMap")[family] == "starter.rig":
-            if not cmds.objExists(name):
-                cmds.delete("%s_SEL" % name)
-                try: cmds.delete(["out_SEL", "controls_SEL"])
-                except: pass
-                cmds.confirmDialog(message=u'场景中不存在%s'%name, ma="center", icon="warning", title=u"PuTao")
-                return
-            cmds.select(name, r=True)
-            cmds.sets(e=True, include="%s_SEL"%name)
-            cmds.select("%s_Geo"%name, r=True)
-            cmds.sets(name="out_SEL")
-            cmds.select("ControlSet", r=True)
-            cmds.sets(name="controls_SEL")
-            for s in ["out_SEL", "controls_SEL"]:
-                cmds.select(s, r=True, noExpand=True)
-                cmds.sets(e=True, include="%s_SEL"%name)
-
-        elif config.getConfig("familyMap")[family] == "starter.model":
-            pass
-
-        cmds.addAttr("%s_SEL" % name, longName="database", dataType="string", hidden=False)
-        cmds.addAttr("%s_SEL" % name, longName="taskID", dataType="string", hidden=False)
-        cmds.addAttr("%s_SEL" % name, longName="path", dataType="string", hidden=False)
-        cmds.addAttr("%s_SEL" % name, longName="assetsIn", dataType="string", hidden=False)
-        cmds.addAttr("%s_SEL" % name, longName="assetsEx", dataType="string", hidden=False)
-        cmds.setAttr("%s_SEL.database" % name, config.getConfig("database"), type="string")
-        cmds.setAttr("%s_SEL.taskID" % name, self.getTaskID(name, family), type="string")
-        cmds.setAttr("%s_SEL.path" % name, self.getAssetPath(name, family), type="string")
-        cmds.setAttr("%s_SEL.assetsIn" % name, assetsIn, type="string")
-        cmds.setAttr("%s_SEL.assetsEx" % name, assetsEx, type="string")
-
-        import pyblish_lite
-        pyblish_lite.show()
-
+        
+        cmds.addAttr("%s_SEL"%name, longName="project", dataType="string", hidden=False)
+        cmds.addAttr("%s_SEL"%name, longName="pipeline", dataType="string", hidden=False)
+        cmds.addAttr("%s_SEL"%name, longName="database", dataType="string", hidden=False)
+        cmds.setAttr("%s_SEL.project"%name, config.getProject(), type="string")
+        cmds.setAttr("%s_SEL.pipeline"%name, family, type="string")
+        cmds.setAttr("%s_SEL.database"%name, config.getConfig("database"), type="string")
+        
+        self.refreshPyblish()
         self.refreshUI()
-
-    def getAssetList(self, filterType, isExcluded):
-        result = []
-
-        if not self.tw.sys().get_is_login():
-            return result
-
-        filterList = []
-        for tp in filterType.split(';'):
-            if len(filterList): filterList.append("and" if isExcluded else "or")
-            filterList.append(["asset.type_name", "!=" if isExcluded else "=", tp])
-
-        if not filterList:
-            filterList.append(["asset.asset_name", "has", "%"])
-
-        module = self.tw.info_module(self.project, "asset")
-        module.init_with_filter(filterList)
-        for item in module.get(["asset.asset_name"]) or list():
-            result.append(item["asset.asset_name"])
-
-        return result
-
-    def getAssetPath(self, asset, family):
-        path = ""
-        tables = {"asset": "asset_name", "shot": "shot"}
-        for table in tables:
-            pipeline = self.tw.pipeline(self.project)
-            pipeline_id = ""
-            for p in pipeline.get_with_filter(["name"], [["module", "=", "%s_task" % table]]):
-                if p["name"] == family: pipeline_id = p["id"]
-            if not pipeline_id: continue
-
-            filebox = self.tw.filebox(self.project)
-            for filebox_item in filebox.get_with_pipeline_id(pipeline_id, "%s_task" % table) or list():
-                info_module = self.tw.info_module(self.project, "%s_task" % table)
-                info_module.init_with_filter([["%s.%s" % (table, tables[table]), "has", "%"]])
-                filebox_obj = info_module.get_filebox_with_filebox_id(filebox_item["id"])
-                if filebox_obj and filebox_obj["sign"]:
-                    path += "%s=%s;" % (filebox_obj["sign"], filebox_obj["path"])
-        return path
 
     def getAssetTask(self, account):
         result = []
@@ -247,17 +208,6 @@ class CGTW(Ui_CGTWWin):
                                "date": item["%s_task.end_date" % name]})
         return result
 
-    def getTaskID(self, name, pipeline):
-        tables = {"asset":"asset_name", "shot":"shot"}
-        for table in tables:
-            module = self.tw.task_module(self.project, "%s_task" % table)
-            module.init_with_filter([["%s.%s" % (table, tables[table]), "=", name],
-                                     "and",
-                                     ["%s_task.pipeline" % table, "=", pipeline]])
-            if not module.get(["%s_task.id" % table]): continue
-            return module.get(["%s_task.id" % table])[0]["%s_task.id" % table]
-        return u""
-
-    def getPipeLineInfo(self):
+    def getPipeLineInfo(self, table):
         tw_pipeline = self.tw.pipeline(self.project)
-        return tw_pipeline.get_with_module("asset_task", ["name"])
+        return tw_pipeline.get_with_module(table, ["name"])

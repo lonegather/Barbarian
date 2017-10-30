@@ -40,20 +40,20 @@ QListView {
 QPushButton {
 	width: 27px;
 	height: 27px;
-	background: #555;
-	border: 1px solid #333;
+	/*background: #555;
+	border: 1px solid #333;*/
 	font-family: "FontAwesome";
 	font-size: 11pt;
 	color: white;
 }
 
 QPushButton:pressed {
-	background: "#777";
+	/*background: "#777";*/
 }
 
 QPushButton:hover {
-	color: white;
-	background: "#666";
+	/*color: white;
+	background: "#666";*/
 }
 
 QPushButton:disabled {

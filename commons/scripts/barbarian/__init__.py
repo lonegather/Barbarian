@@ -6,6 +6,7 @@ Created on 2017.6.9
 @author: Serious Sam
 '''
 
+from . import cgtw
 from maya import cmds, mel
 from utils import main, config, displayAppearance
 import maya.OpenMaya as om
@@ -26,14 +27,15 @@ class Entrance(object):
 
         self.layout = layout
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2, 0.2, 0.2], spacing=3)
-        self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33,
-                                          image=config.getPath(config.kIcon, "logo.png"), parent=layout,
-                                          command=main.UI)
 
         cmds.loadUI(f=config.getPath(config.kUI, "entrance.ui"))
         self.menu = cmds.layout("entranceLayout", q=True, ca=True)[0]
         cmds.optionMenu(self.menu, e=True, parent=layout, width=60, changeCommand=config.setProject)
         cmds.deleteUI("entranceForm")
+        
+        self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33,
+                                          image=config.getPath(config.kIcon, "logo.png"), parent=layout,
+                                          command=cgtw.UI)
 
         currentMode = cmds.setMenuMode()
         cmds.popupMenu(parent=self.layout, allowOptionBoxes=True)
@@ -47,6 +49,8 @@ class Entrance(object):
                       command=lambda *_: cmds.setMenuMode("renderingMenuSet"))
         cmds.menuItem(label=u'特效', radioButton=(currentMode == "dynamicsMenuSet"),
                       command=lambda *_: cmds.setMenuMode("dynamicsMenuSet"))
+        cmds.menuItem(divider=True)
+        cmds.menuItem(label=u'帮助...', command=main.UI)
 
         try:
             cmds.condition("ProjectChanged", delete=True)
@@ -76,8 +80,8 @@ class Entrance(object):
         except:
             return
 
-        cmds.shelfLayout(self.layout, e=True, position=(self.button, 1))
-        cmds.shelfLayout(self.layout, e=True, position=(self.menu, 2))
+        cmds.shelfLayout(self.layout, e=True, position=(self.menu, 1))
+        cmds.shelfLayout(self.layout, e=True, position=(self.button, 2))
         widgets = cmds.layout("menuSetLayout", q=True, ca=True)
         position = 3
         for widget in widgets:

@@ -86,7 +86,7 @@ class Window(QtWidgets.QWidget):
         terminal_tab = QtWidgets.QRadioButton()
         spacer = QtWidgets.QWidget()
 
-        layout = QtWidgets.QHBoxLayout(header)
+        layout = QtWidgets.QVBoxLayout(header)
         layout.addWidget(artist_tab, 0)
         layout.addWidget(overview_tab, 0)
         layout.addWidget(terminal_tab, 0)
@@ -144,6 +144,7 @@ class Window(QtWidgets.QWidget):
         layout.addWidget(left_view, 1)
         layout.addWidget(right_view, 1)
         layout.setContentsMargins(5, 5, 5, 5)
+        #layout.layoutStretch(0, 1)
         layout.setSpacing(0)
 
         """Terminal
@@ -278,8 +279,13 @@ class Window(QtWidgets.QWidget):
 
         # Main layout
         layout = QtWidgets.QVBoxLayout(self)
-        layout.addWidget(header, 0)
-        layout.addWidget(body, 3)
+        holder = QtWidgets.QWidget(self)
+        layout2 = QtWidgets.QHBoxLayout(holder)
+        layout2.addWidget(header, 0)
+        layout2.addWidget(body, 3)
+        layout2.setContentsMargins(0, 0, 0, 0)
+        layout2.setSpacing(0)
+        layout.addWidget(holder)
         layout.addWidget(closing_placeholder, 1)
         layout.addWidget(comment_box, 0)
         layout.addWidget(footer, 0)
