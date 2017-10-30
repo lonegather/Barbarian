@@ -25,6 +25,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
 
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
+        
+        self.CGTWBtnFinal.setEnabled(False)
 
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshUI)
@@ -37,7 +39,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                                QtCore.SIGNAL("activated(int)"),
                                lambda *_: config.setProject(self.CGTWCBProject.currentText()))
         self.treeWidget.itemClicked.connect(self.refreshInfo)
-        self.treeWidget.itemDoubleClicked.connect(self.create)
+        self.CGTWBtnRefresh.clicked.connect(self.refreshUI)
+        self.CGTWBtnSubmit.clicked.connect(self.create)
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
 
@@ -73,6 +76,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.refreshUI()
 
     def refreshUI(self, *_):
+        self.CGTWBtnSubmit.setEnabled(False)
         self.CGTWLBLUser.setText(u"欢迎，%s" % self.tw.sys().get_account() if self.tw.sys().get_is_login() else u"请登录...")
         self.CGTWLEUsername.setVisible(not self.tw.sys().get_is_login())
         self.CGTWLEPassword.setVisible(not self.tw.sys().get_is_login())
@@ -98,6 +102,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.refreshInfo()
                 
     def refreshInfo(self, *_):
+        if _: self.CGTWBtnSubmit.setEnabled(True)
+
         if not self.treeWidget.currentItem():
             self.CGTWFrmInfo.setVisible(False)
             return
@@ -202,6 +208,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                                     "%s_task.pipeline" % name,
                                     "%s_task.status" % name,
                                     "%s_task.end_date" % name]) or list():
+                if not item["%s.%s" % (name, "%s_name" % name if name == "asset" else name)]: continue
                 result.append({"name": item["%s.%s" % (name, "%s_name" % name if name == "asset" else name)],
                                "stage": item["%s_task.pipeline" % name],
                                "status": item["%s_task.status" % name],

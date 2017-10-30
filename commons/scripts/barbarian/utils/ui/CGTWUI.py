@@ -2,13 +2,13 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Fri Oct 27 18:27:24 2017
+# Created: Mon Oct 30 13:36:13 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
-from barbarian.utils import ui
+from .. import ui
 
 class Ui_CGTWWin(ui.QtUI):
     def setupUi(self, CGTWWin):
@@ -114,15 +114,12 @@ class Ui_CGTWWin(ui.QtUI):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label_2 = QtGui.QLabel(self.centralwidget)
-        self.label_2.setMinimumSize(QtCore.QSize(300, 30))
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
         self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.treeWidget.sizePolicy().hasHeightForWidth())
+        self.treeWidget.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
@@ -133,6 +130,33 @@ class Ui_CGTWWin(ui.QtUI):
         self.treeWidget.header().setMinimumSectionSize(30)
         self.treeWidget.header().setSortIndicatorShown(True)
         self.verticalLayout.addWidget(self.treeWidget)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.CGTWBtnRefresh = QtGui.QPushButton(self.centralwidget)
+        self.CGTWBtnRefresh.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.CGTWBtnRefresh.setFont(font)
+        self.CGTWBtnRefresh.setObjectName("CGTWBtnRefresh")
+        self.horizontalLayout_4.addWidget(self.CGTWBtnRefresh)
+        self.CGTWBtnSubmit = QtGui.QPushButton(self.centralwidget)
+        self.CGTWBtnSubmit.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.CGTWBtnSubmit.setFont(font)
+        self.CGTWBtnSubmit.setObjectName("CGTWBtnSubmit")
+        self.horizontalLayout_4.addWidget(self.CGTWBtnSubmit)
+        self.CGTWBtnFinal = QtGui.QPushButton(self.centralwidget)
+        self.CGTWBtnFinal.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.CGTWBtnFinal.setFont(font)
+        self.CGTWBtnFinal.setObjectName("CGTWBtnFinal")
+        self.horizontalLayout_4.addWidget(self.CGTWBtnFinal)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.CGTWPyblish = QtGui.QWidget(self.centralwidget)
         self.CGTWPyblish.setMinimumSize(QtCore.QSize(0, 300))
         self.CGTWPyblish.setObjectName("CGTWPyblish")
@@ -142,7 +166,8 @@ class Ui_CGTWWin(ui.QtUI):
         self.pyblishLayout.setContentsMargins(0, 0, 0, 0)
         self.pyblishLayout.setObjectName("pyblishLayout")
         self.verticalLayout.addWidget(self.CGTWPyblish)
-        self.verticalLayout.setStretch(1, 1)
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(2, 2)
         self.horizontalLayout_2.addLayout(self.verticalLayout)
         self.widget = QtGui.QWidget(self.centralwidget)
         self.widget.setMinimumSize(QtCore.QSize(300, 0))
@@ -205,11 +230,13 @@ class Ui_CGTWWin(ui.QtUI):
         self.label.setText(QtGui.QApplication.translate("CGTWWin", "项目：", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWBtnConnect.setText(QtGui.QApplication.translate("CGTWWin", "登录", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWLEDeregister.setText(QtGui.QApplication.translate("CGTWWin", "注销", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("CGTWWin", "我的任务：", None, QtGui.QApplication.UnicodeUTF8))
         self.treeWidget.setSortingEnabled(True)
-        self.treeWidget.headerItem().setText(0, QtGui.QApplication.translate("CGTWWin", "任务", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeWidget.headerItem().setText(0, QtGui.QApplication.translate("CGTWWin", "我的任务", None, QtGui.QApplication.UnicodeUTF8))
         self.treeWidget.headerItem().setText(1, QtGui.QApplication.translate("CGTWWin", "状态", None, QtGui.QApplication.UnicodeUTF8))
         self.treeWidget.headerItem().setText(2, QtGui.QApplication.translate("CGTWWin", "截止日期", None, QtGui.QApplication.UnicodeUTF8))
+        self.CGTWBtnRefresh.setText(QtGui.QApplication.translate("CGTWWin", "刷新", None, QtGui.QApplication.UnicodeUTF8))
+        self.CGTWBtnSubmit.setText(QtGui.QApplication.translate("CGTWWin", "提交检查...", None, QtGui.QApplication.UnicodeUTF8))
+        self.CGTWBtnFinal.setText(QtGui.QApplication.translate("CGTWWin", "最终提交...", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWLBLInfoName.setText(QtGui.QApplication.translate("CGTWWin", "资产名称", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWLBLInfoType.setText(QtGui.QApplication.translate("CGTWWin", "资产类型", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWLBLInfoPipeline.setText(QtGui.QApplication.translate("CGTWWin", "制作阶段", None, QtGui.QApplication.UnicodeUTF8))

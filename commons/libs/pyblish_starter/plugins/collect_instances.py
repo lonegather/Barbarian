@@ -60,8 +60,6 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
                                "to have been setup.")
             
         self.tw = tw
-        
-        assert self.tw.sys().get_is_login(), "Teamwork is not logged in."
 
         for objset in cmds.ls("*.id",
                               long=True,            # Produce full names
@@ -169,6 +167,8 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
         self.log.info("Found: \"%s\" " % instance.data["name"])
             
     def getTaskID(self, database, name, pipeline):
+        assert self.tw.sys().get_is_login(), "Teamwork is not logged in."
+        
         tables = {"asset":"asset_name", "shot":"shot"}
         for table in tables:
             module = self.tw.task_module(database, "%s_task" % table)
@@ -180,11 +180,9 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
         return u""
             
     def getAssetList(self, database, filterType, isExcluded):
+        assert self.tw.sys().get_is_login(), "Teamwork is not logged in."
+        
         result = []
-
-        if not self.tw.sys().get_is_login():
-            return result
-
         filterList = []
         for tp in filterType.split(';'):
             if len(filterList): filterList.append("and" if isExcluded else "or")
@@ -201,6 +199,8 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
         return result
     
     def getAssetPath(self, database, asset, family):
+        assert self.tw.sys().get_is_login(), "Teamwork is not logged in."
+        
         path = ""
         tables = {"asset": "asset_name", "shot": "shot"}
         for table in tables:
