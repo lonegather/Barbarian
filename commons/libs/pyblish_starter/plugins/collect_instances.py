@@ -39,7 +39,7 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
 
     """
 
-    label = "Starter Instances"
+    label = u"创建资产配置"
     order = pyblish.api.CollectorOrder
     hosts = ["maya"]
 
@@ -58,6 +58,8 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
         except (ImportError, AssertionError):
             raise RuntimeError("pyblish-starter requires pyblish-maya "
                                "to have been setup.")
+            
+        self.log.info(u"创建...")
             
         self.tw = tw
 

@@ -94,7 +94,7 @@ class Item(QtWidgets.QStyledItemDelegate):
         painter.save()
 
         # Draw label
-        painter.setFont(fonts["h4"])
+        painter.setFont(fonts["h3"])
         painter.setPen(QtGui.QPen(font_color))
         painter.drawText(label_rect, label)
 
@@ -272,7 +272,7 @@ class Terminal(QtWidgets.QStyledItemDelegate):
 
     def paint(self, painter, option, index):
         """Paint text"""
-
+        
         icon_rect = QtCore.QRectF(option.rect).adjusted(3, 3, -3, -3)
         icon_rect.setWidth(14)
         icon_rect.setHeight(14)
@@ -307,7 +307,7 @@ class Terminal(QtWidgets.QStyledItemDelegate):
         painter.save()
 
         # Draw label
-        painter.setFont(fonts["h4"])
+        painter.setFont(fonts["h3"])
         painter.setPen(QtGui.QPen(font_color))
         painter.drawText(label_rect, label)
 

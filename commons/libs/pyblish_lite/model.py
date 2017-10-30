@@ -433,7 +433,7 @@ class Terminal(Abstract):
         if not key:
             return
 
-        value = item.get(key)
+        value = unicode(item.get(key))
 
         if value is None:
             value = super(Terminal, self).data(index, role)

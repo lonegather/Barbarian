@@ -85,6 +85,8 @@ class Window(QtWidgets.QWidget):
         overview_tab = QtWidgets.QRadioButton()
         terminal_tab = QtWidgets.QRadioButton()
         spacer = QtWidgets.QWidget()
+        
+        terminal_tab.setChecked(True)
 
         layout = QtWidgets.QVBoxLayout(header)
         layout.addWidget(artist_tab, 0)
@@ -448,7 +450,7 @@ class Window(QtWidgets.QWidget):
                 "artist": artist_tab,
                 "overview": overview_tab,
                 "terminal": terminal_tab,
-                "current": "artist"
+                "current": "terminal"
             },
             "pages": {
                 "artist": artist_page,
@@ -561,7 +563,7 @@ class Window(QtWidgets.QWidget):
     def on_item_inspected(self, index):
         details = self.data["modals"]["details"]
         details.move(QtGui.QCursor.pos())
-
+        
         if index.data(model.Type) == "record":
 
             # Compose available data
@@ -570,9 +572,9 @@ class Window(QtWidgets.QWidget):
                 if key.startswith("_"):
                     continue
 
-                data.append("%s %s" % ((key + ":").ljust(12), value))
+                data.append(u"%s %s" % ((key + ":").ljust(12), value))
 
-            text = "\n".join(data)
+            text = u"\n".join(data)
 
             details.show({
                 "icon": awesome["circle"],
@@ -590,9 +592,9 @@ class Window(QtWidgets.QWidget):
                 if key.startswith("_"):
                     continue
 
-                data.append("%s %s" % ((key + ":").ljust(12), value))
+                data.append(u"%s %s" % ((key + ":").ljust(12), value))
 
-            text = "\n".join(data)
+            text = u"\n".join(data)
 
             details.show({
                 "icon": awesome["exclamation-triangle"],
