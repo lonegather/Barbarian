@@ -33,7 +33,7 @@ class Renamer(ui.QtUI):
         prefix_dic = {"Middle": "M", "Left": "L", "Right": "R", "Up": "U",
                      "Down": "D", "Front": "F", "Back": "B"}
     
-        dag_type_dic = {"group": "Grp",
+        dag_type_dic = {"group": "GRP",
                         "mesh": "Geo",
                         "nurbsSurface": "Nbs",
                         "joint": "Jnt",
@@ -47,7 +47,6 @@ class Renamer(ui.QtUI):
                         "pointConstraint": "Pot",
                         "aimConstraint": "Aim",
                         "poleVectorConstraint": "Pvc",
-                        "transform": "GRP",
                         "lattice": "Lie",
                         "baseLattice": "Ble",
                         "ikHandle": "Ikh",
