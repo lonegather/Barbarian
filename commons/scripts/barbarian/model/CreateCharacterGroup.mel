@@ -21,7 +21,7 @@ if($omg == "角色"){
 
 
 
-    string $c = `group -em -n "_Ctrl"`;
+    string $c = `group -em -n "_Con"`;
     string $c2 = `rename ($tbg + $c)`;
     
     select -r Body_GRP Head_GRP Cloth_GRP Shose_GRP Ornaments_GRP Other_GRP;
@@ -43,7 +43,7 @@ if($omg == "道具"){
     string $g2 = `rename ($tbg + $g)`;
 
     
-    string $c = `group -em -n "_Ctrl"`;
+    string $c = `group -em -n "_Con"`;
     string $c2 = `rename ($tbg + $c)`;
  
     
@@ -62,7 +62,7 @@ if($omg == "场景"){
     string $g2 = `rename ($tbg + $g)`;
 
     
-    string $c = `group -em -n "_Ctrl"`;
+    string $c = `group -em -n "_Con"`;
     string $c2 = `rename ($tbg + $c)`;
  
     
