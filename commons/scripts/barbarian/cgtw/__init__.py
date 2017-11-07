@@ -74,8 +74,6 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnConnect.setVisible(not self.tw.sys().get_is_login())
         self.CGTWLEDeregister.setVisible(self.tw.sys().get_is_login())
         self.treeWidget.setEnabled(self.tw.sys().get_is_login())
-        self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
-        self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
         
         self.treeWidget.clear()
         items = {}
@@ -95,6 +93,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.treeWidget.setColumnWidth(0, 250)
 
         if self.tw.sys().get_is_login():
+            self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
+            self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
+            
             self.id = self.tw.sys().get_account_id()
             self.CGTWLBLUser.setText(u"欢迎，[%s] %s" % 
                                      (self.getAccountInfo(self.id, "account.department"), 
@@ -111,12 +112,15 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                     items[i].setHidden(True)
                 
         else:
+            self.CGTWLBLResult.setText("")
+            self.CGTWLBLResult.setStyleSheet("background-color: #333333;")
             self.id = ""
             self.CGTWLBLUser.setText(u"请登录...")
                 
         self.refreshInfo()
                 
-    def refreshInfo(self, *_):      
+    def refreshInfo(self, *_):
+        if not self.tw.sys().get_is_login(): return
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
           
