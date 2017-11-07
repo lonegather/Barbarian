@@ -8,6 +8,7 @@ Created on 2017.7.23
 from maya import cmds
 from barbarian.utils import ui
 
+
 def UI(*_):
     Renamer("renamer",
             searchTextField  = "renamerLESearch",
