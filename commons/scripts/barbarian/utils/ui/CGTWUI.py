@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Tue Nov 07 09:31:07 2017
+# Created: Tue Nov 07 18:26:34 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -125,6 +125,7 @@ class Ui_CGTWWin(ui.QtUI):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.treeWidget.setFont(font)
+        self.treeWidget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.treeWidget.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.treeWidget.setAlternatingRowColors(True)
         self.treeWidget.setIndentation(21)
@@ -205,6 +206,7 @@ class Ui_CGTWWin(ui.QtUI):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.CGTWTWHistory.setFont(font)
+        self.CGTWTWHistory.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.CGTWTWHistory.setAlternatingRowColors(True)
         self.CGTWTWHistory.setIndentation(21)
         self.CGTWTWHistory.setWordWrap(True)
@@ -220,6 +222,7 @@ class Ui_CGTWWin(ui.QtUI):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.CGTWTWLink.setFont(font)
+        self.CGTWTWLink.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.CGTWTWLink.setAlternatingRowColors(True)
         self.CGTWTWLink.setIndentation(21)
         self.CGTWTWLink.setObjectName("CGTWTWLink")
@@ -239,6 +242,7 @@ class Ui_CGTWWin(ui.QtUI):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.CGTWLBLResult.setFont(font)
+        self.CGTWLBLResult.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.CGTWLBLResult.setFrameShape(QtGui.QFrame.StyledPanel)
         self.CGTWLBLResult.setFrameShadow(QtGui.QFrame.Sunken)
         self.CGTWLBLResult.setObjectName("CGTWLBLResult")

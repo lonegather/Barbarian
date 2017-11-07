@@ -1,7 +1,7 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
 
-import os, sys, logging, json, shutil
+import os, sys, logging, json, shutil, pyperclip
 import pyblish_lite, pyblish.util
 from barbarian.utils import config
 from barbarian.utils.ui import CGTWUI
@@ -9,6 +9,7 @@ from PySide import QtCore, QtGui
 from maya import cmds
 import maya.OpenMaya as om
 from PySide.QtGui import QLabel
+
 
 try:
     from cgtw import *
@@ -41,7 +42,31 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
         self.CGTWTWHistory.itemDoubleClicked.connect(self.onItemDoubleClicked)
+        self.CGTWTWHistory.customContextMenuRequested.connect(self.showHistoryContextMenu)
         self.CGTWTWLink.itemDoubleClicked.connect(self.onItemDoubleClicked)
+        self.CGTWTWLink.customContextMenuRequested.connect(self.showLinkContextMenu)
+        
+        self.historyContextMenu = QtGui.QMenu(self.CGTWTWHistory)
+        self.historyContextMenu.setMinimumSize(QtCore.QSize(150, 30))
+        self.historyActionCopy = self.historyContextMenu.addAction(u"拷贝路径")
+        self.historyActionBrowse = self.historyContextMenu.addAction(u"打开目录")
+        self.historyActionCopy.triggered.connect(self.historyCopyHandler)
+        self.historyActionBrowse.triggered.connect(self.historyBrowseHandler)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.historyContextMenu.setFont(font)
+        
+        self.linkContextMenu = QtGui.QMenu(self.CGTWTWLink)
+        self.linkContextMenu.setMinimumSize(QtCore.QSize(150, 30))
+        self.linkActionCopy = self.linkContextMenu.addAction(u"拷贝路径")
+        self.linkActionBrowse = self.linkContextMenu.addAction(u"打开目录")
+        self.linkActionCopy.triggered.connect(self.linkCopyHandler)
+        self.linkActionBrowse.triggered.connect(self.linkBrowseHandler)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.linkContextMenu.setFont(font)
 
         self.tw = tw(self.ip)
         self.id = ""
@@ -262,7 +287,31 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         cmds.file(new=True, force=True)
         cmds.file(item.path, ns=":", typ=type_map[file_type], 
                   i=True, iv=True, ra=True, mnc=True, pr=True)
-
+    
+    def showHistoryContextMenu(self, position):
+        self.historyContextMenu.exec_(QtGui.QCursor.pos()) #modal
+        
+    def showLinkContextMenu(self, position):
+        self.linkContextMenu.exec_(QtGui.QCursor.pos()) #modal
+        
+    def historyCopyHandler(self):
+        currentItem = self.CGTWTWHistory.currentItem()
+        pyperclip.copy(currentItem.path)
+        
+    def linkCopyHandler(self):
+        currentItem = self.CGTWTWLink.currentItem()
+        pyperclip.copy(currentItem.path)
+        
+    def historyBrowseHandler(self):
+        currentItem = self.CGTWTWHistory.currentItem()
+        cmd = "explorer %s"%os.path.dirname(currentItem.path).replace("/", "\\")
+        os.system(cmd)
+    
+    def linkBrowseHandler(self):
+        currentItem = self.CGTWTWLink.currentItem()
+        cmd = "explorer %s"%os.path.dirname(currentItem.path).replace("/", "\\")
+        os.system(cmd)
+        
     def create(self, *_):
         import pyblish_starter.api as api
         

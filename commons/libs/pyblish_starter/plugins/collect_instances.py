@@ -82,11 +82,6 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
                 "\"%s\" was missing a pipeline" % objset)
 
             name = cmds.ls(objset, long=False)[0]  # Use short name
-                
-            if cmds.objExists("%s.path" % name):
-                self.register(context, objset)
-                continue
-            
             project = cmds.getAttr("%s.project" % name)
             pipeline = cmds.getAttr("%s.pipeline" % name)
             database = cmds.getAttr("%s.database" % name)
