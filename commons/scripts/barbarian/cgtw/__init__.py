@@ -247,6 +247,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         if not os.path.isfile(item.path): return
         file_type = item.path.split('.')[-1]
         type_map = {"ma": "mayaAscii", "mb": "mayaBinary"}
+        if not file_type in type_map: return
         
         if cmds.file(q=True, modified=True):
             result = cmds.confirmDialog(title='Putao', 
