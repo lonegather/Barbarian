@@ -1,13 +1,14 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
 
-import os, sys, logging, json
+import os, sys, logging, json, shutil
 import pyblish_lite, pyblish.util
 from barbarian.utils import config
 from barbarian.utils.ui import CGTWUI
 from PySide import QtCore, QtGui
 from maya import cmds
 import maya.OpenMaya as om
+from PySide.QtGui import QLabel
 
 try:
     from cgtw import *
@@ -39,6 +40,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnSubmit.clicked.connect(self.create)
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
+        self.CGTWTWHistory.itemDoubleClicked.connect(self.onItemDoubleClicked)
+        self.CGTWTWLink.itemDoubleClicked.connect(self.onItemDoubleClicked)
 
         self.tw = tw(self.ip)
         self.id = ""
@@ -160,15 +163,22 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         for history in historyList:
             history_file = u"当前版本" if head else u"未知版本"
             if history["file"]:
+                file_name = history["file"] if head else ""
+                file_path = currentItem.submitPath if head else historyPath
                 for history_item in history_list:
                     if history_item["id"] == history["id"]:
                         history_file = history_item["file"]
-                item = QtGui.QTreeWidgetItem(self.CGTWTWHistory)
+                        file_name = history_item["file"]
+                    
+                item = QTreeWidgetFileItem("%s/%s"%(file_path, file_name),
+                                           self.CGTWTWHistory)
                 item.setText(0, history_file)
                 item.setText(1, history["text"])
+                #label = QtGui.QLabel(self.CGTWTWHistory)
+                #label.setText(history["text"])
                 item.setText(2, history["last_update_by"])
                 item.setText(3, history["last_update_time"])
-                #self.CGTWTWLink.setItemWidget(item, 1, QtGui.QLabel(history["text"]))
+                #self.CGTWTWHistory.setItemWidget(item, 1, label)
             head = False
                 
         self.CGTWTWHistory.setColumnWidth(0, 200)
@@ -185,7 +195,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                 items[filebox["title"]].setFlags(QtCore.Qt.ItemIsEnabled)
             for f in os.listdir(filebox["path"]):
                 if os.path.isfile(os.path.join(filebox["path"], f)):
-                    item = QtGui.QTreeWidgetItem()
+                    item = QTreeWidgetFileItem("%s/%s"%(filebox["path"], f))
                     item.setText(0, f)
                     items[filebox["title"]].addChild(item)
                     
@@ -232,6 +242,25 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.tw.sys().logout()
 
         self.refreshUI()
+        
+    def onItemDoubleClicked(self, item, column):
+        if not os.path.isfile(item.path): return
+        file_type = item.path.split('.')[-1]
+        type_map = {"ma": "mayaAscii", "mb": "mayaBinary"}
+        
+        if cmds.file(q=True, modified=True):
+            result = cmds.confirmDialog(title='Putao', 
+                                        message=u"警告：所有未保存的操作将丢失", 
+                                        ma="center",
+                                        button=[u"继续",u"取消"], 
+                                        defaultButton=u"继续", 
+                                        cancelButton=u"取消", 
+                                        dismissString='No')
+            if not result == u"继续": return
+        
+        cmds.file(new=True, force=True)
+        cmds.file(item.path, ns=":", typ=type_map[file_type], 
+                  i=True, iv=True, ra=True, mnc=True, pr=True)
 
     def create(self, *_):
         import pyblish_starter.api as api
@@ -361,6 +390,18 @@ class QTreeWidgetTaskItem(QtGui.QTreeWidgetItem):
     @property
     def taskID(self):
         return self._task["id"]
+
+    
+class QTreeWidgetFileItem(QtGui.QTreeWidgetItem):
+    
+    def __init__(self, path, parent=None):
+        super(QTreeWidgetFileItem, self).__init__(parent)
+        
+        self._path = path
+    
+    @property
+    def path(self):
+        return self._path
         
         
         
