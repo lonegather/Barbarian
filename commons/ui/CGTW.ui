@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
+    <width>1024</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>960</width>
+    <width>1024</width>
     <height>600</height>
    </size>
   </property>
@@ -196,9 +196,9 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,2">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
         <item>
          <widget class="QTreeWidget" name="treeWidget">
           <property name="sizePolicy">
@@ -206,6 +206,12 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="font">
            <font>
@@ -216,32 +222,18 @@
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
           </property>
-          <property name="sortingEnabled">
+          <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
-          <attribute name="headerDefaultSectionSize">
-           <number>80</number>
-          </attribute>
-          <attribute name="headerMinimumSectionSize">
-           <number>30</number>
-          </attribute>
-          <attribute name="headerShowSortIndicator" stdset="0">
+          <property name="indentation">
+           <number>21</number>
+          </property>
+          <property name="animated">
            <bool>true</bool>
-          </attribute>
+          </property>
           <column>
            <property name="text">
             <string>我的任务</string>
-           </property>
-           <property name="font">
-            <font>
-             <family>微软雅黑</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>状态</string>
            </property>
            <property name="font">
             <font>
@@ -299,7 +291,7 @@
              </font>
             </property>
             <property name="text">
-             <string>提交检查...</string>
+             <string>提交检查</string>
             </property>
            </widget>
           </item>
@@ -318,29 +310,11 @@
              </font>
             </property>
             <property name="text">
-             <string>最终提交...</string>
+             <string>最终提交</string>
             </property>
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QWidget" name="CGTWPyblish" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>300</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="pyblishLayout">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="margin">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
         </item>
        </layout>
       </item>
@@ -348,21 +322,12 @@
        <widget class="QWidget" name="widget" native="true">
         <property name="minimumSize">
          <size>
-          <width>300</width>
+          <width>450</width>
           <height>0</height>
          </size>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>5</number>
-         </property>
-         <property name="bottomMargin">
+         <property name="margin">
           <number>0</number>
          </property>
          <item>
@@ -433,17 +398,70 @@
              </widget>
             </item>
             <item>
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
+             <widget class="QTreeWidget" name="CGTWTWHistory">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
               </property>
-             </spacer>
+              <property name="indentation">
+               <number>21</number>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+              <column>
+               <property name="text">
+                <string>历史版本</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>版本描述</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>提交人</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>提交时间</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTreeWidget" name="CGTWTWLink">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+              <property name="indentation">
+               <number>21</number>
+              </property>
+              <column>
+               <property name="text">
+                <string>相关文件</string>
+               </property>
+              </column>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -457,6 +475,28 @@
      <widget class="Line" name="line_2">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="CGTWLBLResult">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
       </property>
      </widget>
     </item>

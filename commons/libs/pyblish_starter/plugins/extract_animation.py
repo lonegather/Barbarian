@@ -1,3 +1,6 @@
+﻿#!/usr/local/bin/python2.7
+# encoding: utf-8
+
 import pyblish.api
 
 
@@ -12,7 +15,7 @@ class ExtractStarterAnimation(pyblish.api.InstancePlugin):
 
     """
 
-    label = "Starter Animation"
+    label = u"提取Animation"
     order = pyblish.api.ExtractorOrder
     hosts = ["maya"]
     families = ["starter.animation"]
@@ -20,6 +23,8 @@ class ExtractStarterAnimation(pyblish.api.InstancePlugin):
     def process(self, instance):
         import os
         from maya import cmds
+        from PySide import QtGui
+        from barbarian.cgtw import CGTW
         from pyblish_starter import api
         from pyblish_starter import maya
 
@@ -30,6 +35,10 @@ class ExtractStarterAnimation(pyblish.api.InstancePlugin):
         dirname = api.format_staging_dir(
             root=instance.context.data["workspaceDir"],
             name=instance.data["name"])
+        
+        text, ok = QtGui.QInputDialog.getText(CGTW.UI().window, u"提交检查", u"请输入提交描述：")
+        assert ok, u"文件提取已被取消"
+        
         filename = "%s.mb" % instance.data["name"]
         path = os.path.join(dirname, filename)
 
@@ -56,5 +65,6 @@ class ExtractStarterAnimation(pyblish.api.InstancePlugin):
             instance.data["abc"].append(filename)
 
         instance.data["filePath"] = path
+        instance.data["submitText"] = text
 
         self.log.info("Extracted {instance} to {dirname}".format(**locals()))

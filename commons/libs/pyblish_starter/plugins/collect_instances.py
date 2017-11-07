@@ -59,10 +59,10 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
             raise RuntimeError("pyblish-starter requires pyblish-maya "
                                "to have been setup.")
             
-        self.log.info(u"创建...")
+        self.log.info(u"收集信息...")
             
         self.tw = tw
-
+        
         for objset in cmds.ls("*.id",
                               long=True,            # Produce full names
                               type="objectSet",     # Only consider objectSets
@@ -83,7 +83,7 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
 
             name = cmds.ls(objset, long=False)[0]  # Use short name
                 
-            if cmds.objExists("%s.taskID" % name):
+            if cmds.objExists("%s.path" % name):
                 self.register(context, objset)
                 continue
             
@@ -108,7 +108,7 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
                         assetsEx += "%s;" % namespace
                 for asset in assetsIn.split(';'):
                     if not asset: continue
-                    cmds.select("%s:out_SEL" % asset, r=True)
+                    cmds.select("%s:%s_Geo" % (asset, asset), r=True)
                     cmds.sets(e=True, include=str(name))
                 
                 cmds.addAttr(name, longName="assetsIn", dataType="string", hidden=False)
@@ -116,31 +116,14 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
                 cmds.setAttr("%s.assetsIn" % name, assetsIn, type="string")
                 cmds.setAttr("%s.assetsEx" % name, assetsEx, type="string")
     
-            elif config.getConfig("familyMap", project)[pipeline] == "starter.rig":
-                assert cmds.objExists(name.split('_SEL')[0]), "\"%s\" does not exist." % name.split('_SEL')[0]
-
-                try: cmds.delete(["out_SEL", "controls_SEL"])
-                except: pass
-                cmds.select(name.split('_SEL')[0], r=True)
-                cmds.sets(e=True, include=name)
-                cmds.select("%s_Geo"%name.split('_SEL')[0], r=True)
-                cmds.sets(name="out_SEL")
-                cmds.select("ControlSet", r=True)
-                cmds.sets(name="controls_SEL")
-                for s in ["out_SEL", "controls_SEL"]:
-                    cmds.select(s, r=True, noExpand=True)
-                    cmds.sets(e=True, include=name)
-    
-            elif config.getConfig("familyMap", project)[pipeline] == "starter.model":
-                assert cmds.objExists(name.split('_SEL')[0]), "\"%s\" does not exist." % name.split('_SEL')[0]
+            elif config.getConfig("familyMap", project)[pipeline] in ["starter.model", "starter.rig"]:
+                assert cmds.objExists(name.split('_SEL')[0]), u"找不到对象\"%s\"" % name.split('_SEL')[0]
                 
-                cmds.select(name, r=True)
+                cmds.select(name.split('_SEL')[0], r=True)
                 cmds.sets(e=True, include=name)
             
             cmds.select(clear=True)
-            cmds.addAttr(name, longName="taskID", dataType="string", hidden=False)
             cmds.addAttr(name, longName="path", dataType="string", hidden=False)
-            cmds.setAttr("%s.taskID" % name, self.getTaskID(database, name.split('_SEL')[0], pipeline), type="string")
             cmds.setAttr("%s.path" % name, self.getAssetPath(database, name.split('_SEL')[0], pipeline), type="string")
             
             self.register(context, objset)
@@ -166,20 +149,7 @@ class CollectStarterInstances(pyblish.api.ContextPlugin):
 
         # Produce diagnostic message for any graphical
         # user interface interested in visualising it.
-        self.log.info("Found: \"%s\" " % instance.data["name"])
-            
-    def getTaskID(self, database, name, pipeline):
-        assert self.tw.sys().get_is_login(), "Teamwork is not logged in."
-        
-        tables = {"asset":"asset_name", "shot":"shot"}
-        for table in tables:
-            module = self.tw.task_module(database, "%s_task" % table)
-            module.init_with_filter([["%s.%s" % (table, tables[table]), "=", name],
-                                     "and",
-                                     ["%s_task.pipeline" % table, "=", pipeline]])
-            if not module.get(["%s_task.id" % table]): continue
-            return module.get(["%s_task.id" % table])[0]["%s_task.id" % table]
-        return u""
+        self.log.info(u"与\"%s\"成功建立关联" % instance.data["name"])
             
     def getAssetList(self, database, filterType, isExcluded):
         assert self.tw.sys().get_is_login(), "Teamwork is not logged in."

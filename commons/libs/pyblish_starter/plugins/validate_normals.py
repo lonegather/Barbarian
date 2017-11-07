@@ -1,3 +1,6 @@
+﻿#!/usr/local/bin/python2.7
+# encoding: utf-8
+
 import pyblish.api
 
 
@@ -10,10 +13,10 @@ class ValidateStarterNormals(pyblish.api.InstancePlugin):
 
     """
 
-    label = "Normals"
+    label = u"检查法线"
     order = pyblish.api.ValidatorOrder
     hosts = ["maya"]
-    families = ["starter.model"]
+    families = ["starter.model", "starter.rig"]
 
     def process(self, instance):
         from maya import cmds
