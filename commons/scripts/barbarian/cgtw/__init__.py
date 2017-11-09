@@ -27,8 +27,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
         
-        self.CGTWBtnFinal.setEnabled(False)
-
+        cmds.control("CGTWPageTask", e=True, backgroundColor=[0.24,0.24,0.24])
+        cmds.control("CGTWPageCheck", e=True, backgroundColor=[0.24,0.24,0.24])
+        
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshUI)
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshUI)
@@ -36,7 +37,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         QtCore.QObject.connect(self.CGTWCBProject,
                                QtCore.SIGNAL("activated(int)"),
                                lambda *_: config.setProject(self.CGTWCBProject.currentText()))
-        self.treeWidget.itemClicked.connect(self.refreshInfo)
+        self.CGTWTWTask.itemClicked.connect(self.refreshInfo)
+        self.CGTWTWCheck.itemClicked.connect(self.refreshInfo)
+        self.toolBox.currentChanged.connect(self.refreshInfo)
         self.CGTWBtnRefresh.clicked.connect(self.refreshUI)
         self.CGTWBtnSubmit.clicked.connect(self.create)
         self.CGTWBtnConnect.clicked.connect(self.connect)
@@ -49,7 +52,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.historyContextMenu = QtGui.QMenu(self.CGTWTWHistory)
         self.historyContextMenu.setMinimumSize(QtCore.QSize(150, 30))
         self.historyActionCopy = self.historyContextMenu.addAction(u"拷贝路径")
-        self.historyActionBrowse = self.historyContextMenu.addAction(u"打开目录")
+        self.historyActionBrowse = self.historyContextMenu.addAction(u"在资源管理器中查看...")
         self.historyActionCopy.triggered.connect(self.historyCopyHandler)
         self.historyActionBrowse.triggered.connect(self.historyBrowseHandler)
         font = QtGui.QFont()
@@ -60,7 +63,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.linkContextMenu = QtGui.QMenu(self.CGTWTWLink)
         self.linkContextMenu.setMinimumSize(QtCore.QSize(150, 30))
         self.linkActionCopy = self.linkContextMenu.addAction(u"拷贝路径")
-        self.linkActionBrowse = self.linkContextMenu.addAction(u"打开目录")
+        self.linkActionBrowse = self.linkContextMenu.addAction(u"在资源管理器中查看...")
         self.linkActionCopy.triggered.connect(self.linkCopyHandler)
         self.linkActionBrowse.triggered.connect(self.linkBrowseHandler)
         font = QtGui.QFont()
@@ -97,6 +100,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
 
     def refreshUI(self, *_):
         self.CGTWBtnSubmit.setEnabled(False)
+        self.CGTWBtnRetake.setEnabled(False)
+        self.CGTWBtnFinal.setEnabled(False)
+        self.toolBox.setEnabled(self.tw.sys().get_is_login())
         self.CGTWBtnRefresh.setEnabled(self.tw.sys().get_is_login())
         self.CGTWTWHistory.setEnabled(self.tw.sys().get_is_login())
         self.CGTWTWLink.setEnabled(self.tw.sys().get_is_login())
@@ -104,38 +110,39 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLEPassword.setVisible(not self.tw.sys().get_is_login())
         self.CGTWBtnConnect.setVisible(not self.tw.sys().get_is_login())
         self.CGTWLEDeregister.setVisible(self.tw.sys().get_is_login())
-        self.treeWidget.setEnabled(self.tw.sys().get_is_login())
         self.CGTWLBLInfoName.setText("")
         self.CGTWLBLInfoPipeline.setText("")
         self.CGTWLBLInfoType.setText("")
         
         self.CGTWLBLResult.setText("")
         self.CGTWLBLResult.setStyleSheet("background-color: #333333;")
-        
-        self.treeWidget.clear()
-        items = {}
-        items["Work"] = QtGui.QTreeWidgetItem(self.treeWidget)
-        items["Work"].setText(0, u"未完成")
-        items["Work"].setFlags(QtCore.Qt.ItemIsEnabled)
-        items["Wait"] = items["Work"]
-        items["Retake"] = items["Work"]
-        items["Check"] = QtGui.QTreeWidgetItem(self.treeWidget)
-        items["Check"].setText(0, u"待检查")
-        items["Check"].setFlags(QtCore.Qt.ItemIsEnabled)
-        items["Approve"] = QtGui.QTreeWidgetItem(self.treeWidget)
-        items["Approve"].setText(0, u"已完成")
-        items["Approve"].setFlags(QtCore.Qt.ItemIsEnabled)
-        items["FinalApprove"] = items["Approve"]
+        self.CGTWTWTask.clear()
+        self.CGTWTWCheck.clear()
 
-        self.treeWidget.setColumnWidth(0, 250)
+        self.CGTWTWTask.setColumnWidth(0, 250)
+        self.CGTWTWCheck.setColumnWidth(0, 250)
 
         if self.tw.sys().get_is_login():
             self.id = self.tw.sys().get_account_id()
             self.CGTWLBLUser.setText(u"欢迎，[%s] %s" % 
                                      (self.getAccountInfo(self.id, "account.department"), 
                                       self.getAccountInfo(self.id, "account.name")))
+                
+            items = {}
+            items["Work"] = QtGui.QTreeWidgetItem(self.CGTWTWTask)
+            items["Work"].setText(0, u"未完成")
+            items["Work"].setFlags(QtCore.Qt.ItemIsEnabled)
+            items["Wait"] = items["Work"]
+            items["Retake"] = items["Work"]
+            items["Check"] = QtGui.QTreeWidgetItem(self.CGTWTWTask)
+            items["Check"].setText(0, u"待检查")
+            items["Check"].setFlags(QtCore.Qt.ItemIsEnabled)
+            items["Approve"] = QtGui.QTreeWidgetItem(self.CGTWTWTask)
+            items["Approve"].setText(0, u"已完成")
+            items["Approve"].setFlags(QtCore.Qt.ItemIsEnabled)
+            items["FinalApprove"] = items["Approve"]
 
-            for task in self.getTaskInfo(self.id) or list():
+            for task in self.getTaskInfo(account_id=self.id) or list():
                 item = QTreeWidgetTaskItem(task)
                 item.setText(0, "%s: %s" % (task["stage"], task["name"]))
                 item.setText(1, task["date"])
@@ -144,6 +151,11 @@ class CGTW(CGTWUI.Ui_CGTWWin):
             for i in items:
                 if not items[i].childCount():
                     items[i].setHidden(True)
+            
+            for task in self.getCheckInfo() or list():
+                item = QTreeWidgetTaskItem(task, self.CGTWTWCheck)
+                item.setText(0, "%s: %s" % (task["stage"], task["name"]))
+                #item.setText(1, task["status"])
                 
         else:
             self.id = ""
@@ -159,23 +171,29 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
-          
-        currentItem = self.treeWidget.currentItem()
+        
+        itemList = [self.CGTWTWTask, self.CGTWTWCheck]
+        treeWidget = itemList[self.toolBox.currentIndex()]
+        currentItem = treeWidget.currentItem()
 
         if not isinstance(currentItem, QTreeWidgetTaskItem):
             self.CGTWBtnSubmit.setEnabled(False)
+            self.CGTWBtnRetake.setEnabled(False)
+            self.CGTWBtnFinal.setEnabled(False)
             self.CGTWFrmInfo.setEnabled(False)
             self.CGTWLBLInfoName.setText("")
             self.CGTWLBLInfoType.setText("")
             self.CGTWLBLInfoPipeline.setText("")
             return
         else: 
-            self.CGTWBtnSubmit.setEnabled(True)
+            self.CGTWBtnSubmit.setEnabled(treeWidget == self.CGTWTWTask or bool(self.CGTWTWTask.currentItem()))
+            self.CGTWBtnRetake.setEnabled(treeWidget == self.CGTWTWCheck or bool(self.CGTWTWCheck.currentItem()))
+            self.CGTWBtnFinal.setEnabled(treeWidget == self.CGTWTWCheck or bool(self.CGTWTWCheck.currentItem()))
             self.CGTWTWLink.setEnabled(True)
         
         pipeline = currentItem.text(0).split(': ')[0]
         name = currentItem.text(0).split(': ')[1]
-        historyList = self.getHistory(currentItem.taskID)
+        historyList = self.getHistory(task_id=currentItem.taskID)
         historyPath = "%s/history"%currentItem.submitPath
         
         try:
@@ -187,14 +205,15 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         head = True
         for history in historyList:
             history_file = u"当前版本" if head else u"未知版本"
-            if history["file"]:
+            if history["status"] == "Submit":
                 file_name = history["file"] if head else ""
                 file_path = currentItem.submitPath if head else historyPath
                 for history_item in history_list:
                     if history_item["id"] == history["id"]:
                         history_file = history_item["file"]
                         file_name = history_item["file"]
-                    
+                
+                if not os.path.exists(file_path): history_file = u"路径不存在"
                 item = QTreeWidgetFileItem("%s/%s"%(file_path, file_name),
                                            self.CGTWTWHistory)
                 item.setText(0, history_file)
@@ -269,6 +288,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.refreshUI()
         
     def onItemDoubleClicked(self, item, column):
+        if not hasattr(item, "path"): return
         if not os.path.isfile(item.path): return
         file_type = item.path.split('.')[-1]
         type_map = {"ma": "mayaAscii", "mb": "mayaBinary"}
@@ -284,14 +304,14 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                                         dismissString='No')
             if not result == u"继续": return
         
-        cmds.file(new=True, force=True)
-        cmds.file(item.path, ns=":", typ=type_map[file_type], 
-                  i=True, iv=True, ra=True, mnc=True, pr=True)
+        cmds.file(item.path, f=True, o=True, iv=True, typ=type_map[file_type])
     
-    def showHistoryContextMenu(self, position):
+    def showHistoryContextMenu(self, *_):
+        if not isinstance(self.CGTWTWHistory.currentItem(), QTreeWidgetFileItem): return
         self.historyContextMenu.exec_(QtGui.QCursor.pos()) #modal
         
-    def showLinkContextMenu(self, position):
+    def showLinkContextMenu(self, *_):
+        if not isinstance(self.CGTWTWLink.currentItem(), QTreeWidgetFileItem): return
         self.linkContextMenu.exec_(QtGui.QCursor.pos()) #modal
         
     def historyCopyHandler(self):
@@ -315,7 +335,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def create(self, *_):
         import pyblish_starter.api as api
         
-        currentItem = self.treeWidget.currentItem()
+        currentItem = self.CGTWTWTask.currentItem()
         family = currentItem.text(0).split(': ')[0]
         name = currentItem.text(0).split(': ')[1]
 
@@ -323,6 +343,12 @@ class CGTW(CGTWUI.Ui_CGTWWin):
             self.CGTWLBLResult.setText(u"<font color=black>所选任务不能在Maya中执行</font>")
             self.CGTWLBLResult.setStyleSheet("background-color: rgba(255, 255, 90, 255);")
             return
+        
+        self.CGTWLBLResult.setText(u"<font color=black>正在提交检查...</font>")
+        self.CGTWLBLResult.setStyleSheet("background-color: rgba(90, 255, 255, 255);")
+        
+        try: cmds.delete("%s_SEL"%name)
+        except: pass
         
         api.registered_host().create(name, config.getConfig("familyMap")[family])
         
@@ -335,7 +361,6 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         cmds.setAttr("%s_SEL.database"%name, config.getConfig("database"), type="string")
         cmds.setAttr("%s_SEL.taskID"%name, currentItem.taskID, type="string")
         
-        #self.refreshPyblish()
         context = pyblish.util.publish()
         self.CGTWLBLResult.setText(u"<font color=black>任务提交成功</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: rgba(90, 255, 90, 255);")
@@ -351,38 +376,76 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         result = info_module.get_with_filter([account_field], [["account.id", "=", account_id]])
         return result[0][account_field] if result else ""
 
-    def getTaskInfo(self, account):
+    def getTaskInfo(self, **kwargs):
         result = []
         tables = {"asset": "asset_name", "shot": "shot"}
         for table in tables:
+            filters = []
+            for key in kwargs: 
+                if filters: filters.append("and")
+                filters.append(["%s_task.%s" % (table, key), "=", kwargs[key]])
+            if not filters: filters.append(["%s.%s" % (table, tables[table]), "has", "%"])
+                
             module = self.tw.task_module(self.project, "%s_task" % table)
-            module.init_with_filter([["%s_task.account_id" % table, "=", account]])
+            module.init_with_filter(filters)
             
             for item in module.get(["%s.%s" % (table, tables[table]),
                                     "%s_task.pipeline" % table,
                                     "%s_task.status" % table,
-                                    "%s_task.end_date" % table]) or list():
+                                    "%s_task.end_date" % table,
+                                    "%s_task.artist" % table]) or list():
                 if not item["%s.%s" % (table, tables[table])]: continue
                 
-                item_id = item["id"]
-                item_name = item["%s.%s" % (table, tables[table])]
-                item_stage = item["%s_task.pipeline" % table]
-                item_status = item["%s_task.status" % table]
-                item_date = item["%s_task.end_date" % table]
-                
-                result.append({"id": item_id,
-                               "name": item_name,
-                               "stage": item_stage,
-                               "status": item_status,
-                               "date": item_date})
+                result.append({"id": item["id"],
+                               "name": item["%s.%s" % (table, tables[table])],
+                               "stage": item["%s_task.pipeline" % table],
+                               "status": item["%s_task.status" % table],
+                               "date": item["%s_task.end_date" % table],
+                               "artist": item["%s_task.artist" % table]})
             
         return result
     
-    def getHistory(self, task_id):
+    def getCheckInfo(self):
+        result = []
+        if not self.tw.sys().get_is_login(): return result
+        
+        tables = {"asset": "asset_name", "shot": "shot"}
+        for table in tables:
+            check_filter = self.tw.con._send("c_work_flow", "get_check_filter", {"db":self.project, "module":"%s_task"%table})
+            if not check_filter: continue
+            
+            module = self.tw.task_module(self.project, "%s_task" % table)
+            module.init_with_filter(check_filter)
+            for item in module.get(["%s.%s" % (table, tables[table]),
+                                    "%s_task.pipeline" % table,
+                                    "%s_task.status" % table,
+                                    "%s_task.end_date" % table,
+                                    "%s_task.artist" % table]) or list():
+                if not item["%s.%s" % (table, tables[table])]: continue
+                
+                result.append({"id": item["id"],
+                               "name": item["%s.%s" % (table, tables[table])],
+                               "stage": item["%s_task.pipeline" % table],
+                               "status": item["%s_task.status" % table],
+                               "date": item["%s_task.end_date" % table],
+                               "artist": item["%s_task.artist" % table]})
+        
+        return result
+    
+    def getHistory(self, **kwargs):
         for module in ["asset_task", "shot_task"]:
+            filters = []
+            for key in kwargs: 
+                if filters: filters.append("and")
+                filters.append(["#%s" % key if key in ["id", "account_id", "task_id"] else key, "=", kwargs[key]])
+            if not filters: filters.append(["#task_id", "has", "%"])
             t_history = self.tw.history(self.project, module)
-            history = t_history.get_with_filter(["text", "last_update_by", "last_update_time", "step", "file"], 
-                                                [["#task_id", "=", task_id]])
+            history = t_history.get_with_filter(["text", 
+                                                 "last_update_by", 
+                                                 "last_update_time", 
+                                                 "step", 
+                                                 "status",
+                                                 "file"], filters)
             if not history: continue
         
             return sorted(history, key=lambda x:x["last_update_time"], reverse=True)

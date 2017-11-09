@@ -15,7 +15,7 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
     ]
 
     def process(self, instance):
-        import os, json, shutil, errno
+        import os, stat, json, shutil, errno
         from cgtw import tw
 
         context = instance.context
@@ -54,7 +54,9 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
         latest_history = self.getHistory(instance)[0]
         latest_filename = self.getVersion(historyPath, filename)
         
+        os.chmod(remotePath, stat.S_IWRITE)
         shutil.copyfile(remotePath, os.path.join(historyPath, latest_filename))
+        os.chmod(os.path.join(historyPath, latest_filename), stat.S_IREAD)
             
         try:
             with open("%shistory.json"%historyPath) as f:
@@ -72,6 +74,7 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
         
         remotePath = remotePath.replace("\\", "/")
         shutil.copyfile(filePath, remotePath)
+        os.chmod(remotePath, stat.S_IREAD)
 
         for table in ["asset_task", "shot_task"]:
             t_module = t_tw.task_module(instance.data["database"], table)
