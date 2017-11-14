@@ -6,9 +6,9 @@ import pyblish_lite, pyblish.util
 from barbarian.utils import config
 from barbarian.utils.ui import CGTWUI
 from PySide import QtCore, QtGui
-from maya import cmds
 import maya.OpenMaya as om
-from PySide.QtGui import QLabel
+from maya import cmds
+import model
 
 
 try:
@@ -27,6 +27,30 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
         
+        taskWorkModel = model.TaskWorkModel()
+        self.CGTWTVTask.setModel(taskWorkModel)
+        self.CGTWTVTask.clicked.connect(self.onTaskChanged)
+        
+        taskCheckModel = model.TaskCheckModel()
+        self.CGTWTVCheck.setModel(taskCheckModel)
+        self.CGTWTVCheck.clicked.connect(self.onTaskChanged)
+        
+        taskAllModel = model.TaskAllModel()
+        self.CGTWTVAll.setModel(taskAllModel)
+        self.CGTWTVAll.clicked.connect(self.onTaskChanged)
+        
+        fileHistoryModel = model.FileHistoryModel()
+        self.CGTWTVFileHistory.setModel(fileHistoryModel)
+        self.CGTWTVFileHistory.setDragEnabled(True)
+        
+        fileLinkModel = model.FileLinkModel()
+        self.CGTWTVFileLink.setModel(fileLinkModel)
+        self.CGTWTVFileLink.clicked.connect(self.onFileboxChanged)
+        
+        fileModel = QtGui.QFileSystemModel()
+        self.CGTWLVFileLink.setModel(fileModel)
+        self.CGTWLVFileLink.setDragEnabled(True)
+        
         cmds.control("CGTWPageTask", e=True, backgroundColor=[0.24,0.24,0.24])
         cmds.control("CGTWPageCheck", e=True, backgroundColor=[0.24,0.24,0.24])
         
@@ -37,37 +61,35 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         QtCore.QObject.connect(self.CGTWCBProject,
                                QtCore.SIGNAL("activated(int)"),
                                lambda *_: config.setProject(self.CGTWCBProject.currentText()))
-        self.CGTWTWTask.itemClicked.connect(self.refreshInfo)
-        self.CGTWTWCheck.itemClicked.connect(self.refreshInfo)
-        self.toolBox.currentChanged.connect(self.refreshInfo)
+        self.toolBox.currentChanged.connect(self.onTaskListChanged)
         self.CGTWBtnRefresh.clicked.connect(self.refreshUI)
-        self.CGTWBtnSubmit.clicked.connect(self.create)
+        self.CGTWBtnSubmit.clicked.connect(self.submit)
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
-        self.CGTWTWHistory.itemDoubleClicked.connect(self.onItemDoubleClicked)
-        self.CGTWTWHistory.customContextMenuRequested.connect(self.showHistoryContextMenu)
-        self.CGTWTWLink.itemDoubleClicked.connect(self.onItemDoubleClicked)
-        self.CGTWTWLink.customContextMenuRequested.connect(self.showLinkContextMenu)
+        self.CGTWTVFileHistory.doubleClicked.connect(self.onHistoryItemDoubleClicked)
+        self.CGTWTVFileHistory.customContextMenuRequested.connect(self.showHistoryContextMenu)
+        self.CGTWLVFileLink.doubleClicked.connect(self.onLinkItemDoubleClicked)
+        self.CGTWLVFileLink.customContextMenuRequested.connect(self.showLinkContextMenu)
         
-        self.historyContextMenu = QtGui.QMenu(self.CGTWTWHistory)
+        self.historyContextMenu = QtGui.QMenu(self.CGTWTVFileHistory)
         self.historyContextMenu.setMinimumSize(QtCore.QSize(150, 30))
         self.historyActionCopy = self.historyContextMenu.addAction(u"拷贝路径")
         self.historyActionBrowse = self.historyContextMenu.addAction(u"在资源管理器中查看...")
         self.historyActionCopy.triggered.connect(self.historyCopyHandler)
         self.historyActionBrowse.triggered.connect(self.historyBrowseHandler)
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
+        font.setFamily(u"微软雅黑")
         font.setPointSize(10)
         self.historyContextMenu.setFont(font)
         
-        self.linkContextMenu = QtGui.QMenu(self.CGTWTWLink)
+        self.linkContextMenu = QtGui.QMenu(self.CGTWLVFileLink)
         self.linkContextMenu.setMinimumSize(QtCore.QSize(150, 30))
         self.linkActionCopy = self.linkContextMenu.addAction(u"拷贝路径")
         self.linkActionBrowse = self.linkContextMenu.addAction(u"在资源管理器中查看...")
         self.linkActionCopy.triggered.connect(self.linkCopyHandler)
         self.linkActionBrowse.triggered.connect(self.linkBrowseHandler)
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
+        font.setFamily(u"微软雅黑")
         font.setPointSize(10)
         self.linkContextMenu.setFont(font)
 
@@ -77,6 +99,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.family = {}
 
         self.refreshProject()
+        
 
     def refreshProject(self, *_):
         if config.getProject():
@@ -96,185 +119,118 @@ class CGTW(CGTWUI.Ui_CGTWWin):
             return
 
         self.project = config.getConfig("database")
+        
         self.refreshUI()
-
+    
     def refreshUI(self, *_):
-        self.CGTWBtnSubmit.setEnabled(False)
-        self.CGTWBtnRetake.setEnabled(False)
-        self.CGTWBtnFinal.setEnabled(False)
+        self.CGTWGBInfo.setTitle(" ")
+        self.CGTWLBLInfoType.setText("")
+        self.CGTWLBLInfoPipeline.setText("")
         self.toolBox.setEnabled(self.tw.sys().get_is_login())
         self.CGTWBtnRefresh.setEnabled(self.tw.sys().get_is_login())
-        self.CGTWTWHistory.setEnabled(self.tw.sys().get_is_login())
-        self.CGTWTWLink.setEnabled(self.tw.sys().get_is_login())
+        self.CGTWGBInfo.setEnabled(self.tw.sys().get_is_login())
         self.CGTWLEUsername.setVisible(not self.tw.sys().get_is_login())
         self.CGTWLEPassword.setVisible(not self.tw.sys().get_is_login())
         self.CGTWBtnConnect.setVisible(not self.tw.sys().get_is_login())
         self.CGTWLEDeregister.setVisible(self.tw.sys().get_is_login())
-        self.CGTWLBLInfoName.setText("")
-        self.CGTWLBLInfoPipeline.setText("")
-        self.CGTWLBLInfoType.setText("")
         
         self.CGTWLBLResult.setText("")
         self.CGTWLBLResult.setStyleSheet("background-color: #333333;")
-        self.CGTWTWTask.clear()
-        self.CGTWTWCheck.clear()
-
-        self.CGTWTWTask.setColumnWidth(0, 250)
-        self.CGTWTWCheck.setColumnWidth(0, 250)
 
         if self.tw.sys().get_is_login():
             self.id = self.tw.sys().get_account_id()
             self.CGTWLBLUser.setText(u"欢迎，[%s] %s" % 
                                      (self.getAccountInfo(self.id, "account.department"), 
                                       self.getAccountInfo(self.id, "account.name")))
-                
-            items = {}
-            items["Work"] = QtGui.QTreeWidgetItem(self.CGTWTWTask)
-            items["Work"].setText(0, u"未完成")
-            items["Work"].setFlags(QtCore.Qt.ItemIsEnabled)
-            items["Wait"] = items["Work"]
-            items["Retake"] = items["Work"]
-            items["Check"] = QtGui.QTreeWidgetItem(self.CGTWTWTask)
-            items["Check"].setText(0, u"待检查")
-            items["Check"].setFlags(QtCore.Qt.ItemIsEnabled)
-            items["Approve"] = QtGui.QTreeWidgetItem(self.CGTWTWTask)
-            items["Approve"].setText(0, u"已完成")
-            items["Approve"].setFlags(QtCore.Qt.ItemIsEnabled)
-            items["FinalApprove"] = items["Approve"]
-
-            for task in self.getTaskInfo(account_id=self.id) or list():
-                item = QTreeWidgetTaskItem(task)
-                item.setText(0, "%s: %s" % (task["stage"], task["name"]))
-                item.setText(1, task["date"])
-                items[task["status"]].addChild(item)
-            
-            for i in items:
-                if not items[i].childCount():
-                    items[i].setHidden(True)
-            
-            for task in self.getCheckInfo() or list():
-                item = QTreeWidgetTaskItem(task, self.CGTWTWCheck)
-                item.setText(0, "%s: %s" % (task["stage"], task["name"]))
-                #item.setText(1, task["status"])
-                
         else:
             self.id = ""
             self.CGTWLBLUser.setText(u"请登录...")
-                
-        self.refreshInfo()
-                
-    def refreshInfo(self, *_):
-        self.CGTWTWHistory.clear()
-        self.CGTWTWLink.clear()
+            
+        taskModel = self.CGTWTVTask.model()
+        checkModel = self.CGTWTVCheck.model()
+        taskModel.update()
+        checkModel.update()
+        
+        self.onTaskListChanged()
+        
+    def onTaskListChanged(self, *_):
+        self.CGTWBtnSubmit.setEnabled(False)
+        self.CGTWBtnRetake.setEnabled(False)
+        self.CGTWBtnFinal.setEnabled(False)
+        self.CGTWLVFileLink.setVisible(False)
+        self.CGTWTVFileHistory.model().clear()
+        self.CGTWTVFileLink.model().clear()
+        self.CGTWGBInfo.setTitle(" ")
+        self.CGTWLBLInfoType.setText("")
+        self.CGTWLBLInfoPipeline.setText("")
         
         if not self.tw.sys().get_is_login():return
         
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
         
-        itemList = [self.CGTWTWTask, self.CGTWTWCheck]
-        treeWidget = itemList[self.toolBox.currentIndex()]
-        currentItem = treeWidget.currentItem()
-
-        if not isinstance(currentItem, QTreeWidgetTaskItem):
-            self.CGTWBtnSubmit.setEnabled(False)
-            self.CGTWBtnRetake.setEnabled(False)
-            self.CGTWBtnFinal.setEnabled(False)
-            self.CGTWFrmInfo.setEnabled(False)
-            self.CGTWLBLInfoName.setText("")
-            self.CGTWLBLInfoType.setText("")
-            self.CGTWLBLInfoPipeline.setText("")
-            return
-        else: 
-            self.CGTWBtnSubmit.setEnabled(treeWidget == self.CGTWTWTask or bool(self.CGTWTWTask.currentItem()))
-            self.CGTWBtnRetake.setEnabled(treeWidget == self.CGTWTWCheck or bool(self.CGTWTWCheck.currentItem()))
-            self.CGTWBtnFinal.setEnabled(treeWidget == self.CGTWTWCheck or bool(self.CGTWTWCheck.currentItem()))
-            self.CGTWTWLink.setEnabled(True)
+        index = self.toolBox.currentIndex()
+        view_list = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
+        view_column = [[250, 100], [250, 100], [240, 90, 50]]
+        view_expand = [True, True, False]
+        treeView = view_list[index]
+        columnWidth = view_column[index]
         
-        pipeline = currentItem.text(0).split(': ')[0]
-        name = currentItem.text(0).split(': ')[1]
-        historyList = self.getHistory(task_id=currentItem.taskID)
-        historyPath = "%s/history"%currentItem.submitPath
+        treeView.model().update()
+        for i in range(len(columnWidth)):
+            treeView.setColumnWidth(i, columnWidth[i])
+        if view_expand[index]: treeView.expandAll()
         
-        try:
-            with open("%s/history.json"%historyPath) as f:
-                history_list = json.load(f)
-        except IOError:
-            history_list = []
+    def onTaskChanged(self, *_):
+        self.CGTWBtnSubmit.setEnabled(False)
+        self.CGTWBtnRetake.setEnabled(False)
+        self.CGTWBtnFinal.setEnabled(False)
+        self.CGTWLVFileLink.setVisible(False)
+        self.CGTWTVFileHistory.model().clear()
+        self.CGTWTVFileLink.model().clear()
+        self.CGTWGBInfo.setTitle(" ")
+        self.CGTWLBLInfoType.setText("")
+        self.CGTWLBLInfoPipeline.setText("")
         
-        head = True
-        for history in historyList:
-            history_file = u"当前版本" if head else u"未知版本"
-            if history["status"] == "Submit":
-                file_name = history["file"] if head else ""
-                file_path = currentItem.submitPath if head else historyPath
-                for history_item in history_list:
-                    if history_item["id"] == history["id"]:
-                        history_file = history_item["file"]
-                        file_name = history_item["file"]
-                
-                if not os.path.exists(file_path): history_file = u"路径不存在"
-                item = QTreeWidgetFileItem("%s/%s"%(file_path, file_name),
-                                           self.CGTWTWHistory)
-                item.setText(0, history_file)
-                item.setText(1, history["text"])
-                #label = QtGui.QLabel(self.CGTWTWHistory)
-                #label.setText(history["text"])
-                item.setText(2, history["last_update_by"])
-                item.setText(3, history["last_update_time"])
-                #self.CGTWTWHistory.setItemWidget(item, 1, label)
-            head = False
-                
-        self.CGTWTWHistory.setColumnWidth(0, 200)
-        self.CGTWTWHistory.setColumnWidth(2, 50)
+        self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
+        self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
         
-        items = {}
-        for filebox in currentItem.filebox:
-            if filebox["is_submit"]: continue
-            if not os.path.exists(filebox["path"]): continue
-            
-            if not filebox["title"] in items:
-                items[filebox["title"]] = QtGui.QTreeWidgetItem(self.CGTWTWLink)
-                items[filebox["title"]].setText(0, filebox["title"])
-                items[filebox["title"]].setFlags(QtCore.Qt.ItemIsEnabled)
-            for f in os.listdir(filebox["path"]):
-                if os.path.isfile(os.path.join(filebox["path"], f)):
-                    item = QTreeWidgetFileItem("%s/%s"%(filebox["path"], f))
-                    item.setText(0, f)
-                    items[filebox["title"]].addChild(item)
-                    
-        for i in items:
-            if not items[i].childCount():
-                items[i].setHidden(True)
+        itemList = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
+        treeView = itemList[self.toolBox.currentIndex()]
+        index = treeView.currentIndex()
         
-        asset_type = "shot"
-        for pipeline_info in self.getPipeLineInfo("asset_task"):
-            if pipeline == pipeline_info["name"]:
-                asset_type = "asset"
-                break
-            
-        if asset_type == "asset":
-            info_module = self.tw.info_module(self.project, "asset")
-            cn_name = info_module.get_with_filter(["asset.cn_name"], 
-                                                  [["asset.asset_name", "=", name]])
+        task_id = index.data(QtCore.Qt.UserRole)
         
-            self.CGTWLBLInfoName.setText(name)
-            self.CGTWLBLInfoType.setText(cn_name[0]["asset.cn_name"])
-            self.CGTWLBLInfoPipeline.setText(pipeline)
+        if not task_id: return
         
-        elif asset_type == "shot":
-            info_module = self.tw.info_module(self.project, "shot")
-            cn_name = info_module.get_with_filter(["eps.eps_name"], 
-                                                  [["shot.shot", "=", name]])
-            
-            self.CGTWLBLInfoName.setText(name)
-            self.CGTWLBLInfoType.setText(cn_name[0]["eps.eps_name"])
-            self.CGTWLBLInfoPipeline.setText(pipeline)
+        task_stage = index.data(QtCore.Qt.UserRole+1)
+        task_name = index.data(QtCore.Qt.UserRole+2)
+        task_detail = index.data(QtCore.Qt.UserRole+3)
         
-        else: return
+        self.CGTWBtnSubmit.setEnabled(self.toolBox.currentIndex() == 0)
+        self.CGTWBtnRetake.setEnabled(self.toolBox.currentIndex() == 1)
+        self.CGTWBtnFinal.setEnabled(self.toolBox.currentIndex() == 1)
+        self.CGTWGBInfo.setTitle(task_name)
+        self.CGTWLBLInfoType.setText(task_detail)
+        self.CGTWLBLInfoPipeline.setText(u"制作环节: %s"%task_stage)
+        self.CGTWTVFileHistory.model().update(task_id, task_stage)
+        self.CGTWTVFileLink.model().update(task_id, task_stage)
+        self.CGTWTVFileHistory.setColumnWidth(0, 200)
+        self.CGTWTVFileHistory.setColumnWidth(1, 160)
+        self.CGTWTVFileHistory.setColumnWidth(2, 50)
+        self.CGTWTVFileHistory.setColumnWidth(3, 50)
+        self.CGTWTVFileLink.setColumnWidth(0, 200)
         
-        self.CGTWFrmInfo.setEnabled(True)
-
+    def onFileboxChanged(self, *_):
+        index = self.CGTWTVFileLink.currentIndex()
+        path = index.data(QtCore.Qt.UserRole)
+        
+        if not path: return
+        
+        self.CGTWLVFileLink.setVisible(True)
+        self.CGTWLVFileLink.model().setRootPath(path)
+        self.CGTWLVFileLink.setRootIndex(self.CGTWLVFileLink.model().index(path))
+    
     def connect(self, *_):
         usr = self.CGTWLEUsername.text()
         pwd = self.CGTWLEPassword.text()
@@ -287,10 +243,17 @@ class CGTW(CGTWUI.Ui_CGTWWin):
 
         self.refreshUI()
         
-    def onItemDoubleClicked(self, item, column):
-        if not hasattr(item, "path"): return
-        if not os.path.isfile(item.path): return
-        file_type = item.path.split('.')[-1]
+    def onHistoryItemDoubleClicked(self, index):
+        path = index.data(QtCore.Qt.UserRole).replace('/', '\\')
+        self.open(path)
+    
+    def onLinkItemDoubleClicked(self, index):
+        file_name = index.data(QtCore.Qt.DisplayRole)
+        file_path = index.model().rootPath().replace('/', '\\')
+        self.open(os.path.join(file_path, file_name))
+        
+    def open(self, path):
+        file_type = path.split('.')[-1]
         type_map = {"ma": "mayaAscii", "mb": "mayaBinary"}
         if not file_type in type_map: return
         
@@ -304,40 +267,54 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                                         dismissString='No')
             if not result == u"继续": return
         
-        cmds.file(item.path, f=True, o=True, iv=True, typ=type_map[file_type])
+        cmds.file(path, f=True, o=True, iv=True, typ=type_map[file_type])
+        
     
     def showHistoryContextMenu(self, *_):
-        if not isinstance(self.CGTWTWHistory.currentItem(), QTreeWidgetFileItem): return
+        index = self.CGTWTVFileHistory.currentIndex()
+        path = index.data(QtCore.Qt.UserRole)
+        if not path: return
         self.historyContextMenu.exec_(QtGui.QCursor.pos()) #modal
         
     def showLinkContextMenu(self, *_):
-        if not isinstance(self.CGTWTWLink.currentItem(), QTreeWidgetFileItem): return
+        index = self.CGTWLVFileLink.currentIndex()
+        root = self.CGTWLVFileLink.model().rootPath()
+        path = index.data(QtCore.Qt.DisplayRole)
+        if not os.path.exists(os.path.join(root, path)): return
         self.linkContextMenu.exec_(QtGui.QCursor.pos()) #modal
         
     def historyCopyHandler(self):
-        currentItem = self.CGTWTWHistory.currentItem()
-        pyperclip.copy(currentItem.path)
+        index = self.CGTWTVFileHistory.currentIndex()
+        path = index.data(QtCore.Qt.UserRole)
+        pyperclip.copy(path)
         
     def linkCopyHandler(self):
-        currentItem = self.CGTWTWLink.currentItem()
-        pyperclip.copy(currentItem.path)
+        index = self.CGTWLVFileLink.currentIndex()
+        root = self.CGTWLVFileLink.model().rootPath()
+        path = index.data(QtCore.Qt.DisplayRole)
+        pyperclip.copy(os.path.join(root, path).replace("/", "\\"))
         
     def historyBrowseHandler(self):
-        currentItem = self.CGTWTWHistory.currentItem()
-        cmd = "explorer %s"%os.path.dirname(currentItem.path).replace("/", "\\")
+        index = self.CGTWTVFileHistory.currentIndex()
+        path = os.path.dirname(index.data(QtCore.Qt.UserRole)).replace("/", "\\")
+        cmd = r'explorer "%s"'%path.encode('gbk')
         os.system(cmd)
     
     def linkBrowseHandler(self):
-        currentItem = self.CGTWTWLink.currentItem()
-        cmd = "explorer %s"%os.path.dirname(currentItem.path).replace("/", "\\")
+        index = self.CGTWLVFileLink.currentIndex()
+        root = self.CGTWLVFileLink.model().rootPath()
+        name = index.data(QtCore.Qt.DisplayRole)
+        path = os.path.dirname(os.path.join(root, name)).replace("/", "\\")
+        cmd = r'explorer "%s"'%path.encode('gbk')
         os.system(cmd)
         
-    def create(self, *_):
+    def submit(self, *_):
         import pyblish_starter.api as api
         
-        currentItem = self.CGTWTWTask.currentItem()
-        family = currentItem.text(0).split(': ')[0]
-        name = currentItem.text(0).split(': ')[1]
+        index = self.CGTWTVTask.currentIndex()
+        task_id = index.data(QtCore.Qt.UserRole)
+        family = index.data(QtCore.Qt.UserRole+1)
+        name = index.data(QtCore.Qt.UserRole+2)
 
         if family not in config.getConfig("familyMap"):
             self.CGTWLBLResult.setText(u"<font color=black>所选任务不能在Maya中执行</font>")
@@ -359,7 +336,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         cmds.setAttr("%s_SEL.project"%name, config.getProject(), type="string")
         cmds.setAttr("%s_SEL.pipeline"%name, family, type="string")
         cmds.setAttr("%s_SEL.database"%name, config.getConfig("database"), type="string")
-        cmds.setAttr("%s_SEL.taskID"%name, currentItem.taskID, type="string")
+        cmds.setAttr("%s_SEL.taskID"%name, task_id, type="string")
         
         context = pyblish.util.publish()
         self.CGTWLBLResult.setText(u"<font color=black>任务提交成功</font>")
@@ -371,151 +348,10 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                 break
         cmds.delete("%s_SEL"%name)
         
+    #def retake
+        
     def getAccountInfo(self, account_id, account_field):
         info_module = self.tw.info_module("public", "account")
         result = info_module.get_with_filter([account_field], [["account.id", "=", account_id]])
         return result[0][account_field] if result else ""
 
-    def getTaskInfo(self, **kwargs):
-        result = []
-        tables = {"asset": "asset_name", "shot": "shot"}
-        for table in tables:
-            filters = []
-            for key in kwargs: 
-                if filters: filters.append("and")
-                filters.append(["%s_task.%s" % (table, key), "=", kwargs[key]])
-            if not filters: filters.append(["%s.%s" % (table, tables[table]), "has", "%"])
-                
-            module = self.tw.task_module(self.project, "%s_task" % table)
-            module.init_with_filter(filters)
-            
-            for item in module.get(["%s.%s" % (table, tables[table]),
-                                    "%s_task.pipeline" % table,
-                                    "%s_task.status" % table,
-                                    "%s_task.end_date" % table,
-                                    "%s_task.artist" % table]) or list():
-                if not item["%s.%s" % (table, tables[table])]: continue
-                
-                result.append({"id": item["id"],
-                               "name": item["%s.%s" % (table, tables[table])],
-                               "stage": item["%s_task.pipeline" % table],
-                               "status": item["%s_task.status" % table],
-                               "date": item["%s_task.end_date" % table],
-                               "artist": item["%s_task.artist" % table]})
-            
-        return result
-    
-    def getCheckInfo(self):
-        result = []
-        if not self.tw.sys().get_is_login(): return result
-        
-        tables = {"asset": "asset_name", "shot": "shot"}
-        for table in tables:
-            check_filter = self.tw.con._send("c_work_flow", "get_check_filter", {"db":self.project, "module":"%s_task"%table})
-            if not check_filter: continue
-            
-            module = self.tw.task_module(self.project, "%s_task" % table)
-            module.init_with_filter(check_filter)
-            for item in module.get(["%s.%s" % (table, tables[table]),
-                                    "%s_task.pipeline" % table,
-                                    "%s_task.status" % table,
-                                    "%s_task.end_date" % table,
-                                    "%s_task.artist" % table]) or list():
-                if not item["%s.%s" % (table, tables[table])]: continue
-                
-                result.append({"id": item["id"],
-                               "name": item["%s.%s" % (table, tables[table])],
-                               "stage": item["%s_task.pipeline" % table],
-                               "status": item["%s_task.status" % table],
-                               "date": item["%s_task.end_date" % table],
-                               "artist": item["%s_task.artist" % table]})
-        
-        return result
-    
-    def getHistory(self, **kwargs):
-        for module in ["asset_task", "shot_task"]:
-            filters = []
-            for key in kwargs: 
-                if filters: filters.append("and")
-                filters.append(["#%s" % key if key in ["id", "account_id", "task_id"] else key, "=", kwargs[key]])
-            if not filters: filters.append(["#task_id", "has", "%"])
-            t_history = self.tw.history(self.project, module)
-            history = t_history.get_with_filter(["text", 
-                                                 "last_update_by", 
-                                                 "last_update_time", 
-                                                 "step", 
-                                                 "status",
-                                                 "file"], filters)
-            if not history: continue
-        
-            return sorted(history, key=lambda x:x["last_update_time"], reverse=True)
-
-    def getPipeLineInfo(self, table):
-        tw_pipeline = self.tw.pipeline(self.project)
-        return tw_pipeline.get_with_module(table, ["name"])
-    
-    
-class QTreeWidgetTaskItem(QtGui.QTreeWidgetItem):
-    
-    def __init__(self, task, parent=None):
-        super(QTreeWidgetTaskItem, self).__init__(parent)
-        self._task = task
-        self._filebox = None
-        
-    def _setup_filebox(self):
-        t_tw = tw(CGTW.ip)
-        assert t_tw.sys().get_is_login(), u"Teamwork 未登录"
-        
-        pipeline = t_tw.pipeline(config.getConfig("database"))
-        filebox = t_tw.filebox(config.getConfig("database"))
-        tables = {"asset": "asset_name", "shot": "shot"}
-        for table in tables:
-            pipeline_item = pipeline.get_with_filter(["name"], [["module", "=", "%s_task" % table]])
-        
-            pipeline_id = ""
-            for p in pipeline_item or list():
-                if p["name"] == self._task["stage"]: pipeline_id = p["id"]
-            if not pipeline_id: continue
-            
-            self._filebox = []
-            for filebox_item in filebox.get_with_pipeline_id(pipeline_id, "%s_task" % table) or list():
-                info_module = t_tw.info_module(config.getConfig("database"), "%s_task" % table)
-                info_module.init_with_filter([["%s_task.id" % table, "=", self._task["id"]]])
-                filebox_obj = info_module.get_filebox_with_filebox_id(filebox_item["id"])
-                if filebox_obj: self._filebox.append(filebox_obj)
-        
-        
-    @property
-    def submitPath(self):
-        if not self._filebox: self._setup_filebox()
-        
-        for filebox in self._filebox or list():
-            if filebox["is_submit"]: return filebox["path"]
-            
-        return ""
-    
-    @property
-    def filebox(self):
-        if not self._filebox: self._setup_filebox()
-        
-        return self._filebox    
-    
-    @property
-    def taskID(self):
-        return self._task["id"]
-
-    
-class QTreeWidgetFileItem(QtGui.QTreeWidgetItem):
-    
-    def __init__(self, path, parent=None):
-        super(QTreeWidgetFileItem, self).__init__(parent)
-        
-        self._path = path
-    
-    @property
-    def path(self):
-        return self._path
-        
-        
-        
-        

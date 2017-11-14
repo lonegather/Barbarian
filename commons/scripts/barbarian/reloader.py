@@ -44,6 +44,10 @@ def doIt(rl=False):
         
         import barbarian.cgtw
         if rl: reload(barbarian.cgtw)
+        import barbarian.cgtw.database
+        if rl: reload(barbarian.cgtw.database)
+        import barbarian.cgtw.model
+        if rl: reload(barbarian.cgtw.model)
         
         import barbarian.model
         if rl: reload(barbarian.model)

@@ -87,7 +87,7 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
             self.log.info("abc: %s" % instance.data["abc"])
             
         from barbarian.cgtw import CGTW
-        CGTW.UI().refreshInfo()
+        CGTW.UI().onTaskChanged()
             
     def getHistory(self, instance):
         from cgtw import tw
