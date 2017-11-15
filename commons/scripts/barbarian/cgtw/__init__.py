@@ -1,7 +1,7 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
 
-import os, sys, logging, json, shutil, pyperclip
+import os, sys, re, logging, json, shutil, pyperclip
 import pyblish_lite, pyblish.util
 from barbarian.utils import config
 from barbarian.utils.ui import CGTWUI
@@ -25,6 +25,10 @@ class CGTW(CGTWUI.Ui_CGTWWin):
 
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
+        
+        #回退和发布暂不可用
+        self.CGTWBtnFinal.setVisible(False)
+        self.CGTWBtnRetake.setVisible(False)
         
         taskWorkModel = model.TaskWorkModel()
         self.CGTWTVTask.setModel(taskWorkModel)
@@ -54,8 +58,6 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         cmds.control("CGTWPageCheck", e=True, backgroundColor=[0.24,0.24,0.24])
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
-        self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshUI)
-        self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshUI)
 
         QtCore.QObject.connect(self.CGTWCBProject,
                                QtCore.SIGNAL("activated(int)"),
@@ -155,15 +157,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.onTaskListChanged()
         
     def onTaskListChanged(self, *_):
-        self.CGTWBtnSubmit.setEnabled(False)
-        self.CGTWBtnRetake.setEnabled(False)
-        self.CGTWBtnFinal.setEnabled(False)
-        self.CGTWLVFileLink.setVisible(False)
-        self.CGTWTVFileHistory.model().clear()
-        self.CGTWTVFileLink.model().clear()
-        self.CGTWGBInfo.setTitle(" ")
-        self.CGTWLBLInfoType.setText("")
-        self.CGTWLBLInfoPipeline.setText("")
+        self.clear()
         
         if not database.getAccountInfo(database.ACCOUNT_LOGGED_IN): return
         
@@ -183,15 +177,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         if view_expand[index]: treeView.expandAll()
         
     def onTaskChanged(self, *_):
-        self.CGTWBtnSubmit.setEnabled(False)
-        self.CGTWBtnRetake.setEnabled(False)
-        self.CGTWBtnFinal.setEnabled(False)
-        self.CGTWLVFileLink.setVisible(False)
-        self.CGTWTVFileHistory.model().clear()
-        self.CGTWTVFileLink.model().clear()
-        self.CGTWGBInfo.setTitle(" ")
-        self.CGTWLBLInfoType.setText("")
-        self.CGTWLBLInfoPipeline.setText("")
+        self.clear()
         
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
@@ -206,14 +192,31 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
         task_stage = index.data(QtCore.Qt.UserRole+1)
         task_name = index.data(QtCore.Qt.UserRole+2)
-        task_detail = index.data(QtCore.Qt.UserRole+3)
+        task_status = index.data(QtCore.Qt.UserRole+3)
+        task_detail = index.data(QtCore.Qt.UserRole+4)
+        status_color_map = {"Retake": "background-color: rgba(255, 90, 90, 255);",
+                      "Check": "background-color: rgba(255, 255, 90, 255);",
+                      "Approve": "background-color: rgba(90, 255, 90, 255);",
+                      "FinalApprove": "background-color: rgba(90, 255, 90, 255);"}
+        status_text_map = {"Retake": "[被回退] ",
+                           "Check": "[等待检查] ",
+                           "Approve": "[已发布] ",
+                           "FinalApprove": "[已发布] "}
+        task_history = database.getFileHistoryInfo(task_id)
         
         self.CGTWBtnSubmit.setEnabled(self.toolBox.currentIndex() == 0)
         self.CGTWBtnRetake.setEnabled(self.toolBox.currentIndex() == 1)
         self.CGTWBtnFinal.setEnabled(self.toolBox.currentIndex() == 1)
+        
         self.CGTWGBInfo.setTitle(task_name)
         self.CGTWLBLInfoType.setText(task_detail)
         self.CGTWLBLInfoPipeline.setText(u"制作环节: %s"%task_stage)
+        if task_history and task_status in status_color_map:
+            self.CGTWLBLStatus.setStyleSheet(status_color_map[task_status])
+            self.CGTWLBLStatus.setText(u"<font color=black>%s%s</font>"%
+                                       (status_text_map[task_status], 
+                                        self.extractText(task_history[0]["text"])))
+        
         self.CGTWTVFileHistory.model().update(task_id, task_stage)
         self.CGTWTVFileLink.model().update(task_id, task_stage)
         self.CGTWTVFileHistory.setColumnWidth(0, 200)
@@ -231,6 +234,19 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLVFileLink.setVisible(True)
         self.CGTWLVFileLink.model().setRootPath(path)
         self.CGTWLVFileLink.setRootIndex(self.CGTWLVFileLink.model().index(path))
+        
+    def clear(self):
+        self.CGTWBtnSubmit.setEnabled(False)
+        self.CGTWBtnRetake.setEnabled(False)
+        self.CGTWBtnFinal.setEnabled(False)
+        self.CGTWLVFileLink.setVisible(False)
+        self.CGTWTVFileHistory.model().clear()
+        self.CGTWTVFileLink.model().clear()
+        self.CGTWGBInfo.setTitle(" ")
+        self.CGTWLBLInfoType.setText("")
+        self.CGTWLBLInfoPipeline.setText("")
+        self.CGTWLBLStatus.setText("")
+        self.CGTWLBLStatus.setStyleSheet("border-color: #333333;")
     
     def connect(self, *_):
         usr = self.CGTWLEUsername.text()
@@ -365,5 +381,21 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         index = self.CGTWTVCheck.currentIndex()
         task_id = index.data(QtCore.Qt.UserRole)
         logging.info(task_id)
+        
+    def extractText(self, text):
+        result = ""
+        remove_mode = False
+        for char in text:
+            if char == '<':
+                remove_mode = True
+                continue
+            if char == '>':
+                remove_mode = False
+                continue
+            if not remove_mode:
+                result += char
+                
+        result = result.split("p, li { white-space: pre-wrap; }")[-1]
+        return result
         
 

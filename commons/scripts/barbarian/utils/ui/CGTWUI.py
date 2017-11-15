@@ -2,13 +2,13 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Tue Nov 14 18:00:20 2017
+# Created: Wed Nov 15 17:44:06 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
-from barbarian.utils import ui
+from .. import ui
 
 class Ui_CGTWWin(ui.QtUI):
     def setupUi(self, CGTWWin):
@@ -197,6 +197,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.verticalLayout_5.addLayout(self.horizontalLayout_5)
         self.toolBox.addItem(self.CGTWPageCheck, "")
         self.CGTWPageAll = QtGui.QWidget()
+        self.CGTWPageAll.setGeometry(QtCore.QRect(0, 0, 400, 405))
         self.CGTWPageAll.setObjectName("CGTWPageAll")
         self.verticalLayout_6 = QtGui.QVBoxLayout(self.CGTWPageAll)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -223,26 +224,36 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWGBInfo.setFont(font)
         self.CGTWGBInfo.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.CGTWGBInfo.setObjectName("CGTWGBInfo")
-        self.verticalLayout_3 = QtGui.QVBoxLayout(self.CGTWGBInfo)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.CGTWLBLInfoType = QtGui.QLabel(self.CGTWGBInfo)
-        self.CGTWLBLInfoType.setMinimumSize(QtCore.QSize(0, 20))
+        self.verticalLayout_7 = QtGui.QVBoxLayout(self.CGTWGBInfo)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.CGTWLBLInfoPipeline = QtGui.QLabel(self.CGTWGBInfo)
+        self.CGTWLBLInfoPipeline.setMinimumSize(QtCore.QSize(200, 20))
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
         font.setPointSize(10)
         font.setWeight(75)
         font.setBold(True)
-        self.CGTWLBLInfoType.setFont(font)
-        self.CGTWLBLInfoType.setObjectName("CGTWLBLInfoType")
-        self.verticalLayout_3.addWidget(self.CGTWLBLInfoType)
-        self.CGTWLBLInfoPipeline = QtGui.QLabel(self.CGTWGBInfo)
-        self.CGTWLBLInfoPipeline.setMinimumSize(QtCore.QSize(0, 20))
+        self.CGTWLBLInfoPipeline.setFont(font)
+        self.CGTWLBLInfoPipeline.setObjectName("CGTWLBLInfoPipeline")
+        self.verticalLayout_7.addWidget(self.CGTWLBLInfoPipeline)
+        self.CGTWLBLInfoType = QtGui.QLabel(self.CGTWGBInfo)
+        self.CGTWLBLInfoType.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
         font.setPointSize(10)
-        self.CGTWLBLInfoPipeline.setFont(font)
-        self.CGTWLBLInfoPipeline.setObjectName("CGTWLBLInfoPipeline")
-        self.verticalLayout_3.addWidget(self.CGTWLBLInfoPipeline)
+        self.CGTWLBLInfoType.setFont(font)
+        self.CGTWLBLInfoType.setObjectName("CGTWLBLInfoType")
+        self.verticalLayout_7.addWidget(self.CGTWLBLInfoType)
+        self.CGTWLBLStatus = QtGui.QLabel(self.CGTWGBInfo)
+        self.CGTWLBLStatus.setMinimumSize(QtCore.QSize(0, 30))
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        self.CGTWLBLStatus.setFont(font)
+        self.CGTWLBLStatus.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.CGTWLBLStatus.setFrameShadow(QtGui.QFrame.Sunken)
+        self.CGTWLBLStatus.setObjectName("CGTWLBLStatus")
+        self.verticalLayout_7.addWidget(self.CGTWLBLStatus)
         self.CGTWTVFileHistory = QtGui.QTreeView(self.CGTWGBInfo)
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
@@ -253,7 +264,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWTVFileHistory.setAlternatingRowColors(True)
         self.CGTWTVFileHistory.setIndentation(21)
         self.CGTWTVFileHistory.setObjectName("CGTWTVFileHistory")
-        self.verticalLayout_3.addWidget(self.CGTWTVFileHistory)
+        self.verticalLayout_7.addWidget(self.CGTWTVFileHistory)
         self.CGTWFrmInfo = QtGui.QFrame(self.CGTWGBInfo)
         self.CGTWFrmInfo.setObjectName("CGTWFrmInfo")
         self.horizontalLayout_3 = QtGui.QHBoxLayout(self.CGTWFrmInfo)
@@ -280,8 +291,8 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWLVFileLink.setObjectName("CGTWLVFileLink")
         self.horizontalLayout_3.addWidget(self.CGTWLVFileLink)
         self.horizontalLayout_3.setStretch(1, 1)
-        self.verticalLayout_3.addWidget(self.CGTWFrmInfo)
-        self.verticalLayout_3.setStretch(3, 1)
+        self.verticalLayout_7.addWidget(self.CGTWFrmInfo)
+        self.verticalLayout_7.setStretch(4, 1)
         self.horizontalLayout_2.addWidget(self.CGTWGBInfo)
         self.horizontalLayout_2.setStretch(1, 1)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -301,6 +312,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWLBLResult.setFrameShadow(QtGui.QFrame.Sunken)
         self.CGTWLBLResult.setObjectName("CGTWLBLResult")
         self.verticalLayout_2.addWidget(self.CGTWLBLResult)
+        self.verticalLayout_2.setStretch(2, 1)
         CGTWWin.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(CGTWWin)
@@ -321,6 +333,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.toolBox.setItemText(self.toolBox.indexOf(self.CGTWPageCheck), QtGui.QApplication.translate("CGTWWin", "检查任务", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBox.setItemText(self.toolBox.indexOf(self.CGTWPageAll), QtGui.QApplication.translate("CGTWWin", "所有任务", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWGBInfo.setTitle(QtGui.QApplication.translate("CGTWWin", "任务详情", None, QtGui.QApplication.UnicodeUTF8))
-        self.CGTWLBLInfoType.setText(QtGui.QApplication.translate("CGTWWin", "中文名称/场次", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWLBLInfoPipeline.setText(QtGui.QApplication.translate("CGTWWin", "制作阶段", None, QtGui.QApplication.UnicodeUTF8))
+        self.CGTWLBLInfoType.setText(QtGui.QApplication.translate("CGTWWin", "中文名称/场次", None, QtGui.QApplication.UnicodeUTF8))
+        self.CGTWLBLStatus.setText(QtGui.QApplication.translate("CGTWWin", "任务状态", None, QtGui.QApplication.UnicodeUTF8))
 

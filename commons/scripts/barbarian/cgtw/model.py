@@ -130,7 +130,7 @@ class FileHistoryModel(QtGui.QStandardItemModel):
         return ['text/uri-list']
     
     def update(self, task_id, task_stage):
-        self._history = database.getFileHistoryInfo(task_id=task_id)
+        self._history = database.getFileHistoryInfo(task_id)
         self._filebox = database.getFileBox(task_id, task_stage)
         self.clear()
         
@@ -169,7 +169,7 @@ class FileHistoryModel(QtGui.QStandardItemModel):
                 
                 root.appendRow(items)
                 
-            head = False
+                head = False
             
             
 class FileLinkModel(QtGui.QStandardItemModel):
@@ -216,12 +216,27 @@ class TaskItem(QtGui.QStandardItem):
         
         self._task = task
         self._detail = ""
+        
+        if task["status"] == "Retake":
+            self.setForeground(QtGui.QBrush(QtCore.Qt.red))
+        elif task["status"] == "Check":
+            self.setForeground(QtGui.QBrush(QtCore.Qt.yellow))
+        elif task["status"] in ["Approve", "FinalApprove"]:
+            self.setForeground(QtGui.QBrush(QtCore.Qt.green))
     
     def data(self, role=QtCore.Qt.DisplayRole):
-        if role == QtCore.Qt.UserRole: return self._task["id"]
+        if role == QtCore.Qt.BackgroundRole and self._task["status"] == "Retake":
+            brush = QtGui.QBrush(QtCore.Qt.red)
+            return brush
+        elif role == QtCore.Qt.FontRole and self._task["status"] == "Retake": 
+            bold_font = QtGui.QFont()
+            bold_font.setBold(True)
+            return bold_font
+        elif role == QtCore.Qt.UserRole: return self._task["id"]
         elif role == QtCore.Qt.UserRole + 1: return self._task["stage"]
         elif role == QtCore.Qt.UserRole + 2: return self._task["name"]
-        elif role == QtCore.Qt.UserRole + 3: 
+        elif role == QtCore.Qt.UserRole + 3: return self._task["status"]
+        elif role == QtCore.Qt.UserRole + 4: 
             if not self._detail:
                 asset_type = "shot"
                 for pipeline_info in database.getPipeLineInfo("asset_task"):

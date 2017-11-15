@@ -118,25 +118,26 @@ def getCheckInfo():
     return result
 
 
-def getFileHistoryInfo(**kwargs):
+def getFileHistoryInfo(task_id):
     if not getAccountInfo(ACCOUNT_LOGGED_IN): return []
     
-    for module in ["asset_task", "shot_task"]:
-        filters = []
-        for key in kwargs: 
-            if filters: filters.append("and")
-            filters.append(["#%s" % key if key in ["id", "account_id", "task_id"] else key, "=", kwargs[key]])
-        if not filters: filters.append(["#task_id", "has", "%"])
-        t_history = tw.history(config.getConfig("database"), module)
-        history = t_history.get_with_filter(["text", 
-                                             "last_update_by", 
-                                             "last_update_time", 
-                                             "step", 
-                                             "status",
-                                             "file"], filters)
-        if not history: continue
+    if task_id == History.task_id: return History.content
+    History.task_id = task_id
     
-        return sorted(history, key=lambda x:x["last_update_time"], reverse=True)
+    for module in ["asset_task", "shot_task"]:
+        
+        t_history = tw.history(config.getConfig("database"), module)
+        History.content = t_history.get_with_filter(["text", 
+                                                     "last_update_by", 
+                                                     "last_update_time", 
+                                                     "step", 
+                                                     "status",
+                                                     "file"], 
+                                                    [["#task_id", "=", task_id]])
+        if not History.content: continue
+        History.content = sorted(History.content, key=lambda x:x["last_update_time"], reverse=True)
+    
+        return History.content
 
 
 def getFileBox(task_id, task_stage):
@@ -167,6 +168,11 @@ def getFileBox(task_id, task_stage):
 
 
 class Filebox:
+    task_id = ""
+    content = []
+    
+
+class History:
     task_id = ""
     content = []
     

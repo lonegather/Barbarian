@@ -16,6 +16,7 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
 
     def process(self, instance):
         import os, stat, json, shutil, errno
+        from barbarian.cgtw import database
         from cgtw import tw
 
         context = instance.context
@@ -51,7 +52,7 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
                 self.log.critical(u"未知错误，无法保存历史版本")
                 raise
             
-        latest_history = self.getHistory(instance)[0]
+        latest_history = database.getFileHistoryInfo(instance.data["taskID"])[0]
         latest_filename = self.getVersion(historyPath, filename)
         
         os.chmod(remotePath, stat.S_IWRITE)
@@ -87,7 +88,7 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
             self.log.info("abc: %s" % instance.data["abc"])
             
         from barbarian.cgtw import CGTW
-        CGTW.UI().onTaskChanged()
+        CGTW.UI().refreshUI()
             
     def getHistory(self, instance):
         from cgtw import tw
