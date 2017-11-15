@@ -18,6 +18,9 @@ ACCOUNT_NAME = "account.name"
 ACCOUNT_DEPARTMENT = "account.department"
 
 
+tw(IP)
+
+
 def login(user, password):
     tw.sys().login(user, password, IP)
     
