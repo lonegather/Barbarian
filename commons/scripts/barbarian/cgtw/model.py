@@ -15,7 +15,7 @@ class TaskWorkModel(QtGui.QStandardItemModel):
     dataChanged = QtCore.Signal()
                 
     def update(self):
-        data = database.getTaskInfo(account_id = database.getAccoundInfo())
+        data = database.getTaskInfo(account_id = database.getAccountInfo())
         self.clear()
         
         root = self.invisibleRootItem()

@@ -8,11 +8,11 @@ from barbarian.utils.ui import CGTWUI
 from PySide import QtCore, QtGui
 import maya.OpenMaya as om
 from maya import cmds
-import model
+import model, database
 
 
 try:
-    from cgtw import *
+    from cgtw import tw
 except ImportError:
     pass
 
@@ -22,7 +22,6 @@ def UI(*_):
 
 
 class CGTW(CGTWUI.Ui_CGTWWin):
-    ip = "10.1.11.100"
 
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
@@ -64,6 +63,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.toolBox.currentChanged.connect(self.onTaskListChanged)
         self.CGTWBtnRefresh.clicked.connect(self.refreshUI)
         self.CGTWBtnSubmit.clicked.connect(self.submit)
+        self.CGTWBtnFinal.clicked.connect(self.publish)
+        self.CGTWBtnRetake.clicked.connect(self.retake)
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
         self.CGTWTVFileHistory.doubleClicked.connect(self.onHistoryItemDoubleClicked)
@@ -93,7 +94,6 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         font.setPointSize(10)
         self.linkContextMenu.setFont(font)
 
-        self.tw = tw(self.ip)
         self.id = ""
         self.project = ""
         self.family = {}
@@ -126,22 +126,23 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWGBInfo.setTitle(" ")
         self.CGTWLBLInfoType.setText("")
         self.CGTWLBLInfoPipeline.setText("")
-        self.toolBox.setEnabled(self.tw.sys().get_is_login())
-        self.CGTWBtnRefresh.setEnabled(self.tw.sys().get_is_login())
-        self.CGTWGBInfo.setEnabled(self.tw.sys().get_is_login())
-        self.CGTWLEUsername.setVisible(not self.tw.sys().get_is_login())
-        self.CGTWLEPassword.setVisible(not self.tw.sys().get_is_login())
-        self.CGTWBtnConnect.setVisible(not self.tw.sys().get_is_login())
-        self.CGTWLEDeregister.setVisible(self.tw.sys().get_is_login())
+        self.toolBox.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWBtnRefresh.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWGBInfo.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWLEUsername.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWLEPassword.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWBtnConnect.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWLEDeregister.setVisible(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
         
         self.CGTWLBLResult.setText("")
         self.CGTWLBLResult.setStyleSheet("background-color: #333333;")
-
-        if self.tw.sys().get_is_login():
-            self.id = self.tw.sys().get_account_id()
+        
+        database.getAccountInfo(database.ACCOUNT_LOGGED_IN)
+        if database.getAccountInfo(database.ACCOUNT_LOGGED_IN):
+            self.id = database.getAccountInfo()
             self.CGTWLBLUser.setText(u"欢迎，[%s] %s" % 
-                                     (self.getAccountInfo(self.id, "account.department"), 
-                                      self.getAccountInfo(self.id, "account.name")))
+                                     (database.getAccountInfo(database.ACCOUNT_DEPARTMENT), 
+                                      database.getAccountInfo(database.ACCOUNT_NAME)))
         else:
             self.id = ""
             self.CGTWLBLUser.setText(u"请登录...")
@@ -164,7 +165,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLBLInfoType.setText("")
         self.CGTWLBLInfoPipeline.setText("")
         
-        if not self.tw.sys().get_is_login():return
+        if not database.getAccountInfo(database.ACCOUNT_LOGGED_IN): return
         
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
@@ -234,12 +235,12 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def connect(self, *_):
         usr = self.CGTWLEUsername.text()
         pwd = self.CGTWLEPassword.text()
-        self.tw.sys().login(usr, pwd, self.ip)
+        database.login(usr, pwd)
 
         self.refreshUI()
 
     def disconnect(self, *_):
-        self.tw.sys().logout()
+        database.logout()
 
         self.refreshUI()
         
@@ -297,7 +298,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def historyBrowseHandler(self):
         index = self.CGTWTVFileHistory.currentIndex()
         path = os.path.dirname(index.data(QtCore.Qt.UserRole)).replace("/", "\\")
-        cmd = r'explorer "%s"'%path.encode('gbk')
+        cmd = r'explorer "%s"' % path.encode('gbk')
         os.system(cmd)
     
     def linkBrowseHandler(self):
@@ -305,7 +306,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         root = self.CGTWLVFileLink.model().rootPath()
         name = index.data(QtCore.Qt.DisplayRole)
         path = os.path.dirname(os.path.join(root, name)).replace("/", "\\")
-        cmd = r'explorer "%s"'%path.encode('gbk')
+        cmd = r'explorer "%s"' % path.encode('gbk')
         os.system(cmd)
         
     def submit(self, *_):
@@ -348,10 +349,21 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                 break
         cmds.delete("%s_SEL"%name)
         
-    #def retake
+    def retake(self, *_):
+        index = self.CGTWTVCheck.currentIndex()
+        task_id = index.data(QtCore.Qt.UserRole)
+        tables = ["asset_task", "shot_task"]
+        logging.info(task_id)
         
-    def getAccountInfo(self, account_id, account_field):
-        info_module = self.tw.info_module("public", "account")
-        result = info_module.get_with_filter([account_field], [["account.id", "=", account_id]])
-        return result[0][account_field] if result else ""
+        for table in tables:
+            module = tw.task_module(config.getConfig("database"), table)
+            if not module.get_with_filter(["%s.id"%table], [["%s.id"%table, "=", task_id]]): continue
+            module.init_with_id(task_id)
+            module.set({"%s.leader_status"%table: "Retake"})
+    
+    def publish(self, *_):
+        index = self.CGTWTVCheck.currentIndex()
+        task_id = index.data(QtCore.Qt.UserRole)
+        logging.info(task_id)
+        
 

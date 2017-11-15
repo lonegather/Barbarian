@@ -11,17 +11,27 @@ from cgtw import tw
 from barbarian.utils import config
 
 
+IP = "10.1.11.100"
 ACCOUNT_ID = "get_account_id"
 ACCOUNT_LOGGED_IN = "get_is_login"
 ACCOUNT_NAME = "account.name"
+ACCOUNT_DEPARTMENT = "account.department"
 
 
-def getAccoundInfo(arg=ACCOUNT_ID):
+def login(user, password):
+    tw.sys().login(user, password, IP)
+    
+    
+def logout():
+    tw.sys().logout()
+
+
+def getAccountInfo(arg=ACCOUNT_ID):
     account_id = tw.sys().get_account_id()
     if arg == ACCOUNT_ID:
         return account_id
     elif arg == ACCOUNT_LOGGED_IN:
-        return tw.sys().get_is_login()
+        return not (tw.sys().get_account() == u'please login!!!' or tw.sys().get_account() == u'')
     else:
         info_module = tw.info_module("public", "account")
         result = info_module.get_with_filter([arg], [["account.id", "=", account_id]])
@@ -46,7 +56,7 @@ def getShotInfo(name):
 
 
 def getTaskInfo(**kwargs):
-    if not getAccoundInfo(ACCOUNT_LOGGED_IN): return []
+    if not getAccountInfo(ACCOUNT_LOGGED_IN): return []
         
     result = []
     tables = {"asset": "asset_name", "shot": "shot"}
@@ -79,7 +89,7 @@ def getTaskInfo(**kwargs):
 
 def getCheckInfo():
     result = []
-    if not getAccoundInfo(ACCOUNT_LOGGED_IN): return result
+    if not getAccountInfo(ACCOUNT_LOGGED_IN): return result
     
     tables = {"asset": "asset_name", "shot": "shot"}
     for table in tables:
@@ -106,7 +116,7 @@ def getCheckInfo():
 
 
 def getFileHistoryInfo(**kwargs):
-    if not getAccoundInfo(ACCOUNT_LOGGED_IN): return []
+    if not getAccountInfo(ACCOUNT_LOGGED_IN): return []
     
     for module in ["asset_task", "shot_task"]:
         filters = []
@@ -127,7 +137,7 @@ def getFileHistoryInfo(**kwargs):
 
 
 def getFileBox(task_id, task_stage):
-    if not getAccoundInfo(ACCOUNT_LOGGED_IN): return []
+    if not getAccountInfo(ACCOUNT_LOGGED_IN): return []
     
     if task_id == Filebox.task_id: return Filebox.content
     Filebox.task_id = task_id
