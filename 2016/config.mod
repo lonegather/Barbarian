@@ -17,3 +17,13 @@ MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts
 icons: ../commons/icons
+
++ PLATFORM:win64 MAYAVERSION:2014 CGPiper 1.0 ../2014/
+BARBARIAN_LOCATION:= 
+PATH+:= ../commons/bin
+PYTHONPATH+:= ../commons/libs
+PYTHONPATH+= C:/cgteamwork/bin/base
+MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
+MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
+scripts: ../commons/scripts
+icons: ../commons/icons
