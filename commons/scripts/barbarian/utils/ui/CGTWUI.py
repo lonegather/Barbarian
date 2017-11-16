@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Thu Nov 16 10:16:08 2017
+# Created: Thu Nov 16 18:11:41 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -55,6 +55,14 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWBtnRefresh.setFont(font)
         self.CGTWBtnRefresh.setObjectName("CGTWBtnRefresh")
         self.horizontalLayout.addWidget(self.CGTWBtnRefresh)
+        self.CGTWBtnHelp = QtGui.QPushButton(self.centralwidget)
+        self.CGTWBtnHelp.setMinimumSize(QtCore.QSize(100, 30))
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        self.CGTWBtnHelp.setFont(font)
+        self.CGTWBtnHelp.setObjectName("CGTWBtnHelp")
+        self.horizontalLayout.addWidget(self.CGTWBtnHelp)
         self.CGTWLBLUser = QtGui.QLabel(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -331,6 +339,7 @@ class Ui_CGTWWin(ui.QtUI):
         CGTWWin.setWindowTitle(QtGui.QApplication.translate("CGTWWin", "Teamwork", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("CGTWWin", "项目：", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWBtnRefresh.setText(QtGui.QApplication.translate("CGTWWin", "刷新", None, QtGui.QApplication.UnicodeUTF8))
+        self.CGTWBtnHelp.setText(QtGui.QApplication.translate("CGTWWin", "帮助", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWBtnConnect.setText(QtGui.QApplication.translate("CGTWWin", "登录", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWLEDeregister.setText(QtGui.QApplication.translate("CGTWWin", "注销", None, QtGui.QApplication.UnicodeUTF8))
         self.CGTWBtnSubmit.setText(QtGui.QApplication.translate("CGTWWin", "提交检查", None, QtGui.QApplication.UnicodeUTF8))

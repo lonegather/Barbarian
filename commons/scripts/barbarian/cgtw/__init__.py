@@ -75,6 +75,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnRetake.clicked.connect(self.retake)
         self.CGTWBtnConnect.clicked.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
+        self.CGTWBtnHelp.clicked.connect(self.help)
         self.CGTWTVFileHistory.doubleClicked.connect(self.onHistoryItemDoubleClicked)
         self.CGTWTVFileHistory.customContextMenuRequested.connect(self.showHistoryContextMenu)
         self.CGTWLVFileLink.doubleClicked.connect(self.onLinkItemDoubleClicked)
@@ -406,5 +407,11 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                 
         result = result.split("p, li { white-space: pre-wrap; }")[-1]
         return result
+    
+    def help(self):
+        import webbrowser
+
+        url = 'https://github.com/lonegather/Barbarian/wiki/%E4%BD%BF%E7%94%A8%E5%B8%AE%E5%8A%A9'
+        webbrowser.open(url)
         
 
