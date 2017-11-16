@@ -7,6 +7,7 @@ Created on 2017.7.17
 '''
 
 import os
+from PySide import QtCore, QtGui
 from xml.dom import minidom
 from maya import cmds
 
@@ -57,6 +58,25 @@ def getConfig(attr, prj=None):
     --------------------------------------------------------------------------------
     '''
     return Config.getConfig(attr, prj)
+
+
+class ProjectModel(QtCore.QAbstractListModel):
+    
+    def __init__(self, parent=None):
+        super(ProjectModel, self).__init__(parent)
+        self._projects = Config.getProject(all=True)
+        
+    def rowCount(self, *_):
+        return len(self._projects)
+    
+    def data(self, index, role):
+        if not index.isValid(): return
+        if index.row() >= len(self._projects): return
+        
+        if role == QtCore.Qt.DisplayRole:
+            return self._projects[index.row()]
+        
+        return
 
 
 class Config(object):

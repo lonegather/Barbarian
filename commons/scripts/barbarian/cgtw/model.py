@@ -129,7 +129,7 @@ class FileHistoryModel(QtGui.QStandardItemModel):
     def mimeTypes(self):
         return ['text/uri-list']
     
-    def update(self, task_id, task_stage):
+    def update(self, task_id, task_stage, task_file):
         self._history = database.getFileHistoryInfo(task_id)
         self._filebox = database.getFileBox(task_id, task_stage)
         self.clear()
@@ -151,7 +151,7 @@ class FileHistoryModel(QtGui.QStandardItemModel):
         
         for history in self._history or list():
             history_file = u"当前版本" if head else u"未知版本"
-            if history["status"] == "Submit":
+            if history["status"] == "Submit" and history["file"] == task_file:
                 file_name = history["file"] if head else ""
                 file_path = submit_path if head else historyPath
                 for history_item in history_list:
@@ -199,7 +199,28 @@ class FileLinkModel(QtGui.QStandardItemModel):
             if not os.path.exists(filebox["path"]): continue
             
             root.appendRow(FileItem(filebox["path"], filebox["title"]))
+
+
+class FileListModel(QtGui.QStandardItemModel):
     
+    dataChanged = QtCore.Signal()
+    
+    def __init__(self, parent=None):
+        super(FileListModel, self).__init__(parent)
+        
+    def update(self, task_id):
+        self._history = database.getFileHistoryInfo(task_id)
+        
+        self.clear()
+        
+        root = self.invisibleRootItem()
+        file_list = []
+        
+        for history in self._history:
+            if not history["file"] or history["file"] in file_list: continue
+            file_list.append(history["file"])
+            root.appendRow(QtGui.QStandardItem(history["file"]))
+
 
 class LabelItem(QtGui.QStandardItem):
     

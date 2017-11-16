@@ -26,6 +26,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
         
+        self.CGTWCBProject.setModel(config.ProjectModel())
+        
         #回退和发布暂不可用
         self.CGTWBtnFinal.setVisible(False)
         self.CGTWBtnRetake.setVisible(False)
@@ -49,6 +51,10 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         fileLinkModel = model.FileLinkModel()
         self.CGTWTVFileLink.setModel(fileLinkModel)
         self.CGTWTVFileLink.clicked.connect(self.onFileboxChanged)
+        
+        fileListModel = model.FileListModel()
+        self.CGTWCBFile.setModel(fileListModel)
+        self.CGTWCBFile.currentIndexChanged.connect(self.onFileChanged)
         
         fileModel = QtGui.QFileSystemModel()
         self.CGTWLVFileLink.setModel(fileModel)
@@ -101,43 +107,23 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.family = {}
 
         self.refreshProject()
-        
 
     def refreshProject(self, *_):
+        self.reset()
+        
         if config.getProject():
-            if not self.CGTWCBProject.count():
-                projects = config.getProject(all=True)
-                for prj in projects: self.CGTWCBProject.addItem(prj)
             self.CGTWCBProject.setCurrentText(config.getProject())
         elif config.getProject(all=True):
-            if not self.CGTWCBProject.count():
-                projects = config.getProject(all=True)
-                for prj in projects: self.CGTWCBProject.addItem(prj)
-                self.CGTWCBProject.setCurrentIndex(-1)
+            self.CGTWCBProject.setCurrentIndex(-1)
             return
-        else:
-            while self.CGTWCBProject.count():
-                self.CGTWCBProject.removeItem(0)
-            return
+        else: return
 
         self.project = config.getConfig("database")
         
         self.refreshUI()
     
     def refreshUI(self, *_):
-        self.CGTWGBInfo.setTitle(" ")
-        self.CGTWLBLInfoType.setText("")
-        self.CGTWLBLInfoPipeline.setText("")
-        self.toolBox.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        self.CGTWBtnRefresh.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        self.CGTWGBInfo.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        self.CGTWLEUsername.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        self.CGTWLEPassword.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        self.CGTWBtnConnect.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        self.CGTWLEDeregister.setVisible(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
-        
-        self.CGTWLBLResult.setText("")
-        self.CGTWLBLResult.setStyleSheet("background-color: #333333;")
+        self.reset()
         
         database.getAccountInfo(database.ACCOUNT_LOGGED_IN)
         if database.getAccountInfo(database.ACCOUNT_LOGGED_IN):
@@ -155,6 +141,19 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         checkModel.update()
         
         self.onTaskListChanged()
+        
+    def reset(self):
+        self.clear()
+        self.toolBox.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWBtnRefresh.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWGBInfo.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWLEUsername.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWLEPassword.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWBtnConnect.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.CGTWLEDeregister.setVisible(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        
+        self.CGTWLBLResult.setText("")
+        self.CGTWLBLResult.setStyleSheet("background-color: #333333;")
         
     def onTaskListChanged(self, *_):
         self.clear()
@@ -182,18 +181,14 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
         
-        itemList = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
-        treeView = itemList[self.toolBox.currentIndex()]
-        index = treeView.currentIndex()
-        
-        task_id = index.data(QtCore.Qt.UserRole)
+        task_id = self.getCurrentTaskInfo(QtCore.Qt.UserRole)
         
         if not task_id: return
         
-        task_stage = index.data(QtCore.Qt.UserRole+1)
-        task_name = index.data(QtCore.Qt.UserRole+2)
-        task_status = index.data(QtCore.Qt.UserRole+3)
-        task_detail = index.data(QtCore.Qt.UserRole+4)
+        task_stage = self.getCurrentTaskInfo(QtCore.Qt.UserRole+1)
+        task_name = self.getCurrentTaskInfo(QtCore.Qt.UserRole+2)
+        task_status = self.getCurrentTaskInfo(QtCore.Qt.UserRole+3)
+        task_detail = self.getCurrentTaskInfo(QtCore.Qt.UserRole+4)
         status_color_map = {"Retake": "background-color: rgba(255, 90, 90, 255);",
                       "Check": "background-color: rgba(255, 255, 90, 255);",
                       "Approve": "background-color: rgba(90, 255, 90, 255);",
@@ -217,13 +212,26 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                                        (status_text_map[task_status], 
                                         self.extractText(task_history[0]["text"])))
         
-        self.CGTWTVFileHistory.model().update(task_id, task_stage)
+        self.CGTWCBFile.model().update(task_id)
         self.CGTWTVFileLink.model().update(task_id, task_stage)
+        self.CGTWTVFileLink.setColumnWidth(0, 200)
+        
+    def onFileChanged(self, *_):
+        task_id = self.getCurrentTaskInfo(QtCore.Qt.UserRole)
+        task_stage = self.getCurrentTaskInfo(QtCore.Qt.UserRole+1)
+        file_name = self.CGTWCBFile.currentText()
+        
+        self.CGTWTVFileHistory.model().update(task_id, task_stage, file_name)
         self.CGTWTVFileHistory.setColumnWidth(0, 200)
         self.CGTWTVFileHistory.setColumnWidth(1, 160)
         self.CGTWTVFileHistory.setColumnWidth(2, 50)
         self.CGTWTVFileHistory.setColumnWidth(3, 50)
-        self.CGTWTVFileLink.setColumnWidth(0, 200)
+        
+    def getCurrentTaskInfo(self, role):
+        itemList = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
+        treeView = itemList[self.toolBox.currentIndex()]
+        index = treeView.currentIndex()
+        return index.data(role)
         
     def onFileboxChanged(self, *_):
         index = self.CGTWTVFileLink.currentIndex()
@@ -242,6 +250,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLVFileLink.setVisible(False)
         self.CGTWTVFileHistory.model().clear()
         self.CGTWTVFileLink.model().clear()
+        self.CGTWCBFile.clear()
         self.CGTWGBInfo.setTitle(" ")
         self.CGTWLBLInfoType.setText("")
         self.CGTWLBLInfoPipeline.setText("")

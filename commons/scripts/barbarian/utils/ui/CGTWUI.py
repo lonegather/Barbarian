@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Wed Nov 15 17:44:06 2017
+# Created: Thu Nov 16 10:16:08 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -254,6 +254,13 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWLBLStatus.setFrameShadow(QtGui.QFrame.Sunken)
         self.CGTWLBLStatus.setObjectName("CGTWLBLStatus")
         self.verticalLayout_7.addWidget(self.CGTWLBLStatus)
+        self.CGTWCBFile = QtGui.QComboBox(self.CGTWGBInfo)
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        self.CGTWCBFile.setFont(font)
+        self.CGTWCBFile.setObjectName("CGTWCBFile")
+        self.verticalLayout_7.addWidget(self.CGTWCBFile)
         self.CGTWTVFileHistory = QtGui.QTreeView(self.CGTWGBInfo)
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
@@ -292,7 +299,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.horizontalLayout_3.addWidget(self.CGTWLVFileLink)
         self.horizontalLayout_3.setStretch(1, 1)
         self.verticalLayout_7.addWidget(self.CGTWFrmInfo)
-        self.verticalLayout_7.setStretch(4, 1)
+        self.verticalLayout_7.setStretch(5, 1)
         self.horizontalLayout_2.addWidget(self.CGTWGBInfo)
         self.horizontalLayout_2.setStretch(1, 1)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)

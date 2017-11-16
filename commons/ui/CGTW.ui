@@ -467,7 +467,7 @@
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,1">
+        <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,0,1">
          <item>
           <widget class="QLabel" name="CGTWLBLInfoPipeline">
            <property name="minimumSize">
@@ -530,6 +530,16 @@
            </property>
            <property name="text">
             <string>任务状态</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="CGTWCBFile">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
            </property>
           </widget>
          </item>
