@@ -48,6 +48,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.cgtw.database)
         import barbarian.cgtw.model
         if rl: reload(barbarian.cgtw.model)
+        import barbarian.cgtw.delegate
+        if rl: reload(barbarian.cgtw.delegate)
         
         import barbarian.model
         if rl: reload(barbarian.model)

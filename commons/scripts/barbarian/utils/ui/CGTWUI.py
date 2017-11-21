@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Thu Nov 16 18:11:41 2017
+# Created: Mon Nov 20 17:30:44 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,7 +34,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
-        self.CGTWCBProject = ui.QOptionMenu(self.centralwidget)
+        self.CGTWCBProject = ui.OptionMenu(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -252,6 +252,8 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWLBLInfoType.setFont(font)
         self.CGTWLBLInfoType.setObjectName("CGTWLBLInfoType")
         self.verticalLayout_7.addWidget(self.CGTWLBLInfoType)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.CGTWLBLStatus = QtGui.QLabel(self.CGTWGBInfo)
         self.CGTWLBLStatus.setMinimumSize(QtCore.QSize(0, 30))
         font = QtGui.QFont()
@@ -261,14 +263,17 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWLBLStatus.setFrameShape(QtGui.QFrame.StyledPanel)
         self.CGTWLBLStatus.setFrameShadow(QtGui.QFrame.Sunken)
         self.CGTWLBLStatus.setObjectName("CGTWLBLStatus")
-        self.verticalLayout_7.addWidget(self.CGTWLBLStatus)
+        self.horizontalLayout_4.addWidget(self.CGTWLBLStatus)
         self.CGTWCBFile = QtGui.QComboBox(self.CGTWGBInfo)
+        self.CGTWCBFile.setMinimumSize(QtCore.QSize(200, 30))
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
         font.setPointSize(10)
         self.CGTWCBFile.setFont(font)
         self.CGTWCBFile.setObjectName("CGTWCBFile")
-        self.verticalLayout_7.addWidget(self.CGTWCBFile)
+        self.horizontalLayout_4.addWidget(self.CGTWCBFile)
+        self.horizontalLayout_4.setStretch(0, 1)
+        self.verticalLayout_7.addLayout(self.horizontalLayout_4)
         self.CGTWTVFileHistory = QtGui.QTreeView(self.CGTWGBInfo)
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
@@ -307,7 +312,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.horizontalLayout_3.addWidget(self.CGTWLVFileLink)
         self.horizontalLayout_3.setStretch(1, 1)
         self.verticalLayout_7.addWidget(self.CGTWFrmInfo)
-        self.verticalLayout_7.setStretch(5, 1)
+        self.verticalLayout_7.setStretch(4, 1)
         self.horizontalLayout_2.addWidget(self.CGTWGBInfo)
         self.horizontalLayout_2.setStretch(1, 1)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)

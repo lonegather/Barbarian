@@ -10,9 +10,32 @@ import os, json, logging
 from PySide import QtGui, QtCore
 from . import database
 
-class TaskWorkModel(QtGui.QStandardItemModel):
+
+TASK_DATA_TYPE = "task.data"
+TASK_LABEL_TYPE = "task.label"
+
+TASK_ITEM_TYPE = QtCore.Qt.UserRole
+TASK_ID = QtCore.Qt.UserRole + 1
+TASK_STAGE = QtCore.Qt.UserRole + 2
+TASK_NAME = QtCore.Qt.UserRole + 3
+TASK_DATE = QtCore.Qt.UserRole + 4
+TASK_ARTIST = QtCore.Qt.UserRole + 5
+TASK_STATUS = QtCore.Qt.UserRole + 6
+TASK_DETAIL = QtCore.Qt.UserRole + 7
+
+FILE_PATH = QtCore.Qt.UserRole
+
+
+class TaskModel(QtGui.QStandardItemModel):
     
-    dataChanged = QtCore.Signal()
+    def update(self):
+        pass
+    
+    def columnCount(self, *_):
+        return 1
+
+
+class TaskWorkModel(TaskModel):
                 
     def update(self):
         data = database.getTaskInfo(account_id = database.getAccountInfo())
@@ -38,13 +61,8 @@ class TaskWorkModel(QtGui.QStandardItemModel):
             
             item_parent.appendRow([item_name, item_date])
     
-    def columnCount(self, *_):
-        return 2
     
-    
-class TaskCheckModel(QtGui.QStandardItemModel):
-    
-    dataChanged = QtCore.Signal()
+class TaskCheckModel(TaskModel):
                 
     def update(self):
         data = database.getCheckInfo()
@@ -62,14 +80,9 @@ class TaskCheckModel(QtGui.QStandardItemModel):
             item_date = TaskItem(task, task["date"])
             
             root_items[artist].appendRow([item_name, item_date])
-    
-    def columnCount(self, *_):
-        return 2
 
 
-class TaskAllModel(QtGui.QStandardItemModel):
-    
-    dataChanged = QtCore.Signal()
+class TaskAllModel(TaskModel):
     
     def update(self):
         data = database.getTaskInfo()
@@ -81,24 +94,15 @@ class TaskAllModel(QtGui.QStandardItemModel):
             stage = task["stage"]
             if not stage in root_items:
                 root_items[stage] = LabelItem(stage)
-                root.appendRow([root_items[stage], LabelItem(), LabelItem()])
+                root.appendRow([root_items[stage], LabelItem()])
             
             item_name = TaskItem(task, task["name"])
-            item_status = TaskItem(task, task["status"])
             item_artist = TaskItem(task, task["artist"])
             
-            root_items[stage].appendRow([item_name, item_status, item_artist])
-    
-    def columnCount(self, *_):
-        return 3
+            root_items[stage].appendRow([item_name, item_artist])
     
     
 class FileHistoryModel(QtGui.QStandardItemModel):
-    
-    dataChanged = QtCore.Signal()
-    
-    def __init__(self, parent=None):
-        super(FileHistoryModel, self).__init__(parent)
         
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
@@ -159,13 +163,15 @@ class FileHistoryModel(QtGui.QStandardItemModel):
                         history_file = history_item["file"]
                         file_name = history_item["file"]
                 
-                if not os.path.exists(file_path): history_file = u"路径不存在"
+                if not os.path.exists(file_path): history_file = u"文件不存在"
+                if head and not os.path.isfile(os.path.join(file_path, file_name)): history_file = u"文件不存在"
                 
                 items = []
-                items.append(FileItem("%s/%s"%(file_path, file_name), history_file))
-                items.append(FileItem("%s/%s"%(file_path, file_name), history["text"]))
-                items.append(FileItem("%s/%s"%(file_path, file_name), history["last_update_by"]))
-                items.append(FileItem("%s/%s"%(file_path, file_name), history["last_update_time"]))
+                path = "%s/%s"%(file_path, file_name)
+                items.append(FileItem(path, history_file))
+                items.append(FileItem(path, history["text"]))
+                items.append(FileItem(path, history["last_update_by"]))
+                items.append(FileItem(path, history["last_update_time"]))
                 
                 root.appendRow(items)
                 
@@ -173,11 +179,6 @@ class FileHistoryModel(QtGui.QStandardItemModel):
             
             
 class FileLinkModel(QtGui.QStandardItemModel):
-    
-    dataChanged = QtCore.Signal()
-    
-    def __init__(self, parent=None):
-        super(FileLinkModel, self).__init__(parent)
         
     def headerData(self, section, orientation, role):
         if role == QtCore.Qt.DisplayRole:
@@ -196,17 +197,17 @@ class FileLinkModel(QtGui.QStandardItemModel):
         
         for filebox in self._filebox:
             if filebox["is_submit"]: continue
-            if not os.path.exists(filebox["path"]): continue
+            
+            try:
+                if not os.path.exists(filebox["path"]): 
+                    continue
+            except TypeError:
+                continue
             
             root.appendRow(FileItem(filebox["path"], filebox["title"]))
 
 
 class FileListModel(QtGui.QStandardItemModel):
-    
-    dataChanged = QtCore.Signal()
-    
-    def __init__(self, parent=None):
-        super(FileListModel, self).__init__(parent)
         
     def update(self, task_id):
         self._history = database.getFileHistoryInfo(task_id)
@@ -227,6 +228,12 @@ class LabelItem(QtGui.QStandardItem):
     def __init__(self, *args):
         super(LabelItem, self).__init__(*args)
         self.setFlags(QtCore.Qt.ItemIsEnabled)
+        
+    def data(self, role=QtCore.Qt.DisplayRole):
+        if role == TASK_ITEM_TYPE: 
+            return TASK_LABEL_TYPE
+        
+        return super(LabelItem, self).data(role)
 
     
 class TaskItem(QtGui.QStandardItem):
@@ -246,18 +253,18 @@ class TaskItem(QtGui.QStandardItem):
             self.setForeground(QtGui.QBrush(QtCore.Qt.green))
     
     def data(self, role=QtCore.Qt.DisplayRole):
-        if role == QtCore.Qt.BackgroundRole and self._task["status"] == "Retake":
-            brush = QtGui.QBrush(QtCore.Qt.red)
-            return brush
-        elif role == QtCore.Qt.FontRole and self._task["status"] == "Retake": 
+        if role == QtCore.Qt.FontRole and self._task["status"] == "Retake": 
             bold_font = QtGui.QFont()
             bold_font.setBold(True)
             return bold_font
-        elif role == QtCore.Qt.UserRole: return self._task["id"]
-        elif role == QtCore.Qt.UserRole + 1: return self._task["stage"]
-        elif role == QtCore.Qt.UserRole + 2: return self._task["name"]
-        elif role == QtCore.Qt.UserRole + 3: return self._task["status"]
-        elif role == QtCore.Qt.UserRole + 4: 
+        elif role == TASK_ITEM_TYPE: return TASK_DATA_TYPE
+        elif role == TASK_ID: return self._task["id"]
+        elif role == TASK_STAGE: return self._task["stage"]
+        elif role == TASK_NAME: return self._task["name"]
+        elif role == TASK_DATE: return self._task["date"]
+        elif role == TASK_ARTIST: return self._task["artist"]
+        elif role == TASK_STATUS: return self._task["status"]
+        elif role == TASK_DETAIL: 
             if not self._detail:
                 asset_type = "shot"
                 for pipeline_info in database.getPipeLineInfo("asset_task"):
@@ -284,7 +291,7 @@ class FileItem(QtGui.QStandardItem):
         self._path = path
         
     def data(self, role=QtCore.Qt.DisplayRole):
-        if role == QtCore.Qt.UserRole: return self._path.replace('\\', '/')
+        if role == FILE_PATH: return self._path.replace('\\', '/')
     
         return super(FileItem, self).data(role)
     

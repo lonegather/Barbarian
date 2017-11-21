@@ -43,7 +43,6 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
         
         historyPath = "%shistory/" % remotePath.split(filename)[0]
         historyPath = historyPath.replace("\\", "/")
-        self.log.info(historyPath)
         
         try:
             os.makedirs(historyPath)
@@ -55,9 +54,12 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
         latest_history = database.getFileHistoryInfo(instance.data["taskID"])[0]
         latest_filename = self.getVersion(historyPath, filename)
         
-        os.chmod(remotePath, stat.S_IWRITE)
-        shutil.copyfile(remotePath, os.path.join(historyPath, latest_filename))
-        os.chmod(os.path.join(historyPath, latest_filename), stat.S_IREAD)
+        if os.path.isfile(remotePath):
+            os.chmod(remotePath, stat.S_IWRITE)
+            shutil.copyfile(remotePath, os.path.join(historyPath, latest_filename))
+            os.chmod(os.path.join(historyPath, latest_filename), stat.S_IREAD)
+            
+        self.log.info(remotePath)
             
         try:
             with open("%shistory.json"%historyPath) as f:

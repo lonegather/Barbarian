@@ -486,7 +486,7 @@
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,0,1">
+        <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,1">
          <item>
           <widget class="QLabel" name="CGTWLBLInfoPipeline">
            <property name="minimumSize">
@@ -528,39 +528,49 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="CGTWLBLStatus">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>微软雅黑</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::StyledPanel</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="text">
-            <string>任务状态</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="CGTWCBFile">
-           <property name="font">
-            <font>
-             <family>微软雅黑</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,0">
+           <item>
+            <widget class="QLabel" name="CGTWLBLStatus">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>任务状态</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="CGTWCBFile">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>微软雅黑</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QTreeView" name="CGTWTVFileHistory">

@@ -230,6 +230,14 @@ class QMayaWindow(QtGui.QMainWindow):
                            "                                      stop:1 rgba(70, 50, 100, 255));     \n"
                            "}                                                                         \n"
                            "                                                                          \n"
+                           "QPushButton:pressed {                                                     \n"
+                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
+                           "                                      stop:0 rgba(40, 40, 40, 255),       \n"
+                           "                                      stop:0.3 rgba(50, 50, 50, 255),     \n"
+                           "                                      stop:1 rgba(70, 70, 70, 255));      \n"
+                           "    border-style: inset;                                                  \n"
+                           "}                                                                         \n"
+                           "                                                                          \n"
                            "QListView {                                                               \n"
                            "     show-decoration-selected: 1;                                         \n"
                            "}                                                                         \n"
@@ -290,11 +298,11 @@ class QMayaWindow(QtGui.QMainWindow):
                            "}                                                                         \n"
                            "                                                                          \n"
                            "QTreeView::branch:!adjoins-item {                                         \n"
-                           "    border-image: url(\"{icon_dir}line-end.png\") 0;                      \n"
+                           "    /* border-image: url(\"{icon_dir}line-end.png\") 0; */                \n"
                            "}                                                                         \n"
                            "                                                                          \n"
                            "QTreeView::branch:!has-children:adjoins-item {                            \n"
-                           "    border-image: url(\"{icon_dir}branch-end.png\") 0;                    \n"
+                           "    /* border-image: url(\"{icon_dir}branch-end.png\") 0; */              \n"
                            "}                                                                         \n"
                            "                                                                          \n"
                            "QTreeView::branch:has-children:!has-siblings:closed,                      \n"
@@ -307,13 +315,6 @@ class QMayaWindow(QtGui.QMainWindow):
                            "QTreeView::branch:open:has-children:has-siblings  {                       \n"
                            "        border-image: none;                                               \n"
                            "        image: url(\"{icon_dir}branch-open.png\");                        \n"
-                           "}                                                                         \n"
-                           "QPushButton:pressed {                                                     \n"
-                           "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
-                           "                                      stop:0 rgba(40, 40, 40, 255),       \n"
-                           "                                      stop:0.3 rgba(50, 50, 50, 255),     \n"
-                           "                                      stop:1 rgba(70, 70, 70, 255));      \n"
-                           "    border-style: inset;                                                  \n"
                            "}                                                                         \n"
                            "                                                                          \n"
                            "QHeaderView::section {                                                    \n"
@@ -515,7 +516,7 @@ class QMayaWindow(QtGui.QMainWindow):
         event.accept()
 
 
-class QOptionMenu(QtGui.QComboBox):
+class OptionMenu(QtGui.QComboBox):
     def setCurrentText(self, txt):
         for i in range(self.count()):
             if self.itemText(i) == txt:
@@ -523,12 +524,12 @@ class QOptionMenu(QtGui.QComboBox):
                 break
 
 
-class QShelfButton(QtGui.QPushButton):
+class ShelfButton(QtGui.QPushButton):
     
     selected = QtCore.Signal(object)
     
     def __init__(self, parent):
-        super(QShelfButton, self).__init__(parent)
+        super(ShelfButton, self).__init__(parent)
         
         self.data = None
         
@@ -551,7 +552,7 @@ class QShelfButton(QtGui.QPushButton):
         font.setPointSize(10)
         self.label.setFont(font)
         
-        self.setStyleSheet("QShelfButton {                                                            \n"
+        self.setStyleSheet("ShelfButton {                                                            \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
                            "                                      stop:0 rgba(120, 120, 120, 255),    \n"
                            "                                      stop:0.1 rgba(50, 50, 50, 255),     \n"
@@ -564,11 +565,11 @@ class QShelfButton(QtGui.QPushButton):
                            "    padding: 6px;                                                         \n"
                            "}                                                                         \n"
                            "                                                                          \n"
-                           "QShelfButton::indicator {                                                 \n"
+                           "ShelfButton::indicator {                                                 \n"
                            "    width: 0px;                                                           \n"
                            "    height: 0px;                                                          \n"
                            "}                                                                         \n"
-                           "QShelfButton:hover {                                                      \n"
+                           "ShelfButton:hover {                                                      \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
                            "                                      stop:0 rgba(120, 120, 120, 255),    \n"
                            "                                      stop:0.1 rgba(60, 60, 60, 255),     \n"
@@ -576,7 +577,7 @@ class QShelfButton(QtGui.QPushButton):
                            "                                      stop:1 rgba(60, 60, 60, 255));      \n"
                            "}                                                                         \n"
                            "                                                                          \n"
-                           "QShelfButton:checked {                                                    \n"
+                           "ShelfButton:checked {                                                    \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
                            "                                      stop:0 rgba(50, 0, 50, 255),        \n"
                            "                                      stop:0.1 rgba(150, 80, 150, 255),   \n"
@@ -627,9 +628,9 @@ class QShelfButton(QtGui.QPushButton):
             self.selected.emit(self.data)
 
 
-class QShelfLayout(QtGui.QLayout):
+class ShelfLayout(QtGui.QLayout):
     def __init__(self, parent):
-        super(QShelfLayout, self).__init__(parent)
+        super(ShelfLayout, self).__init__(parent)
         self.list = []
         self.cellWidth = 150
         self.cellHeight = 170
@@ -660,7 +661,7 @@ class QShelfLayout(QtGui.QLayout):
         return None
 
     def setGeometry(self, rect):
-        super(QShelfLayout, self).setGeometry(rect)
+        super(ShelfLayout, self).setGeometry(rect)
         if not len(self.list): return
         
         self.columnCount = max(math.floor((rect.width() + self.spacing()) / (self.cellWidth + self.spacing())), 1)
@@ -711,7 +712,7 @@ class QShelfView(QtGui.QWidget):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.mainLayout.addWidget(self.scrollArea)
         
-        self.shelfLayout = QShelfLayout(self.scrollAreaWidgetContents)
+        self.shelfLayout = ShelfLayout(self.scrollAreaWidgetContents)
         self.shelfLayout.setObjectName("shelfViewShelfLayout")
         self.scrollAreaWidgetContents.setLayout(self.shelfLayout)
         self.shelfLayout.setSpacing(5)
@@ -734,7 +735,7 @@ class QShelfView(QtGui.QWidget):
         self.picLoadThread.start()
         
     def __onPicLoaded__(self, item):
-        btn = QShelfButton(self.scrollAreaWidgetContents)
+        btn = ShelfButton(self.scrollAreaWidgetContents)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         btn.setSizePolicy(sizePolicy)
         btn.setText(item[self.kName])

@@ -8,13 +8,7 @@ from barbarian.utils.ui import CGTWUI
 from PySide import QtCore, QtGui
 import maya.OpenMaya as om
 from maya import cmds
-import model, database
-
-
-try:
-    from cgtw import tw
-except ImportError:
-    pass
+import model, delegate, database
 
 
 def UI(*_):
@@ -32,32 +26,28 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnFinal.setVisible(False)
         self.CGTWBtnRetake.setVisible(False)
         
-        taskWorkModel = model.TaskWorkModel()
-        self.CGTWTVTask.setModel(taskWorkModel)
+        self.CGTWTVTask.setModel(model.TaskWorkModel())
+        self.CGTWTVTask.setItemDelegate(delegate.TaskItemDelegate(self.window))
         self.CGTWTVTask.clicked.connect(self.onTaskChanged)
         
-        taskCheckModel = model.TaskCheckModel()
-        self.CGTWTVCheck.setModel(taskCheckModel)
+        self.CGTWTVCheck.setModel(model.TaskCheckModel())
+        self.CGTWTVCheck.setItemDelegate(delegate.TaskItemDelegate(self.window))
         self.CGTWTVCheck.clicked.connect(self.onTaskChanged)
         
-        taskAllModel = model.TaskAllModel()
-        self.CGTWTVAll.setModel(taskAllModel)
+        self.CGTWTVAll.setModel(model.TaskAllModel())
+        self.CGTWTVAll.setItemDelegate(delegate.TaskAllItemDelegate(self.window))
         self.CGTWTVAll.clicked.connect(self.onTaskChanged)
         
-        fileHistoryModel = model.FileHistoryModel()
-        self.CGTWTVFileHistory.setModel(fileHistoryModel)
+        self.CGTWTVFileHistory.setModel(model.FileHistoryModel())
         self.CGTWTVFileHistory.setDragEnabled(True)
         
-        fileLinkModel = model.FileLinkModel()
-        self.CGTWTVFileLink.setModel(fileLinkModel)
+        self.CGTWTVFileLink.setModel(model.FileLinkModel())
         self.CGTWTVFileLink.clicked.connect(self.onFileboxChanged)
         
-        fileListModel = model.FileListModel()
-        self.CGTWCBFile.setModel(fileListModel)
+        self.CGTWCBFile.setModel(model.FileListModel())
         self.CGTWCBFile.currentIndexChanged.connect(self.onFileChanged)
         
-        fileModel = QtGui.QFileSystemModel()
-        self.CGTWLVFileLink.setModel(fileModel)
+        self.CGTWLVFileLink.setModel(QtGui.QFileSystemModel())
         self.CGTWLVFileLink.setDragEnabled(True)
         
         cmds.control("CGTWPageTask", e=True, backgroundColor=[0.24,0.24,0.24])
@@ -74,6 +64,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnFinal.clicked.connect(self.publish)
         self.CGTWBtnRetake.clicked.connect(self.retake)
         self.CGTWBtnConnect.clicked.connect(self.connect)
+        self.CGTWLEUsername.returnPressed.connect(self.connect)
+        self.CGTWLEPassword.returnPressed.connect(self.connect)
         self.CGTWLEDeregister.clicked.connect(self.disconnect)
         self.CGTWBtnHelp.clicked.connect(self.help)
         self.CGTWTVFileHistory.doubleClicked.connect(self.onHistoryItemDoubleClicked)
@@ -129,9 +121,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         database.getAccountInfo(database.ACCOUNT_LOGGED_IN)
         if database.getAccountInfo(database.ACCOUNT_LOGGED_IN):
             self.id = database.getAccountInfo()
-            self.CGTWLBLUser.setText(u"欢迎，[%s] %s" % 
-                                     (database.getAccountInfo(database.ACCOUNT_DEPARTMENT), 
-                                      database.getAccountInfo(database.ACCOUNT_NAME)))
+            self.CGTWLBLUser.setText(u"欢迎，%s" % database.getAccountInfo(database.ACCOUNT_NAME))
         else:
             self.id = ""
             self.CGTWLBLUser.setText(u"请登录...")
@@ -166,14 +156,11 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
         index = self.toolBox.currentIndex()
         view_list = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
-        view_column = [[250, 100], [250, 100], [240, 90, 50]]
         view_expand = [True, True, False]
         treeView = view_list[index]
-        columnWidth = view_column[index]
         
         treeView.model().update()
-        for i in range(len(columnWidth)):
-            treeView.setColumnWidth(i, columnWidth[i])
+        treeView.setColumnWidth(0, 380)
         if view_expand[index]: treeView.expandAll()
         
     def onTaskChanged(self, *_):
@@ -182,14 +169,14 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
         
-        task_id = self.getCurrentTaskInfo(QtCore.Qt.UserRole)
+        task_id = self.getCurrentTaskInfo(model.TASK_ID)
         
         if not task_id: return
         
-        task_stage = self.getCurrentTaskInfo(QtCore.Qt.UserRole+1)
-        task_name = self.getCurrentTaskInfo(QtCore.Qt.UserRole+2)
-        task_status = self.getCurrentTaskInfo(QtCore.Qt.UserRole+3)
-        task_detail = self.getCurrentTaskInfo(QtCore.Qt.UserRole+4)
+        task_stage = self.getCurrentTaskInfo(model.TASK_STAGE)
+        task_name = self.getCurrentTaskInfo(model.TASK_NAME)
+        task_status = self.getCurrentTaskInfo(model.TASK_STATUS)
+        task_detail = self.getCurrentTaskInfo(model.TASK_DETAIL)
         status_color_map = {"Retake": "background-color: rgba(255, 90, 90, 255);",
                       "Check": "background-color: rgba(255, 255, 90, 255);",
                       "Approve": "background-color: rgba(90, 255, 90, 255);",
@@ -218,8 +205,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWTVFileLink.setColumnWidth(0, 200)
         
     def onFileChanged(self, *_):
-        task_id = self.getCurrentTaskInfo(QtCore.Qt.UserRole)
-        task_stage = self.getCurrentTaskInfo(QtCore.Qt.UserRole+1)
+        task_id = self.getCurrentTaskInfo(model.TASK_ID)
+        task_stage = self.getCurrentTaskInfo(model.TASK_STAGE)
         file_name = self.CGTWCBFile.currentText()
         
         self.CGTWTVFileHistory.model().update(task_id, task_stage, file_name)
@@ -236,7 +223,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
     def onFileboxChanged(self, *_):
         index = self.CGTWTVFileLink.currentIndex()
-        path = index.data(QtCore.Qt.UserRole)
+        path = index.data(model.FILE_PATH)
         
         if not path: return
         
@@ -271,11 +258,11 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.refreshUI()
         
     def onHistoryItemDoubleClicked(self, index):
-        path = index.data(QtCore.Qt.UserRole).replace('/', '\\')
+        path = index.data(model.FILE_PATH).replace('/', '\\')
         self.open(path)
     
     def onLinkItemDoubleClicked(self, index):
-        file_name = index.data(QtCore.Qt.DisplayRole)
+        file_name = index.data(model.FILE_PATH)
         file_path = index.model().rootPath().replace('/', '\\')
         self.open(os.path.join(file_path, file_name))
         
@@ -299,7 +286,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     
     def showHistoryContextMenu(self, *_):
         index = self.CGTWTVFileHistory.currentIndex()
-        path = index.data(QtCore.Qt.UserRole)
+        path = index.data(model.FILE_PATH)
         if not path: return
         self.historyContextMenu.exec_(QtGui.QCursor.pos()) #modal
         
@@ -312,7 +299,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
     def historyCopyHandler(self):
         index = self.CGTWTVFileHistory.currentIndex()
-        path = index.data(QtCore.Qt.UserRole)
+        path = index.data(model.FILE_PATH)
         pyperclip.copy(path)
         
     def linkCopyHandler(self):
@@ -323,7 +310,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
     def historyBrowseHandler(self):
         index = self.CGTWTVFileHistory.currentIndex()
-        path = os.path.dirname(index.data(QtCore.Qt.UserRole)).replace("/", "\\")
+        path = os.path.dirname(index.data(model.FILE_PATH)).replace("/", "\\")
         cmd = r'explorer "%s"' % path.encode('gbk')
         os.system(cmd)
     
@@ -339,9 +326,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         import pyblish_starter.api as api
         
         index = self.CGTWTVTask.currentIndex()
-        task_id = index.data(QtCore.Qt.UserRole)
-        family = index.data(QtCore.Qt.UserRole+1)
-        name = index.data(QtCore.Qt.UserRole+2)
+        task_id = index.data(model.TASK_ID)
+        family = index.data(model.TASK_STAGE)
+        name = index.data(model.TASK_NAME)
 
         if family not in config.getConfig("familyMap"):
             self.CGTWLBLResult.setText(u"<font color=black>所选任务不能在Maya中执行</font>")
@@ -374,22 +361,17 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                 self.CGTWLBLResult.setStyleSheet("background-color: rgba(255, 90, 90, 255);")
                 break
         cmds.delete("%s_SEL"%name)
-        
+    
     def retake(self, *_):
         index = self.CGTWTVCheck.currentIndex()
-        task_id = index.data(QtCore.Qt.UserRole)
-        tables = ["asset_task", "shot_task"]
+        task_id = index.data(model.TASK_ID)
+        #tables = ["asset_task", "shot_task"]
         logging.info(task_id)
-        
-        for table in tables:
-            module = tw.task_module(config.getConfig("database"), table)
-            if not module.get_with_filter(["%s.id"%table], [["%s.id"%table, "=", task_id]]): continue
-            module.init_with_id(task_id)
-            module.set({"%s.leader_status"%table: "Retake"})
     
     def publish(self, *_):
         index = self.CGTWTVCheck.currentIndex()
-        task_id = index.data(QtCore.Qt.UserRole)
+        task_id = index.data(model.TASK_ID)
+        #tables = ["asset_task", "shot_task"]
         logging.info(task_id)
         
     def extractText(self, text):

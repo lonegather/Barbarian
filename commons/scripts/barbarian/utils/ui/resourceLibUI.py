@@ -39,7 +39,7 @@ class Ui_resourceLibOption(ui.QtUI):
         self.Label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.Label.setObjectName("Label")
         self.formLayout_2.setWidget(0, QtGui.QFormLayout.LabelRole, self.Label)
-        self.resourceLibCBProject = ui.QOptionMenu(self.resourceLibCentralwidget)
+        self.resourceLibCBProject = ui.OptionMenu(self.resourceLibCentralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

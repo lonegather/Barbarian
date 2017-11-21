@@ -49,13 +49,13 @@ def getPipeLineInfo(table):
 def getAssetInfo(name):
     info_module = tw.info_module(config.getConfig("database"), "asset")
     result = info_module.get_with_filter(["asset.cn_name", "asset.type_name"], [["asset.asset_name", "=", name]])
-    return result[0]
+    if result: return result[0]
 
 
 def getShotInfo(name):
     info_module = tw.info_module(config.getConfig("database"), "shot")
     result = info_module.get_with_filter(["eps.eps_name"], [["shot.shot", "=", name]])
-    return result[0]["eps.eps_name"]
+    if result: return result[0]["eps.eps_name"]
 
 
 def getTaskInfo(**kwargs):
