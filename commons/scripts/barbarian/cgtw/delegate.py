@@ -8,7 +8,7 @@ Created on 2017.11.17
 
 import logging
 from PySide import QtCore, QtGui
-from .. import config
+from barbarian.utils import config
 from . import model
 
 
