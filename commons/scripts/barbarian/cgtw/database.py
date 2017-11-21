@@ -121,7 +121,9 @@ def getCheckInfo():
 def getFileHistoryInfo(task_id):
     if not getAccountInfo(ACCOUNT_LOGGED_IN): return []
     
-    if task_id == History.task_id: return History.content
+    if History.force_update:
+        History.force_update = False
+    elif task_id == History.task_id: return History.content
     History.task_id = task_id
     
     for module in ["asset_task", "shot_task"]:
@@ -167,12 +169,22 @@ def getFileBox(task_id, task_stage):
     return Filebox.content
 
 
+def submit(task_id, path, text):
+    History.force_update = True
+    
+    for table in ["asset_task", "shot_task"]:
+        t_module = tw.task_module(config.getConfig("database"), table)
+        t_module.init_with_id(task_id)
+        t_module.submit([path], text)
+
+
 class Filebox:
     task_id = ""
     content = []
     
 
 class History:
+    force_update = False
     task_id = ""
     content = []
     

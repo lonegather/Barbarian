@@ -71,18 +71,12 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
         
         with open("%shistory.json"%historyPath, 'w') as f:
             json.dump(history_list, f, indent=4)
-
-        t_tw = tw("10.1.11.100")
-        assert t_tw.sys().get_is_login(), u"Teamwork 未登录"
         
         remotePath = remotePath.replace("\\", "/")
         shutil.copyfile(filePath, remotePath)
         os.chmod(remotePath, stat.S_IREAD)
-
-        for table in ["asset_task", "shot_task"]:
-            t_module = t_tw.task_module(instance.data["database"], table)
-            t_module.init_with_id(instance.data["taskID"])
-            t_module.submit([remotePath], instance.data["submitText"])
+        
+        database.submit(instance.data["taskID"], remotePath, instance.data["submitText"])
 
         self.log.info("source: %s target: %s" % (filePath, remotePath))
 
@@ -91,19 +85,6 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
             
         from barbarian.cgtw import CGTW
         CGTW.UI().refreshUI()
-            
-    def getHistory(self, instance):
-        from cgtw import tw
-        
-        t_tw = tw("10.1.11.100")
-        assert t_tw.sys().get_is_login(), u"Teamwork 未登录"
-        
-        for module in ["asset_task", "shot_task"]:
-            t_history = t_tw.history(instance.data["database"], module)
-            history = t_history.get_with_filter(["text", "last_update_by", "last_update_time"], [["#task_id", "=", instance.data["taskID"]]])
-            if not history: continue
-        
-            return sorted(history, key=lambda x:x["last_update_time"], reverse=True)
         
     def getVersion(self, filepath, filename):
         import os
