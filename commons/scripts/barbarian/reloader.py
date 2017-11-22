@@ -59,6 +59,8 @@ def doIt(rl=False):
         if rl: reload(barbarian.model.checkModel)
         import barbarian.model.RemoveNamespace
         if rl: reload(barbarian.model.RemoveNamespace)
+        import barbarian.model.turntable
+        if rl: reload(barbarian.model.turntable)
         
         import barbarian.rig
         if rl: reload(barbarian.rig)

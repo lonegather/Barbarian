@@ -76,7 +76,7 @@ class Entrance(object):
 
         cmds.shelfLayout(self.layout, e=True, position=(self.button, 1))
         widgets = cmds.layout("menuSetLayout", q=True, ca=True)
-        position = 3
+        position = 2
         for widget in widgets:
             width = cmds.control(widget, q=True, width=True)
             cmds.control(widget, e=True, parent=self.layout, width=width)

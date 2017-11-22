@@ -37,23 +37,26 @@ stage_icons = {"Modeling": QtGui.QPixmap(config.getPath(config.kIcon, "css/stage
 
 class TaskItemDelegate(QtGui.QStyledItemDelegate):
     
-    height_data = 75.0
+    height_data = 60.0
     height_label = 30.0
-    margin = 9
+    margin = 6
     thickness = 1.0
+    indent_offset = -21
     
     def __init__(self, parent=None):
         super(TaskItemDelegate, self).__init__(parent)
         
     def paint(self, painter, option, index):
-        if index.data(model.TASK_ITEM_TYPE) == model.TASK_LABEL_TYPE: 
-            height = self.height_label
-            indent = 0
-        else: 
-            height = self.height_data
-            indent = -42
+        height = self.height_label if index.data(model.TASK_ITEM_TYPE) == model.TASK_LABEL_TYPE else self.height_data
+        indent = self.indent_offset if index.data(model.TASK_ITEM_TYPE) == model.TASK_LABEL_TYPE else self.indent_offset*2
         
-        item_rect = option.rect.adjusted(indent, 0, 0, 0)
+        item_rect = option.rect.adjusted(indent+1, 1, -1, 0)
+        frame_rect = option.rect.adjusted(indent, 0, 0, 0)
+        
+        painter.save()
+        
+        painter.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0, 255)))
+        painter.drawRect(frame_rect)
         
         if option.state & QtGui.QStyle.State_Selected:
             g_selected = QtGui.QLinearGradient(0, item_rect.y(), 0, item_rect.y()+height)
@@ -72,13 +75,34 @@ class TaskItemDelegate(QtGui.QStyledItemDelegate):
             painter.fillRect(item_rect, g_hover)
         
         if index.data(model.TASK_ITEM_TYPE) == model.TASK_LABEL_TYPE:
-            super(TaskItemDelegate, self).paint(painter, option, index)
+            branch_rect = item_rect.adjusted(1, 6, -1, -6)
+            branch_rect.setWidth(16)
+            branch_rect.setHeight(16)
+            
+            label_rect = item_rect.adjusted(-self.indent_offset, 0, 0, 0)
+            
+            if option.state & QtGui.QStyle.State_Open:
+                branch_icon = config.getPath(config.kIcon, "css/branch-open.png")
+            else: 
+                branch_icon = config.getPath(config.kIcon, "css/branch-closed.png")
+              
+            painter.drawPixmap(branch_rect, branch_icon)
+            painter.setPen(QtGui.QPen(QtGui.QColor(200, 200, 200, 255)))
+            painter.setFont(fonts["h5"])
+            painter.drawText(label_rect, QtCore.Qt.AlignVCenter, index.data())
+            painter.restore()
+            
             return
         
         status_rect = QtCore.QRectF(item_rect).adjusted(self.margin, 
                                                           self.margin, -self.margin, -self.margin)
         status_rect.setWidth(15)
         status_color = status_colors.get(index.data(model.TASK_STATUS), QtGui.QColor(255, 255, 255, 255))
+        status_shade = QtGui.QLinearGradient(0, status_rect.y(), 0, status_rect.y()+status_rect.height())
+        status_shade.setColorAt(0.0, QtGui.QColor(0, 0, 0, 255))
+        status_shade.setColorAt(3.0/status_rect.height(), QtGui.QColor(255, 255, 255, 50))
+        #status_shade.setColorAt(1.0-3.0/status_rect.height(), QtGui.QColor(0, 0, 0, 120))
+        status_shade.setColorAt(1.0, QtGui.QColor(0, 0, 0, 150))
         
         stage_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin, 
                                                      self.margin, -self.margin, -self.margin))
@@ -89,24 +113,24 @@ class TaskItemDelegate(QtGui.QStyledItemDelegate):
                                                     self.margin, -self.margin, -self.margin))
         name_rect.setHeight(25)
         
-        date_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin, 
-                                                    self.margin+25+self.margin, 
-                                                    -self.margin, -self.margin))
-        date_rect.setWidth(200)
-        
-        painter.save()
-        
         painter.fillRect(status_rect, status_color)
+        painter.fillRect(status_rect, status_shade)
+        painter.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0, 255)))
+        painter.drawRect(status_rect)
         painter.drawPixmap(stage_rect, stage_icons.get(index.data(model.TASK_STAGE), config.getPath(config.kIcon, "css/stage_null.png")))
         
         painter.setFont(fonts["h4"])
         painter.setPen(QtGui.QPen(QtGui.QColor(255, 255, 255, 255)))
         painter.drawText(name_rect, index.data(model.TASK_NAME))
         
-        if index.data(model.TASK_DATE):
+        if index.data(model.TASK_ARTIST):
+            artist_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin, 
+                                                    self.margin+25+self.margin, 
+                                                    -self.margin, -self.margin))
+            artist_rect.setWidth(180)
             painter.setFont(fonts["h5"])
-            painter.setPen(QtGui.QPen(QtGui.QColor(120, 120, 120, 255)))
-            painter.drawText(date_rect, u"截止日期：%s"%index.data(model.TASK_DATE))
+            painter.setPen(QtGui.QPen(QtGui.QColor(150, 150, 150, 255)))
+            painter.drawText(artist_rect, QtCore.Qt.AlignBottom, u"制作者：%s"%index.data(model.TASK_ARTIST))
         
         painter.restore()
     
@@ -122,21 +146,19 @@ class TaskAllItemDelegate(TaskItemDelegate):
     def paint(self, painter, option, index):
         super(TaskAllItemDelegate, self).paint(painter, option, index)
         
-        if index.data(model.TASK_ITEM_TYPE) == model.TASK_LABEL_TYPE: indent = 0
-        else: indent = -42
+        indent = self.indent_offset if index.data(model.TASK_ITEM_TYPE) == model.TASK_LABEL_TYPE else self.indent_offset*2
         
         item_rect = option.rect.adjusted(indent, 0, 0, 0)
         
-        artist_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin+200+self.margin, 
-                                                      self.margin+25+self.margin, 
-                                                      -self.margin, -self.margin))
-        
         painter.save()
         
-        if index.data(model.TASK_ARTIST):
+        if index.data(model.TASK_DATE):
+            date_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin+180+self.margin, 
+                                                      self.margin+25+self.margin, 
+                                                      -self.margin, -self.margin))
             painter.setFont(fonts["h5"])
             painter.setPen(QtGui.QPen(QtGui.QColor(120, 120, 120, 255)))
-            painter.drawText(artist_rect, u"制作者：%s"%index.data(model.TASK_ARTIST))
+            painter.drawText(date_rect, QtCore.Qt.AlignBottom, u"截止日期：%s"%index.data(model.TASK_DATE))
         
         painter.restore()
         
