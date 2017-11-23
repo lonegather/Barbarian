@@ -1,0 +1,355 @@
+
+QMayaWindow {
+	icon: url("{icon_dir}logo.png");
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 rgba(50, 50, 50, 255),
+                                      stop:0.05 rgba(60, 60, 60, 255),
+                                      stop:0.9 rgba(60, 60, 60, 255),
+                                      stop:1 rgba(50, 50, 50, 255));
+}
+
+QPushButton {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(100, 100, 100, 255),
+                                      stop:0.94 rgba(060, 060, 060, 255),
+                                      stop:1.00 rgba(020, 020, 020, 255));
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: #000000;
+    padding: 6px;
+}
+
+QPushButton:disabled {
+    background-color: #333333;
+    border-width: 0px;
+}
+
+QPushButton:hover {                                                       
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(150, 060, 200, 255),
+                                      stop:0.94 rgba(130, 000, 180, 255),
+                                      stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(050, 030, 100, 255),
+                                      stop:0.10 rgba(090, 040, 140, 255),
+                                      stop:1.00 rgba(100, 050, 150, 255));
+    border-style: inset;
+}
+
+QListView {
+     show-decoration-selected: 1;
+}
+
+QListView::item {
+    border: 0px solid black;
+}
+
+QListView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(150, 060, 200, 255),
+                                stop:0.94 rgba(130, 000, 180, 255),
+                                stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QListView::item:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(050, 030, 100, 255),
+                                stop:0.10 rgba(090, 040, 140, 255),
+                                stop:1.00 rgba(100, 050, 150, 255)); 
+}
+
+QTreeView {
+     show-decoration-selected: 1;
+}
+
+QTreeView::item {
+    border: 0px solid black;
+}
+
+QTreeView::item:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(150, 060, 200, 255),
+                                stop:0.94 rgba(130, 000, 180, 255),
+                                stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QTreeView::item:selected {                                                
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,               
+                                stop:0.00 rgba(050, 030, 100, 255),
+                                stop:0.10 rgba(090, 040, 140, 255),
+                                stop:1.00 rgba(100, 050, 150, 255));       
+}
+
+QTreeView::branch {
+    border: 0px solid black;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+QTreeView::branch:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(150, 060, 200, 255),
+                                stop:0.94 rgba(130, 000, 180, 255),
+                                stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QTreeView::branch:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(050, 030, 100, 255),
+                                stop:0.10 rgba(090, 040, 140, 255),
+                                stop:1.00 rgba(100, 050, 150, 255));
+}
+
+QTreeView::branch:!adjoins-item {
+    /*image: url("{icon_dir}line-end.png");*/
+}
+
+QTreeView::branch:!has-children:adjoins-item {
+    /*image: url("{icon_dir}branch-end.png");*/
+}
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+        border-image: none;
+        image: url("{icon_dir}branch-closed.png");
+}
+
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings {
+        border-image: none;
+        image: url("{icon_dir}branch-open.png");
+}
+
+QHeaderView::section {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(100, 100, 100, 255),
+                                      stop:0.94 rgba(060, 060, 060, 255),
+                                      stop:1.00 rgba(020, 020, 020, 255));
+    height: 25px;
+    font-size: 12px;
+    padding-left: 4px;
+    border: 1px solid black;
+}
+
+QHeaderView::section:disabled {
+	background-color: #333333;
+	border: 0px;
+}
+
+QToolBoxButton { 
+    min-height: 35px;
+}
+
+QToolBox::tab:hover {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+									  stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(150, 060, 200, 255),
+                                      stop:0.94 rgba(130, 000, 180, 255),
+                                      stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QToolBox::tab:disabled {
+    background-color: #333333;
+    border: 0px;
+}
+
+QToolBox::tab {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(100, 100, 100, 255),
+                                      stop:0.94 rgba(060, 060, 060, 255),
+                                      stop:1.00 rgba(020, 020, 020, 255));
+    border: 1px solid black;
+    border-bottom-color: black;
+    border-radius: 2px;
+}
+
+QToolBox::tab:!disabled:selected {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(050, 030, 100, 255),
+                                      stop:0.10 rgba(090, 040, 140, 255),
+                                      stop:1.00 rgba(100, 050, 150, 255));
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QTabWidget::pane {
+    border-top: 1px solid black;
+    position: absolute;
+    top: -0.1em;
+}
+
+QTabWidget::tab-bar {
+    alignment: center;
+}
+
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(100, 100, 100, 255),
+                                stop:0.94 rgba(060, 060, 060, 255),
+                                stop:1.00 rgba(020, 020, 020, 255));
+    border: 1px solid black;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    padding: 0px 15px;
+    min-height: 25px;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(150, 060, 200, 255),
+                                stop:0.94 rgba(130, 000, 180, 255),
+                                stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QTabBar::tab:selected {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.00 rgba(050, 030, 100, 255),
+                                stop:0.10 rgba(090, 040, 140, 255),
+                                stop:1.00 rgba(100, 050, 150, 255));
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+}
+
+QSlider::groove:horizontal {
+    border: 1px solid black;
+    border-style: inset;
+    border-radius: 2px;
+    height: 28px;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.0 rgba(000, 000, 000, 255),
+                                stop:0.1 rgba(030, 030, 030, 255),
+                                stop:1.0 rgba(040, 040, 040, 255));
+}
+
+QSlider::handle:horizontal {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(100, 100, 100, 255),
+                                stop:0.94 rgba(060, 060, 060, 255),
+                                stop:1.00 rgba(020, 020, 020, 255));
+    border: 1px solid black;
+    border-style: outset;
+    width: 26px;
+    margin: 1px 1px;
+    border-radius: 1px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.00 rgba(200, 200, 200, 255),
+                                stop:0.06 rgba(150, 060, 200, 255),
+                                stop:0.94 rgba(130, 000, 180, 255),
+                                stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QListWidget {
+    border: 1px solid black;
+    border-radius: 2px;
+    border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.0 rgba(000, 000, 000, 255),
+                                stop:0.1 rgba(030, 030, 030, 255),
+                                stop:1.0 rgba(040, 040, 040, 255));
+    selection-background-color: purple;
+}
+
+QLineEdit {
+    border: 1px solid black;
+    border-radius: 2px;
+    border-style: inset;
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.0 rgba(000, 000, 000, 255),
+                                stop:0.1 rgba(030, 030, 030, 255),
+                                stop:1.0 rgba(040, 040, 040, 255));
+    selection-background-color: purple;
+}
+
+QLineEdit:disabled {
+	border: 0px;
+	background: #333333;
+}
+
+QComboBox {
+    border: 1px black;
+    border-style: outset;
+    border-radius: 2px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(100, 100, 100, 255),
+                                      stop:0.94 rgba(060, 060, 060, 255),
+                                      stop:1.00 rgba(020, 020, 020, 255));
+}
+
+QComboBox:disabled {
+    background-color: #333333;
+    border: 0px;
+}
+
+QComboBox:!editable:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(150, 060, 200, 255),
+                                      stop:0.94 rgba(130, 000, 180, 255),
+                                      stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+
+    border-left-width: 1px;
+    border-left-color: black;
+    border-left-style: solid;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+QComboBox::drop-down:disabled {
+	border-left-width: 0px;
+}
+
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(050, 030, 100, 255),
+                                stop:0.10 rgba(090, 040, 140, 255),
+                                stop:1.00 rgba(100, 050, 150, 255));
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid black;
+    selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                                stop:0.00 rgba(200, 200, 200, 255),
+                                                stop:0.06 rgba(150, 060, 200, 255),
+                                                stop:0.94 rgba(130, 000, 180, 255),
+                                                stop:1.00 rgba(050, 050, 050, 255));
+}
+
+QProgressBar::chunk {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(150, 060, 200, 255),
+                                      stop:0.94 rgba(130, 000, 180, 255),
+                                      stop:1.00 rgba(050, 050, 050, 255));
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+QProgressBar {
+    text-align: center;
+}
+

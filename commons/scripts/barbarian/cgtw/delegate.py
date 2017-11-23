@@ -17,8 +17,7 @@ status_colors = {"Check": QtGui.QColor(255, 255, 90, 255),
                  "FinalApprove": QtGui.QColor(90, 255, 90, 255),
                  "Retake": QtGui.QColor(255, 90, 90, 255)}
 
-fonts = {"h3": QtGui.QFont(u"微软雅黑", 15, 900),
-         "h4": QtGui.QFont(u"微软雅黑", 12, 400),
+fonts = {"h4": QtGui.QFont(u"Century Gothic", 13, QtGui.QFont.Normal),
          "h5": QtGui.QFont(u"微软雅黑", 10, 800)}
 
 stage_icons = {"Modeling": QtGui.QPixmap(config.getPath(config.kIcon, "css/stage_mdl.png")),
@@ -101,8 +100,8 @@ class TaskItemDelegate(QtGui.QStyledItemDelegate):
         status_shade = QtGui.QLinearGradient(0, status_rect.y(), 0, status_rect.y()+status_rect.height())
         status_shade.setColorAt(0.0, QtGui.QColor(0, 0, 0, 255))
         status_shade.setColorAt(3.0/status_rect.height(), QtGui.QColor(255, 255, 255, 50))
-        #status_shade.setColorAt(1.0-3.0/status_rect.height(), QtGui.QColor(0, 0, 0, 120))
-        status_shade.setColorAt(1.0, QtGui.QColor(0, 0, 0, 150))
+        status_shade.setColorAt(1.0-5.0/status_rect.height(), QtGui.QColor(0, 0, 0, 120))
+        status_shade.setColorAt(1.0, QtGui.QColor(0, 0, 0, 180))
         
         stage_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin, 
                                                      self.margin, -self.margin, -self.margin))
@@ -121,7 +120,7 @@ class TaskItemDelegate(QtGui.QStyledItemDelegate):
         
         painter.setFont(fonts["h4"])
         painter.setPen(QtGui.QPen(QtGui.QColor(255, 255, 255, 255)))
-        painter.drawText(name_rect, index.data(model.TASK_NAME))
+        painter.drawText(name_rect, QtCore.Qt.AlignVCenter, index.data(model.TASK_NAME))
         
         if index.data(model.TASK_ARTIST):
             artist_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin, 

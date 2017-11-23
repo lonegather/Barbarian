@@ -20,6 +20,10 @@ class CGTW(CGTWUI.Ui_CGTWWin):
     def setupUi(self, win=None):
         super(CGTW, self).setupUi(win)
         
+        font_database = QtGui.QFontDatabase()
+        font_path = config.getPath(config.kIcon, "css/GOTHICB.TTF")
+        font_database.addApplicationFont(font_path)
+        
         self.CGTWCBProject.setModel(config.ProjectModel())
         
         #回退和发布暂不可用

@@ -60,6 +60,10 @@ class TaskWorkModel(TaskModel):
             else: continue
             
             item_parent.appendRow([item_name, item_date])
+            
+        if not task_approve.hasChildren(): root.removeRow(2)
+        if not task_check.hasChildren(): root.removeRow(1)
+        if not task_work.hasChildren(): root.removeRow(0)
     
     
 class TaskCheckModel(TaskModel):

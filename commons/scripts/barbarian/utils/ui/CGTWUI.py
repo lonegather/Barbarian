@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/CGTW.ui'
 #
-# Created: Mon Nov 20 17:30:44 2017
+# Created: Wed Nov 22 22:41:14 2017
 #      by: pyside-uic 0.2.14 running on PySide 1.2.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -282,7 +282,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWTVFileHistory.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.CGTWTVFileHistory.setDragDropMode(QtGui.QAbstractItemView.DragOnly)
         self.CGTWTVFileHistory.setAlternatingRowColors(True)
-        self.CGTWTVFileHistory.setIndentation(21)
+        self.CGTWTVFileHistory.setIndentation(0)
         self.CGTWTVFileHistory.setObjectName("CGTWTVFileHistory")
         self.verticalLayout_7.addWidget(self.CGTWTVFileHistory)
         self.CGTWFrmInfo = QtGui.QFrame(self.CGTWGBInfo)
@@ -297,7 +297,7 @@ class Ui_CGTWWin(ui.QtUI):
         self.CGTWTVFileLink.setFont(font)
         self.CGTWTVFileLink.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.CGTWTVFileLink.setAlternatingRowColors(True)
-        self.CGTWTVFileLink.setIndentation(21)
+        self.CGTWTVFileLink.setIndentation(0)
         self.CGTWTVFileLink.setObjectName("CGTWTVFileLink")
         self.horizontalLayout_3.addWidget(self.CGTWTVFileLink)
         self.CGTWLVFileLink = QtGui.QListView(self.CGTWFrmInfo)

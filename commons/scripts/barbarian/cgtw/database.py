@@ -77,7 +77,8 @@ def getTaskInfo(**kwargs):
                                 "%s_task.pipeline" % table,
                                 "%s_task.status" % table,
                                 "%s_task.end_date" % table,
-                                "%s_task.artist" % table]) or list():
+                                "%s_task.artist" % table,
+                                "%s_task.image" % table]) or list():
             if not item["%s.%s" % (table, tables[table])]: continue
             
             result.append({"id": item["id"],
@@ -85,7 +86,8 @@ def getTaskInfo(**kwargs):
                            "stage": item["%s_task.pipeline" % table],
                            "status": item["%s_task.status" % table],
                            "date": item["%s_task.end_date" % table],
-                           "artist": item["%s_task.artist" % table]})
+                           "artist": item["%s_task.artist" % table],
+                           "image": item["%s_task.image" % table]})
         
     return result
 
