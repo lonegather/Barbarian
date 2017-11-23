@@ -8,6 +8,106 @@ QMayaWindow {
                                       stop:1 rgba(50, 50, 50, 255));
 }
 
+QScrollBar {
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0.0 rgba(000, 000, 000, 255),
+                                stop:0.1 rgba(030, 030, 030, 255),
+                                stop:1.0 rgba(040, 040, 040, 255));
+	border: 1px solid black;
+}
+
+QScrollBar:vertical {
+	width: 20px;
+	margin: 20px 0 20px 0;
+}
+
+QScrollBar:horizontal {
+	height: 20px;
+	margin: 0 20px 0 20px;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0.00 rgba(200, 200, 200, 255),
+                                      stop:0.06 rgba(100, 100, 100, 255),
+                                      stop:0.94 rgba(060, 060, 060, 255),
+                                      stop:1.00 rgba(020, 020, 020, 255));
+    border: 1px solid black;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:hover, QScrollBar::sub-line:hover {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 rgba(150, 060, 200, 255),
+                                      stop:1 rgba(130, 000, 180, 255));
+}
+
+QScrollBar::add-line:pressed, QScrollBar::sub-line:pressed {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 rgba(090, 040, 140, 255),
+                                      stop:1 rgba(100, 050, 150, 255));
+}
+
+QScrollBar::add-line:vertical {
+    height: 20px;
+    subcontrol-position: bottom;
+}
+
+QScrollBar::add-line:horizontal {
+    width: 20px;
+    subcontrol-position: right;
+}
+
+QScrollBar::sub-line:vertical {
+    height: 20px;
+    subcontrol-position: top;
+}
+
+QScrollBar::sub-line:horizontal {
+    width: 20px;
+    subcontrol-position: left;
+}
+
+QScrollBar::up-arrow, QScrollBar::down-arrow, QScrollBar::left-arrow, QScrollBar::right-arrow {
+     border: 1px solid black;
+     width: 3px;
+     height: 3px;
+     background: white;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+QScrollBar::handle {
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                stop:0 rgba(100, 100, 100, 255),
+                                stop:1 rgba(060, 060, 060, 255));
+	border: 1px solid black;
+}
+
+QScrollBar::handle:hover {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 rgba(150, 060, 200, 255),
+                                      stop:1 rgba(130, 000, 180, 255));
+}
+
+QScrollBar::handle:pressed {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 rgba(090, 040, 140, 255),
+                                      stop:1 rgba(100, 050, 150, 255));
+}
+
+QScrollBar::handle:vertical {
+	border-left-color: transparent;
+	border-right-color: transparent;
+}
+
+QScrollBar::handle:horizontal {
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+}
+
 QPushButton {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
                                       stop:0.00 rgba(200, 200, 200, 255),
@@ -19,6 +119,13 @@ QPushButton {
     border-radius: 2px;
     border-color: #000000;
     padding: 6px;
+}
+
+QPushButton:checked {
+	background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop:0.00 rgba(050, 030, 100, 255),
+                                stop:0.10 rgba(090, 040, 140, 255),
+                                stop:1.00 rgba(100, 050, 150, 255)); 
 }
 
 QPushButton:disabled {

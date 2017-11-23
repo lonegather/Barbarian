@@ -9,7 +9,6 @@ Created on 2017.8.25
 import os
 from maya import cmds
 from xml.dom import minidom
-from PySide import QtCore, QtGui
 from barbarian.utils import ui, config
 
 
@@ -23,43 +22,17 @@ class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
         
-        QtCore.QObject.connect(self.resourceLibCBProject, 
-                               QtCore.SIGNAL("activated(int)"), 
-                               lambda *_: config.setProject(self.resourceLibCBProject.currentText()))
-        QtCore.QObject.connect(self.resourceLibRBChar,
-                               QtCore.SIGNAL("clicked(bool)"),
-                               self.refreshData)
-        QtCore.QObject.connect(self.resourceLibRBProp,
-                               QtCore.SIGNAL("clicked(bool)"),
-                               self.refreshData)
-        QtCore.QObject.connect(self.resourceLibRBScene,
-                               QtCore.SIGNAL("clicked(bool)"),
-                               self.refreshData)
-        QtCore.QObject.connect(self.resourceLibBtnLoad,
-                               QtCore.SIGNAL("clicked()"),
-                               self.load)
+        self.resourceLibRBChar.clicked.connect(self.refreshData)
+        self.resourceLibRBProp.clicked.connect(self.refreshData)
+        self.resourceLibRBScene.clicked.connect(self.refreshData)
+        self.resourceLibBtnLoad.clicked.connect(self.load)
         
         self.shelf.itemSelected.connect(self.getCurrent)
         
         self.refreshProject()
-        #config.setProject(config.getProject())
     
     def refreshProject(self, *_):
-        if config.getProject(): 
-            if not self.resourceLibCBProject.count(): 
-                projects = config.getProject(all=True)
-                for prj in projects: self.resourceLibCBProject.addItem(prj)
-            self.resourceLibCBProject.setCurrentText(config.getProject())
-        elif config.getProject(all=True): 
-            if not self.resourceLibCBProject.count(): 
-                projects = config.getProject(all=True)
-                for prj in projects: self.resourceLibCBProject.addItem(prj)
-                self.resourceLibCBProject.setCurrentIndex(-1)
-            return
-        else: 
-            while self.resourceLibCBProject.count(): 
-                self.resourceLibCBProject.removeItem(0)
-            return
+        if not config.getProject(): return
         
         try: dom = minidom.parse(config.getPath(config.kConfig, config.getConfig("resourceLocator")))
         except: 

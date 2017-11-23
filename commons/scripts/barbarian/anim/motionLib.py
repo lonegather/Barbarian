@@ -37,9 +37,6 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
         
-        QtCore.QObject.connect(self.motionLibCBProject, 
-                               QtCore.SIGNAL("activated(int)"), 
-                               lambda *_: config.setProject(self.motionLibCBProject.currentText()))
         QtCore.QObject.connect(self.motionLibCBCharactor, 
                                QtCore.SIGNAL("activated(int)"),
                                self.refreshData)
@@ -60,24 +57,7 @@ class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
         self.refreshCharacters()
     
     def refreshCharacters(self, *_):
-        if config.getProject(): 
-            self.motionLibTab.setVisible(True)
-            if not self.motionLibCBProject.count(): 
-                projects = config.getProject(all=True)
-                for prj in projects: 
-                    self.motionLibCBProject.addItem(prj)
-        elif config.getProject(all=True): 
-            self.motionLibTab.setVisible(False)
-            if not self.motionLibCBProject.count(): 
-                projects = config.getProject(all=True)
-                for prj in projects: self.motionLibCBProject.addItem(prj)
-                self.motionLibCBProject.setCurrentIndex(-1)
-            return
-        else: 
-            self.motionLibTab.setVisible(False)
-            while self.motionLibCBProject.count(): 
-                self.motionLibCBProject.removeItem(0)
-            return
+        if not config.getProject(): return
         
         cmds.namespace(set = ":")
         chars = self.getCharacters()

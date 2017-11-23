@@ -24,8 +24,6 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         font_path = config.getPath(config.kIcon, "css/GOTHICB.TTF")
         font_database.addApplicationFont(font_path)
         
-        self.CGTWCBProject.setModel(config.ProjectModel())
-        
         #回退和发布暂不可用
         self.CGTWBtnFinal.setVisible(False)
         self.CGTWBtnRetake.setVisible(False)
@@ -57,11 +55,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         cmds.control("CGTWPageTask", e=True, backgroundColor=[0.24,0.24,0.24])
         cmds.control("CGTWPageCheck", e=True, backgroundColor=[0.24,0.24,0.24])
         
-        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshProject], parent=self.window)
-
-        QtCore.QObject.connect(self.CGTWCBProject,
-                               QtCore.SIGNAL("activated(int)"),
-                               lambda *_: config.setProject(self.CGTWCBProject.currentText()))
+        cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshUI], parent=self.window)
+        
         self.toolBox.currentChanged.connect(self.onTaskListChanged)
         self.CGTWBtnRefresh.clicked.connect(self.refreshUI)
         self.CGTWBtnSubmit.clicked.connect(self.submit)
@@ -103,24 +98,14 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.project = ""
         self.family = {}
 
-        self.refreshProject()
-
-    def refreshProject(self, *_):
-        self.reset()
-        
-        if config.getProject():
-            self.CGTWCBProject.setCurrentText(config.getProject())
-        elif config.getProject(all=True):
-            self.CGTWCBProject.setCurrentIndex(-1)
-            return
-        else: return
-
-        self.project = config.getConfig("database")
-        
         self.refreshUI()
     
     def refreshUI(self, *_):
         self.reset()
+        
+        if not config.getProject(): return
+        
+        self.project = config.getConfig("database")
         
         database.getAccountInfo(database.ACCOUNT_LOGGED_IN)
         if database.getAccountInfo(database.ACCOUNT_LOGGED_IN):
@@ -130,10 +115,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
             self.id = ""
             self.CGTWLBLUser.setText(u"请登录...")
             
-        taskModel = self.CGTWTVTask.model()
-        checkModel = self.CGTWTVCheck.model()
-        taskModel.update()
-        checkModel.update()
+        self.CGTWTVTask.model().update()
+        self.CGTWTVCheck.model().update()
+        self.CGTWTVAll.model().update()
         
         self.onTaskListChanged()
         
@@ -164,7 +148,7 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         treeView = view_list[index]
         
         treeView.model().update()
-        treeView.setColumnWidth(0, 380)
+        treeView.setColumnWidth(0, 360)
         if view_expand[index]: treeView.expandAll()
         
     def onTaskChanged(self, *_):

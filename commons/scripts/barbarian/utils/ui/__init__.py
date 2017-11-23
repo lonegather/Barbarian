@@ -218,6 +218,26 @@ class QMayaWindow(QtGui.QMainWindow):
 
 
 class OptionMenu(QtGui.QComboBox):
+    
+    def __init__(self, parent=None):
+        super(OptionMenu, self).__init__(parent)
+        
+        self.setModel(config.ProjectModel())
+        self.refresh()
+        
+    def setObjectName(self, name):
+        super(OptionMenu, self).setObjectName(name)
+        QtCore.QObject.connect(self, QtCore.SIGNAL("activated(int)"), lambda *_: config.setProject(self.currentText()))
+        cmds.scriptJob(conditionChange=["ProjectChanged", self.refresh], parent=self.objectName())
+        
+    def refresh(self, *_):
+        if config.getProject():
+            self.setCurrentText(config.getProject())
+        elif config.getProject(all=True):
+            self.setCurrentIndex(-1)
+            return
+        else: return
+    
     def setCurrentText(self, txt):
         for i in range(self.count()):
             if self.itemText(i) == txt:
@@ -253,39 +273,37 @@ class ShelfButton(QtGui.QPushButton):
         font.setPointSize(10)
         self.label.setFont(font)
         
-        self.setStyleSheet("ShelfButton {                                                            \n"
+        self.setStyleSheet("ShelfButton {                                                             \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
-                           "                                      stop:0 rgba(120, 120, 120, 255),    \n"
-                           "                                      stop:0.1 rgba(50, 50, 50, 255),     \n"
-                           "                                      stop:0.8 rgba(60, 60, 60, 255),     \n"
-                           "                                      stop:1 rgba(50, 50, 50, 255));      \n"
+                           "                                      stop:0.00 rgba(200, 200, 200, 255), \n"
+                           "                                      stop:0.06 rgba(100, 100, 100, 255), \n"
+                           "                                      stop:0.94 rgba(060, 060, 060, 255), \n"
+                           "                                      stop:1.00 rgba(020, 020, 020, 255));\n"
                            "    border-style: outset;                                                 \n"
                            "    border-width: 1px;                                                    \n"
-                           "    border-radius: 3px;                                                   \n"
-                           "    border-color: gray;                                                   \n"
+                           "    border-radius: 2px;                                                   \n"
+                           "    border-color: black;                                                  \n"
                            "    padding: 6px;                                                         \n"
                            "}                                                                         \n"
                            "                                                                          \n"
-                           "ShelfButton::indicator {                                                 \n"
+                           "ShelfButton::indicator {                                                  \n"
                            "    width: 0px;                                                           \n"
                            "    height: 0px;                                                          \n"
                            "}                                                                         \n"
-                           "ShelfButton:hover {                                                      \n"
+                           "ShelfButton:hover:!checked {                                              \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
-                           "                                      stop:0 rgba(120, 120, 120, 255),    \n"
-                           "                                      stop:0.1 rgba(60, 60, 60, 255),     \n"
-                           "                                      stop:0.8 rgba(70, 70, 70, 255),     \n"
-                           "                                      stop:1 rgba(60, 60, 60, 255));      \n"
+                           "                                      stop:0.00 rgba(200, 200, 200, 255), \n"
+                           "                                      stop:0.06 rgba(150, 060, 200, 255), \n"
+                           "                                      stop:0.94 rgba(130, 000, 180, 255), \n"
+                           "                                      stop:1.00 rgba(050, 050, 050, 255));\n"
                            "}                                                                         \n"
                            "                                                                          \n"
-                           "ShelfButton:checked {                                                    \n"
+                           "ShelfButton:checked {                                                     \n"
                            "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, \n"
-                           "                                      stop:0 rgba(50, 0, 50, 255),        \n"
-                           "                                      stop:0.1 rgba(150, 80, 150, 255),   \n"
-                           "                                      stop:0.5 rgba(100, 20, 100, 255),   \n"
-                           "                                      stop:0.8 rgba(80, 10, 80, 255),     \n"
-                           "                                      stop:1 rgba(100, 20, 100, 255));    \n"
-                           "    border-style: inset;                                                  \n"
+                           "                                      stop:0.00 rgba(050, 030, 100, 255), \n"
+                           "                                      stop:0.10 rgba(090, 040, 140, 255), \n"
+                           "                                      stop:1.00 rgba(100, 050, 150, 255));\n"
+                           "                                      border-style: inset;                \n"
                            "}                                                                         \n")
         
         self.clicked.connect(self.emitEvent)
