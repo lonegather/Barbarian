@@ -333,19 +333,18 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         name = index.data(QtCore.Qt.DisplayRole)
         path = os.path.dirname(os.path.join(root, name)).replace("/", "\\")
         
-        if path.count('.ma'): typ = "mayaAscii"
-        elif path.count('.mb'): typ = "mayaBinary"
+        if name.count('.ma'): typ = "mayaAscii"
+        elif name.count('.mb'): typ = "mayaBinary"
         else: 
             self.CGTWLBLResult.setText(u"<font color=black>错误：选择的文件不能创建引用</font>")
             self.CGTWLBLResult.setStyleSheet("background-color: rgba(255, 90, 90, 255);")
             return
         
-        fileName = path.split('/')[-1]
-        if len(fileName.split('.ma')) > 1: 
-            namespace = fileName.split('.ma')[0]
-        else: namespace = fileName.split('.mb')[0]
+        if len(name.split('.ma')) > 1: 
+            namespace = name.split('.ma')[0]
+        else: namespace = name.split('.mb')[0]
         
-        cmds.file(path, r=True, iv=True, typ=typ, ns=namespace)
+        cmds.file(os.path.join(path, name), r=True, iv=True, typ=typ, ns=namespace)
         
     def historyBrowseHandler(self):
         index = self.CGTWTVFileHistory.currentIndex()
