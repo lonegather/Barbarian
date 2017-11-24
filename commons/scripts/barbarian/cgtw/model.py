@@ -19,25 +19,30 @@ TASK_ID = QtCore.Qt.UserRole + 1
 TASK_STAGE = QtCore.Qt.UserRole + 2
 TASK_NAME = QtCore.Qt.UserRole + 3
 TASK_DATE = QtCore.Qt.UserRole + 4
-TASK_ARTIST = QtCore.Qt.UserRole + 5
-TASK_STATUS = QtCore.Qt.UserRole + 6
-TASK_DETAIL = QtCore.Qt.UserRole + 7
+TASK_LAST = QtCore.Qt.UserRole + 5
+TASK_ARTIST = QtCore.Qt.UserRole + 6
+TASK_STATUS = QtCore.Qt.UserRole + 7
+TASK_DETAIL = QtCore.Qt.UserRole + 8
+TASK_FILTER = QtCore.Qt.UserRole + 9
 
 FILE_PATH = QtCore.Qt.UserRole
 
 
 class TaskModel(QtGui.QStandardItemModel):
     
-    def update(self):
+    def update(self, table):
         pass
     
     def columnCount(self, *_):
         return 1
+    
+    def data(self, index, role=QtCore.Qt.DisplayRole):       
+        return super(TaskModel, self).data(index, role)
 
 
 class TaskWorkModel(TaskModel):
                 
-    def update(self):
+    def update(self, table):
         data = database.getTaskInfo(account_id = database.getAccountInfo())
         self.clear()
         
@@ -52,14 +57,13 @@ class TaskWorkModel(TaskModel):
         
         for task in data:
             item_name = TaskItem(task, "%s: %s" % (task["stage"], task["name"]))
-            item_date = TaskItem(task, task["date"])
             
             if task["status"] in ["Work", "Wait", "Retake"]: item_parent = task_work
             elif task["status"] == "Check": item_parent = task_check
             elif task["status"] in ["Approve", "FinalApprove"]: item_parent = task_approve
             else: continue
             
-            item_parent.appendRow([item_name, item_date])
+            item_parent.appendRow(item_name)
             
         if not task_approve.hasChildren(): root.removeRow(2)
         if not task_check.hasChildren(): root.removeRow(1)
@@ -68,7 +72,7 @@ class TaskWorkModel(TaskModel):
     
 class TaskCheckModel(TaskModel):
                 
-    def update(self):
+    def update(self, table):
         data = database.getCheckInfo()
         self.clear()
         
@@ -81,29 +85,69 @@ class TaskCheckModel(TaskModel):
                 root.appendRow([root_items[artist], LabelItem()])
             
             item_name = TaskItem(task, "%s: %s" % (task["stage"], task["name"]))
-            item_date = TaskItem(task, task["date"])
             
-            root_items[artist].appendRow([item_name, item_date])
+            root_items[artist].appendRow(item_name)
 
 
 class TaskAllModel(TaskModel):
     
-    def update(self):
-        data = database.getTaskInfo()
+    taskChanged = QtCore.Signal(object)
+    
+    def update(self, table):
+        data = database.getTaskInfo(table=table)
         self.clear()
         
         root = self.invisibleRootItem()
         root_items = {}
         for task in data:
-            stage = task["stage"]
-            if not stage in root_items:
-                root_items[stage] = LabelItem(stage)
-                root.appendRow([root_items[stage], LabelItem()])
+            name = task["name"]
+            tag = task["filter"]
+            if not name in root_items:
+                root_items[name] = LabelItem(name, tag)
+                root.appendRow([root_items[name], LabelItem()])
             
-            item_name = TaskItem(task, task["name"])
-            item_artist = TaskItem(task, task["artist"])
+            item_name = TaskItem(task, task["name"], tag)
             
-            root_items[stage].appendRow([item_name, item_artist])
+            root_items[name].appendRow(item_name)
+            
+        self.taskChanged.emit(data)
+            
+            
+class TaskFilterModel(QtGui.QStandardItemModel):
+    
+    def update(self, data):
+        self.clear()
+        
+        root = self.invisibleRootItem()
+        root.appendRow(QtGui.QStandardItem("All"))
+        filter_list = []
+        
+        for task in data:
+            filter_type = task.get("filter", "")
+            
+            if not filter_type or filter_type in filter_list: continue
+            filter_list.append(filter_type)
+            root.appendRow(QtGui.QStandardItem(filter_type))
+    
+    def columnCount(self, *_):
+        return 1
+    
+    
+class TaskFilterProxyModel(QtGui.QSortFilterProxyModel):
+    
+    def __init__(self, *_):
+        super(TaskFilterProxyModel, self).__init__(*_)
+        self.setFilterRole(TASK_FILTER)
+    
+    def filterAcceptsRow(self, *_):
+        if self.filterRegExp().pattern() == "All": return True
+        return super(TaskFilterProxyModel, self).filterAcceptsRow(*_)
+        
+    def update(self, table):
+        self.sourceModel().update(table)
+        
+    def columnCount(self, *_):
+        return 1
     
     
 class FileHistoryModel(QtGui.QStandardItemModel):
@@ -229,24 +273,26 @@ class FileListModel(QtGui.QStandardItemModel):
 
 class LabelItem(QtGui.QStandardItem):
     
-    def __init__(self, *args):
-        super(LabelItem, self).__init__(*args)
+    def __init__(self, text=None, tag=None):
+        super(LabelItem, self).__init__(text)
         self.setFlags(QtCore.Qt.ItemIsEnabled)
+        self._tag = tag
         
     def data(self, role=QtCore.Qt.DisplayRole):
-        if role == TASK_ITEM_TYPE: 
-            return TASK_LABEL_TYPE
+        if role == TASK_ITEM_TYPE: return TASK_LABEL_TYPE
+        elif role == TASK_FILTER: return self._tag
         
         return super(LabelItem, self).data(role)
 
     
 class TaskItem(QtGui.QStandardItem):
     
-    def __init__(self, task, *args):
-        super(TaskItem, self).__init__(*args)
+    def __init__(self, task, text=None, tag=None):
+        super(TaskItem, self).__init__(text)
         self.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
         
         self._task = task
+        self._tag = tag
         self._detail = ""
         
         if task["status"] == "Retake":
@@ -261,11 +307,13 @@ class TaskItem(QtGui.QStandardItem):
             bold_font = QtGui.QFont()
             bold_font.setBold(True)
             return bold_font
+        
         elif role == TASK_ITEM_TYPE: return TASK_DATA_TYPE
         elif role == TASK_ID: return self._task["id"]
         elif role == TASK_STAGE: return self._task["stage"]
         elif role == TASK_NAME: return self._task["name"]
         elif role == TASK_DATE: return self._task["date"]
+        elif role == TASK_LAST: return self._task["latest"]
         elif role == TASK_ARTIST: return self._task["artist"]
         elif role == TASK_STATUS: return self._task["status"]
         elif role == TASK_DETAIL: 
@@ -282,6 +330,7 @@ class TaskItem(QtGui.QStandardItem):
                     self._detail = database.getShotInfo(self._task["name"])
                 
             return self._detail
+        elif role == TASK_FILTER: return self._tag
         
         return super(TaskItem, self).data(role)
     

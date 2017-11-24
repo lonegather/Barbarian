@@ -17,7 +17,6 @@ class IntegrateStarterAsset(pyblish.api.InstancePlugin):
     def process(self, instance):
         import os, stat, json, shutil, errno
         from barbarian.cgtw import database
-        from cgtw import tw
 
         context = instance.context
 

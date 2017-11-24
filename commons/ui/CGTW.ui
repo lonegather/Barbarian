@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>1200</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
+    <width>1200</width>
     <height>600</height>
    </size>
   </property>
@@ -20,7 +20,7 @@
    <string>Teamwork</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,1,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,1,0">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -236,82 +236,119 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
-        <item>
-         <widget class="QToolBox" name="toolBox">
-          <property name="minimumSize">
-           <size>
-            <width>400</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="currentIndex">
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="CGTWPageTask" native="true">
+         <attribute name="title">
+          <string>我的任务</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="leftMargin">
            <number>0</number>
           </property>
-          <property name="tabSpacing">
+          <property name="topMargin">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="CGTWPageTask">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>400</width>
-             <height>405</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>微软雅黑</family>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
-           <attribute name="label">
-            <string>我的任务</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <property name="leftMargin">
-             <number>0</number>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTreeView" name="CGTWTVTask">
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
             </property>
-            <property name="topMargin">
-             <number>0</number>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
             </property>
-            <property name="rightMargin">
-             <number>0</number>
+            <property name="indentation">
+             <number>21</number>
             </property>
-            <property name="bottomMargin">
-             <number>6</number>
+            <property name="animated">
+             <bool>true</bool>
             </property>
+            <property name="headerHidden">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="CGTWBtnSubmit">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>提交检查</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="CGTWPageCheck" native="true">
+         <attribute name="title">
+          <string>检查任务</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTreeView" name="CGTWTVCheck">
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="indentation">
+             <number>21</number>
+            </property>
+            <property name="animated">
+             <bool>true</bool>
+            </property>
+            <property name="headerHidden">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QTreeView" name="CGTWTVTask">
-              <property name="font">
-               <font>
-                <family>微软雅黑</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="alternatingRowColors">
-               <bool>true</bool>
-              </property>
-              <property name="indentation">
-               <number>21</number>
-              </property>
-              <property name="animated">
-               <bool>true</bool>
-              </property>
-              <property name="headerHidden">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="CGTWBtnSubmit">
+             <widget class="QPushButton" name="CGTWBtnRetake">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -325,146 +362,133 @@
                </font>
               </property>
               <property name="text">
-               <string>提交检查</string>
+               <string>回退</string>
               </property>
              </widget>
             </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="CGTWPageCheck">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>400</width>
-             <height>405</height>
-            </rect>
-           </property>
-           <attribute name="label">
-            <string>检查任务</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>6</number>
-            </property>
             <item>
-             <widget class="QTreeView" name="CGTWTVCheck">
+             <widget class="QPushButton" name="CGTWBtnFinal">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>微软雅黑</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
-              <property name="alternatingRowColors">
-               <bool>true</bool>
-              </property>
-              <property name="indentation">
-               <number>21</number>
-              </property>
-              <property name="animated">
-               <bool>true</bool>
-              </property>
-              <property name="headerHidden">
-               <bool>true</bool>
+              <property name="text">
+               <string>发布</string>
               </property>
              </widget>
             </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_5">
-              <item>
-               <widget class="QPushButton" name="CGTWBtnRetake">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>微软雅黑</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>回退</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="CGTWBtnFinal">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>50</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>微软雅黑</family>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>发布</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
            </layout>
-          </widget>
-          <widget class="QWidget" name="CGTWPageAll">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>400</width>
-             <height>405</height>
-            </rect>
-           </property>
-           <attribute name="label">
-            <string>所有任务</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <property name="margin">
-             <number>0</number>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="CGTWPageAll" native="true">
+         <attribute name="title">
+          <string>所有任务</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QTreeView" name="CGTWTVAll">
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
             </property>
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="indentation">
+             <number>21</number>
+            </property>
+            <property name="animated">
+             <bool>true</bool>
+            </property>
+            <property name="headerHidden">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1">
             <item>
-             <widget class="QTreeView" name="CGTWTVAll">
+             <widget class="QRadioButton" name="CGTWRBAsset">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>微软雅黑</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
-              <property name="alternatingRowColors">
-               <bool>true</bool>
+              <property name="text">
+               <string>资产</string>
               </property>
-              <property name="indentation">
-               <number>21</number>
-              </property>
-              <property name="animated">
-               <bool>true</bool>
-              </property>
-              <property name="headerHidden">
+              <property name="checked">
                <bool>true</bool>
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QRadioButton" name="CGTWRBShot">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>镜头</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="CGTWCBFilter">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+             </widget>
+            </item>
            </layout>
-          </widget>
-         </widget>
-        </item>
-       </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </item>
       <item>
        <widget class="QGroupBox" name="CGTWGBInfo">
@@ -486,29 +510,8 @@
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,1">
-         <item>
-          <widget class="QLabel" name="CGTWLBLInfoPipeline">
-           <property name="minimumSize">
-            <size>
-             <width>200</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>微软雅黑</family>
-             <pointsize>10</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>制作阶段</string>
-           </property>
-          </widget>
-         </item>
-         <item>
+        <layout class="QGridLayout" name="gridLayout" columnstretch="1,0">
+         <item row="0" column="0">
           <widget class="QLabel" name="CGTWLBLInfoType">
            <property name="minimumSize">
             <size>
@@ -527,52 +530,64 @@
            </property>
           </widget>
          </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,0">
-           <item>
-            <widget class="QLabel" name="CGTWLBLStatus">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Sunken</enum>
-             </property>
-             <property name="text">
-              <string>任务状态</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="CGTWCBFile">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>微软雅黑</family>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-            </widget>
-           </item>
-          </layout>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="CGTWLBLStatus">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string>任务状态</string>
+           </property>
+          </widget>
          </item>
-         <item>
+         <item row="2" column="0">
+          <widget class="QComboBox" name="CGTWCBFile">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="CGTWCBFileLink">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
           <widget class="QTreeView" name="CGTWTVFileHistory">
            <property name="font">
             <font>
@@ -594,64 +609,29 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QFrame" name="CGTWFrmInfo">
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
-            <property name="margin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QTreeView" name="CGTWTVFileLink">
-              <property name="font">
-               <font>
-                <family>微软雅黑</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="contextMenuPolicy">
-               <enum>Qt::CustomContextMenu</enum>
-              </property>
-              <property name="alternatingRowColors">
-               <bool>true</bool>
-              </property>
-              <property name="indentation">
-               <number>0</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QListView" name="CGTWLVFileLink">
-              <property name="font">
-               <font>
-                <family>微软雅黑</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="contextMenuPolicy">
-               <enum>Qt::CustomContextMenu</enum>
-              </property>
-              <property name="dragDropMode">
-               <enum>QAbstractItemView::DragOnly</enum>
-              </property>
-              <property name="alternatingRowColors">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
+         <item row="3" column="1">
+          <widget class="QListView" name="CGTWLVFileLink">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="dragDropMode">
+            <enum>QAbstractItemView::DragOnly</enum>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
      </layout>
-    </item>
-    <item>
-     <widget class="Line" name="line_2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
     </item>
     <item>
      <widget class="QLabel" name="CGTWLBLResult">

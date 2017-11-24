@@ -63,9 +63,14 @@ def getTaskInfo(**kwargs):
         
     result = []
     tables = {"asset": "asset_name", "shot": "shot"}
+    tables2 = {"asset": "asset.type_name", "shot": "eps.eps_name"}
+    if "table" in kwargs and kwargs["table"]:
+        tables = {kwargs["table"]: tables[kwargs["table"]]}
+    
     for table in tables:
         filters = []
         for key in kwargs: 
+            if key == "table": continue
             if filters: filters.append("and")
             filters.append(["%s_task.%s" % (table, key), "=", kwargs[key]])
         if not filters: filters.append(["%s.%s" % (table, tables[table]), "has", "%"])
@@ -78,7 +83,9 @@ def getTaskInfo(**kwargs):
                                 "%s_task.status" % table,
                                 "%s_task.end_date" % table,
                                 "%s_task.artist" % table,
-                                "%s_task.image" % table]) or list():
+                                "%s_task.image" % table,
+                                "%s_task.last_submit_time" % table,
+                                tables2[table]]) or list():
             if not item["%s.%s" % (table, tables[table])]: continue
             
             result.append({"id": item["id"],
@@ -87,7 +94,9 @@ def getTaskInfo(**kwargs):
                            "status": item["%s_task.status" % table],
                            "date": item["%s_task.end_date" % table],
                            "artist": item["%s_task.artist" % table],
-                           "image": item["%s_task.image" % table]})
+                           "image": item["%s_task.image" % table],
+                           "latest": item["%s_task.last_submit_time" % table],
+                           "filter": item[tables2[table]]})
         
     return result
 
@@ -107,7 +116,8 @@ def getCheckInfo():
                                 "%s_task.pipeline" % table,
                                 "%s_task.status" % table,
                                 "%s_task.end_date" % table,
-                                "%s_task.artist" % table]) or list():
+                                "%s_task.artist" % table,
+                                "%s_task.last_submit_time" % table]) or list():
             if not item["%s.%s" % (table, tables[table])]: continue
             
             result.append({"id": item["id"],
@@ -115,7 +125,8 @@ def getCheckInfo():
                            "stage": item["%s_task.pipeline" % table],
                            "status": item["%s_task.status" % table],
                            "date": item["%s_task.end_date" % table],
-                           "artist": item["%s_task.artist" % table]})
+                           "artist": item["%s_task.artist" % table],
+                           "latest": item["%s_task.last_submit_time" % table]})
     
     return result
 
@@ -171,7 +182,7 @@ def getFileBox(task_id, task_stage):
     return Filebox.content
 
 
-def submit(task_id, path, text):
+def submit(task_id, path, text, image=None):
     History.force_update = True
     
     for table in ["asset_task", "shot_task"]:

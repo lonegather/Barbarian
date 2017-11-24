@@ -29,22 +29,30 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnRetake.setVisible(False)
         
         self.CGTWTVTask.setModel(model.TaskWorkModel())
-        self.CGTWTVTask.setItemDelegate(delegate.TaskItemDelegate(self.window))
+        self.CGTWTVTask.setItemDelegate(delegate.TaskMineItemDelegate(self.window))
         self.CGTWTVTask.clicked.connect(self.onTaskChanged)
         
         self.CGTWTVCheck.setModel(model.TaskCheckModel())
-        self.CGTWTVCheck.setItemDelegate(delegate.TaskItemDelegate(self.window))
+        self.CGTWTVCheck.setItemDelegate(delegate.TaskCheckItemDelegate(self.window))
         self.CGTWTVCheck.clicked.connect(self.onTaskChanged)
         
-        self.CGTWTVAll.setModel(model.TaskAllModel())
+        task_all_model = model.TaskAllModel()
+        task_filter_proxy_model = model.TaskFilterProxyModel()
+        task_filter_proxy_model.setSourceModel(task_all_model)
+        self.CGTWTVAll.setModel(task_filter_proxy_model)
         self.CGTWTVAll.setItemDelegate(delegate.TaskAllItemDelegate(self.window))
         self.CGTWTVAll.clicked.connect(self.onTaskChanged)
+        
+        task_filter_model = model.TaskFilterModel()
+        task_all_model.taskChanged.connect(lambda *args: task_filter_model.update(*args))
+        self.CGTWCBFilter.setModel(task_filter_model)
+        self.CGTWCBFilter.currentIndexChanged.connect(self.onFilterChanged)
         
         self.CGTWTVFileHistory.setModel(model.FileHistoryModel())
         self.CGTWTVFileHistory.setDragEnabled(True)
         
-        self.CGTWTVFileLink.setModel(model.FileLinkModel())
-        self.CGTWTVFileLink.clicked.connect(self.onFileboxChanged)
+        self.CGTWCBFileLink.setModel(model.FileLinkModel())
+        self.CGTWCBFileLink.currentIndexChanged.connect(self.onFileboxChanged)
         
         self.CGTWCBFile.setModel(model.FileListModel())
         self.CGTWCBFile.currentIndexChanged.connect(self.onFileChanged)
@@ -57,7 +65,8 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refreshUI], parent=self.window)
         
-        self.toolBox.currentChanged.connect(self.onTaskListChanged)
+        self.tabWidget.currentChanged.connect(self.onTaskListChanged)
+        self.CGTWRBAsset.toggled.connect(self.onTaskListChanged)
         self.CGTWBtnRefresh.clicked.connect(self.refreshUI)
         self.CGTWBtnSubmit.clicked.connect(self.submit)
         self.CGTWBtnFinal.clicked.connect(self.publish)
@@ -75,8 +84,10 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.historyContextMenu = QtGui.QMenu(self.CGTWTVFileHistory)
         self.historyContextMenu.setMinimumSize(QtCore.QSize(150, 30))
         self.historyActionCopy = self.historyContextMenu.addAction(u"拷贝路径")
+        self.historyActionRefer = self.historyContextMenu.addAction(u"在当前场景引用")
         self.historyActionBrowse = self.historyContextMenu.addAction(u"在资源管理器中查看...")
         self.historyActionCopy.triggered.connect(self.historyCopyHandler)
+        self.historyActionRefer.triggered.connect(self.historyReferHandler)
         self.historyActionBrowse.triggered.connect(self.historyBrowseHandler)
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
@@ -86,8 +97,10 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.linkContextMenu = QtGui.QMenu(self.CGTWLVFileLink)
         self.linkContextMenu.setMinimumSize(QtCore.QSize(150, 30))
         self.linkActionCopy = self.linkContextMenu.addAction(u"拷贝路径")
+        self.linkActionRefer = self.linkContextMenu.addAction(u"在当前场景引用")
         self.linkActionBrowse = self.linkContextMenu.addAction(u"在资源管理器中查看...")
         self.linkActionCopy.triggered.connect(self.linkCopyHandler)
+        self.linkActionRefer.triggered.connect(self.linkReferHandler)
         self.linkActionBrowse.triggered.connect(self.linkBrowseHandler)
         font = QtGui.QFont()
         font.setFamily(u"微软雅黑")
@@ -114,16 +127,12 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         else:
             self.id = ""
             self.CGTWLBLUser.setText(u"请登录...")
-            
-        self.CGTWTVTask.model().update()
-        self.CGTWTVCheck.model().update()
-        self.CGTWTVAll.model().update()
         
         self.onTaskListChanged()
         
     def reset(self):
         self.clear()
-        self.toolBox.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
+        self.tabWidget.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
         self.CGTWBtnRefresh.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
         self.CGTWGBInfo.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
         self.CGTWLEUsername.setVisible(not database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
@@ -142,13 +151,15 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLBLResult.setText(u"<font color=black>选择一项任务并提交...</font>")
         self.CGTWLBLResult.setStyleSheet("background-color: #aa33ff;")
         
-        index = self.toolBox.currentIndex()
+        index = self.tabWidget.currentIndex()
+        table = "asset" if self.CGTWRBAsset.isChecked() else "shot"
         view_list = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
         view_expand = [True, True, False]
         treeView = view_list[index]
         
-        treeView.model().update()
-        treeView.setColumnWidth(0, 360)
+        treeView.model().update(table)
+        treeView.setColumnWidth(0, 275)
+        treeView.update(treeView.currentIndex())
         if view_expand[index]: treeView.expandAll()
         
     def onTaskChanged(self, *_):
@@ -175,13 +186,12 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                            "FinalApprove": "[已发布] "}
         task_history = database.getFileHistoryInfo(task_id)
         
-        self.CGTWBtnSubmit.setEnabled(self.toolBox.currentIndex() == 0)
-        self.CGTWBtnRetake.setEnabled(self.toolBox.currentIndex() == 1)
-        self.CGTWBtnFinal.setEnabled(self.toolBox.currentIndex() == 1)
+        self.CGTWBtnSubmit.setEnabled(self.tabWidget.currentIndex() == 0)
+        self.CGTWBtnRetake.setEnabled(self.tabWidget.currentIndex() == 1)
+        self.CGTWBtnFinal.setEnabled(self.tabWidget.currentIndex() == 1)
         
         self.CGTWGBInfo.setTitle(task_name)
         self.CGTWLBLInfoType.setText(task_detail)
-        self.CGTWLBLInfoPipeline.setText(u"制作环节: %s"%task_stage)
         if task_history and task_status in status_color_map:
             self.CGTWLBLStatus.setStyleSheet(status_color_map[task_status])
             self.CGTWLBLStatus.setText(u"<font color=black>%s%s</font>"%
@@ -189,8 +199,11 @@ class CGTW(CGTWUI.Ui_CGTWWin):
                                         self.extractText(task_history[0]["text"])))
         
         self.CGTWCBFile.model().update(task_id)
-        self.CGTWTVFileLink.model().update(task_id, task_stage)
-        self.CGTWTVFileLink.setColumnWidth(0, 200)
+        self.CGTWCBFileLink.model().update(task_id, task_stage)
+        
+    def onFilterChanged(self, *_):
+        tag = self.CGTWCBFilter.currentText()
+        self.CGTWTVAll.model().setFilterFixedString(tag)
         
     def onFileChanged(self, *_):
         task_id = self.getCurrentTaskInfo(model.TASK_ID)
@@ -205,17 +218,15 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
     def getCurrentTaskInfo(self, role):
         itemList = [self.CGTWTVTask, self.CGTWTVCheck, self.CGTWTVAll]
-        treeView = itemList[self.toolBox.currentIndex()]
+        treeView = itemList[self.tabWidget.currentIndex()]
         index = treeView.currentIndex()
         return index.data(role)
         
-    def onFileboxChanged(self, *_):
-        index = self.CGTWTVFileLink.currentIndex()
-        path = index.data(model.FILE_PATH)
+    def onFileboxChanged(self, index):
+        path = self.CGTWCBFileLink.itemData(index, model.FILE_PATH)
         
         if not path: return
         
-        self.CGTWLVFileLink.setVisible(True)
         self.CGTWLVFileLink.model().setRootPath(path)
         self.CGTWLVFileLink.setRootIndex(self.CGTWLVFileLink.model().index(path))
         
@@ -223,13 +234,12 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWBtnSubmit.setEnabled(False)
         self.CGTWBtnRetake.setEnabled(False)
         self.CGTWBtnFinal.setEnabled(False)
-        self.CGTWLVFileLink.setVisible(False)
         self.CGTWTVFileHistory.model().clear()
-        self.CGTWTVFileLink.model().clear()
+        self.CGTWCBFileLink.model().clear()
+        #self.CGTWLVFileLink.model().setRootPath("")
         self.CGTWCBFile.clear()
         self.CGTWGBInfo.setTitle(" ")
         self.CGTWLBLInfoType.setText("")
-        self.CGTWLBLInfoPipeline.setText("")
         self.CGTWLBLStatus.setText("")
         self.CGTWLBLStatus.setStyleSheet("border-color: #333333;")
     
@@ -295,6 +305,44 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         root = self.CGTWLVFileLink.model().rootPath()
         path = index.data(QtCore.Qt.DisplayRole)
         pyperclip.copy(os.path.join(root, path).replace("/", "\\"))
+        
+    def historyReferHandler(self):
+        index = self.CGTWTVFileHistory.currentIndex()
+        path = index.data(model.FILE_PATH)
+        
+        if path.count('.ma'): typ = "mayaAscii"
+        elif path.count('.mb'): typ = "mayaBinary"
+        else: 
+            self.CGTWLBLResult.setText(u"<font color=black>错误：选择的文件不能创建引用</font>")
+            self.CGTWLBLResult.setStyleSheet("background-color: rgba(255, 90, 90, 255);")
+            return
+        
+        fileName = path.split('/')[-1]
+        if len(fileName.split('.ma')) > 1: 
+            namespace = fileName.split('.ma')[0]
+        else: namespace = fileName.split('.mb')[0]
+        
+        cmds.file(path, r=True, iv=True, typ=typ, ns=namespace)
+    
+    def linkReferHandler(self):
+        index = self.CGTWLVFileLink.currentIndex()
+        root = self.CGTWLVFileLink.model().rootPath()
+        name = index.data(QtCore.Qt.DisplayRole)
+        path = os.path.dirname(os.path.join(root, name)).replace("/", "\\")
+        
+        if path.count('.ma'): typ = "mayaAscii"
+        elif path.count('.mb'): typ = "mayaBinary"
+        else: 
+            self.CGTWLBLResult.setText(u"<font color=black>错误：选择的文件不能创建引用</font>")
+            self.CGTWLBLResult.setStyleSheet("background-color: rgba(255, 90, 90, 255);")
+            return
+        
+        fileName = path.split('/')[-1]
+        if len(fileName.split('.ma')) > 1: 
+            namespace = fileName.split('.ma')[0]
+        else: namespace = fileName.split('.mb')[0]
+        
+        cmds.file(path, r=True, iv=True, typ=typ, ns=namespace)
         
     def historyBrowseHandler(self):
         index = self.CGTWTVFileHistory.currentIndex()
