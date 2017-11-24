@@ -132,6 +132,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         
     def reset(self):
         self.clear()
+        self.CGTWTVTask.model().clear()
+        self.CGTWTVCheck.model().clear()
+        self.CGTWTVAll.model().clear()
         self.tabWidget.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
         self.CGTWBtnRefresh.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
         self.CGTWGBInfo.setEnabled(database.getAccountInfo(database.ACCOUNT_LOGGED_IN))
