@@ -239,7 +239,7 @@
        <widget class="QTabWidget" name="tabWidget">
         <property name="minimumSize">
          <size>
-          <width>300</width>
+          <width>350</width>
           <height>0</height>
          </size>
         </property>
@@ -252,7 +252,7 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="CGTWPageTask" native="true">
+        <widget class="QWidget" name="CGTWPageTask">
          <attribute name="title">
           <string>我的任务</string>
          </attribute>
@@ -309,7 +309,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="CGTWPageCheck" native="true">
+        <widget class="QWidget" name="CGTWPageCheck">
          <attribute name="title">
           <string>检查任务</string>
          </attribute>
@@ -389,7 +389,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="CGTWPageAll" native="true">
+        <widget class="QWidget" name="CGTWPageAll">
          <attribute name="title">
           <string>所有任务</string>
          </attribute>
@@ -426,7 +426,7 @@
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,1,0">
             <item>
              <widget class="QRadioButton" name="CGTWRBAsset">
               <property name="minimumSize">
@@ -481,6 +481,25 @@
                 <family>微软雅黑</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="CGTWBtnRefer">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>引用</string>
               </property>
              </widget>
             </item>

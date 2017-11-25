@@ -93,8 +93,7 @@ class TaskItemDelegate(QtGui.QStyledItemDelegate):
             
             return
         
-        status_rect = QtCore.QRectF(item_rect).adjusted(self.margin, 
-                                                          self.margin, -self.margin, -self.margin-1)
+        status_rect = QtCore.QRectF(item_rect).adjusted(0, self.margin, -self.margin, -self.margin-1)
         status_rect.setWidth(15)
         status_color = status_colors.get(index.data(model.TASK_STATUS), QtGui.QColor(255, 255, 255, 255))
         status_shade = QtGui.QLinearGradient(0, status_rect.y(), 0, status_rect.y()+status_rect.height())
@@ -103,8 +102,7 @@ class TaskItemDelegate(QtGui.QStyledItemDelegate):
         status_shade.setColorAt(1.0-5.0/status_rect.height(), QtGui.QColor(0, 0, 0, 120))
         status_shade.setColorAt(1.0, QtGui.QColor(0, 0, 0, 180))
         
-        stage_rect = QtCore.QRect(item_rect.adjusted(self.margin+16, 
-                                                     self.margin, -self.margin, -self.margin))
+        stage_rect = QtCore.QRect(item_rect.adjusted(16, self.margin, -self.margin, -self.margin))
         stage_rect.setWidth(48)
         stage_rect.setHeight(48)
         
@@ -207,12 +205,12 @@ class TaskAllItemDelegate(TaskItemDelegate):
             painter.drawText(artist_rect, QtCore.Qt.AlignVCenter, index.data(model.TASK_ARTIST))
         
         if index.data(model.TASK_DATE):
-            date_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin+160+self.margin, 
+            date_rect = QtCore.QRect(item_rect.adjusted(self.margin+15+self.margin+150+self.margin, 
                                                       self.margin+20+self.margin, 
                                                       -self.margin, -self.margin))
             painter.setFont(fonts["h5"])
             painter.setPen(QtGui.QPen(QtGui.QColor(120, 120, 120, 255)))
-            painter.drawText(date_rect, QtCore.Qt.AlignVCenter, index.data(model.TASK_DATE))
+            painter.drawText(date_rect, QtCore.Qt.AlignVCenter, u"截止日期：%s"%index.data(model.TASK_DATE))
         
         painter.restore()
         

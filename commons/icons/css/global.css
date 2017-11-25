@@ -16,6 +16,11 @@ QScrollBar {
 	border: 1px solid black;
 }
 
+QScrollBar:disabled {
+	background: #333333;
+	border: 0px;
+}
+
 QScrollBar:vertical {
 	width: 20px;
 	margin: 20px 0 20px 0;
@@ -34,6 +39,11 @@ QScrollBar::add-line, QScrollBar::sub-line {
                                       stop:1.00 rgba(020, 020, 020, 255));
     border: 1px solid black;
     subcontrol-origin: margin;
+}
+
+QScrollBar::add-line:disabled, QScrollBar::sub-line:disabled {
+	background: #333333;
+	border: 0px;
 }
 
 QScrollBar::add-line:hover, QScrollBar::sub-line:hover {
@@ -75,6 +85,11 @@ QScrollBar::up-arrow, QScrollBar::down-arrow, QScrollBar::left-arrow, QScrollBar
      background: white;
 }
 
+QScrollBar::up-arrow:disabled, QScrollBar::down-arrow:disabled, QScrollBar::left-arrow:disabled, QScrollBar::right-arrow:disabled {
+	 border: 0px;
+     background: #333333;
+}
+
 QScrollBar::add-page, QScrollBar::sub-page {
     background: none;
 }
@@ -84,6 +99,11 @@ QScrollBar::handle {
                                 stop:0 rgba(100, 100, 100, 255),
                                 stop:1 rgba(060, 060, 060, 255));
 	border: 1px solid black;
+}
+
+QScrollBar::handle:disabled {
+	background: #333333;
+	border: 0px;
 }
 
 QScrollBar::handle:hover {
@@ -290,7 +310,7 @@ QToolBox::tab:!disabled:selected {
     border-bottom-right-radius: 0px;
 }
 
-QTabWidget::pane {
+QTabWidget::pane:!disabled {
     border-top: 1px solid black;
     position: absolute;
     top: -0.1em;
@@ -310,7 +330,12 @@ QTabBar::tab {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     padding: 0px 15px;
-    min-height: 25px;
+    min-height: 30px;
+}
+
+QTabBar::tab:disabled {
+	background: #333333;
+	border: 0px;
 }
 
 QTabBar::tab:hover {
@@ -321,15 +346,15 @@ QTabBar::tab:hover {
                                 stop:1.00 rgba(050, 050, 050, 255));
 }
 
-QTabBar::tab:selected {
+QTabBar::tab:!disabled:selected {
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
                                 stop:0.00 rgba(050, 030, 100, 255),
                                 stop:0.10 rgba(090, 040, 140, 255),
                                 stop:1.00 rgba(100, 050, 150, 255));
 }
 
-QTabBar::tab:!selected {
-    margin-top: 2px;
+QTabBar::tab:!disabled:!selected {
+    margin-top: 5px;
 }
 
 QSlider::groove:horizontal {

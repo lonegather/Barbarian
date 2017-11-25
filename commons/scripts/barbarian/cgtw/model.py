@@ -228,12 +228,6 @@ class FileHistoryModel(QtGui.QStandardItemModel):
             
 class FileLinkModel(QtGui.QStandardItemModel):
         
-    def headerData(self, section, orientation, role):
-        if role == QtCore.Qt.DisplayRole:
-            if orientation == QtCore.Qt.Horizontal:
-                if section == 0:
-                    return u"相关文件"
-        
     def columnCount(self, *_):
         return 1
     
@@ -242,9 +236,11 @@ class FileLinkModel(QtGui.QStandardItemModel):
         self.clear()
         
         root = self.invisibleRootItem()
+        publish_dir = ""
         
         for filebox in self._filebox:
             if filebox["is_submit"]: continue
+            if filebox["sign"] == "publish": publish_dir = filebox["path"]
             
             try:
                 if not os.path.exists(filebox["path"]): 
@@ -253,6 +249,8 @@ class FileLinkModel(QtGui.QStandardItemModel):
                 continue
             
             root.appendRow(FileItem(filebox["path"], filebox["title"]))
+            
+        return publish_dir
 
 
 class FileListModel(QtGui.QStandardItemModel):
