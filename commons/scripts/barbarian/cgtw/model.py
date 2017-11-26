@@ -103,10 +103,11 @@ class TaskAllModel(TaskModel):
             name = task["name"]
             tag = task["filter"]
             if not name in root_items:
-                root_items[name] = LabelItem(name, tag)
+                suffix = u"- %s"%task["detail"] if task["detail"] else ""
+                root_items[name] = LabelItem(u"%s %s"%(name, suffix), tag)
                 root.appendRow([root_items[name], LabelItem()])
             
-            item_name = TaskItem(task, task["name"], tag)
+            item_name = TaskItem(task, name, tag)
             
             root_items[name].appendRow(item_name)
             
@@ -275,6 +276,8 @@ class LabelItem(QtGui.QStandardItem):
         super(LabelItem, self).__init__(text)
         self.setFlags(QtCore.Qt.ItemIsEnabled)
         self._tag = tag
+        
+        if text: self.setToolTip(text)
         
     def data(self, role=QtCore.Qt.DisplayRole):
         if role == TASK_ITEM_TYPE: return TASK_LABEL_TYPE

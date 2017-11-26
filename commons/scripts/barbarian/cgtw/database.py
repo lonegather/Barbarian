@@ -64,6 +64,7 @@ def getTaskInfo(**kwargs):
     result = []
     tables = {"asset": "asset_name", "shot": "shot"}
     tables2 = {"asset": "asset.type_name", "shot": "eps.eps_name"}
+    tables3 = {"asset": "asset.cn_name", "shot": "eps.eps_name"}
     if "table" in kwargs and kwargs["table"]:
         tables = {kwargs["table"]: tables[kwargs["table"]]}
     
@@ -85,7 +86,8 @@ def getTaskInfo(**kwargs):
                                 "%s_task.artist" % table,
                                 "%s_task.image" % table,
                                 "%s_task.last_submit_time" % table,
-                                tables2[table]]) or list():
+                                tables2[table],
+                                tables3[table]]) or list():
             if not item["%s.%s" % (table, tables[table])]: continue
             
             result.append({"id": item["id"],
@@ -96,7 +98,8 @@ def getTaskInfo(**kwargs):
                            "artist": item["%s_task.artist" % table],
                            "image": item["%s_task.image" % table],
                            "latest": item["%s_task.last_submit_time" % table],
-                           "filter": item[tables2[table]]})
+                           "filter": item[tables2[table]],
+                           "detail": item[tables3[table]]})
         
     return result
 
