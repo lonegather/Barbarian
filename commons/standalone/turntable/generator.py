@@ -1,24 +1,21 @@
 ﻿#!/usr/local/bin/python2.7
 # encoding: utf-8
 '''
-Created on 2017.11.21
+Created on 2017.11.29
 
 @author: Serious Sam
 '''
 
-import os, logging, math, threading
-from maya import cmds, mel
+import sys, math
+from maya import standalone, cmds
+import db
 
 
-def create():
-    if not cmds.file(q=1, sn=1, shn=1):
-        cmds.headsUpMessage(u'文件未保存', time=1)
-        return
+def setup_scene(source, target, asset_type):
+    asset_types = {"char":db.char_light_path, "prop":db.prop_light_path}
     
-    file_path = cmds.file(q=1, sn=1)
-    workspace = cmds.workspace(q=True, fullName=True)
-    output_path = "E:/turntable/"
-    maya_location = "\"%s/bin/Render.exe\"" % os.getenv("MAYA_LOCATION")
+    pm.openFile(asset_types[asset_type])
+    pm.createReference(source)
     
     top_level_dag = cmds.ls(assemblies=True)
     top_level_obj = ""
@@ -30,8 +27,7 @@ def create():
                 top_level_obj = dag
         if top_level_obj: break
     if not top_level_obj:
-        cmds.headsUpMessage(u"找不到有效的几何对象", time=1)
-        return
+        return db.gen_failure_msg
     
     bounding_box_max = cmds.getAttr("%s.boundingBoxMax"%top_level_obj)[0]
     bounding_box_min = cmds.getAttr("%s.boundingBoxMin"%top_level_obj)[0]
@@ -41,7 +37,7 @@ def create():
     camera_z = camera_y * 3.6 * (2.6 - min(max(1.0, max(bb_max_x, bb_max_z) / bounding_box_max[1] * 2.0), 1.5))
     angle = math.atan((bounding_box_max[1]*.5 - camera_y)/camera_z)
     
-    camera_name = "TurnTableCam"
+    camera_name = db.camera_name
     if "%sGrp"%camera_name in cmds.ls(assemblies=True):
         try: cmds.delete("%sGrp"%camera_name)
         except: pass
@@ -55,24 +51,26 @@ def create():
     cmds.setAttr("%s.translateZ"%camera_name, camera_z*math.cos(angle))
     cmds.setAttr("%s.rotateX"%camera_name, angle/math.pi*180)
     
-    min_time = cmds.playbackOptions(q=True, minTime=True)
-    max_time = cmds.playbackOptions(q=True, maxTime=True)
+    pm.setKeyframe("%sGrp"%camera_name, outTangentType="linear", time=1, value=0, attribute="rotateY")
+    pm.setKeyframe("%sGrp"%camera_name, inTangentType="linear", time=26, value=360, attribute="rotateY")
     
-    cmds.setKeyframe("%sGrp"%camera_name, outTangentType="linear", time=min_time, value=0, attribute="rotateY")
-    cmds.setKeyframe("%sGrp"%camera_name, inTangentType="linear", time=max_time, value=360, attribute="rotateY")
+    pm.saveAs(target)
     
-    cmds.file(save=True)
+    return db.gen_success_msg
+
+
+if __name__ == "__main__":
+
+    standalone.initialize(name="python")
     
-    cmd = "{maya_location} -r arnold -s {min_time} -e {max_time} -cam {camera_name} -rd {output_path} -im name_#.ext {file_path}".format(**locals())
+    import pymel.core as pm
+    pm.loadPlugin("mtoa.mll", quiet=True)
     
-    thread = threading.Thread(target=batchRender, args=(cmd,))
-    thread.setDaemon(True)
-    thread.start()
+    print setup_scene(*sys.argv[1:])
     
+    cmds.quit(force=True)
     
-def batchRender(command):
-    os.system(command)
-    
+    sys.exit()
     
 
 
