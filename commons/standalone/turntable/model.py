@@ -223,6 +223,8 @@ class FileWatchThread(QtCore.QThread):
         while self.scene["status"] == "rendering":
             path = "%s/images/" % os.path.split(self.scene["target"])[0]
             file_num = float(len(os.listdir(path)))
+            if "Thumbs.db" in os.listdir(path):
+                file_num -= 1
             
             if self.num != file_num:
                 self.num = file_num
