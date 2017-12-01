@@ -6,7 +6,7 @@ Created on 2017.11.29
 @author: Serious Sam
 '''
 
-import os, sys, errno
+import os, shutil, sys, errno
 import db
 
 
@@ -18,18 +18,20 @@ if __name__ == "__main__":
     target_dir = os.path.split(target)[0]
     target_image_dir = target_dir + "/images/"
     
+    shutil.rmtree(target_image_dir, True)
+    
     try:
         os.makedirs(target_dir)
     except OSError as e:
         if e.errno != errno.EEXIST:  # Already exists
-            print db.init_failure_msg
+            print "No permission to create directory."
             sys.exit(1)
             
     try:
         os.makedirs(target_image_dir)
     except OSError as e:
         if e.errno != errno.EEXIST:  # Already exists
-            print db.init_failure_msg
+            print "No permission to create directory."
             sys.exit(1)
     
     print db.init_success_msg

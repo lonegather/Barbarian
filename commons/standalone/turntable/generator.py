@@ -11,7 +11,7 @@ from maya import standalone, cmds
 import db
 
 
-def setup_scene(source, target, asset_type):
+def setup_scene(source, target, asset_type, frame):
     asset_types = {"char":db.char_light_path, "prop":db.prop_light_path}
     
     pm.openFile(asset_types[asset_type])
@@ -52,7 +52,10 @@ def setup_scene(source, target, asset_type):
     cmds.setAttr("%s.rotateX"%camera_name, angle/math.pi*180)
     
     pm.setKeyframe("%sGrp"%camera_name, outTangentType="linear", time=1, value=0, attribute="rotateY")
-    pm.setKeyframe("%sGrp"%camera_name, inTangentType="linear", time=26, value=360, attribute="rotateY")
+    pm.setKeyframe("%sGrp"%camera_name, inTangentType="linear", time=int(frame)+1, value=360, attribute="rotateY")
+    
+    pm.select(top_level_obj)
+    pm.displaySmoothness(polygonObject=3)
     
     pm.saveAs(target)
     

@@ -20,10 +20,10 @@ camera_name = "TurnTableCam"
 maya_renderer = "%s/bin/Render.exe" % os.getenv("MAYA_LOCATION").replace('\\', '/')
 maya_interpreter = "%s/bin/mayapy.exe" % os.getenv("MAYA_LOCATION").replace('\\', '/')
 tool_location = "Z:/Workflow/Barbarian_1.0/commons/"
-char_location = "P:/PT/DB/Common/Turntable/CH/" #"E:/turntable/CH/"
-prop_location = "P:/PT/DB/Common/Turntable/Prop/" #"E:/turntable/Prop/"
-char_light_path = "P:/PT/DB/Common/LGT_CH_Turntable.mb" #"E:/turntable/CH/LGT_CH_Turntable.mb"
-prop_light_path = "P:/PT/DB/Common/LGT_Prop_Turntable.mb" #"E:/turntable/Prop/LGT_Prop_Turntable.mb"
+char_location = "P:/PT/DB/Common/Turntable/CH/"
+prop_location = "P:/PT/DB/Common/Turntable/Prop/"
+char_light_path = "P:/PT/DB/Common/LGT_CH_Turntable.mb"
+prop_light_path = "P:/PT/DB/Common/LGT_Prop_Turntable.mb"
 
 init_success_msg = "TurnTable initialization succeeded."
 init_failure_msg = "TurnTable initialization failed."
@@ -41,16 +41,52 @@ def get_path(*args):
     return path
 
 
+def frame():
+    return Info.frame
+
+
+def set_frame(num):
+    Info.frame = num
+    
+    
+def request_scene():
+    current = 0
+    for scene in Info.list:
+        if scene["status"] not in ["wait", "done", "failed"]:
+            current += 1
+    
+    if current < Info.concurrent:
+        for scene in Info.list:
+            if scene["status"] == "wait":
+                scene["status"] = "init"
+                return scene
+    
+    return None
+
+
+def set_concurrent(num):
+    Info.concurrent = num
+    
+
+def all_done():
+    for scene in Info.list:
+        if not scene["status"] in ["done", "failed"]:
+            return False
+    return True
+
+
 def file_list():
-    return FileInfo.list
+    return Info.list
 
 
 def add_file(*file_list):
-    for f in file_list: FileInfo.list.append(f)
+    for f in file_list: Info.list.append(f)
 
 
-class FileInfo():
+class Info():
     list = []
+    frame = 1
+    concurrent = 1
 
 
 

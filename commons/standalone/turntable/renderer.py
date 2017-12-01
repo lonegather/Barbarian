@@ -16,9 +16,9 @@ if __name__ == "__main__":
     output_dir = os.path.split(target)[0] + "/images/"
     renderer = db.maya_renderer
     camera_name = db.camera_name
+    frame = sys.argv[2]
     
-    cmd = "render -r arnold -s 1 -e 25 -cam {camera_name} -rd {output_dir} {target}".format(**locals()).replace('/', '\\')
-    if subprocess.Popen(cmd, shell=True).wait() == 0:
-        print db.render_success_msg
+    cmd = "render -r arnold -s 1 -e {frame} -cam {camera_name} -rd {output_dir} {target}".format(**locals()).replace('/', '\\')
+    subprocess.call(cmd)
         
     sys.exit()

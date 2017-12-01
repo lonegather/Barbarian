@@ -14,12 +14,17 @@ from turntable import db
 scene_name = QtCore.Qt.UserRole + 1
 scene_type = QtCore.Qt.UserRole + 2
 scene_stat = QtCore.Qt.UserRole + 3
+scene_path = QtCore.Qt.UserRole + 4
+scene_progress = QtCore.Qt.UserRole + 5
 
 
 class FileListModel(QtCore.QAbstractListModel):
     
+    progress = QtCore.Signal()
+    
     def __init__(self, parent=None):
         super(FileListModel, self).__init__(parent)
+        self.monitors = []
         
     def rowCount(self, *_):
         return len(db.file_list())
@@ -32,6 +37,8 @@ class FileListModel(QtCore.QAbstractListModel):
         elif role == scene_name: return db.file_list()[index.row()].get("name", "null")
         elif role == scene_type: return db.file_list()[index.row()].get("type", "null")
         elif role == scene_stat: return db.file_list()[index.row()].get("status", "null")
+        elif role == scene_path: return db.file_list()[index.row()].get("target", "null")
+        elif role == scene_progress: return db.file_list()[index.row()].get("progress", "null")
     
     def supportedDropActions(self):
         return QtCore.Qt.CopyAction
@@ -83,32 +90,29 @@ class FileListModel(QtCore.QAbstractListModel):
             name = f["name"].split('.')[0]
             f["type"] = file_type
             f["target"] = "%s%s/%s_turntable.mb" % (types[file_type], name, name)
-            f["status"] = "init"
+            f["status"] = "wait"
+            f["progress"] = 0.0
         
         db.add_file(*new_file)
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
         
         return True
     
-    def start(self):
+    def quere(self):
+        self.progress.emit()
+        if db.all_done(): return
+        
         maya_gen_path = os.path.join(os.path.split(__file__)[0], "initializer.py").replace('\\', '/')
         command = u"\"%s\" %s"%(db.maya_interpreter, maya_gen_path)
-        self.init_monitors = []
-        self.gen_monitors = []
-        self.render_monitors = []
-        self.com_monitors = []
-        
-        for scene in db.file_list():
+        scene = db.request_scene()
+        while scene:
             command_full = u"%s %s %s %s"%(command, scene["source"], scene["target"], scene["type"])
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startup_info.wShowWindow = subprocess.SW_HIDE
             process = subprocess.Popen(command_full, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             monitor = MonitorThread(process, scene)
             monitor.processCompleted.connect(self.onInitDone)
             monitor.start()
-            
-            self.init_monitors.append(monitor)
+            self.monitors.append(monitor)
+            scene = db.request_scene()
     
     def onInitDone(self, message, scene):
         if message.count(db.init_success_msg):
@@ -116,19 +120,16 @@ class FileListModel(QtCore.QAbstractListModel):
             scene["status"] = "generating"
             maya_gen_path = os.path.join(os.path.split(__file__)[0], "generator.py").replace('\\', '/')
             command = command = u"\"%s\" %s"%(db.maya_interpreter, maya_gen_path)
-            command_full = u"%s %s %s %s"%(command, scene["source"], scene["target"], scene["type"])
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startup_info.wShowWindow = subprocess.SW_HIDE
+            command_full = u"%s %s %s %s %s"%(command, scene["source"], scene["target"], scene["type"], db.frame())
             process = subprocess.Popen(command_full, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             monitor = MonitorThread(process, scene)
             monitor.processCompleted.connect(self.onGenDone)
             monitor.start()
-            
-            self.gen_monitors.append(monitor)
+            self.monitors.append(monitor)
         
         else: 
             scene["status"] = "failed"
+            self.quere()
             print message
         
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
@@ -139,42 +140,43 @@ class FileListModel(QtCore.QAbstractListModel):
             scene["status"] = "rendering"
             maya_gen_path = os.path.join(os.path.split(__file__)[0], "renderer.py").replace('\\', '/')
             command = command = u"\"%s\" %s"%(db.maya_interpreter, maya_gen_path)
-            command_full = u"%s %s"%(command, scene["target"])
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startup_info.wShowWindow = subprocess.SW_HIDE
+            command_full = u"%s %s %s"%(command, scene["target"], db.frame())
             process = subprocess.Popen(command_full, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             monitor = MonitorThread(process, scene)
             monitor.processCompleted.connect(self.onRenderDone)
             monitor.start()
+            self.monitors.append(monitor)
             
-            self.render_monitors.append(monitor)
+            watcher = FileWatchThread(scene)
+            watcher.fileNumberChanged.connect(lambda: self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex()))
+            watcher.start()
+            self.monitors.append(watcher)
             
         else: 
             scene["status"] = "failed"
+            self.quere()
             print message
         
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
         
     def onRenderDone(self, message, scene):
-        if message.count(db.render_success_msg):
+        if not message.count("[mtoa] Failed batch render"):
             print db.render_success_msg
             scene["status"] = "compositing"
             maya_gen_path = os.path.join(os.path.split(__file__)[0], "compositer.py").replace('\\', '/')
             command = command = u"\"%s\" %s"%(db.maya_interpreter, maya_gen_path)
             command_full = u"%s %s"%(command, scene["target"])
-            startup_info = subprocess.STARTUPINFO()
-            startup_info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startup_info.wShowWindow = subprocess.SW_HIDE
             process = subprocess.Popen(command_full, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             monitor = MonitorThread(process, scene)
             monitor.processCompleted.connect(self.onComDone)
             monitor.start()
+            self.monitors.append(monitor)
             
-            self.com_monitors.append(monitor)
+            
             
         else: 
             scene["status"] = "failed"
+            self.quere()
             print message
             
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
@@ -187,7 +189,8 @@ class FileListModel(QtCore.QAbstractListModel):
         else: 
             scene["status"] = "failed"
             print message
-            
+        
+        self.quere()
         self.dataChanged.emit(QtCore.QModelIndex(), QtCore.QModelIndex())
     
     
@@ -201,7 +204,35 @@ class MonitorThread(QtCore.QThread):
         self.scene = scene
     
     def run(self):
-        message = self.process.communicate()[0]
+        msg, err = self.process.communicate()
+        message = "-------------------output--------------------\n%s" % msg
+        if err: message += "\n-------------------error---------------------\n%s" % err
         self.processCompleted.emit(message, self.scene)
+        
+        
+class FileWatchThread(QtCore.QThread):
+    
+    fileNumberChanged = QtCore.Signal()
+    
+    def __init__(self, scene):
+        super(FileWatchThread, self).__init__()
+        self.scene = scene
+        self.num = 0.0
+        
+    def run(self):
+        while self.scene["status"] == "rendering":
+            path = "%s/images/" % os.path.split(self.scene["target"])[0]
+            file_num = float(len(os.listdir(path)))
+            
+            if self.num != file_num:
+                self.num = file_num
+                self.scene["progress"] = self.num / float(db.frame())
+                self.fileNumberChanged.emit()
+                
+            self.sleep(1)
+        
+    
+    
+    
     
         

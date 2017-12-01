@@ -6,7 +6,7 @@ Created on 2017.11.30
 @author: Serious Sam
 '''
 
-import os, sys, subprocess
+import os, shutil, sys, subprocess
 import db
 
 
@@ -21,5 +21,6 @@ if __name__ == "__main__":
     cmd = "{ffmpeg_path} -i \"{image_path}\" -vcodec \"mpeg4\" -y -qscale 0 \"{video_path}\"".format(**locals())
     if subprocess.Popen(cmd, shell=True).wait() == 0:
         print db.com_success_msg
+        shutil.rmtree("%s/images" % output_dir, True)
         
     sys.exit()
