@@ -64,7 +64,8 @@ class FileListModel(QtCore.QAbstractListModel):
                 if file_path == f["source"]: new = False
             if not new: continue
             
-            target_path = db.asset_location + "Common/Mods/" + file_path.split(db.asset_location)[-1]
+            prefix, suffix = file_path.split("/DB/")
+            target_path = prefix + "/DB/Common/Mods/" + suffix
             new_file.append({"name":file_name, "source":file_path, "target":target_path, "status":"wait"})
             
         if not new_file: return False
