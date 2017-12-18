@@ -1,0 +1,90 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'E:/workspace/PutaoTools/commons/ui/TurntableGenerator.ui'
+#
+# Created: Fri Dec 01 11:40:58 2017
+#      by: pyside-uic 0.2.14 running on PySide 1.2.0
+#
+# WARNING! All changes made in this file will be lost!
+
+from PySide import QtCore, QtGui
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.setMinimumSize(QtCore.QSize(320, 422))
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        MainWindow.setFont(font)
+        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.infoLable = QtGui.QLabel(self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        self.infoLable.setFont(font)
+        self.infoLable.setObjectName("infoLable")
+        self.verticalLayout.addWidget(self.infoLable)
+        self.fileListView = QtGui.QListView(self.centralwidget)
+        self.fileListView.setObjectName("fileListView")
+        self.verticalLayout.addWidget(self.fileListView)
+        self.frame = QtGui.QFrame(self.centralwidget)
+        self.frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.frame.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame.setObjectName("frame")
+        self.horizontalLayout_4 = QtGui.QHBoxLayout(self.frame)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.formLayout = QtGui.QFormLayout()
+        self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
+        self.formLayout.setLabelAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.formLayout.setContentsMargins(-1, 3, -1, 3)
+        self.formLayout.setHorizontalSpacing(10)
+        self.formLayout.setObjectName("formLayout")
+        self.label_2 = QtGui.QLabel(self.frame)
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        self.label_2.setFont(font)
+        self.label_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_2)
+        self.concurrentSlider = QtGui.QSlider(self.frame)
+        self.concurrentSlider.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.concurrentSlider.setMinimum(1)
+        self.concurrentSlider.setMaximum(5)
+        self.concurrentSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.concurrentSlider.setTickPosition(QtGui.QSlider.TicksBothSides)
+        self.concurrentSlider.setTickInterval(1)
+        self.concurrentSlider.setObjectName("concurrentSlider")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.concurrentSlider)
+        self.horizontalLayout_4.addLayout(self.formLayout)
+        self.generateButton = QtGui.QPushButton(self.frame)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.generateButton.sizePolicy().hasHeightForWidth())
+        self.generateButton.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily(u"微软雅黑")
+        font.setPointSize(10)
+        self.generateButton.setFont(font)
+        self.generateButton.setObjectName("generateButton")
+        self.horizontalLayout_4.addWidget(self.generateButton)
+        self.horizontalLayout_4.setStretch(1, 1)
+        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout.setStretch(1, 1)
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "ShaderExtractor", None, QtGui.QApplication.UnicodeUTF8))
+        self.infoLable.setText(QtGui.QApplication.translate("MainWindow", "请将文件拖入此处：", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "并发", None, QtGui.QApplication.UnicodeUTF8))
+        self.generateButton.setText(QtGui.QApplication.translate("MainWindow", "生成", None, QtGui.QApplication.UnicodeUTF8))
+
