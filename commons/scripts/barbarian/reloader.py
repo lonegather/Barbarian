@@ -10,10 +10,6 @@ from maya import cmds
 
 
 def doIt(rl=False):
-    import sys
-    reload(sys)
-    setdefaultencoding = getattr(sys, 'setdefaultencoding')
-    setdefaultencoding('utf-8')
     
     if rl: 
         cmds.optionVar(rm="PutaoTools_Project")
