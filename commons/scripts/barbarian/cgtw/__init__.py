@@ -195,9 +195,9 @@ class CGTW(CGTWUI.Ui_CGTWWin):
         self.CGTWLBLInfoType.setText(task_detail)
         if task_history and task_status in status_color_map:
             self.CGTWLBLStatus.setStyleSheet(status_color_map[task_status])
-            self.CGTWLBLStatus.setText(u"<font color=black>%s%s</font>"%
-                                       (status_text_map[task_status], 
-                                        self.extractText(task_history[0]["text"])))
+            #self.CGTWLBLStatus.setText(u"<font color=black>%s%s</font>"%
+            #                           (status_text_map[task_status], 
+            #                            self.extractText(task_history[0]["text"])))
         
         self.CGTWCBFile.model().update(task_id)
         publish_dir = self.CGTWCBFileLink.model().update(task_id, task_stage)
