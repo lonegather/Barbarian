@@ -29,7 +29,11 @@ def applyConfig(weak=True):
     cmds.playbackOptions(min=mint+offset, max=maxt+offset, ast=ast+offset, aet=aet+offset)
     
     
-def displayAppearance(look):
+def cleanUp(look):
     allPanels = cmds.getPanel(type='modelPanel')
     for p in allPanels:
         cmds.modelEditor(p, edit=True, displayAppearance=look)
+        
+    for up in cmds.unknownPlugin(q=True, list=True):
+        cmds.unknownPlugin(up, remove=True)
+    

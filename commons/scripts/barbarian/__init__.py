@@ -8,7 +8,7 @@ Created on 2017.6.9
 
 from . import cgtw
 from maya import cmds, mel
-from utils import main, config, displayAppearance
+from utils import main, config, cleanUp
 import maya.OpenMaya as om
 import reloader
 
@@ -56,7 +56,7 @@ class Entrance(object):
         cmds.scriptJob(event=["timeUnitChanged", self.__refreshUI__], parent=self.button)
         cmds.scriptJob(event=["linearUnitChanged", self.__refreshUI__], parent=self.button)
         cmds.scriptJob(conditionChange=["ProjectChanged", self.__refreshUI__], parent=self.button)
-        om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, lambda *_: displayAppearance('boundingBox'))
+        om.MSceneMessage.addCallback(om.MSceneMessage.kBeforeSave, lambda *_: cleanUp('boundingBox'))
 
         self.__build__()
         self.__refreshUI__()
