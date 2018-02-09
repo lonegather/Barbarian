@@ -34,6 +34,5 @@ def cleanUp(look):
     for p in allPanels:
         cmds.modelEditor(p, edit=True, displayAppearance=look)
         
-    for up in cmds.unknownPlugin(q=True, list=True):
+    for up in cmds.unknownPlugin(q=True, list=True) or list():
         cmds.unknownPlugin(up, remove=True)
-    
