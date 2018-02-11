@@ -21,7 +21,7 @@ if __name__ == '__main__':
                     with open(file_path, 'r') as old, open('%s.tmp' % file_path, 'wb') as new:
                         end_line = True
                         for line in old:
-                            if not end_line or line.count("requires "):
+                            if not end_line or line.count("requires \""):
                                 end_line = True if line[-2] == ';' else False
                                 continue
                             new.write(line)
