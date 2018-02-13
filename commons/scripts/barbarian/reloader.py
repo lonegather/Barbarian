@@ -39,4 +39,4 @@ def doIt(rl=False):
                     __import__(mod)
                     if rl: reload(sys.modules[mod])
                 except Exception as err:
-                    cmds.error(err)
+                    print(err)
