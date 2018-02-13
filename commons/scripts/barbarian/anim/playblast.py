@@ -9,7 +9,8 @@ Created on 2017.8.8
 
 import os
 from maya import cmds, mel
-from barbarian.utils import ui, config
+from barbarian.utils import config
+from barbarian.utils.ui import playblastOptionUI
 
 
 def UI(*_):
@@ -20,7 +21,7 @@ def doIt(*_):
     PlayblastOption.playblast()
 
 
-class PlayblastOption(ui.playblastOptionUI.Ui_playblastOptionDialog):
+class PlayblastOption(playblastOptionUI.Ui_playblastOptionDialog):
     def setupUi(self, win=None):
         super(PlayblastOption, self).setupUi(win)
         

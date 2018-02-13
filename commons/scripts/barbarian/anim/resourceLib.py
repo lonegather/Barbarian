@@ -10,13 +10,14 @@ import os
 from maya import cmds
 from xml.dom import minidom
 from barbarian.utils import ui, config
+from barbarian.utils.ui import resourceLibUI
 
 
 def UI(*_):
     ResourceRepository()
 
 
-class ResourceRepository(ui.resourceLibUI.Ui_resourceLibOption):
+class ResourceRepository(resourceLibUI.Ui_resourceLibOption):
     def setupUi(self, win=None):
         super(ResourceRepository, self).setupUi(win)
         

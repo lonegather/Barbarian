@@ -172,7 +172,7 @@ class Ui_PuTaoMain(ui.QtUI):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'微软雅黑\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:9pt;\">欢迎使用葡萄工具架！使用过程中有任何意见或建议请联系大圣或胡元亮。</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'SimSun\'; font-size:9pt;\">欢迎使用葡萄工具架！使用过程中有任何意见或建议请联系大圣或CK。</span></p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.PutaoMainBtnReload.setStatusTip(QtGui.QApplication.translate("PuTaoMain", "免重启一键更新", None, QtGui.QApplication.UnicodeUTF8))
         self.PutaoMainBtnReload.setText(QtGui.QApplication.translate("PuTaoMain", "重载/更新", None, QtGui.QApplication.UnicodeUTF8))
         self.mainMenu.setTitle(QtGui.QApplication.translate("PuTaoMain", "开发者选项", None, QtGui.QApplication.UnicodeUTF8))

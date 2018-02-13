@@ -11,6 +11,7 @@ import maya.OpenMaya as om
 from maya import cmds
 from PySide import QtCore, QtGui
 from barbarian.utils import ui, config
+from barbarian.utils.ui import motionLibUI
 
 
 def UI(*_):
@@ -21,7 +22,7 @@ def UI(*_):
     AnimRepository()
 
 
-class AnimRepository(ui.motionLibUI.Ui_motionLibOption):
+class AnimRepository(motionLibUI.Ui_motionLibOption):
     def setupUi(self, win=None):
         super(AnimRepository, self).setupUi(win)
         
