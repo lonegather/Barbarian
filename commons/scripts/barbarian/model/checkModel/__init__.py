@@ -25,6 +25,7 @@ class checkingBoxUI(checkingBoxBase.checkingBoxUI):
         checkSameObjs()
         nameShapes()
         delHistory()
+        checkunknownPlugIn()
         cleanup()
         checkUVSets()
         checkNormals()
@@ -315,6 +316,14 @@ class checkScale(checkingBoxBase.checkingBoxCmd):
             self.cont += u'请确保场景中除模型物体以外，\n其它物体（camera, light, Locator...）都已隐藏,'
         return .5
 
+class checkunknownPlugIn(checkingBoxBase.checkingBoxCmd):
+    label = u'检查并清理未知插件'
+    def cmd(self):
+        for up in cmds.unknownPlugin(q=True, list=True) or list():
+            cmds.unknownPlugin(up, remove=True)
+
+        self.cont = u'清理完成。'
+        return 1
 
 # Main ------------------
 def checkModel():
