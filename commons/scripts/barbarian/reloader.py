@@ -1,4 +1,4 @@
-﻿#!/usr/local/bin/python2.7
+#!/usr/local/bin/python2.7
 # encoding: utf-8
 '''
 Created on 2017.7.10
@@ -15,6 +15,10 @@ ignore_list = [
     'barbarian.reloader',
     'barbarian.rig.blendShapeMel.blend',
     'barbarian.rig.blendShapeMel.pathAdd',
+	'barbarian.cgtw',
+	'barbarian.cgtw.database',
+	'barbarian.cgtw.delegate',
+	'barbarian.cgtw.model',
 ]
 
 
