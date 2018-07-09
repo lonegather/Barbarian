@@ -6,7 +6,6 @@ Created on 2017.6.9
 @author: Serious Sam
 '''
 
-from . import cgtw
 from maya import cmds, mel
 from utils import main, config, cleanUp
 import maya.OpenMaya as om
@@ -28,8 +27,7 @@ class Entrance(object):
         cmds.shelfLayout(layout, e=True, backgroundColor=[0.2, 0.2, 0.2], spacing=3)
         
         self.button = cmds.iconTextButton("itBtn", style="iconOnly", width=33,
-                                          image=config.getPath(config.kIcon, "logo.png"), parent=layout,
-                                          command=cgtw.UI)
+                                          image=config.getPath(config.kIcon, "logo.png"), parent=layout)
 
         currentMode = cmds.setMenuMode()
         cmds.popupMenu(parent=self.layout, allowOptionBoxes=True)
