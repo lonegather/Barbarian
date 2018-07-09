@@ -7,10 +7,20 @@ window -backgroundColor 0.1 0.1 0.1 -widthHeight 275  200 -title "嘢人权重工具" 
 rowColumnLayout -numberOfColumns 4  ;
    
 	
-	button -command "reflood" -bgc 0.5 0.5 0.85 -label "减---Flood"  -h 50 ;
-	button -command "addflood" -bgc 0.85 0.5 0.5 -label "加---Flood"  -h 50 ;
-	button -command "refloodAll" -bgc 0.0 0.0 0.0 -label "清除---Flood"  -h 50 ; 
-	button -command "allflood" -bgc 1 1 1 -label "全白---Flood"  -h 50 ;     
+	button -command "refloodAll" -bgc 0.0 0.0 0.0 -label "清除---Flood"  -h 50 ;
+	button -command "reflood01" -bgc 0.1 0.1 0.3 -label "减0.01---Flood"  -h 50 ;
+	button -command "reflood02" -bgc 0.3 0.3 0.6 -label "减0.05---Flood"  -h 50 ; 
+	button -command "reflood03" -bgc 0.5 0.5 0.85 -label "减0.1---Flood"  -h 50 ;     
+
+	separator;
+	separator;
+	separator;
+	separator;
+	
+    button -command "allflood" -bgc 1 1 1 -label "全白---Flood"  -h 50 ;
+	button -command "addflood01" -bgc 0.5 0.2 0.2 -label "加0.01---Flood"  -h 50 ;
+	button -command "addflood02" -bgc 0.7 0.4 0.4 -label "加0.05---Flood"  -h 50 ; 
+	button -command "addflood03" -bgc 0.9 0.6 0.6 -label "加0.1---Flood"  -h 50 ;     
 
 	separator;
 	separator;
@@ -18,7 +28,7 @@ rowColumnLayout -numberOfColumns 4  ;
 	separator;
 	
 
-	button -command "reaplaceOff" -bgc 0.2 0.2 0.2 -label "清除" -h 40;
+	button -command "reaplaceOff" -bgc 0.2 0.2 0.2 -label "减---1" -h 40;
 	button -command "reduceD" -bgc 0.1 0.8 0.9 -label "减---0.01"  -align "left" -h 40;
 	button -command "reduceA" -bgc 0.1 0.5 0.9 -label "减---0.05"  -align "left" -h 40;
 	button -command "reduceB" -bgc 0.1 0.3 0.9 -label "减---0.1"  -align "right" -h 40;
@@ -28,7 +38,7 @@ rowColumnLayout -numberOfColumns 4  ;
 	separator;
 	separator;
 	
-	button -command "AddC" -bgc 1 1 1 -label "加--1" -align "center" -h 40;
+	button -command "AddC" -bgc 1 1 1 -label "加---1" -align "center" -h 40;
 	button -command "AddA" -bgc 0.9 0.7 0 -label "加---0.01"   -align "right" -h 40;
 	button -command "AddD" -bgc 0.9 0.5 0 -label "加---0.05"   -align "right" -h 40;
 	button -command "AddB" -bgc 0.9 0.2 0 -label "加---0.1"   -align "left" -h 40;
@@ -45,7 +55,7 @@ rowColumnLayout -numberOfColumns 4  ;
    button -command "smoothSkin" -bgc 0.5 0.9 0.5 -label "平滑---Flood"  -h 50 ;	
    
 	
-window -e -widthHeight 275  190  myWin1;
+window -e -widthHeight 324  245  myWin1;
 
 showWindow myWin1; 
 }
@@ -134,7 +144,25 @@ artAttrSkinPaintCtx -e -clear `currentCtx`;
     
 }
 
-global proc reflood(){
+global proc reflood01(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.01 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+
+global proc reflood02(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.05 `currentCtx`;
+    artSkinSetSelectionValue 0 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+
+global proc reflood03(){
     
     artAttrPaintOperation artAttrSkinPaintCtx Replace;
     artAttrSkinPaintCtx -e -opacity 0.1 `currentCtx`;
@@ -142,6 +170,7 @@ global proc reflood(){
     artAttrSkinPaintCtx -e -clear `currentCtx`;
     
 }
+
 global proc refloodAll(){
     
     artAttrPaintOperation artAttrSkinPaintCtx Replace;
@@ -151,7 +180,25 @@ global proc refloodAll(){
     
 }
 
-global proc addflood(){
+global proc addflood01(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.01 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+
+global proc addflood02(){
+    
+    artAttrPaintOperation artAttrSkinPaintCtx Replace;
+    artAttrSkinPaintCtx -e -opacity 0.05 `currentCtx`;
+    artSkinSetSelectionValue 1 false artAttrSkinPaintCtx artAttrSkin;
+    artAttrSkinPaintCtx -e -clear `currentCtx`;
+    
+}
+
+global proc addflood03(){
     
     artAttrPaintOperation artAttrSkinPaintCtx Replace;
     artAttrSkinPaintCtx -e -opacity 0.1 `currentCtx`;
