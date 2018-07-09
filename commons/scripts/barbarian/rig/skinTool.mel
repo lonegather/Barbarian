@@ -6,11 +6,10 @@ if(`window -ex myWin1`){
 window -backgroundColor 0.1 0.1 0.1 -widthHeight 275  200 -title "嘢人权重工具" myWin1;
 rowColumnLayout -numberOfColumns 4  ;
    
-	
-	button -command "reflood01" -bgc 0.1 0.1 0.3 -label "减0.01---Flood"  -h 50 ;
+    button -command "refloodAll" -bgc 0.0 0.0 0.0 -label "清除---Flood"  -h 50 ;
+	button -command "reflood01" -bgc 0.5 0.5 0.85 -label "减0.01---Flood"  -h 50 ;
 	button -command "reflood02" -bgc 0.3 0.3 0.6 -label "减0.05---Flood"  -h 50 ; 
-	button -command "reflood03" -bgc 0.5 0.5 0.85 -label "减0.1---Flood"  -h 50 ; 
-	button -command "refloodAll" -bgc 0.0 0.0 0.0 -label "清除---Flood"  -h 50 ;
+	button -command "reflood03" -bgc 0.1 0.1 0.3 -label "减0.1---Flood"  -h 50 ; 
     
 
 	separator;
@@ -18,11 +17,11 @@ rowColumnLayout -numberOfColumns 4  ;
 	separator;
 	separator;
 	
-	button -command "addflood01" -bgc 0.5 0.2 0.2 -label "加0.01---Flood"  -h 50 ;
-	button -command "addflood02" -bgc 0.7 0.4 0.4 -label "加0.05---Flood"  -h 50 ; 
-	button -command "addflood03" -bgc 0.9 0.6 0.6 -label "加0.1---Flood"  -h 50 ; 
     button -command "allflood" -bgc 1 1 1 -label "全白---Flood"  -h 50 ;
-    
+	button -command "addflood01" -bgc 0.9 0.6 0.6 -label "加0.01---Flood"  -h 50 ;
+	button -command "addflood02" -bgc 0.7 0.4 0.4 -label "加0.05---Flood"  -h 50 ; 
+	button -command "addflood03" -bgc 0.5 0.2 0.2 -label "加0.1---Flood"  -h 50 ; 
+
 
 	separator;
 	separator;
@@ -51,10 +50,10 @@ rowColumnLayout -numberOfColumns 4  ;
 	separator;
 	separator;
 
-     button -command "ArtPaintSkinWeightsToolOptions" -bgc 0.4 0.4 0.4 -label "权重笔刷工具" -h 50;
-   button -command "copyWeightTool" -bgc 0 0.3 0.5 -label "拷贝权重"  -h 50 ;
+    button -command "ArtPaintSkinWeightsToolOptions" -bgc 0.4 0.4 0.4 -label "权重笔刷工具" -h 50;
+    button -command "copyWeightTool" -bgc 0 0.3 0.5 -label "拷贝权重"  -h 50 ;
 	button -command "currentSkinMirror" -bgc 0.5 0.2 0.3 -label "镜像权重"  -h 50 ;
-   button -command "smoothSkin" -bgc 0.5 0.9 0.5 -label "平滑---Flood"  -h 50 ;	
+    button -command "smoothSkin" -bgc 0.5 0.9 0.5 -label "平滑---Flood"  -h 50 ;	
    
 	
 window -e -widthHeight 323  245  myWin1;
