@@ -10,8 +10,11 @@ import abc, math
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 from maya import cmds
-from PySide import QtCore, QtGui
-from shiboken import wrapInstance
+from Qt import QtCore, QtGui, QtWidgets
+try: 
+    from shiboken import wrapInstance
+except ImportError:
+    from shiboken2 import wrapInstance
 from barbarian.utils import config
 from string import replace
 
@@ -185,9 +188,9 @@ class QtUI(object):
         return not cmds.window(self.window, q=True, visible=True)
 
 
-class QMayaWindow(QtGui.QMainWindow):
+class QMayaWindow(QtWidgets.QMainWindow):
     
-    __mayaMainWindow = wrapInstance(long(omui.MQtUtil.mainWindow()), QtGui.QWidget)
+    __mayaMainWindow = wrapInstance(long(omui.MQtUtil.mainWindow()), QtWidgets.QWidget)
     closed = QtCore.Signal()
     
     def __init__(self):
@@ -217,7 +220,7 @@ class QMayaWindow(QtGui.QMainWindow):
         event.accept()
 
 
-class OptionMenu(QtGui.QComboBox):
+class OptionMenu(QtWidgets.QComboBox):
     
     def __init__(self, parent=None):
         super(OptionMenu, self).__init__(parent)
@@ -227,7 +230,8 @@ class OptionMenu(QtGui.QComboBox):
         
     def setObjectName(self, name):
         super(OptionMenu, self).setObjectName(name)
-        QtCore.QObject.connect(self, QtCore.SIGNAL("activated(int)"), lambda *_: config.setProject(self.currentText()))
+        self.activated.connect(lambda *_: config.setProject(self.currentText()))
+        # QtCore.QObject.connect(self, QtCore.SIGNAL("activated(int)"), lambda *_: config.setProject(self.currentText()))
         cmds.scriptJob(conditionChange=["ProjectChanged", self.refresh], parent=self.objectName())
         
     def refresh(self, *_):
@@ -245,7 +249,7 @@ class OptionMenu(QtGui.QComboBox):
                 break
 
 
-class ShelfButton(QtGui.QPushButton):
+class ShelfButton(QtWidgets.QPushButton):
     
     selected = QtCore.Signal(object)
     
@@ -256,15 +260,15 @@ class ShelfButton(QtGui.QPushButton):
         
         self.setCheckable(True)
         self.setAutoExclusive(True)
-        self.labelLayout = QtGui.QVBoxLayout(self)
+        self.labelLayout = QtWidgets.QVBoxLayout(self)
         self.labelLayout.setContentsMargins(10, 10, 10, 10)
         
-        self.thumb = QtGui.QLabel(self)
+        self.thumb = QtWidgets.QLabel(self)
         self.thumb.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
-        self.thumb.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding))
+        self.thumb.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding))
         self.labelLayout.addWidget(self.thumb)
         
-        self.label = QtGui.QLabel(self)
+        self.label = QtWidgets.QLabel(self)
         self.label.setAlignment(QtCore.Qt.AlignHCenter)
         self.labelLayout.addWidget(self.label)
         
@@ -347,7 +351,7 @@ class ShelfButton(QtGui.QPushButton):
             self.selected.emit(self.data)
 
 
-class ShelfLayout(QtGui.QLayout):
+class ShelfLayout(QtWidgets.QLayout):
     def __init__(self, parent):
         super(ShelfLayout, self).__init__(parent)
         self.list = []
@@ -400,7 +404,7 @@ class ShelfLayout(QtGui.QLayout):
         return QtCore.QSize(self.cellWidth * 2 + self.spacing(), row + self.cellHeight)
 
 
-class QShelfView(QtGui.QWidget):
+class QShelfView(QtWidgets.QWidget):
     
     kName = "name"
     kData = "data"
@@ -414,19 +418,19 @@ class QShelfView(QtGui.QWidget):
         super(QShelfView, self).__init__(parent)
         self.setObjectName("shelfView")
         
-        self.mainLayout = QtGui.QStackedLayout(self)
+        self.mainLayout = QtWidgets.QStackedLayout(self)
         self.mainLayout.setSpacing(0)
         self.mainLayout.setContentsMargins(0, 0, 0, 0)
         self.mainLayout.setObjectName("shelfViewMainLayout")
         
-        self.progressBar = QtGui.QProgressBar(self)
+        self.progressBar = QtWidgets.QProgressBar(self)
         self.progressBar.setMaximumHeight(50)
         self.mainLayout.addWidget(self.progressBar)
         
-        self.scrollArea = QtGui.QScrollArea(self)
+        self.scrollArea = QtWidgets.QScrollArea(self)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("shelfViewScrollArea")
-        self.scrollAreaWidgetContents = QtGui.QWidget()
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setObjectName("shelfViewScrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.mainLayout.addWidget(self.scrollArea)
@@ -455,7 +459,7 @@ class QShelfView(QtGui.QWidget):
         
     def __onPicLoaded__(self, item):
         btn = ShelfButton(self.scrollAreaWidgetContents)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         btn.setSizePolicy(sizePolicy)
         btn.setText(item[self.kName])
         btn.setData(item[self.kData])

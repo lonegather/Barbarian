@@ -7,7 +7,7 @@ Created on 2017.7.17
 '''
 
 import os
-from PySide import QtCore, QtGui
+from Qt import QtCore
 from xml.dom import minidom
 from maya import cmds
 

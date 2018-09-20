@@ -9,7 +9,7 @@ Created on 2017.7.5
 import os, codecs
 import maya.OpenMaya as om
 from maya import cmds
-from PySide import QtCore, QtGui
+from Qt import QtCore
 from barbarian.utils import ui, config
 from barbarian.utils.ui import motionLibUI
 
@@ -37,7 +37,13 @@ class AnimRepository(motionLibUI.Ui_motionLibOption):
         self.addSceneCallback(om.MSceneMessage.kAfterNew, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterOpen, self.refreshCharacters)
         self.addSceneCallback(om.MSceneMessage.kAfterImport, self.refreshCharacters)
+
+        self.motionLibCBCharactor.activated.connect(self.refreshData)
+        self.motionLibLEFilter.textChanged.connect(lambda txt: self.shelf.itemFilter(txt))
+        self.motionLibLEExportFile.textChanged.connect(self.refreshBtn)
+        self.motionLibHSView.valueChanged.connect(self.refreshView)
         
+        '''
         QtCore.QObject.connect(self.motionLibCBCharactor, 
                                QtCore.SIGNAL("activated(int)"),
                                self.refreshData)
@@ -50,6 +56,8 @@ class AnimRepository(motionLibUI.Ui_motionLibOption):
         QtCore.QObject.connect(self.motionLibHSView,
                                QtCore.SIGNAL("valueChanged(int)"),
                                self.refreshView)
+        '''
+
         self.motionLibBtnImport.clicked.connect(lambda *_: self.animImport())
         self.motionLibBtnExport.clicked.connect(lambda *_: self.animExport())
         self.shelf.itemSelected.connect(self.__getLabel__)

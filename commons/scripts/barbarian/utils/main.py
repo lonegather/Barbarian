@@ -7,8 +7,11 @@ Created on 2017.8.23
 '''
 
 import os, sys, codecs, config
-from pysideuic import compileUi
-from PySide import QtCore, QtGui
+try:
+    from pysideuic import compileUi
+except ImportError:
+    from pyside2uic import compileUi
+from Qt import QtCore, QtGui
 from maya import cmds
 from ui.PuTaoMainUI import Ui_PuTaoMain
 
@@ -20,7 +23,21 @@ def UI(*_):
 class Main(Ui_PuTaoMain):
     def setupUi(self, win=None):
         super(Main, self).setupUi(win)
+
+        self.actionDebug.triggered.connect(self.debug)
+        self.actionCompile.triggered.connect(self.complieUI)
+        self.actionMAYA_APP_DIR.triggered.connect(lambda *_: self.getEnv("MAYA_APP_DIR"))
+        self.actionMAYA_LOCATION.triggered.connect(lambda *_: self.getEnv("MAYA_LOCATION"))
+        self.actionMAYA_MODULE_PATH.triggered.connect(lambda *_: self.getEnv("MAYA_MODULE_PATH"))
+        self.actionMAYA_PLUG_IN_PATH.triggered.connect(lambda *_: self.getEnv("MAYA_PLUG_IN_PATH"))
+        self.actionMAYA_SCRIPT_PATH.triggered.connect(lambda *_: self.getEnv("MAYA_SCRIPT_PATH"))
+        self.actionPYTHONPATH.triggered.connect(lambda *_: self.getEnv("PYTHONPATH"))
+        self.actionXBMLANGPATH.triggered.connect(lambda *_: self.getEnv("XBMLANGPATH"))
+        self.actionBARBARIAN_LOCATION.triggered.connect(lambda *_: self.getEnv("BARBARIAN_LOCATION"))
+
+        self.PutaoMainBtnReload.clicked.connect(self.reload)
         
+        '''
         QtCore.QObject.connect(self.actionDebug, QtCore.SIGNAL("triggered()"), self.debug)
         QtCore.QObject.connect(self.actionCompile, QtCore.SIGNAL("triggered()"), self.complieUI)
         QtCore.QObject.connect(self.actionMAYA_APP_DIR, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("MAYA_APP_DIR"))
@@ -33,6 +50,7 @@ class Main(Ui_PuTaoMain):
         QtCore.QObject.connect(self.actionBARBARIAN_LOCATION, QtCore.SIGNAL("triggered()"), lambda *_: self.getEnv("BARBARIAN_LOCATION"))
         
         QtCore.QObject.connect(self.PutaoMainBtnReload, QtCore.SIGNAL("clicked()"), self.reload)
+        '''
         
         self.movie = QtGui.QMovie(config.getPath(config.kIcon, "logoBig.gif"))
         self.label.setMovie(self.movie)
