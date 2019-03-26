@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2791</width>
-    <height>51</height>
+    <width>2329</width>
+    <height>55</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -84,57 +84,22 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_2">
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>100</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../icons/asLogo.png</normaloff>../icons/asLogo.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>106</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/AdvancedSkeleton5.13/AdvancedSkeleton5.mel\&quot;;AdvancedSkeleton5&quot;</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QPushButton" name="modelBtn_3">
      <property name="minimumSize">
       <size>
-       <width>80</width>
+       <width>70</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>80</width>
+       <width>70</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
-       <italic>false</italic>
        <bold>true</bold>
       </font>
      </property>
@@ -165,8 +130,6 @@
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -198,8 +161,6 @@
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -216,98 +177,21 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="modelBtn_4">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>≡ ADV骨骼显示隐藏 ≡</string>
-     </property>
-     <property name="default">
-      <bool>false</bool>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/advDrawStyle.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="modelBtn_7">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>≡ Barbarian骨骼工具 ≡</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/rig/jointTool.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-backgroundColor" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QPushButton" name="modelBtn_5">
      <property name="minimumSize">
       <size>
-       <width>125</width>
+       <width>110</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>145</width>
+       <width>110</width>
        <height>33</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -327,20 +211,18 @@
     <widget class="QPushButton" name="modelBtn_6">
      <property name="minimumSize">
       <size>
-       <width>115</width>
+       <width>110</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>115</width>
+       <width>110</width>
        <height>33</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -360,23 +242,15 @@
     <widget class="QPushButton" name="modelBtn_8">
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>115</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>120</width>
+       <width>115</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ gg_propUIN ≡</string>
@@ -393,23 +267,15 @@
     <widget class="QPushButton" name="modelBtn_9">
      <property name="minimumSize">
       <size>
-       <width>110</width>
+       <width>105</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>110</width>
+       <width>105</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 控制器大全 ≡</string>
@@ -436,14 +302,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ Barbarian权重工具 ≡</string>
      </property>
@@ -459,23 +317,15 @@
     <widget class="QPushButton" name="modelBtn_11">
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>115</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>130</width>
+       <width>115</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 批量拷贝权重 ≡</string>
@@ -492,7 +342,7 @@
     <widget class="QPushButton" name="modelBtn_12">
      <property name="minimumSize">
       <size>
-       <width>135</width>
+       <width>130</width>
        <height>33</height>
       </size>
      </property>
@@ -501,14 +351,6 @@
        <width>130</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 物体间拷贝权重 ≡</string>
@@ -525,23 +367,15 @@
     <widget class="QPushButton" name="modelBtn_13">
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>115</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>125</width>
+       <width>115</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 身体修型工具 ≡</string>
@@ -558,23 +392,15 @@
     <widget class="QPushButton" name="modelBtn_14">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>90</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>100</width>
+       <width>90</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 命名工具 ≡</string>
@@ -591,23 +417,15 @@
     <widget class="QPushButton" name="modelBtn_19">
      <property name="minimumSize">
       <size>
-       <width>120</width>
+       <width>115</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>125</width>
+       <width>115</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 融合变形工具 ≡</string>
@@ -630,8 +448,6 @@
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -651,17 +467,15 @@
     <widget class="QPushButton" name="modelBtn_17">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>70</width>
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
+     <property name="maximumSize">
+      <size>
+       <width>70</width>
+       <height>16777215</height>
+      </size>
      </property>
      <property name="text">
       <string>≡ Rivet ≡</string>
@@ -678,23 +492,15 @@
     <widget class="QPushButton" name="modelBtn_18">
      <property name="minimumSize">
       <size>
-       <width>95</width>
+       <width>90</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>95</width>
+       <width>90</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 跟踪骨骼 ≡</string>
@@ -721,14 +527,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 表情镜像工具 ≡</string>
      </property>
@@ -754,14 +552,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 调色工具 ≡</string>
      </property>
@@ -777,20 +567,18 @@
     <widget class="QPushButton" name="modelBtn_21">
      <property name="minimumSize">
       <size>
-       <width>85</width>
+       <width>70</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>85</width>
+       <width>70</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -810,20 +598,18 @@
     <widget class="QPushButton" name="modelBtn_22">
      <property name="minimumSize">
       <size>
-       <width>85</width>
+       <width>70</width>
        <height>33</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>85</width>
+       <width>70</width>
        <height>16777215</height>
       </size>
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -853,14 +639,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 骨骼动力学 ≡</string>
      </property>
@@ -873,12 +651,9 @@
     </widget>
    </item>
   </layout>
-  <zorder>modelBtn_2</zorder>
   <zorder>modelBtn_3</zorder>
-  <zorder>modelBtn_4</zorder>
   <zorder>modelBtn_5</zorder>
   <zorder>modelBtn_6</zorder>
-  <zorder>modelBtn_7</zorder>
   <zorder>modelBtn_8</zorder>
   <zorder>modelBtn_9</zorder>
   <zorder>modelBtn_10</zorder>

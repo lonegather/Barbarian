@@ -97,4 +97,4 @@ Tool Initialization at Maya Startup
 reloader.doIt()
 if not cmds.shelfLayout("PuTao", exists=True): mel.eval("addNewShelfTab \"PuTao\";")
 tool = Entrance(cmds.shelfLayout("PuTao", q=True, fpn=True))
-cmds.headsUpMessage(u'--- 葡萄工具架已完成加载 ---', time=3, verticalOffset=200)
+cmds.inViewMessage(smg=u'--- 葡萄工具架已完成加载 ---', fade=True)

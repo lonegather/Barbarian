@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>916</width>
-    <height>51</height>
+    <width>952</width>
+    <height>55</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -97,14 +97,6 @@
        <height>16777215</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 贴图路径 ≡</string>
      </property>
@@ -129,14 +121,6 @@
        <width>130</width>
        <height>16777215</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 贴图查看与拷贝 ≡</string>
@@ -163,14 +147,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ UFR_7.0 ≡</string>
      </property>
@@ -195,14 +171,6 @@
        <width>90</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 修复凹凸 ≡</string>
@@ -229,14 +197,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 透明开关 ≡</string>
      </property>
@@ -261,14 +221,6 @@
        <width>100</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ RS辅助工具 ≡</string>
@@ -295,14 +247,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 细分级别 ≡</string>
      </property>
@@ -328,14 +272,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 后台批渲 ≡</string>
      </property>
@@ -360,12 +296,6 @@
        <width>90</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-      </font>
      </property>
      <property name="text">
       <string>≡ 属性设置 ≡</string>

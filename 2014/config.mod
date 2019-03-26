@@ -2,7 +2,8 @@
 BARBARIAN_LOCATION:= 
 PATH+:= ../commons/bin
 PYTHONPATH+:= ../commons/libs
-PYTHONPATH+= C:/cgteamwork/bin/base
+PYTHONPATH+:= ../pydist/python-2.7.11.amd64/Lib/site-packages
+PYBLISH_QML_PYTHON_EXECUTABLE:= ../pydist/python-2.7.11.amd64/python.exe
 MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts
@@ -12,7 +13,8 @@ icons: ../commons/icons
 BARBARIAN_LOCATION:= 
 PATH+:= ../commons/bin
 PYTHONPATH+:= ../commons/libs
-PYTHONPATH+= C:/cgteamwork/bin/base
+PYTHONPATH+:= ../pydist/python-2.7.11.amd64/Lib/site-packages
+PYBLISH_QML_PYTHON_EXECUTABLE:= ../pydist/python-2.7.11.amd64/python.exe
 MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts
@@ -22,7 +24,8 @@ icons: ../commons/icons
 BARBARIAN_LOCATION:= 
 PATH+:= ../commons/bin
 PYTHONPATH+:= ../commons/libs
-PYTHONPATH+= C:/cgteamwork/bin/base
+PYTHONPATH+:= ../pydist/python-2.7.11.amd64/Lib/site-packages
+PYBLISH_QML_PYTHON_EXECUTABLE:= ../pydist/python-2.7.11.amd64/python.exe
 MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts
@@ -32,7 +35,8 @@ icons: ../commons/icons
 BARBARIAN_LOCATION:= 
 PATH+:= ../commons/bin
 PYTHONPATH+:= ../commons/libs
-PYTHONPATH+= C:/cgteamwork/bin/base
+PYTHONPATH+:= ../pydist/python-2.7.11.amd64/Lib/site-packages
+PYBLISH_QML_PYTHON_EXECUTABLE:= ../pydist/python-2.7.11.amd64/python.exe
 MAYA_PLUG_IN_PATH+:= ../commons/plug-ins
 MAYA_SCRIPT_PATH+:= ../commons/scripts/barbarian/utils
 scripts: ../commons/scripts

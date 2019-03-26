@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>994</width>
-    <height>51</height>
+    <width>953</width>
+    <height>55</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -97,14 +97,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 创建项目组 ≡</string>
      </property>
@@ -129,14 +121,6 @@
        <width>75</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 重命名 ≡</string>
@@ -163,14 +147,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 模型检查 ≡</string>
      </property>
@@ -192,8 +168,6 @@
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -225,8 +199,6 @@
      </property>
      <property name="font">
       <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -256,14 +228,6 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 传递UV ≡</string>
      </property>
@@ -288,14 +252,6 @@
        <width>90</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 大纲整理 ≡</string>
@@ -322,52 +278,11 @@
        <height>33</height>
       </size>
      </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
      <property name="text">
       <string>≡ 石头生成工具 ≡</string>
      </property>
      <property name="-command" stdset="0">
       <string>&quot;source \&quot;barbarian/model/石头生成工具.mel\&quot;;&quot;</string>
-     </property>
-     <property name="-bgc" stdset="0">
-      <string>0.25 0.25 0.25</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="modeMSlBtn_10">
-     <property name="minimumSize">
-      <size>
-       <width>90</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>90</width>
-       <height>33</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>≡ 模型代理 ≡</string>
-     </property>
-     <property name="-command" stdset="0">
-      <string>&quot;source \&quot;barbarian/model/ModelAgent.mel\&quot;;&quot;</string>
      </property>
      <property name="-bgc" stdset="0">
       <string>0.25 0.25 0.25</string>
@@ -387,14 +302,6 @@
        <width>90</width>
        <height>33</height>
       </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-       <pointsize>10</pointsize>
-       <weight>50</weight>
-       <bold>false</bold>
-      </font>
      </property>
      <property name="text">
       <string>≡ 贴图路径 ≡</string>
@@ -416,7 +323,6 @@
   <zorder>modelMSBtn_7</zorder>
   <zorder>modelMSBtn_8</zorder>
   <zorder>modelMSBtn_9</zorder>
-  <zorder>modeMSlBtn_10</zorder>
   <zorder>modelMSBtn_11</zorder>
   <zorder>line</zorder>
   <zorder>line_2</zorder>
