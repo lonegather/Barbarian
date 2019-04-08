@@ -3,25 +3,19 @@
 ///
 /// Procedure Name :	FileTextureManager
 ///
-/// Updated :	May 19, 2011
+///	Version :	4.0.5
+///
+/// Updated :	Aug 1, 2017
+/// Updated By :	 Parabhdeep Singh
+/// Contact :	parabhdeepsingh@gmail.com
 ///
 /// Author :	Crow Yeh (YE Feng)
 /// Contact :	crow.yeh@gmail.com
 ///
 /// History :
-///		v4.0.3	Support Maya version up to 2012.
-///		v4.0.2	Tiny bugs fixed.
-///		v4.0.1	Renamed a variable to avoid potential conflicts.
-///		v4.0	Now compatible with Maya 2011
-///		v3.4	Tiny bug fix
-///		v3.3	Fixed a bug that dselects needed file nodes when user checks
-///				checkBoxes not supposed to be checked.
-///		v3.2	Fixed a bug that fails to recognise '\' as path separator
-///				under OS other than Windows.
-///				Extra functions now supports mentalray.
-///		v3.1	Adds support (only basic functions) for Maya
-///				psdFileTex node type and mentalray mentalRayTexture
-///				node type.
+///		v4.0.5	Fixed problem of using it in Maya 2017.
+///		v4.0.5	Support Maya version up to 2018.
+///		v4.0.5	Now compatible with Maya 2017
 ///
 /// Description :
 ///
@@ -501,7 +495,7 @@ proc FTM_FCGo(int $progressUI, string $sourceFormatUI, string $targetFormat, int
 //int $updatePath			- update path info; 0 - do not update path info.
 //int $removeOrig			- remove original textures; 0 - do not remove original textures.
 {
-if (FTM_SelCheck(`ls -sl -typ file -typ mentalrayTexture`)) {// if (0)
+if (FTM_SelCheck(`ls -sl -typ file -typ file`)) {// if (0)
 	waitCursor -state on;
 	FTM_Log "start" "" "";
 	// list for file nodes to be handled
@@ -702,7 +696,7 @@ if (FTM_SelCheck(`ls -sl -typ file -typ mentalrayTexture`)) {// if (0)
 global proc string[] FTM_FCGetMatches (string $formatUI)
 {
 string $fileNodesList[]; // list for file nodes to be handled
-string $tmpNodesList[] = `ls -sl -typ file -typ mentalrayTexture`; // list for all (selected) file nodes, which need to be analyse.
+string $tmpNodesList[] = `ls -sl -typ file -typ file`; // list for all (selected) file nodes, which need to be analyse.
 if (`FTM_SelCheck $tmpNodesList`) {
 	string $tmpNode; // each single file node in the list
 	string $tmpFile; // file that $tmpNode point to.
@@ -975,7 +969,7 @@ $newRoot = substituteAll("\\\\",$newRoot,"/");
 if (size($oldRoot)==0 || size($newRoot)==0)
 	confirmDialog -t "File Texture Manager" -m "Both the Old Root filed and the New Root field must be filled!" -b "OK";
 else {
-	string $fileNodes[] = `ls -sl -typ file -typ mentalrayTexture -typ psdFileTex`;
+	string $fileNodes[] = `ls -sl -typ file -typ file -typ psdFileTex`;
 	if (`FTM_SelCheck $fileNodes`){
 		waitCursor -state 1;
 		FTM_Log "start" "" "";
@@ -1163,7 +1157,7 @@ global proc FTM_BrowseCmd (string $FTM_FileOrPath, string $FTM_TextField, string
 	global string $FTM_WorkSpace;
 	if (size($FTM_WorkSpace) == 0)
 	{
-		$FTM_WorkSpace = `workspace -q -rd` + `workspace -q -fileRuleEntry "sourceImages"`;
+		$FTM_WorkSpace = `workspace -q -rd` + `workspace -q -rte "sourceImages"`;
 		$FTM_WorkSpace = `FTM_GetPath "path" $FTM_WorkSpace`;
 	}
 	workspace -dir $FTM_WorkSpace;
@@ -1234,7 +1228,7 @@ global proc FTM_ResetUI (string $FTM_OptionColumn,string $FTM_AnalysisColumn,str
 	textFieldButtonGrp -e -text "" -en 0 ($FTM_OptionColumn + "|FTM_SourceDirectoryField");
 	// Target directory field
 	string $FTM_CurrentProject = `workspace -q -rd`;
-	string $FTM_CurrentSourceImagesDir = $FTM_CurrentProject + `workspace -q -fileRuleEntry "sourceImages"`;
+	string $FTM_CurrentSourceImagesDir = $FTM_CurrentProject + `workspace -q -rte "sourceImages"`;
 	string $FTM_SourceImages = `FTM_GetPath "path" $FTM_CurrentSourceImagesDir`;
 	textFieldButtonGrp -e -text $FTM_SourceImages ($FTM_OptionColumn + "|FTM_TargetDirectoryField");
 	// Make new folder area
@@ -1253,7 +1247,7 @@ global proc FTM_ResetUI (string $FTM_OptionColumn,string $FTM_AnalysisColumn,str
 
 	// Extra function tab
 	textFieldButtonGrp -e -text "" ($FTM_ExtraFunctionColumn + "|oldRootField");
-	string $tmp = `workspace -q -rd` + `workspace -q -fileRuleEntry "sourceImages"`;
+	string $tmp = `workspace -q -rd` + `workspace -q -rte "sourceImages"`;
 	$tmp = `FTM_GetPath "path" $tmp`;
 	textFieldButtonGrp -e -text $tmp ($FTM_ExtraFunctionColumn + "|newRootField");
 	intFieldGrp -e -v1 1024 ($FTM_ExtraFunctionColumn + "|FTM_BOTRow|FTM_BOTResFieldGrp");
@@ -1274,7 +1268,7 @@ global proc FTM_ResetUI (string $FTM_OptionColumn,string $FTM_AnalysisColumn,str
 	button -e -en 1 $FTM_SetButton;
 
 	global string $FTM_WorkSpace;
-	$FTM_WorkSpace = `workspace -q -rd` + `workspace -q -fileRuleEntry "sourceImages"`;
+	$FTM_WorkSpace = `workspace -q -rd` + `workspace -q -rte "sourceImages"`;
 	$FTM_WorkSpace = `FTM_GetPath "path" $FTM_WorkSpace`;
 
 	select -cl;
@@ -1506,7 +1500,7 @@ string $verString = `about -v`;
 string $verString_tmp[];
 tokenize $verString " " $verString_tmp;
 float $verNum = $verString_tmp[0];
-if ($verNum >= $verCut) { // version newer than 2010
+if ($verNum > $verCut) { // version newer than 2010
 	global int $FTM_NEW_MAYA, $FTM_WIDTH, $FTM_HEIGHT;
 	$FTM_NEW_MAYA = 1;
 	$FTM_WIDTH = 520;
@@ -1518,7 +1512,7 @@ $FTM_FCAllFormats = {"iff","sgi","tga","rgb","jpg","jpeg","map","tif","tiff","bm
 
 // cover all file texture nodes including mentalray's
 global string $lsCmd;
-$lsCmd = "ls -typ file -typ psdFileTex -typ mentalrayTexture";
+$lsCmd = "ls -typ file -typ psdFileTex -typ file";
 
 select -cl;
 
@@ -1574,7 +1568,7 @@ window -title "File Texture Manager" -wh $FTM_WIDTH $FTM_HEIGHT -tlc 200 200 -re
 
 //Set target directory area
 				string $FTM_CurrentProject = `workspace -q -rd`;
-				string $FTM_CurrentSourceImagesDir = $FTM_CurrentProject + `workspace -q -fileRuleEntry "sourceImages"`;
+				string $FTM_CurrentSourceImagesDir = $FTM_CurrentProject + `workspace -q -rte "sourceImages"`;
 				string $FTM_SourceImages = `FTM_GetPath "path" $FTM_CurrentSourceImagesDir`;
 				textFieldButtonGrp -label "Target Directory" -text $FTM_SourceImages -buttonLabel "Browse..." -adj 2 -cw 1 120 -cw 3 60 -cl3 right left center FTM_TargetDirectoryField;
 //Create new folder area
@@ -1610,7 +1604,7 @@ window -title "File Texture Manager" -wh $FTM_WIDTH $FTM_HEIGHT -tlc 200 200 -re
 				text -fn "boldLabelFont" -al left -l "Substitute path root";
 				textFieldButtonGrp -l "Old Root" -text "" -buttonLabel "Browse..." -adj 2 -en 1 -cw 1 80 -cw 3 60 -cl3 right left center oldRootField;
 				textFieldButtonGrp -e -bc ("FTM_BrowseCmd \"path\" " + $FTM_ExtraFunctionColumn + "|oldRootField \"Choose old root\" 4") ($FTM_ExtraFunctionColumn + "|oldRootField");
-				string $tmp = `workspace -q -rd` + `workspace -q -fileRuleEntry "sourceImages"`;
+				string $tmp = `workspace -q -rd` + `workspace -q -rte "sourceImages"`;
 				$tmp = `FTM_GetPath "path" $tmp`;
 				textFieldButtonGrp -l "New Root" -text $tmp -buttonLabel "Browse..." -adj 2 -en 1 -cw 1 80 -cw 3 60 -cl3 right left center newRootField;
 				textFieldButtonGrp -e -bc ("FTM_BrowseCmd \"path\" " + $FTM_ExtraFunctionColumn + "|newRootField \"Choose new root\" 4") ($FTM_ExtraFunctionColumn + "|newRootField");
@@ -1685,7 +1679,7 @@ window -title "File Texture Manager" -wh $FTM_WIDTH $FTM_HEIGHT -tlc 200 200 -re
 			setParent $FTM_HelpForm;
 				global int $FTM_NEW_MAYA;
 				string $FTM_AboutFrame;
-				if ($FTM_NEW_MAYA) $FTM_AboutFrame = `frameLayout -l "About FileTextureManager" -fn boldLabelFont -cll 0 -bv true  -li 5`;
+				if ($FTM_NEW_MAYA) $FTM_AboutFrame = `frameLayout -l "About FileTextureManager" -fn boldLabelFont -cll 0 -bv true -bs "in" -li 5`;
 				else $FTM_AboutFrame = `frameLayout -l "About FileTextureManager" -la top -fn boldLabelFont -cll 0 -bv true -bs "in" -li 5`;
 				string $FTM_AboutForm = `formLayout`;
 					string $FTM_AboutTextLeft = `text -l "Script Name :\nUpdated :\nAuthor :\nContact :\n\nAll  Rights  Reserved." -al left`;
